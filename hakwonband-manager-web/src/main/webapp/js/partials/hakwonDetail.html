@@ -1,0 +1,38 @@
+<div class="col-md-8 col-md-offset-2">
+	<div class="widget-head-color-box black-bg p-lg text-center">
+		<h2 class="font-bold">수학짱짱맨학원</h2>
+		<img src="{{ CommUtil.createFileFullPath(hakwonInfo.logo_file_path, 'hakwon') }}" class="circle-border img-responsive" alt="학원 프로필 사진" width="300">
+	</div>
+	<div class="widget-text-box">
+		<h3 class="media-heading">학원정보</h3>
+		<div class="row">
+			<div class="col-md-10">
+				<ul>
+					<li>지역 : {{ hakwonInfo.old_sido}}</li>
+					<li>업종 : {{ hakwonInfo.hakwon_cate_name}}</li>
+					<li>주소 : {{ hakwonInfo.old_addr1 + hakwonInfo.old_addr2}}</li>
+					<li>전화번호 : <a href="tel:{{ hakwonInfo.tel_no_1}}">{{ hakwonInfo.tel_no_1}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="widget-text-box">
+		<h3 class="media-heading">원장 정보</h3>
+		<ul class="academy_info">
+			<li>
+				<a href="#/master/view?masterUserNo={{ hakwonInfo.master_user_no}}">
+					<img class="img-circle" src="../assets/img/profile.jpg" alt="{{ hakwonInfo.master_user_name}}" width="30">
+					<strong class="name">{{ hakwonInfo.master_user_name}}</strong> <span class="info_text">{{ hakwonInfo.master_user_gender_name}}</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="text-right m-t">
+		<button class="btn btn-primary" ng-click="introUpdate()" type="button">학원소개 수정</button>
+		<button class="btn btn-default" ng-click="list()" type="button">목록으로</button>
+	</div>
+	<div class="widget-text-box">
+		<h3 class="media-heading">월별 광고 금액</h3>
+		<canvas id="canvas" height="auto" width="100%"></canvas>
+	</div>
+</div>

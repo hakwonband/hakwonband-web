@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.MessageSendDAO">
+
+	<!-- 선생님 메세지 보내기 학생 검색 -->
+	<select id="teacherSearchStudent" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.teacherSearchStudent */
+		select
+			distinct(a.student_user_no) as user_no
+			, c.user_type
+			, c.user_id
+			, c.user_email
+			, c.approved_yn
+			, c.use_yn
+			, c.reg_date
+			, d.user_name
+			, d.user_gender
+			, d.tel1_no
+			, get_file_path(d.photo_file_no) as user_photo_path
+			, calc_age(d.user_birthday) as user_age
+			, (select group_concat(get_user_info(y.user_no) SEPARATOR 0x12) from tb_student_parent x, tb_user_info y where x.student_user_no = b.user_no and x.parent_user_no = y.user_no) as parent_list
+		from
+			tb_hakwon_class_teacher x
+			, tb_hakwon_class_student a
+			, tb_hakwon_member b
+			, tb_user c
+			, tb_user_info d
+		where
+			x.hakwon_no = #{hakwon_no}
+			and x.teacher_user_no = #{user_no}
+			and x.hakwon_no = a.hakwon_no
+			and x.class_no = a.class_no
+			and a.hakwon_no = b.hakwon_no
+			and b.user_type = '006'
+			and a.student_user_no = b.user_no
+			and a.student_user_no = c.user_no
+			and c.user_no = d.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				d.user_name like concat('%', #{searchText}, '%')
+				or
+				c.user_id like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			d.user_name asc
+	]]>
+	</select>
+
+
+	<!-- 메세지 등록 -->
+	<insert id="messageInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	MessageSendDAO.messageInsert	*/
+		insert into tb_message (
+			title
+			, preview_content
+			, content
+			, group_yn
+			, hakwon_no
+			, send_user_no
+			, send_date
+			, write_user_no
+			, write_date
+			, message_type
+			, message_target
+		) values (
+			#{title}
+			, #{preview_content}
+			, #{content}
+			, #{group_yn}
+			, #{hakwon_no}
+			, #{send_user_no}
+			, now()
+			, #{send_user_no}
+			, now()
+			, #{messageType}
+			, #{messageTarget}
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 메세지 받은 사용자 카운트 업데이트 -->
+	<update id="updateMessageReceiverCount" parameterType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.updateMessageReceiverCount */
+		update tb_message set
+			receiver_count = (select count(1) from tb_message_receiver where message_no = #{messageNo})
+		where
+			message_no = #{messageNo}
+	]]>
+	</update>
+
+
+	<!-- 보낸 메세지 receiver 테이블에 등록 -->
+	<insert id="messageReceiverSingleInsert" parameterType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.messageReceiverSingleInsert */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		) values (
+			#{message_no}
+			, #{hakwon_no}
+			, #{receive_user_no}
+		)
+	]]>
+ 	</insert>
+
+
+	<!-- 보낸 메세지 receiver 테이블에 다중 등록 -->
+	<insert id="messageReceiverMultiInsert" parameterType="java.util.List">
+	<![CDATA[
+		/* MessageSendDAO.messageReceiverMultiInsert */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=",">
+	   (
+			#{item.message_no}
+			, #{item.hakwon_no}
+			, #{item.receive_user_no}
+	   )
+		</foreach>
+ 	</insert>
+
+ 	<!-- 메세지 그룹별 다중 등록(반&학생) -->
+ 	<insert id="messageReceiverGroupInsertClassStudent" parameterType="dataMap">
+ 	<![CDATA[
+		/* MessageSendDAO.messageReceiverGroupInsertClassStudent */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		)
+		select
+			#{message_no}
+			, a.hakwon_no
+			, a.student_user_no
+		from
+			tb_hakwon_class_student a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.class_no = #{class_no}
+	]]>
+	</insert>
+
+	<!-- 메세지 그룹별 다중 등록(반&학부모) -->
+ 	<insert id="messageReceiverGroupInsertClassParent" parameterType="dataMap">
+ 	<![CDATA[
+		/* MessageSendDAO.messageReceiverGroupInsertClassParent */
+		insert into tb_message_receiver (
+			receive_user_no, message_no, hakwon_no
+		)
+		select
+			distinct b.parent_user_no
+			, #{message_no}
+			, a.hakwon_no
+		from
+			tb_hakwon_class_student a
+			, tb_student_parent b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.class_no = #{class_no}
+			and a.student_user_no = b.student_user_no
+	]]>
+	</insert>
+
+	<!-- 메세지 그룹별 다중 등록(반&학부모) -->
+ 	<insert id="messageReceiverGroupInsertHakwonMember" parameterType="dataMap">
+ 	<![CDATA[
+		/* MessageSendDAO.messageReceiverGroupInsertHakwonMember */
+		insert into tb_message_receiver (
+			receive_user_no, message_no, hakwon_no
+		)
+		select
+			a.user_no
+			, #{message_no}
+			, a.hakwon_no
+		from
+			tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no}
+	]]>
+	</insert>
+
+	<!-- 원장님 메세지 보내기 선생님 및 학생 검색 -->
+	<select id="masterSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.masterSearch */
+		select
+			a.user_no
+			, b.user_type
+			, b.user_id
+			, b.user_email
+			, b.approved_yn
+			, b.use_yn
+			, b.reg_date
+			, c.user_name
+			, c.user_gender
+			, c.tel1_no
+			, get_file_path(c.photo_file_no) as user_photo_path
+			, calc_age(c.user_birthday) as user_age
+			, '' as parent_list
+		from
+			tb_hakwon_teacher a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+			and b.use_yn = 'Y'
+			and a.user_no = c.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				c.user_name like concat('%', #{searchText}, '%')
+				or
+				b.user_id like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		union all
+		select
+			a.user_no
+			, b.user_type
+			, b.user_id
+			, b.user_email
+			, b.approved_yn
+			, b.use_yn
+			, b.reg_date
+			, c.user_name
+			, c.user_gender
+			, c.tel1_no
+			, get_file_path(c.photo_file_no) as user_photo_path
+			, calc_age(c.user_birthday) as user_age
+			, case when (select count(1) from tb_hakwon_class_student where student_user_no = a.user_no) > 0
+				then (select group_concat(get_user_info(y.user_no) SEPARATOR 0x12) from tb_student_parent x, tb_user_info y where x.student_user_no = a.user_no and x.parent_user_no = y.user_no)
+				else '' end as parent_list
+		from
+			tb_hakwon_member a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = b.user_no
+			and b.use_yn = 'Y'
+			and a.user_no = c.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				c.user_name like concat('%', #{searchText}, '%')
+				or
+				b.user_id like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			user_name asc
+	]]>
+	</select>
+
+	<!-- 원장님 반 대상 검색 -->
+	<select id="masterTargetClassUser" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetClassUser */
+		select '' from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+		union all
+		select distinct teacher_user_no
+		from tb_hakwon_class_teacher
+		where hakwon_no = #{hakwon_no} and class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+		union all
+		select distinct a.student_user_no
+		from tb_hakwon_class_student a
+		where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+		union all
+		select distinct b.parent_user_no
+		from tb_hakwon_class_student a, tb_student_parent b
+		where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array}) and a.student_user_no = b.student_user_no
+		</if>
+	</select>
+
+
+	<!-- 원장님 사용자 그룹 대상 검색 -->
+	<select id="masterTargetUserGroup" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetUserGroup */
+		select '' from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+		union all
+		select user_no from tb_hakwon_teacher where hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+		union all
+		select distinct a.student_user_no
+		from tb_hakwon_class_student a
+		where a.hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+		union all
+		select distinct b.parent_user_no
+		from tb_hakwon_class_student a, tb_student_parent b
+		where a.hakwon_no = #{hakwon_no} and a.student_user_no = b.student_user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudentNon )">
+		union all
+		select distinct a.user_no
+		from tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no} and a.user_type = '006'
+			and not exists ( select 1 from tb_hakwon_class_student e where e.hakwon_no = #{hakwon_no} and e.student_user_no=a.user_no )
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParentNon )">
+		union all
+		select distinct a.user_no
+		from tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no} and a.user_type = '005'
+			and not exists ( select 1 from tb_hakwon_class_student x, tb_student_parent y where x.hakwon_No = #{hakwon_no} and x.student_user_no = y.student_user_no and y.parent_user_no = a.user_no )
+		</if>
+	</select>
+
+	<select id="tempDeviceToken" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/*	MessageSendDAO.tempDeviceToken	*/
+		select
+			a.device_token
+		from
+			tb_login_hist a, tb_user b
+		where
+			b.user_id = #{tempUserid}
+			and b.user_no = a.user_no
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 검색 대상의 디바이스 정보 -->
+	<select id="searchUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	MessageSendDAO.searchUserDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+		from
+			tb_login_hist a
+		where
+			a.user_no in (${searchUserNoArray})
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 원장님 반 대상 디바이스 검색 -->
+	<select id="masterTargetClassUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetClassUserDeviceToken */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as user_no from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+				union all
+				select distinct teacher_user_no as user_no
+				from tb_hakwon_class_teacher
+				where hakwon_no = #{hakwon_no} and class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+				union all
+				select distinct a.student_user_no as user_no
+				from tb_hakwon_class_student a
+				where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+				union all
+				select distinct b.parent_user_no as user_no
+				from tb_hakwon_class_student a, tb_student_parent b
+				where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array}) and a.student_user_no = b.student_user_no
+		</if>
+	<![CDATA[
+			) y
+		where
+			x.user_no = y.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 원장님 사용자 그룹 대상 디바이스 리스트 -->
+	<select id="masterTargetUserGroupDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetUserGroupDeviceToken */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as user_no from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+				union all
+				select user_no from tb_hakwon_teacher where hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+				union all
+				select distinct a.student_user_no as user_no
+				from tb_hakwon_class_student a
+				where a.hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+				union all
+				select distinct b.parent_user_no as user_no
+				from tb_hakwon_class_student a, tb_student_parent b
+				where a.hakwon_no = #{hakwon_no} and a.student_user_no = b.student_user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudentNon )">
+				union all
+				select distinct a.user_no
+				from tb_hakwon_member a
+				where
+					a.hakwon_no = #{hakwon_no} and a.user_type = '006'
+					and not exists ( select 1 from tb_hakwon_class_student e where e.hakwon_no = #{hakwon_no} and e.student_user_no=a.user_no )
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParentNon )">
+				union all
+				select distinct a.user_no
+				from tb_hakwon_member a
+				where
+					a.hakwon_no = #{hakwon_no} and a.user_type = '005'
+					and not exists ( select 1 from tb_hakwon_class_student x, tb_student_parent y where x.hakwon_No = #{hakwon_no} and x.student_user_no = y.student_user_no and y.parent_user_no = a.user_no )
+		</if>
+	<![CDATA[
+			) y
+		where
+			x.user_no = y.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+
+
+
+
+	<!-- 반 학생들의 디바이스 리스트 -->
+ 	<select id="teacherTargetClassStudent" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.teacherTargetClassStudent */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select distinct student_user_no
+				from tb_hakwon_class_student
+				where hakwon_no = #{hakwon_no} and class_no = #{class_no}
+			) a
+		where
+			a.student_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 메세지 그룹별 다중 등록(반&학부모) -->
+	<select id="teacherTargetClassParent" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.teacherTargetClassParent */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select
+					distinct b.parent_user_no
+				from tb_hakwon_class_student a , tb_student_parent b
+				where
+					a.hakwon_no = #{hakwon_no}
+					and a.class_no = #{class_no}
+					and a.student_user_no = b.student_user_no
+			) a
+		where
+			a.parent_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 메세지 발송 사용자 검색 -->
+	<select id="targetUserList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.targetUserList */
+		select
+			a.user_no
+			, b.user_name
+			, b.user_id
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no in (${targetUserNoArray})
+			and a.user_no = b.user_no
+		union all
+		select
+			a.user_no
+			, b.user_name
+			, b.user_id
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no in (${targetUserNoArray})
+			and a.user_no = b.user_no
+		order by
+			user_name asc
+	]]>
+	</select>
+</mapper>

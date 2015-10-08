@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.QuestionsMailDAO">
+
+	<!-- 문의 메일 리스트 -->
+	<select id="questionsMailList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	QuestionsMailDAO.questionsMailList	*/
+		select
+			a.questions_no
+			, a.user_email
+			, a.title
+			, a.phone
+			, date_format(a.req_date, '%Y.%m.%d %H:%i') as req_date
+		from
+			tb_questions_mail a
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+	<![CDATA[
+		where
+			a.title like concat('%', #{searchText}, '%')
+			or a.user_email like concat('%', #{searchText}, '%')
+			or a.phone like concat('%', #{searchText}, '%')
+			or a.content like concat('%', #{searchText}, '%')
+	]]>
+	</if>
+	<![CDATA[
+		order by
+			a.questions_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 문의 메일 카운트 -->
+	<select id="questionsMailCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	QuestionsMailDAO.questionsMailCount	*/
+		select
+			count(1)
+		from
+			tb_questions_mail a
+
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+	<![CDATA[
+		where
+			a.title like concat('%', #{searchText}, '%')
+			or a.user_email like concat('%', #{searchText}, '%')
+			or a.phone like concat('%', #{searchText}, '%')
+			or a.content like concat('%', #{searchText}, '%')
+	]]>
+	</if>
+	</select>
+
+	<!-- 문의 메일 상세 -->
+	<select id="questionsMailDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	QuestionsMailDAO.questionsMailDetail	*/
+		select
+			a.questions_no
+			, a.user_email
+			, a.title
+			, a.phone
+			, date_format(a.req_date, '%Y.%m.%d %H:%i') as req_date
+			, a.content
+		from
+			tb_questions_mail a
+		where
+			a.questions_no = #{questionsNo}
+	]]>
+	</select>
+
+</mapper>

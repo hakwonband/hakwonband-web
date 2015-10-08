@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.TestDAO">
+
+	<!-- 학원 멤버 리스트 -->
+	<select id="hakwonMemberList" resultType="dataMap">
+	<![CDATA[
+		/* TestDAO.hakwonMemberList */
+		select hakwon_no, user_no
+		from tb_hakwon_member
+		where user_type = '006'
+	]]>
+	</select>
+
+	<!-- 학원 멤버 체크 -->
+	<select id="hakwonMemberCheck" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/* TestDAO.hakwonMemberCheck */
+		select
+			case when count(1) > 0 then 'Y' else 'N' end
+		from
+			tb_hakwon_class_student a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.student_user_no = #{student_user_no}
+	]]>
+	</select>
+
+	<!-- 학원 멤버 업데이트 -->
+	<update id="updateHakwonMember" parameterType="dataMap">
+	<![CDATA[
+		/* TestDAO.updateHakwonMember */
+		update tb_hakwon_member set
+			member_yn = #{member_yn}
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{student_user_no}
+	 ]]>
+	</update>
+
+	<!-- 학부모 자식 학원 리스트 -->
+	<select id="childHakwonList" resultType="dataMap">
+	<![CDATA[
+		/* TestDAO.childHakwonList */
+		select
+			distinct b.hakwon_no
+			, a.parent_user_no as user_no
+		from
+			tb_student_parent a
+			, tb_hakwon_class_student b
+			, tb_user c
+		where
+			c.user_type = '005'
+			and c.user_no = a.parent_user_no
+			and a.student_user_no = b.student_user_no
+	]]>
+	</select>
+
+	<insert id="parentHakwonInsert" parameterType="dataMap">
+	<![CDATA[
+		/* TestDAO.parentHakwonInsert */
+		insert into tb_hakwon_member(
+			hakwon_no, user_no, user_type, member_yn, reg_date
+		) values (
+			#{hakwon_no}, #{user_no}, '005', 'N', now()
+		)
+	]]>
+	</insert>
+</mapper>

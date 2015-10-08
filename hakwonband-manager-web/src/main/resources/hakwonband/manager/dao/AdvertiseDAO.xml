@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+select group_concat(x.advert_data)
+from (
+	select
+		concat(CAST(sum(d.amount) as char), '|', DATE_FORMAT(c.reg_date, '%Y%m')) as advert_data
+	from
+		tb_hakwon a
+		, tb_advertise_req c
+		, tb_advertise_bank_deposit d
+	where
+		a.manager_no = 2
+		and c.hakwon_no = a.hakwon_no
+		and c.deposit_yn = 'Y'
+		and DATE_FORMAT(c.reg_date, '%Y%m') BETWEEN DATE_FORMAT(DATE_SUB(curdate(), INTERVAL 2 MONTH), '%Y%m') and DATE_FORMAT(curdate(), '%Y%m')
+		and c.advertise_req_no = d.advertise_req_no
+	group by
+		DATE_FORMAT(c.reg_date, '%Y%m')
+) x
+-->
+<mapper namespace="hakwonband.manager.dao.AdvertiseDAO">
+
+	<!-- 6개월 금액 -->
+	<select id="sixMonthAmount" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.sixMonthAmount	*/
+		select
+			sum(d.amount) as amount
+			, date_format(c.reg_date, '%Y-%m') as year_month_val
+		from
+			tb_hakwon a
+			, tb_advertise_req c
+			, tb_advertise_bank_deposit d
+		where
+			a.manager_no = #{managerNo}
+			and c.hakwon_no = a.hakwon_no
+			and c.deposit_yn = 'Y'
+			and date_format(c.reg_date, '%Y%m') between date_format(date_sub(curdate(), interval 5 month), '%Y%m') and date_format(curdate(), '%Y%m')
+			and c.advertise_req_no = d.advertise_req_no
+		group by
+			date_format(c.reg_date, '%Y%m')
+	]]>
+	</select>
+
+	<!-- 광고 무통장 입금 -->
+	<insert id="insertAdvertiseBankDeposit" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseBankDeposit	*/
+		insert into tb_advertise_bank_deposit (
+			amount, bank_code, deposit_date, deposit_name, comment, reg_user_no, reg_date
+		) values(
+			#{amount}, #{bankCode}, #{depositDate}, #{depositName}, #{comment}, #{userNo}, now()
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 광고 요청 리스트 -->
+	<select id="advertiseReqList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqList	*/
+		select
+			c.advertise_req_no
+			, c.title
+			, c.banner_file_no
+			, get_file_path(c.banner_file_no) as banner_file_path
+			, c.cancel_yn
+			, c.deposit_yn
+			, c.banner_size
+			, c.price
+			, b.hakwon_name
+			, a.hakwon_no
+			, c.stop_admin_yn
+			, (select count(1) from tb_advertise_local_date x where x.advertise_req_no = c.advertise_req_no and x.view_month = date_format(now(), '%Y%m')) as view_count
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_advertise_req c
+		where
+			a.manager_no = #{managerNo}
+			and c.hakwon_no = a.hakwon_no
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( depositYn )">
+			and c.deposit_yn = #{depositYn}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or c.title like concat('%', #{searchText}, '%')
+			)
+	</if>
+	<![CDATA[
+		order by
+			c.advertise_req_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 광고 요청 카운트 -->
+	<select id="advertiseReqTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqTotCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_advertise_req c
+		where
+			a.manager_no = #{managerNo}
+			and c.hakwon_no = a.hakwon_no
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( depositYn )">
+			and c.deposit_yn = #{depositYn}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or c.title like concat('%', #{searchText}, '%')
+			)
+	</if>
+	</select>
+
+
+	<!-- 광고 요청 상세 -->
+	<select id="advertiseReqDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqDetail	*/
+		select
+			b.advertise_req_no
+			, b.title
+			, b.banner_file_no
+			, get_file_path(b.banner_file_no) as banner_file_path
+			, b.banner_size
+			, b.cancel_yn
+			, b.cancel_date
+			, b.stop_admin_yn
+			, b.deposit_yn
+			, b.price
+			, a.hakwon_name
+			, a.hakwon_no
+			, b.bank_info
+		from
+			tb_hakwon a
+			, tb_advertise_req b
+		where
+			a.manager_no = #{managerNo}
+			and b.advertise_req_no = #{reqNo}
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	</select>
+
+	<!-- 광고 요청 지역 리스트 -->
+	<select id="advertiseReqLocalList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqLocalList	*/
+		select
+			a.advertise_req_no
+			, a.view_month
+			, case when date_format(now(), '%Y%m') = a.view_month then 'Y'
+			 else 'N' end as current_view
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.banner_size
+		from
+			tb_advertise_local_date a
+		where
+			a.advertise_req_no = #{reqNo}
+		order by
+			a.view_month asc
+			, a.sido asc
+			, a.gugun asc
+			, a.dong asc
+	]]>
+	</select>
+
+	<!-- 학원 등록 광고 구군 리스트 -->
+	<select id="hakwonRegMonthPriceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.hakwonRegMonthPriceList	*/
+		select
+			a.view_month
+			, a.banner_size
+			, a.price
+			, a.dong_count
+			, a.total_price
+		from tb_advertise_req_pay_info a
+		where a.advertise_req_no = #{reqNo}
+		order by a.view_month asc
+	]]>
+	</select>
+
+	<!-- 월별 가격 리스트 -->
+	<select id="yearMonthPriceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertisePriceDAO.yearMonthPriceList	*/
+		select
+			a.price_no
+			, a.price_year_month
+			, right(a.price_year_month, 2) as month
+			, a.banner_size
+			, a.price
+			, a.reg_user_no
+			, a.reg_date
+		from
+			tb_advertise_price a
+		where
+			a.price_year_month between concat(#{year}, '01') and concat(#{year}, '12')
+		order by
+			a.price_year_month asc
+	]]>
+	</select>
+</mapper>

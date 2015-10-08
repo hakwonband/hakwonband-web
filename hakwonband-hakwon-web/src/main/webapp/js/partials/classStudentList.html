@@ -1,0 +1,85 @@
+<!-- 반 상세정보 include -->
+<div class="col-md-3" ng-include="'/js/partials/classDetail.html'"></div>
+
+<div class="col-md-9">
+	<div class="ibox float-e-margins">
+		<div class="ibox">
+			<div class="ibox-title">
+				<h3>학생 추가하기</h3>
+				<div class="ibox-tools">
+					<a class="collapse-link">
+						<i class="fa fa-chevron-up"></i>
+					</a>
+				</div>
+			</div>
+
+			<div class="ibox-content">
+				<div class="input-group m-b-xl">
+					<input type="text" class="form-control" placeholder="이름으로 찾아 학생 추가하기" ng-model="searchText" ng-keydown="searchStudentEnter($event)">
+					<span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="searchStudentClick()">검색</button> </span>
+				</div>
+				<ul class="find_people_result row">
+					<li class="col-md-6" ng-repeat="item in studentList">
+						<div class="people_list_box">
+							<img class="img-circle" ng-src="{{ getFileFullPath(item.user_photo_path) }}" alt="{{ item.user_name }} 프로필" width="30" height="30">
+							<strong class="name">{{ item.user_name }}</strong> <span>{{ item.user_id }}/{{ getUserGender(item.user_gender) }}/{{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age }}</span>
+							<button class="btn btn-default btn_add" type="button" ng-if="checkClassStudent(item) == true" ng-click="addToClass(item)">추가 </button>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="ibox">
+			<div class="ibox-content text-right">
+				<button class="btn btn-primary btn_message" type="button" ng-click="checkAllStudent()">전체선택</button>
+				<button class="btn btn-primary btn_message" type="button" ng-click="sendMessageList()">선택자 메세지 보내기</button>
+			</div>
+
+			<!-- 학생 없음 -->
+			<div class="ibox-content" ng-if="classStudentListTotCount <= 0">
+				<div class="contact-box box_nodata">
+					등록된 학생이 없습니다.
+				</div>
+			</div>
+
+			<div class="ibox-content" ng-if="classStudentListTotCount > 0">
+				<div class="contact-box people_contact_box" ng-click="item.isSelected = !item.isSelected" ng-class="{'active' : item.isSelected == true}" ng-repeat="item in classStudentList">
+					<div class="profile_img_box">
+						<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.user_photo_path) }}" alt="프로필 사진">
+						<h3 class="title_name">{{ item.user_name }}</h3>
+					</div>
+					<ul class="contact-box-info">
+						<li>아이디 : {{ item.user_id }}</li>
+						<li>핸드폰 : <a href="tel:{{ item.tel1_no }}">{{ item.tel1_no }}</a></li>
+						<li>성별/나이 : {{ getUserGender(item.user_gender) }} / {{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age+"세" }}</li>
+						<li>출결번호 : {{ item.attendance_code }}</li>
+
+						<li ng-if="item.relationList.length > 0" ng-repeat="subItem in item.relationList">학부모 :
+							<img class="img-circle" ng-src="{{ getFileFullPath(subItem.user_photo_path) }}" alt="프로필" width="30" height="30">
+							<strong class="name">{{ subItem.user_name }}</strong> <span>{{ getUserGender(subItem.user_gender) }} / {{ !subItem.user_age||subItem.user_age==0?"생일 미입력":subItem.user_age+"세" }}</span>
+						</li>
+					</ul>
+					<button type="button" class="btn btn-default btn_message" ng-click="sendMessage(item)"><i class="fa fa-envelope-o"></i> 메세지 보내기</button>
+					<button type="button" class="btn btn-warning btn_message" ng-click="removeToClass(item)">학생 삭제</button>
+				</div>
+			</div>
+
+			<div class="ibox-content text-right">
+				<button class="btn btn-primary btn_message" type="button" ng-click="checkAllStudent()">전체선택</button>
+				<button class="btn btn-primary btn_message" type="button" ng-click="sendMessageList()">선택자 메세지 보내기</button>
+			</div>
+
+			<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+				<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+				<button ng-repeat="page in pageInfo.pages"class="btn btn-white"  ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+				<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i></button>
+			</div>
+			<div class="input-group m-b-xl col-md-4 col-md-offset-4 ng-scope">
+				<input type="text" ng-model="classSearchText" class="form-control" placeholder="등록된 학생 검색" ng-keydown="classStudentSearch($event)">
+				<span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="classStudentSearch()">검색</button> </span>
+			</div>
+
+		</div>
+	</div>
+</div>

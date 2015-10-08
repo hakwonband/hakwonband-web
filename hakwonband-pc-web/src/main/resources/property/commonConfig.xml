@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<!-- 기준 리싸이즈 -->
+	<file>
+		<resize>600</resize>
+	</file>
+
+	<!-- 이메일 설정 -->
+	<email>
+		<sendEmail><![CDATA[info@hakwonband.com]]></sendEmail>
+		<pwdResetReq>
+			<title><![CDATA[학원밴드 비밀번호 재설정 요청 메일 입니다.]]></title>
+			<content>
+			<![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>학원밴드</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="title" content="학원밴드" />
+<meta name="url" content="" />
+<meta name="description" content="학원밴드" />
+<meta name="keywords" content="학원, 학원밴드" />
+<meta http-equiv="Cache-Control" content="No-Cache" />
+<meta http-equiv="Pragma" content="No-Cache" />
+<style type="text/css">
+/* reset */
+@import url("http://fonts.googleapis.com/earlyaccess/nanumgothic.css");
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, textarea, p, blockquote, th, td, input, select, textarea, button {margin:0; padding:0; font-size:100%; vertical-align:middle}
+body, th, td, input, select, textarea, button, pre {font-size:12px; line-height:100%; font-family:'Nanum Gothic', "malgun gothic", "맑은고딕", "Dotum", "돋움", "Gulim", "굴림","Helvetica","sans-serif"; color:#222}
+form, input, ul, li, ol, dl, dt, dd, fieldset {margin:0; padding:0;list-style:none}
+img, fieldset, iframe {border:none}
+strong {color:#666;}
+a {color:#006faf; text-decoration:underline}
+a:active, a:hover {text-decoration:underline}
+</style>
+</head>
+
+<body style="margin:0; padding:0;">
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+	<td align="center" style="padding-top:110px;" >
+
+		<table width="535" border="0" cellpadding="0" cellspacing="0" style="border:solid 1px #cecece; padding-bottom:50px">
+		  <tr>
+			<td height="60" style="border-bottom:solid 2px #0b72ad; padding-left:20px;">
+				<img src="{=HOST}/images/mail_tit.gif" alt="HAKWONBAND" valign="middle" style="margin-right:10px;" /><span style="font-size:18px; color:#222; vertical-align:middle">비밀번호</span>
+			</td>
+		  </tr>
+		  <tr>
+			<td align="center" style="padding:55px 0 50px 0;">
+				<div style="font-size:30px; font-weight:bold; padding-bottom:50px">
+					{=userPassWord}
+				</div>
+				<div style="font-size:14px; line-height:180%;">
+					현재 비밀번호는 임시 비밀번호 입니다.<br />
+					로그인 후 <a href="#">내정보 변경</a> 메뉴에서 비밀번호를 변경하세요.
+				</div>
+			</td>
+		  </tr>
+		  <tr>
+			<td align="center" >
+				<a href="{=loginUrl}"><img src="{=HOST}/images/mail_btn.gif" alt="HAKWONBAND 로그인하러가기"  /></a>
+			</td>
+		  </tr>
+		</table>
+
+	</td>
+  </tr>
+</table>
+</body>
+</html>
+			]]>
+			</content>
+		</pwdResetReq>
+	</email>
+
+</hakwonband>

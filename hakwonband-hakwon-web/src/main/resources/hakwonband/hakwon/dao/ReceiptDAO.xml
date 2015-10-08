@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.ReceiptDAO">
+
+	<!-- 수납 등록 -->
+	<insert id="insertReceipt" parameterType="dataMap">
+	<![CDATA[
+		/*	ReceiptDAO.insertReceipt	*/
+		insert into tb_receipt (
+			reg_user_no, hakwon_no, student_no, receipt_amount, receipt_type
+			, receipt_method, receipt_desc, receipt_date, reg_date
+		) values (
+			#{userNo}, #{hakwonNo}, #{studentNo}, #{receiptAmount}, #{receiptType}
+			, #{receiptMethod}, #{receiptDesc}, #{receiptDate}, now()
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="int">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 학생 조회 -->
+	<select id="selectStudent" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ReceiptDAO.selectStudent	*/
+		select
+			a.user_no
+			, a.user_id
+			, a.user_email
+			, b.user_name
+			, b.user_gender
+			, b.user_birthday
+			, get_file_path(b.photo_file_no) as user_photo_path
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_hakwon_member c
+		where
+			a.user_no = b.user_no
+			and a.user_type = '006'
+			and a.use_yn = 'Y'
+			and a.approved_yn = 'Y'
+	]]>
+	<if test=" studentName != null and studentName != '' ">
+			and (
+				b.user_name like '%${studentName}%'
+				or b.user_id like '%${studentName}%'
+			)
+	</if>
+	<if test=" studentId != null and studentId != '' ">
+			and b.user_id = #{studentId}
+	</if>
+			and c.hakwon_no = #{hakwonNo}
+			and c.user_no = a.user_no
+		order by
+			a.user_no asc
+	</select>
+
+	<!-- 수납 리스트 조회 -->
+	<select id="selectReceiptList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ReceiptDAO.selectReceiptList	*/
+		select
+			a.receipt_no
+			, a.reg_user_no
+			, a.hakwon_no
+			, a.student_no
+			, a.receipt_amount
+			, a.receipt_type
+			, get_code_name('013', a.receipt_type) as receipt_type_name
+			, get_code_name('013', a.receipt_method) as receipt_method_name
+			, a.receipt_type
+			, a.receipt_method
+			, a.receipt_desc
+			, a.receipt_date
+			, DATE_FORMAT(a.reg_date,'%Y-%m-%d') as reg_date
+			, c.user_name
+			, c.user_id
+			, get_file_path(c.photo_file_no) as user_photo_path
+		from
+			tb_receipt a
+			, tb_user_info c
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			, tb_hakwon_class_student b
+		</if>
+	<![CDATA[
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.use_yn = 'Y'
+			and a.student_no = c.user_no
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and b.class_no = #{classNo}
+			and b.student_user_no = a.student_no
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" searchType == 'id' ">
+				and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'name' ">
+				and c.user_name like '%${searchText}%'
+			</if>
+			and c.user_no = a.student_no
+		</if>
+
+		<if test=" receiptType != null and receiptType != '' ">
+			and a.receipt_type = #{receiptType}
+		</if>
+
+		<if test=" receiptMethod != null and receiptMethod != '' ">
+			and a.receipt_method = #{receiptMethod}
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate )">
+			<![CDATA[
+			and a.receipt_date >= '${startDate} 00:00:00' and a.receipt_date < '${endDate} 00:00:00'
+			]]>
+		</if>
+	<![CDATA[
+		order by
+			a.receipt_date desc, a.reg_date desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 수납 리스트 엑셀 조회 -->
+	<select id="selectReceiptListAll" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ReceiptDAO.selectReceiptListAll	*/
+		select
+			c.user_name
+			, c.user_id
+			, a.receipt_no
+			, a.reg_user_no
+			, a.hakwon_no
+			, a.student_no
+			, a.receipt_amount
+			, get_code_name('013', a.receipt_type) as receipt_type_name
+			, get_code_name('013', a.receipt_method) as receipt_method_name
+			, a.receipt_desc
+			, a.receipt_date
+			, date_format(a.reg_date,'%Y-%m-%d') as reg_date
+		from
+			tb_receipt a
+			, tb_user_info c
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			, tb_hakwon_class_student b
+		</if>
+	<![CDATA[
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no = c.user_no
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and b.class_no = #{classNo}
+			and b.student_user_no = a.student_no
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" searchType == 'id' ">
+				and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'name' ">
+				and c.user_name like '%${searchText}%'
+			</if>
+			and c.user_no = a.student_no
+		</if>
+
+		<if test=" receiptType != null and receiptType != '' ">
+			and a.receipt_type = #{receiptType}
+		</if>
+
+		<if test=" receiptMethod != null and receiptMethod != '' ">
+			and a.receipt_method = #{receiptMethod}
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate )">
+			<![CDATA[
+			and a.receipt_date >= '${startDate} 00:00:00' and a.receipt_date < '${endDate} 00:00:00'
+			]]>
+		</if>
+	<![CDATA[
+			and a.use_yn = 'Y'
+		order by
+			a.receipt_date desc, a.reg_date desc
+	]]>
+	</select>
+
+	<!-- 수납 리스트 전체 카운트 조회 -->
+	<select id="selectReceiptCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	ReceiptDAO.selectReceiptCount	*/
+		select
+			count(a.receipt_no)
+		from
+			tb_receipt a
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			, tb_hakwon_class_student b
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			, tb_user_info c
+		</if>
+	<![CDATA[
+		where
+			a.hakwon_no = #{hakwonNo}
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and b.class_no = #{classNo}
+			and b.student_user_no = a.student_no
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" searchType == 'id' ">
+				and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'name' ">
+				and c.user_name like '%${searchText}%'
+			</if>
+			and c.user_no = a.student_no
+		</if>
+
+		<if test=" receiptType != null and receiptType != '' ">
+			and a.receipt_type = #{receiptType}
+		</if>
+		<if test=" receiptMethod != null and receiptMethod != '' ">
+			and a.receipt_method = #{receiptMethod}
+		</if>
+
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate )">
+		<![CDATA[
+			and a.receipt_date >= '${startDate} 00:00:00' and a.receipt_date < '${endDate} 00:00:00'
+		]]>
+		</if>
+			and a.use_yn = 'Y'
+		order by
+			a.receipt_date desc
+	</select>
+
+	<!-- 반 리스트 조회 -->
+	<select id="selectClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ReceiptDAO.selectClassList	*/
+		select
+			a.class_no
+			, a.class_title
+		from
+			tb_hakwon_class a
+	]]>
+	<if test=" userType != null and userType == '004' ">
+			, tb_hakwon_class_teacher b
+	</if>
+
+		where
+			a.hakwon_no = #{hakwonNo}
+
+	<if test=" userType != null and userType == '004' ">
+			and a.class_no = b.class_no
+ 			and b.teacher_user_no = #{userNo}
+	</if>
+	</select>
+
+	<!-- 수납 상세 정보 조회 -->
+	<select id="selectReceiptDetail" parameterType="dataMap" resultType="dataMap">
+		<![CDATA[
+		/*	receiptDao.selectReceiptDetail	*/
+		select
+			a.receipt_no
+			, a.receipt_amount
+			, a.receipt_type
+			, get_code_name('013', a.receipt_type) as receipt_type_name
+			, a.receipt_method
+			, a.receipt_desc
+			, a.receipt_date
+			, a.reg_user_no
+			, a.student_no
+			, a.hakwon_no
+			, DATE_FORMAT(a.reg_date,'%Y-%m-%d') as reg_date
+			, b.user_name
+			, b.user_id
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, a.reg_user_no
+		from
+			tb_receipt a
+			, tb_user_info b
+		where
+			a.receipt_no = #{receiptNo}
+			and a.student_no = b.user_no
+			and a.use_yn = 'Y'
+		]]>
+	</select>
+
+	<!-- 수납 상세 데이터의 수납월 조회 -->
+	<select id="selectReceiptMonth" parameterType="dataMap" resultType="String">
+		/*	receiptDao.selectReceiptMonth	*/
+		select
+			receipt_month
+		from
+			tb_receipt_month
+		where
+			receipt_no = #{receiptNo}
+	</select>
+
+	<!-- 수납 내용 수정 -->
+	<update id="updateReceipt" parameterType="dataMap">
+	<![CDATA[
+		/*	receiptDao.updateReceipt	*/
+		update tb_receipt set
+			student_no = #{studentNo}
+			, receipt_amount = #{receiptAmount}
+			, receipt_type = #{receiptType}
+			, receipt_method = #{receiptMethod}
+			, receipt_desc = #{receiptDesc}
+			, receipt_date = #{receiptDate}
+		where
+			receipt_no = #{receiptNo}
+			and (
+				reg_user_no = #{userNo}
+				or 'true' = #{isWonjang}
+			)
+	]]>
+	</update>
+
+
+	<!-- 앞으로 일년치의 수납 데이터 조회 -->
+	<select id="selectReceiptYear" parameterType="dataMap" resultType="String">
+	<![CDATA[
+		/*	receiptDao.selectReceiptYear	*/
+		select
+			a.receipt_month
+		from
+			tb_receipt_month a
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no = #{studentNo}
+			and a.receipt_month >= #{startDate}
+		group by a.receipt_month
+		order by a.receipt_month
+		limit 12
+	]]>
+	</select>
+
+	<!-- 학생 수납 월 등록 -->
+	<insert id="insertReceiptMonth" parameterType="dataMap">
+		/*	receiptDao.insertReceiptMonth	*/
+		insert into tb_receipt_month (
+			receipt_no
+			, hakwon_no
+			, student_no
+			, receipt_month
+		) values (
+			#{idx}
+			, #{hakwonNo}
+			, #{studentNo}
+			, #{receiptMonth}
+		)
+	</insert>
+
+	<!-- 수납 삭제 -->
+	<delete id="deleteReceipt" parameterType="dataMap">
+	<![CDATA[
+		/*	receiptDao.deleteReceipt	*/
+		delete from tb_receipt
+		where
+			receipt_no = #{receiptNo}
+			and (
+				reg_user_no = #{userNo}
+				or 'true' = #{isWonjang}
+			)
+	]]>
+	</delete>
+
+	<delete id="deleteReceiptMonth" parameterType="dataMap">
+		/*	receiptDao.deleteReceiptMonth	*/
+		delete from tb_receipt_month
+		where
+			receipt_no = #{receiptNo}
+	</delete>
+
+	<!-- 학생별 수납 리스트 조회  : 수납완료 날짜와 언제 수납했는지 보여줌. -->
+	<select id="selectReceiptYearList" parameterType="dataMap" resultType="dataMap">
+		/*	receiptDao.selectReceiptYearList	*/
+		select
+			a.user_no
+			, a.receipt_date
+			, b.user_id
+			, b.user_name
+			, get_file_path(b.photo_file_no) AS user_photo_path
+			, (
+				select group_concat(y.class_title separator ',')
+				from tb_hakwon_class_student x, tb_hakwon_class y
+				where x.student_user_no = a.user_no and x.hakwon_no = a.hakwon_no and x.class_no = y.class_no
+			) as class_title
+	<![CDATA[
+			, get_receipt_month(#{thisYear}, a.hakwon_no, a.user_no) as month_n_date
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+	]]>
+		<if test=" classNo != null and classNo != '' ">
+			, tb_hakwon_class_student c
+		</if>
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.user_type = '006'
+			and a.user_no = b.user_no
+		<if test=" classNo != null and classNo != '' ">
+			and a.hakwon_no = c.hakwon_no
+			and c.class_no = #{classNo}
+			and a.user_no = c.student_user_no
+		</if>
+		<if test=" registDay != null and registDay != '' ">
+			and a.receipt_date = #{registDay}
+		</if>
+
+		<if test=" searchText != null and searchText != '' ">
+			<if test=" searchType == 'id' ">
+			and b.user_id like concat('%', #{searchText}, '%')
+			</if>
+			<if test=" searchType == 'name' ">
+			and b.user_name like concat('%', #{searchText}, '%')
+			</if>
+		</if>
+		order by
+			b.user_name asc
+		limit
+			${startNo}, ${pageScale}
+	</select>
+
+	<!-- 학생별 수납 리스트 조회  : 수납완료 날짜와 언제 수납했는지 보여줌. -->
+	<select id="selectReceiptYearListAll" parameterType="dataMap" resultType="dataMap">
+		/*	receiptDao.selectReceiptYearListAll	*/
+		select
+			a.user_no
+			, a.receipt_date
+			, b.user_id
+			, b.user_name
+			, get_file_path(b.photo_file_no) AS user_photo_path
+			, (
+				select group_concat(y.class_title separator ',')
+				from tb_hakwon_class_student x, tb_hakwon_class y
+				where x.student_user_no = a.user_no and x.hakwon_no = a.hakwon_no and x.class_no = y.class_no
+			) as class_title
+	<![CDATA[
+			, get_receipt_month(#{thisYear}, a.hakwon_no, a.user_no) as month_n_date
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+	]]>
+		<if test=" classNo != null and classNo != '' ">
+			, tb_hakwon_class_student c
+		</if>
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.user_type = '006'
+			and a.user_no = b.user_no
+		<if test=" classNo != null and classNo != '' ">
+			and a.hakwon_no = c.hakwon_no
+			and c.class_no = #{classNo}
+			and a.user_no = c.student_user_no
+		</if>
+		<if test=" registDay != null and registDay != '' ">
+			and a.receipt_date = #{registDay}
+		</if>
+
+		<if test=" searchText != null and searchText != '' ">
+			<if test=" searchType == 'id' ">
+			and b.user_id like concat('%', #{searchText}, '%')
+			</if>
+			<if test=" searchType == 'name' ">
+			and b.user_name like concat('%', #{searchText}, '%')
+			</if>
+		</if>
+		order by
+			b.user_name asc
+	</select>
+
+	<!-- 학원의 학생들 전체 카운트 조회 (학생별 수납리스트의 학생 목록) -->
+	<select id="selectTotalStudentCount" parameterType="dataMap" resultType="int">
+		/*	receiptDao.selectTotalStudentCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+		<if test=" classNo != null and classNo != '' ">
+			, tb_hakwon_class_student c
+		</if>
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.user_type = '006'
+			and a.user_no = b.user_no
+		<if test=" classNo != null and classNo != '' ">
+			and a.hakwon_no = c.hakwon_no
+			and c.class_no = #{classNo}
+			and a.user_no = c.student_user_no
+		</if>
+		<if test=" registDay != null and registDay != '' ">
+			and a.receipt_date = #{registDay}
+		</if>
+
+		<if test=" searchText != null and searchText != '' ">
+			<if test=" searchType == 'id' ">
+			and b.user_id like concat('%', #{searchText}, '%')
+			</if>
+			<if test=" searchType == 'name' ">
+			and b.user_name like concat('%', #{searchText}, '%')
+			</if>
+		</if>
+	</select>
+
+	<select id="selectInAndOutMoneySum" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	receiptDao.selectInAndOutMoneySum	*/
+		select
+			a.receipt_type
+			, get_code_name('013', a.receipt_type) as receipt_type_name
+			, sum(a.receipt_amount) as money
+		from
+			tb_receipt a
+			, tb_user_info c
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			, tb_hakwon_class_student b
+		</if>
+	<![CDATA[
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.use_yn = 'Y'
+			and a.student_no = c.user_no
+	]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( receiptType ) ">
+			and a.receipt_type = #{receiptType}
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and b.class_no = #{classNo}
+			and b.student_user_no = a.student_no
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" searchType == 'id' ">
+			and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'name' ">
+			and c.user_name like '%${searchText}%'
+			</if>
+			and c.user_no = a.student_no
+		</if>
+		<if test=" receiptMethod != null and receiptMethod != '' ">
+			and a.receipt_method = #{receiptMethod}
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate )">
+			<![CDATA[
+			and a.receipt_date >= '${startDate} 00:00:00' and a.receipt_date < '${endDate} 00:00:00'
+			]]>
+		</if>
+	<![CDATA[
+		group by
+			a.receipt_type
+	]]>
+	</select>
+
+	<!-- 년월 등록 -->
+	<insert id="yearMonthInsert" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_year_month(year_month_val) values (#{year_month})
+	]]>
+	</insert>
+</mapper>

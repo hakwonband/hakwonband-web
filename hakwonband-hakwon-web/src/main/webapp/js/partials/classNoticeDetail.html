@@ -1,0 +1,87 @@
+<!-- 반 상세정보 include -->
+<div class="col-md-3" ng-include="'/js/partials/classDetail.html'"></div>
+
+<div class="col-md-9">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h2>{{ noticeDetail.title }} <small>{{ noticeDetail.reg_date }} / {{ noticeDetail.reg_user_name }}</small></h2>
+		</div>
+		<div class="ibox-content" ng-bind-html="noticeDetail.content | rawHtml"></div>
+		<div class="ibox-content">
+			<p>
+				<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span> -
+			</p>
+			<div class="attachment">
+				<div class="file-box" ng-repeat="item in fileList">
+					<div class="file">
+						<a href="{{ getAttachFileFullPath(item.file_path, 'down') }}" target="_blank">
+							<div class="icon" ng-if="item.image_yn == 'N'">
+								<i class="fa fa-file"></i>
+							</div>
+							<div class="image" ng-if="item.image_yn == 'Y'">
+								<img alt="image" ng-src="{{ getAttachFileFullPath(item.file_path) }}" class="img-responsive">
+							</div>
+							<div class="file-name">
+								<p>{{ item.file_name }}</p>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="ibox-content text-right">
+			<button type="button" class="btn btn-default" ng-if="checkAuthTypeRegistUser(noticeDetail.reg_user_no)" ng-click="removeNotice()">삭제하기</button>
+			<button type="button" class="btn btn-werning" ng-if="checkAuthTypeRegistUser(noticeDetail.reg_user_no)" ng-click="goClassNoticeEdit()">수정하기</button>
+			<button type="button" class="btn btn-primary" ng-click="goClassNoticeList()">목록으로</button>
+		</div>
+
+		<!--
+		<div class="ibox-content text-right m-t">
+			<a href="#">전체 사용자 <strong>234</strong>명중 <strong>34</strong>명 읽음</a>
+		</div>
+		-->
+		<div class="ibox-content">
+			<table class="table table-hover table_link">
+				<tbody>
+					<tr ng-repeat="noticeReader in classNoticeReaderList">
+						<td>
+							<img class="img-circle" ng-src="{{ getPhotoFileFullPath(noticeReader.user_photo_path)}}" alt="" width="30" height="30">
+							{{noticeReader.user_type=="006"?"학생":"학부모"}} {{ noticeReader.user_name}} / {{ noticeReader.user_id}} / {{ noticeReader.read_date?noticeReader.read_date:'미확인'}}
+							{{noticeReader.user_type=="005"?" / "+noticeReader.child_list:""}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="ibox-content m-t" ng-show=" noticeDetail.reply_yn == 'Y' ">
+			<!-- 댓글 쓰기 시작 -->
+			<div class="comment_write has-success">
+				<form action="">
+					<textarea rows="3" cols="30" class="form-control" ng-model="replyInfo.reply_content"></textarea>
+					<button type="button" class="btn btn-primary btn-lg m-b" ng-click="registReply()">댓글입력</button>
+				</form>
+			</div>
+			<!-- 댓글 쓰기 끝 -->
+		</div>
+
+		<!-- 댓글 리스트 -->
+		<div class="comment_list">
+			<!-- 댓글 단위 시작 -->
+			<div ng-repeat="item in replyList" data-type="reply" data-reply-no="{{item.reply_no}}">
+				<div ng-class="{'feed-element' : parseInt(item.reg_user_no) !== parseInt(userAuth.userNo), 'feed-element active' : parseInt(item.reg_user_no) === parseInt(userAuth.userNo)}">
+					<span class="pull-left"><img alt="image" class="img-circle" ng-src="{{ getPhotoFileFullPath(item.photo_file_path) }}"></span>
+					<div class="media-body">
+						<small class="pull-right"><span class="text-muted">{{ item.reg_date_long }}</span></small>
+						<p><span class="badge .badge-plain">{{ item.user_type_name }}</span> <strong>{{ item.reg_user_name }}</strong> {{ item.reg_user_id }} / {{ getUserGender(item.user_gender) }} / {{ !item.reg_user_age||item.reg_user_age==0?"생일 미입력":item.reg_user_age+"세" }}</p>
+						<p class="message_body_text" ng-bind-html="item.reply_content | rawHtml"></p>
+						<button class="btn btn-default btn-circle btn_x" ng-show="userAuth.userNo == item.reg_user_no" type="button" ng-click="replyDelete({{item.reply_no}})"><i class="fa fa-times"></i></button>
+					</div>
+				</div>
+			</div>
+			<!-- 댓글 단위 끝 -->
+
+		</div>
+	</div>
+</div>

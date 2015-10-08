@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.EventDAO">
+
+	<!-- 이벤트 리스트 -->
+	<select id="eventList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventList */
+		select
+			a.event_no
+			, a.hakwon_no
+			, a.event_title
+			, a.reg_user_no
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, date_format(a.udp_date, '%Y년%m월%d일 %H:%i') as udp_date
+			, date_format(a.begin_date, '%Y년%m월%d일') as begin_date
+			, date_format(a.begin_date, '%Y.%m.%d') as new_date
+			, date_format(a.end_date, '%Y년%m월%d일') as end_date
+			, case when now() between a.begin_date and a.end_date then 'Y'
+				else 'N' end as ing_yn
+			, (select count(1) from tb_content_read where content_type = '003' and content_parent_no = a.event_no and user_no = #{user_no}) as read_status
+		from
+			tb_event a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.reg_user_no = b.user_no
+			and a.event_status = '001'
+		order by
+			a.event_no desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 이벤트 카운트 확인 -->
+	<select id="eventListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* eventDAO.eventListTotCount */
+		select
+			count(1)
+		from
+			tb_event a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.event_status = '001'
+	]]>
+	</select>
+
+	<!-- 이벤트 상세조회 -->
+	<select id="eventDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventDetail */
+		select
+			a.event_no
+			, a.hakwon_no
+			, a.event_title
+			, a.event_content
+			, a.reg_user_no
+			, b.user_name as reg_user_name
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, date_format(a.udp_date, '%Y년%m월%d일 %H:%i') as udp_date
+			, date_format(a.begin_date, '%Y-%m-%d') as begin_date
+			, date_format(a.end_date, '%Y-%m-%d') as end_date
+		from
+			tb_event a
+			, tb_user_info b
+		where
+			a.event_no = #{event_no}
+			and a.reg_user_no = b.user_no
+			and a.event_status = '001'
+	]]>
+	</select>
+
+	<!-- 이벤트 멤버 조회 -->
+	<select id="eventMemberList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventMemberList */
+		select
+			a.user_no
+			, b.user_type
+			, c.user_id
+			, c.user_name
+			, case when c.user_gender = 'M' then '남' else '여' end as user_gender_name
+			, c.tel1_no
+			, get_file_path(c.photo_file_no) as photo_file_path
+			, get_code_name('001', b.user_type) as user_type_name
+			, calc_age(c.user_birthday) as user_age
+		from
+			tb_event_user a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.event_no = #{event_no}
+			and a.user_no = b.user_no
+			and a.user_no = c.user_no
+		order by
+			a.reg_date asc
+	]]>
+	</select>
+
+	<!-- 이벤트 등록 -->
+	<insert id="eventInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	eventDAO.eventInsert	*/
+		insert into tb_event (
+			hakwon_no
+			, event_title
+			, event_content
+			, event_status
+			, reg_user_no
+			, reg_date
+			, begin_date
+			, end_date
+		) values (
+			#{hakwon_no}
+			, #{event_title}
+			, #{event_content}
+			, '001'
+			, #{reg_user_no}
+			, now()
+			, #{begin_date}
+			, #{end_date}
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 이벤트 내용 수정 -->
+	<update id="eventUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventUpdate */
+		update tb_event set
+			udp_user_no = #{user_no}
+			, udp_date = now()
+			, event_title = #{event_title}
+			, event_content = #{event_content}
+			, begin_date = #{begin_date}
+			, end_date = #{end_date}
+		where
+			event_no = #{event_no}
+			and event_status = '001'
+			and reg_user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 이벤트 상태 삭제로 변경 -->
+	<update id="eventDelete" parameterType="dataMap">
+	<![CDATA[
+		/*eventDAO.eventDelete*/
+		update tb_event set
+			event_status = '002'
+			, udp_user_no = #{user_no}
+			, udp_date = now()
+		where
+			event_no = #{event_no}
+			and reg_user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 이벤트 완전 삭제 (관리자) -->
+	<delete id="eventCompletelyRemove" parameterType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventCompletelyRemove */
+		delete from tb_event where event_no = #{event_no}
+	]]>
+	</delete>
+
+	<!-- 이벤트 참여 멤버 카운트 -->
+	<select id="eventMemberCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		select
+			count(1)
+		from
+			tb_event_user
+		where
+			event_no = #{event_no}
+	]]>
+	</select>
+
+
+
+	<!-- 이벤트 참여자 리스트 -->
+	<select id="eventJoinUserList" parameterType="dataMap" resultType="dataMap">
+		/* eventDAO.eventJoinUserList */
+		select
+			a.event_no
+			, a.user_no
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, b.user_type
+			, c.user_name
+			, c.user_gender
+			, c.user_birthday
+			, c.tel1_no
+			, c.tel2_no
+		from
+			tb_event_user a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.event_no = #{event_no}
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+		order by
+			c.user_name asc
+	</select>
+
+	<!-- 이벤트 참여자 카운트 -->
+	<select id="eventJoinUserListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* eventDAO.eventJoinUserListTotCount */
+		select
+			count(1)
+		from
+			tb_event_user a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.event_no = #{event_no}
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+	]]>
+	</select>
+
+	<!-- 이벤트 푸시 발송 업데이트 -->
+	<update id="eventPushSendUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventPushSendUpdate */
+		update tb_event set
+			push_send_yn = 'Y'
+		where
+			event_no = #{event_no}
+	]]>
+	</update>
+</mapper>

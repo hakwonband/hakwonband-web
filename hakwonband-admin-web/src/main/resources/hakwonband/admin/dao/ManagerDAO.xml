@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.ManagerDAO">
+
+	<!-- 매니저 리스트 -->
+	<select id="managerList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.managerList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, b.user_name
+			, b.user_gender
+			, c.manager_no
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_manager c
+		where
+			a.user_type= '002'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+			and a.user_no = c.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			a.reg_date desc
+			, b.user_name asc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 매니저 카운트 -->
+	<select id="managerCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	ManagerDAO.managerCount	*/
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_type= '002'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	</select>
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* ManagerDAO.approvedUserUpdate */
+		update tb_user set
+			approved_yn = #{approvedYn}
+		where
+			user_no in
+	]]>
+	<foreach collection="userNoArray" item="item" index="index" separator="," open="(" close=")">
+		${item}
+	</foreach>
+	</update>
+
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserInfoUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* ManagerDAO.approvedUserInfoUpdate */
+		update tb_user_info set
+			approved_date = now()
+			, approved_user_no = #{user_no}
+		where
+			user_no in
+	]]>
+	<foreach collection="userNoArray" item="item" index="index" separator="," open="(" close=")">
+		${item}
+	</foreach>
+	</update>
+
+
+	<!-- 학원 리스트 -->
+	<select id="hakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.hakwonList	*/
+		select
+			b.hakwon_name
+			, b.hakwon_no
+			, get_file_path(c.logo_file_no) as logo_file_path
+			, d.old_sido
+			, d.old_gugun
+			, (select cate_name from tb_hakwon_cate where cate_code = b.hakwon_cate) as hakwon_cate_name
+		from
+			tb_hakwon b
+			, tb_hakwon_info c
+			, tb_hakwon_address d
+		where
+			b.manager_no = #{manager_no}
+			and b.hakwon_no = c.hakwon_no
+			and b.hakwon_no = d.hakwon_no
+	]]>
+	</select>
+
+</mapper>

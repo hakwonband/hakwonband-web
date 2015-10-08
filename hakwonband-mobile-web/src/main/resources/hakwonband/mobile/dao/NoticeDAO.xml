@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.NoticeDAO">
+
+
+	<!-- 공지사항 대시보드 리스트 -->
+	<select id="studentNoticeDashList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.studentNoticeDashList */
+		select
+			a.notice_no
+			, a.title
+			, '' as class_no
+			, b.hakwon_no
+			, (select user_name from tb_user_info where a.reg_user_no = user_no) as write_user_name
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, (select hakwon_name from tb_hakwon where hakwon_no = a.notice_parent_no) as write_group
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+		from tb_notice a, tb_hakwon_member b
+		where
+			b.user_no = #{user_no}
+			and a.notice_type = '002'
+			and a.content_status = '001'
+			and b.hakwon_no = a.notice_parent_no
+		union
+		select
+			a.notice_no
+			, a.title
+			, b.class_no
+			, b.hakwon_no
+			, (select user_name from tb_user_info where a.reg_user_no = user_no) as write_user_name
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, (select class_title from tb_hakwon_class where class_no = a.notice_parent_no) as write_group
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+		from tb_notice a, tb_hakwon_class_student b
+		where
+			b.student_user_no = #{user_no}
+			and a.notice_type = '003'
+			and a.content_status = '001'
+			and b.class_no = a.notice_parent_no
+		order by
+			notice_no desc
+		limit 3
+	]]>
+	</select>
+
+	<!-- 공지사항 대시보드 리스트 -->
+	<select id="parentNoticeDashList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.parentNoticeDashList */
+		select
+			a.notice_no
+			, a.title
+			, '' as class_no
+			, b.hakwon_no
+			, (select user_name from tb_user_info where a.reg_user_no = user_no) as write_user_name
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, (select hakwon_name from tb_hakwon where hakwon_no = a.notice_parent_no) as write_group
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+		from tb_notice a, tb_hakwon_member b
+		where
+			b.user_no = #{user_no}
+			and a.notice_type = '002'
+			and a.content_status = '001'
+			and b.hakwon_no = a.notice_parent_no
+		union
+		select
+			a.notice_no
+			, a.title
+			, b.class_no
+			, b.hakwon_no
+			, (select user_name from tb_user_info where a.reg_user_no = user_no) as write_user_name
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, (select class_title from tb_hakwon_class where class_no = a.notice_parent_no) as write_group
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+		from
+			tb_notice a
+			, tb_hakwon_class_student b
+			, tb_student_parent c
+		where
+			c.parent_user_no = #{user_no}
+			and c.student_user_no = b.student_user_no
+			and a.notice_type = '003'
+			and a.content_status = '001'
+			and b.class_no = a.notice_parent_no
+		order by
+			notice_no desc
+		limit 3
+	]]>
+	</select>
+
+	<!-- 공지사항 리스트 -->
+	<select id="noticeReqList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.noticeReqList */
+		select
+			a.notice_no
+			, a.notice_type
+			, a.notice_parent_no
+			, a.title
+			, a.preview_content
+			, a.reply_yn
+			, a.reg_user_no
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, date_format(a.reg_date, '%Y.%m.%d') as new_date
+			, a.udp_user_no
+			, date_format(a.udp_date, '%Y-%m-%d %p %h:%i') as udp_date
+			, ( select group_concat(d.file_path SEPARATOR #{separatorChar}) from tb_file d where d.file_parent_no = a.notice_no and d.file_parent_type = '001' and d.file_use_yn = 'Y' and d.file_del_yn = 'N' and d.image_yn = 'Y') as file_path_array
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+		from
+			tb_notice a
+		where
+			a.content_status = '001'
+			and a.notice_parent_no = #{notice_parent_no}
+			and a.notice_type = #{notice_type}
+		order by
+			a.notice_no desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 공지사항 리스트 카운트 확인 -->
+	<select id="noticeReqListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* noticeDAO.noticeReqListTotCount */
+		select
+			count(1)
+		from
+			tb_notice a
+		where
+			a.content_status = '001'
+			and a.notice_parent_no = #{notice_parent_no}
+			and a.notice_type = #{notice_type}
+	]]>
+	</select>
+
+	<!-- 공지사항 상세조회 -->
+	<select id="noticeDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.noticeDetail */
+		select
+			a.notice_no
+			, a.notice_type
+			, a.notice_parent_no
+			, a.title
+			, a.preview_content
+			, a.content
+			, a.reply_yn
+			, a.reg_user_no
+			, b.user_name
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
+			, a.udp_user_no
+			, date_format(a.udp_date, '%Y-%m-%d %p %h:%i') as udp_date
+		from
+			tb_notice a
+			, tb_user_info b
+		where
+			a.notice_no = #{notice_no}
+			and a.content_status = '001'
+			and a.reg_user_no = b.user_no
+	]]>
+	</select>
+</mapper>

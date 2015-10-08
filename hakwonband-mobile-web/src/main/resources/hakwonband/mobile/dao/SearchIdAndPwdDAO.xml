@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.SearchIdAndPwdDAO">
+
+
+	<select id="selectIdSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	SearchIdAndPwdDAO.selectIdSearch  */
+		select
+			a.user_id
+			, b.tel1_no
+			, b.user_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_id = b.user_id
+			and b.user_name = #{user_name}
+			and b.tel1_no = #{tel1_no}
+	]]>
+	</select>
+
+	<select id="pwdUserInfoCheck" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	SearchIdAndPwdDAO.pwdUserInfoCheck	*/
+		select
+			a.user_id
+			, b.tel1_no
+			, b.user_name
+			, a.user_email
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_id = #{user_id}
+			and	a.user_id = b.user_id
+	]]>
+		<if test="receive_type == 'sms'">
+			and replace(b.tel1_no, '-', '') = #{tel1_no}
+		</if>
+		<if test="receive_type == 'email'">
+			and a.user_email = #{user_email}
+		</if>
+	</select>
+
+	<update id="updateForUserInfo" parameterType="dataMap">
+		/*	SearchIdAndPwdDAO.updateForUserInfo	*/
+		update tb_user
+		set
+			user_password = #{user_password}
+		where
+			user_id = #{user_id}
+	</update>
+
+</mapper>

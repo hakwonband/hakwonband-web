@@ -1,0 +1,41 @@
+<section>
+	<div class="sec_title">
+		<h2 class="tit hide">참여한 이벤트</h2>
+	</div>
+
+	<div class="sec_blk">
+		<!-- 참여한 이벤트 없음 -->
+		<div class="sec_con_02" ng-if="eventMyJoinList.length <= 0">
+			<div class="data_none">
+				참여한 이벤트가 없습니다.
+			</div>
+		</div>
+
+		<div class="sec_con_02" ng-if="eventMyJoinList.length > 0" ng-repeat="item in eventMyJoinList">
+			<div class="alarm_cont">
+				<a href="" data-idx="{{item.event_no}}" ng-click="goEventDetail(item)">
+					{{item.event_title}}
+				</a>
+			</div>
+			<div class="alarm_tit event">
+				<span class="img">
+					<img ng-src="{{ getFileFullPath(item.logo_file_path, 'hakwon', true) }}" alt="" width="20" height="20" />
+				</span>
+				<span class="att">{{item.hakwon_name}}</span>
+				<span class="date">
+					<em>신청일 : {{item.join_date}}</em>
+					<em>종료일 : {{item.end_date}}</em>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+
+</section>

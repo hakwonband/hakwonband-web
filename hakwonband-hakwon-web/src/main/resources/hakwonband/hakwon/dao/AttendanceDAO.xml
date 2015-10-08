@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.AttendanceDAO">
+
+	<!-- 출결코드 조회 -->
+	<select id="selectAttCode" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectAttCode	*/
+		select
+			a.user_no
+			, a.user_type
+			, b.attendance_code
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = #{userNo}
+			and a.user_no = b.user_no
+		]]>
+	</select>
+
+	<!-- 아이디 / 비번으로 학생 조회 -->
+	<select id="selectStudent" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectStudent	*/
+		select
+			a.user_no
+			, a.user_id
+			, a.user_email
+		from
+			tb_user a
+		where
+			a.user_id = #{studentId}
+			and a.user_password = #{studentPass}
+		]]>
+	</select>
+
+	<!-- 출결용 학생코드 생성 -->
+	<update id="createAttCode" parameterType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.createAttCode		*/
+		update tb_user_info b
+		inner join (select (ifnull(max(attendance_code), 10000) + 1) as att_cd from tb_user_info) as a
+		set
+			b.attendance_code = a.att_cd
+		where
+			b.user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 학생코드로 신상정보 조회 -->
+	<select id="selectStudentByAttCode" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectStudentByAttCode	*/
+		select
+			a.user_no
+			, a.user_name
+			, a.user_gender
+			, b.user_id
+			, b.user_email
+			, get_file_path(a.photo_file_no) as photo_file_path
+		from
+			tb_user_info a
+			, tb_user b
+			, tb_hakwon_member c
+		where
+			a.attendance_code = #{attCode}
+			and b.user_no = a.user_no
+			and c.hakwon_no = #{hakwonNo}
+			and c.user_no = a.user_no
+			and c.member_yn = 'Y'
+		]]>
+	</select>
+
+	<!-- 출결하려는 학생 정보로 학원 조회 -->
+	<select id="selectHakwonInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectHakwonInfo	*/
+		select
+			a.hakwon_name
+			, c.user_name
+			, c.user_no
+		from
+			tb_hakwon_info a
+			, tb_hakwon_member b
+			, tb_user_info c
+		where
+			b.hakwon_no = #{hakwonNo}
+			and b.user_no = #{studentNo}
+			and b.hakwon_no = a.hakwon_no
+			and b.user_no = c.user_no
+	]]>
+	</select>
+
+
+	<!-- 학생이 기준날짜에 출결을 했는지 조회 -->
+	<select id="selectAttendance" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectAttendance	*/
+		select
+			a.attendance_no
+			, a.start_date
+			, a.end_date
+			, b.user_name
+			, b.user_id
+		from
+			tb_attendance a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no = #{studentNo}
+			and a.start_date >= '${today} 00:00:00'
+			and a.start_date < '${tomorrow} 00:00:00'
+			and b.user_no = a.student_no
+			and a.data_type = '001'
+		order by
+			a.attendance_no desc
+		limit 1
+	]]>
+	</select>
+
+	<!-- 등원 등록 -->
+	<insert id="insertAttendance" parameterType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.insertAttendance	*/
+		insert into tb_attendance (
+			hakwon_no
+			, student_no
+			, start_date
+			, data_type
+		) values (
+			#{hakwonNo}
+			, #{studentNo}
+			, now()
+			, #{dataType}
+		)
+	]]>
+		<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<!-- 하원 등록 -->
+	<update id="updateAttendance" parameterType="dataMap">
+		/*	AttendanceDAO.updateAttendance	*/
+		update tb_attendance
+		set
+			end_date = now()
+		where
+	<if test=" attNo != null and attNo != '' ">
+		attendance_no = #{attNo}
+	</if>
+	<if test=" attNo == null or attNo == '' ">
+		student_no = #{studentNo}
+		and start_date = #{startDate}
+	</if>
+
+	</update>
+
+
+	<!-- 출결 리스트 조회 -->
+	<!-- and a.data_type = #{dataType} -->
+	<select id="selectAttendanceList" parameterType="dataMap" resultType="dataMap">
+		<![CDATA[
+		/*	AttendanceDAO.selectAttendanceList	*/
+		select
+			a.student_no
+			, DATE_FORMAT(a.start_date,'%Y-%m-%d %T') as start_date
+			, DATE_FORMAT(a.end_date,'%Y-%m-%d %T') as end_date
+			, a.data_type
+		from
+			tb_attendance a
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no = #{studentNo}
+			and a.start_date >= '${startDate} 00:00:00'
+			and a.start_date < '${endDate} 00:00:00'
+		order by a.attendance_no asc
+		]]>
+	</select>
+
+	<!-- 학생의 부모 디바이스 리스트 -->
+ 	<select id="selectParentDevice" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* AttendanceDAO.selectParentDevice */
+		select
+			a.user_no
+			, a.device_token
+			, a.device_type
+			, a.is_production
+		from
+			tb_login_hist a
+		where
+			(a.user_no in (select a.parent_user_no from tb_student_parent a where a.student_user_no = #{studentNo})
+				or a.user_no = #{studentNo}
+			)
+			and a.device_token is not null
+		group by
+			a.user_no, a.device_token, a.device_type, a.is_production
+	]]>
+	</select>
+
+	<!-- 출결코드가 없는 학생 조회 -->
+	<select id="selectStudentHasNoCode" resultType="dataMap">
+		/*	AttendanceDAO.selectStudentHasNoCode	*/
+		select
+			x.user_no
+		from
+			tb_user x
+			, tb_user_info y
+		where
+			x.user_no = y.user_no
+			and x.user_type = '006'
+			and y.attendance_code is null
+	</select>
+
+	<!-- 학생의 가장 최신 승하차 기록 조회 -->
+	<select id="selectBusTime" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AttendanceDAO.selectBusTime	*/
+		select
+			a.attendance_no
+			, a.start_date
+			, a.end_date
+			, b.user_name
+			, b.user_id
+	]]>
+	<if test="classNo != null and classNo != '' ">
+			, (select use_att_push from tb_hakwon_class where class_no = #{classNo}) as use_att_push
+	</if>
+	<![CDATA[
+		from
+			tb_attendance a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no = #{studentNo}
+			and a.data_type = #{dataType}
+			and b.user_no = a.student_no
+		order by
+			a.attendance_no desc
+		limit 1
+	]]>
+	</select>
+
+	<!-- 학생 전체 카운트 -->
+	<select id="getStudentCount" parameterType="dataMap" resultType="int">
+		/*	attendanceDao.getStudentCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+		<if test=" (classNo != null and classNo != '') or userType == '004' ">
+			, tb_hakwon_class_student c
+		</if>
+		where
+			a.user_type = '006'
+			and a.member_yn = 'Y'
+			and a.hakwon_no = #{hakwonNo}
+			and a.user_no = b.user_no
+
+		<if test=" searchText != null and searchText != '' ">
+			<if test=" searchType == 'name' ">
+				and b.user_name like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'id' ">
+				and b.user_id like '%${searchText}%'
+			</if>
+		</if>
+
+		<if test=" classNo != null and classNo != '' ">
+			and c.class_no = #{classNo}
+			and c.student_user_no = a.user_no
+		</if>
+		<if test=" (classNo == null || classNo == '') and userType == '004' ">
+			and c.class_no in (select class_no from tb_hakwon_class_teacher where teacher_user_no = #{userNo})
+			and c.student_user_no = a.user_no
+		</if>
+	</select>
+
+	<!-- 주간 출결 현황 조회를 위한 학생리스트 -->
+	<select id="getAttendanceStudentList" parameterType="dataMap" resultType="dataMap">
+		/*	attendanceDao.getAttendanceStudentList	*/
+		select
+			b.user_no
+			, b.user_id
+			, b.user_name
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_path
+			, b.attendance_code
+			, 'X' as mon
+			, 'X' as tue
+			, 'X' as wed
+			, 'X' as thu
+			, 'X' as fri
+			, 'X' as sat
+			, 'X' as sun
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+		<if test=" (classNo != null and classNo != '') or userType == '004' ">
+			, tb_hakwon_class_student c
+		</if>
+		where
+			a.user_type = '006'
+			and a.user_no = b.user_no
+			and a.member_yn = 'Y'
+			and a.hakwon_no = #{hakwonNo}
+
+		<if test=" searchText != null and searchText != '' ">
+			<if test=" searchType == 'name' ">
+				and b.user_name like '%${searchText}%'
+			</if>
+			<if test=" searchType == 'id' ">
+				and b.user_id like '%${searchText}%'
+			</if>
+		</if>
+
+		<if test=" classNo != null and classNo != '' ">
+			and c.class_no = #{classNo}
+			and c.student_user_no = a.user_no
+		</if>
+		<if test=" (classNo == null || classNo == '') and userType == '004' ">
+			and c.class_no in (select class_no from tb_hakwon_class_teacher where teacher_user_no = #{userNo})
+			and c.student_user_no = a.user_no
+		</if>
+		order by b.user_name asc
+		limit ${startNo}, ${pageScale}
+	</select>
+
+	<!-- 학생들의 주간 출결 리스트 -->
+	<select id="getAttendanceWeekList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	attendanceDao.getAttendanceWeekList	*/
+		select
+			a.student_no
+			, date(a.start_date) as att_date
+		from
+			tb_attendance a
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.student_no in (${students})
+			and a.data_type = '001'
+			and a.start_date >= '${startDate} 00:00:00'
+			and a.start_date < '${endDate} 00:00:00'
+		group by a.student_no, date(a.start_date)
+	]]>
+	</select>
+
+	<select id="getUseAttPush" parameterType="dataMap" resultType="String">
+		/*	attendanceDao.getUseAttPush	*/
+		select
+			a.use_att_push
+		from
+			tb_hakwon_class a
+		where
+			a.class_no = #{classNo}
+	</select>
+
+	<!-- class의 출결 알림발송 설정 -->
+	<update id="pushActive" parameterType="dataMap">
+		/*	attendanceDao.pushActive	*/
+		update tb_hakwon_class
+		set
+			use_att_push = #{useYn}
+		where
+			class_no = #{classNo}
+	</update>
+
+	<!-- 반 학생 리스트 -->
+	<select id="getClassStudentList" parameterType="dataMap" resultType="dataMap">
+		/*	attendanceDao.getClassStudentList	*/
+		select
+			c.hakwon_name
+			, b.user_no
+			, b.user_id
+			, b.user_name
+			, (
+				select
+					attendance_no
+				from
+					tb_attendance
+				where
+					hakwon_no = a.hakwon_no
+					and student_no = a.student_user_no
+					and data_type = '001'
+					and date_format(start_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+					and start_date is not null
+				order by attendance_no desc
+				limit 1
+			) as attendance_no
+			, (
+				select
+					start_date
+				from
+					tb_attendance
+				where
+					hakwon_no = a.hakwon_no
+					and student_no = a.student_user_no
+					and data_type = '001'
+					and date_format(start_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+					and start_date is not null
+				order by attendance_no desc
+				limit 1
+			) as start_date
+			, (
+				select
+					end_date
+				from
+					tb_attendance
+				where
+					hakwon_no = a.hakwon_no
+					and student_no = a.student_user_no
+					and data_type = '001'
+					and date_format(start_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+					and start_date is not null
+				order by attendance_no desc
+				limit 1
+			) as end_date
+		from
+			tb_hakwon_class_student a
+			, tb_user_info b
+			, tb_hakwon_info c
+		where
+			a.class_no = #{classNo}
+			and b.user_no = a.student_user_no
+			and c.hakwon_no = a.hakwon_no
+		order by
+			a.student_user_no asc
+	</select>
+
+	<!-- 일괄출결 처리를 위한 출결정보&학생정보 조회 -->
+	<select id="getAttendanceNStudentInfo" parameterType="dataMap" resultType="dataMap">
+		/*	attendanceDao.getAttendanceNStudentInfo	*/
+		select
+			a.user_no
+			, a.user_id
+			, a.user_name
+			, x.attendance_no
+			, x.start_date
+			, x.end_date
+			, (select hakwon_name from tb_hakwon_info where hakwon_no = #{hakwonNo}) as hakwon_name
+		from
+			tb_user_info a
+		left outer join
+			(
+				select
+					a.attendance_no
+					, a.student_no
+					, a.start_date
+					, a.end_date
+				from
+					tb_attendance a
+				where
+					a.hakwon_no = #{hakwonNo}
+					and a.student_no = #{studentNo}
+					and a.data_type = '001'
+					and date_format(a.start_date,'%Y%m%d') = date_format(now(),'%Y%m%d')
+					and a.start_date is not null
+				order by a.attendance_no desc
+				limit 1
+			) x on a.user_no = x.student_no
+		where
+			a.user_no = #{studentNo}
+	</select>
+
+	<select id="getHakwonStudents" parameterType="dataMap" resultType="dataMap">
+		/*	attendanceDao.getHakwonStudents	*/
+		select
+			b.user_no
+			, b.user_id
+			, b.user_name
+		from
+			tb_hakwon_class_student a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwonNo}
+		<if test=" classNo != null and classNo != '' ">
+			and a.class_no = #{classNo}
+		</if>
+			and a.student_user_no = b.user_no
+	</select>
+
+	<!-- 학생들의 한달치 출결 정보 조회 -->
+	<select id="getAttendanceMonth" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	attendanceDao.getAttendanceMonth	*/
+		select
+			group_concat(x.att_date separator ',') as att_date
+		from (
+			select
+				date(start_date) as att_date
+			from
+				tb_attendance
+			where
+				hakwon_no = #{hakwonNo}
+				and student_no = #{studentNo}
+				and data_type = '001'
+				and start_date >= '${startDate} 00:00:00'
+				and start_date <= '${endDate} 23:59:59'
+			group by date(start_date)
+			) x
+	]]>
+	</select>
+
+	<!-- 월별 출결 리스트 -->
+	<select id="getAttendanceMonthList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	attendanceDao.getAttendanceMonthList	*/
+		select
+			a.user_no
+			, b.user_name
+			, b.user_id
+			, (
+				select group_concat(y.class_title separator '/')
+				from tb_hakwon_class_student x, tb_hakwon_class y
+				where x.hakwon_no = a.hakwon_no and x.student_user_no = a.user_no and x.class_no = y.class_no
+			) as class_name
+			, get_user_attendance(a.hakwon_no, a.user_no, #{yearMonth}) as days
+		from
+			tb_hakwon_member a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.user_type = '006'
+			and a.user_no = b.user_no
+		order by
+			b.user_name asc
+	]]>
+	</select>
+</mapper>

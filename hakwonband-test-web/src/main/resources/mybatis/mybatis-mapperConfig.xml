@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="defaultStatementTimeout" value="25000" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="hakwonband.util.DataMap" alias="dataMap" />
+		<typeAlias type="hakwonband.test.model.ApiForm" alias="apiForm" />
+	</typeAliases>
+
+</configuration>

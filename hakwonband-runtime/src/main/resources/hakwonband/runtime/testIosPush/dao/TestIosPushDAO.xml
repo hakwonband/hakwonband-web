@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.testIosPush.dao.TestIosPushDAO">
+
+	<!-- 사용자 디바이스 정보 -->
+	<select id="getIosDevice" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	TestIosPushDAO.getIosDevice	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.user_no
+		from
+			tb_user x
+			, tb_login_hist a
+		where
+			x.user_no = a.user_no
+			and a.device_type = 'ios'
+			and a.device_token is not null
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( user_id )">
+			x.user_id = #{user_id}
+		</if>
+	</select>
+</mapper>

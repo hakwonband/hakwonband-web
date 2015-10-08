@@ -1,0 +1,96 @@
+<div class="receiptInsert">
+	<input type="hidden" name="studentNo" value="{{st_no}}">
+	<section class="wrapper wrapper-content row">
+		<div class="ibox">
+			<div class="ibox-title"><h2>수납등록</h2></div>
+			<div class="ibox-content form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-1 control-label">이름</label>
+					<div class="col-sm-11">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="이름으로 검색" name="studentName" ng-model="searchOptions.student_name" ng-keydown="searchStudentEnter($event)"> <span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="studentSearch">검색하기</button></span>
+						</div>
+					</div>
+				</div>
+				<!-- 검색하기 버튼 클릭시 결과 나타남. 클릭 전에는 나타나지 않음 -->
+				<div class="form-group">
+					<label class="col-sm-1 control-label">검색결과</label>
+					<div class="col-sm-11">
+						<ul class="search_name_list find_student_result">
+							<li style="cursor: pointer;" ng-repeat="item in studentList" st-no="{{ item.user_no }}"st-name="{{ item.user_name }}" st-id="{{ item.user_id }}">
+								<span class="student_add_box">
+									<img class="img-circle" ng-src="{{ getPhotoFileFullPath(item.user_photo_path) }}" alt="{{ item.user_name }} 프로필" width="35" height="35">
+									<strong class="name">{{item.user_name}}</strong> {{item.user_id}} / {{ getUserGender(item.user_gender) }} / {{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age }}
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 끝 -->
+				<div class="form-group">
+					<label class="col-sm-1 control-label">선택자</label>
+					<div class="col-sm-11">
+						<strong>{{st_name}}</strong>  {{st_id}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">수납월</label>
+					<div class="col-sm-11 receipt-month">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label">날짜</label>
+					<div class="col-sm-11">
+						<div class="input-group date date_cal">
+							<input type="date" name="receiptDate" ng-model="receiptDate">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label">구분</label>
+					<div class="col-sm-11">
+						<select class="form-control" name="receiptType">
+							<option value="003">수강료입금</option>
+							<option value="004">교재비입금</option>
+							<option value="001">입금</option>
+							<option value="002">출금</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label">금액</label>
+					<div class="col-sm-11">
+						<input type="text" class="form-control" placeholder="숫자만 입력" name="receiptAmount">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label">수단</label>
+					<div class="col-sm-11">
+						<select class="form-control" name="receiptMethod">
+							<option value="001">카드</option>
+							<option value="002">현금</option>
+							<option value="003">계좌이체</option>
+							<option value="004">기타</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-1 control-label">내용</label>
+					<div class="col-sm-11">
+						<textarea cols="140" rows="10" class="form-control" name="receiptDesc"></textarea>
+					</div>
+				</div>
+
+			</div>
+			<div class="ibox-content text-right">
+				<button type="button" class="btn btn-default" data-act="receiptInsertCancel">취소하기</button>
+				<button type="button" class="btn btn-primary" data-act="receiptInsert">등록하기</button>
+			</div>
+		</div>
+	</section>
+</div>

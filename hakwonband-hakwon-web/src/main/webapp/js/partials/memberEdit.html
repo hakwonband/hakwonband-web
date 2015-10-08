@@ -1,0 +1,56 @@
+<div class="middle-box my_info_box text-center">
+	<div class="my_info_profile_img m-b-xl">
+		<img ng-src="{{ getFileFullPath() }}" src="/assets/img/a1.jpg" alt="프로필 사진" class="img-circle" width="50%">
+	</div>
+	<form role="form" action="" class="form-group">
+		<ul class="info_list_box">
+			<!-- 인풋 입력값에 따른 상황 li에다가 has-success, has-warning, has-error 태그를 붙여 인풋박스 색깔을 변화시켜줌.  -->
+			<!--<li class="form-group has-success">-->
+			<!--<label class="control-label">성공</label>-->
+			<!--<input type="text" class="form-control" placeholder="성공">-->
+			<!--</li>-->
+			<!--<li class="form-group has-warning">-->
+			<!--<label class="control-label">주의</label>-->
+			<!--<input type="text" class="form-control" placeholder="주의">-->
+			<!--</li>-->
+			<!--<li class="form-group has-error">-->
+			<!--<label class="control-label">에러</label>-->
+			<!--<input type="text" class="form-control" placeholder="에러">-->
+			<!--</li>-->
+			<!-- 여기까지는 상황 예제 설명이니 개발시 참고 후 지우세요~ -->
+
+			<li class="form-group" ng-class="{'has-success' : checkUserPwd1 === true, 'has-error' : checkUserPwd1 === false}">
+				<label class="control-label">비밀번호</label>
+				<input type="password" name="userPassword" class="form-control m-b-xs" placeholder="비밀번호" ng-model="memberObj.user_password">
+			</li>
+			<li class="form-group" ng-class="{'has-success' : checkUserPwd2 === true, 'has-error' : checkUserPwd2 === false}">
+				<label class="control-label">비밀번호 확인</label>
+				<input type="password" name="pwdConfirm" class="form-control m-b-xs" placeholder="비밀번호 확인" ng-model="memberObj.chk_password">
+			</li>
+			<li class="form-group">
+				<label class="control-label">이름</label>
+				<input type="text" name="userName" class="form-control m-b-xs" placeholder="이름" ng-model="memberObj.user_name">
+			</li>
+			<li class="form-group">
+				<label class="control-label">생년월일 </label>
+				<input type="date" name="userBirthday" class="form-control m-b-xs" placeholder="생년월일" ng-model="memberObj.user_birthday">
+			</li>
+			<li class="form-group">
+				<label class="control-label">전화번호</label>
+				<input type="tel" name="userPhone" class="form-control m-b-xs" placeholder="전화번호" ng-model="memberObj.tel1_no">
+			</li>
+			<li class="form-group" ng-class="{'has-success' : checkEmail === 'notexist', 'has-error' : checkEmail === 'exist'}">
+				<label class="control-label">이메일 주소</label>
+				<div class="input-group">
+					<input type="email" name="userEmail" class="form-control" placeholder="이메일 주소" ng-model="memberObj.user_email" ng-keydown="resetEmailCheck($event)">
+					<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="checkDuplicateEmail()">중복확인</button></span>
+				</div>
+			</li>
+		</ul>
+
+		<div class="text-right">
+			<button type="button" class="btn btn-lg m-t-xl" style="padding:10px 30px;" ng-click="cancelModify()">취소</button>
+			<button type="button" class="btn btn-primary btn-lg m-t-xl" style="padding:10px 30px;" ng-click="confirmModify()">완료</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,77 @@
+<section>
+	<h2 class="tit hide">학원검색</h2>
+
+	<div class="sec_half">
+		<select name="sido" title="시/도 선택"
+				ng-change="selectSido()"
+				ng-model="sido"
+				ng-options="sido for sido in sidos">
+			<option value="">시/도 선택</option>
+		</select>
+	</div>
+
+	<div class="sec_half">
+		<select name="gugun" title="구/군 선택"
+				ng-model="gugun"
+				ng-options="gugun for gugun in guguns">
+			<option value="">구/군 선택</option>
+		</select>
+	</div>
+
+	<div class="sec_blk" style="min-height:35px;">
+		<select ng-model="hakwon_cate" name="hakwon_cate" title="업종 선택" ng-options="cate.cate_code as cate.cate_name for cate in cates" >
+			<option value="">업종 선택</option>
+		</select>
+	</div>
+
+	<div class="sec_search mb_5">
+		<input type="text" ng-model="hakwon_name" name="hakwon_name" title="검색어 입력" placeholder="학원명으로 검색" class="search"  ng-keydown="searchHakwon($event)"/>
+		<button type="button" class="btn btn_style_submit" ng-click="searchHakwon()">검색</button>
+	</div>
+
+
+	<div class="sec_con_list mb_20" ng-if="isSearch">
+		<ul class="list_hakwon search_list">
+			<li ng-repeat="hakwon in foundHakwons">
+				<a ng-if=" hakwon.admin_reg_yn == 'Y' " href="#" onclick="alert('인증되지 않은 학원 입니다.');return false;" class="a_hakwon">
+					<img ng-src="{{createFileFullPath(hakwon.file_path,'hakwon', true)}}" alt="" width="48" height="48" class="list_profile_img" />
+					<ul class="list_contents">
+						<li class="tit">{{hakwon.hakwon_name}}</li>
+						<li>종류 : {{hakwon.cate_name}}</li>
+						<li>{{hakwon.street_addr1 ? [hakwon.street_addr1, hakwon.street_addr2].join(' ') : [hakwon.old_addr1, hakwon.old_addr2].join(' ')}}</li>
+					</ul>
+				</a>
+				<a ng-if=" !hakwon.admin_reg_yn " href="{{detailUrl}}?hakwon_no={{hakwon.hakwon_no}}" class="a_hakwon">
+					<img ng-src="{{createFileFullPath(hakwon.file_path,'hakwon', true)}}" alt="" width="48" height="48" class="list_profile_img" />
+					<ul class="list_contents">
+						<li class="tit">{{hakwon.hakwon_name}}</li>
+						<li>종류 : {{hakwon.cate_name}}</li>
+						<li>{{hakwon.street_addr1 ? [hakwon.street_addr1, hakwon.street_addr2].join(' ') : [hakwon.old_addr1, hakwon.old_addr2].join(' ')}}</li>
+					</ul>
+				</a>
+				<a href="tel:{{hakwon.tel_no_1}}" ng-if="hakwon.tel_no_1" class="a_tel">{{hakwon.hakwon_name}} 학원 전화하기</a>
+			</li>
+		</ul>
+		<div ng-if="foundHakwons.length === 0" style="text-align:center;font-size:12px;padding:5px 0;">
+			검색된 결과가 없습니다.
+		</div>
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+
+
+	<!--paging 영역-->
+	<!--<div class="sec_paging" ng-if="pageInfo">-->
+	<!--<a href="" class="btn" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><img src="/images/btn_prev.png" alt="이전" width="19" /></a>-->
+	<!--<a href="" ng-repeat="page in pageInfo.pages" ng-class="{on: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</a>-->
+	<!--<a href="" class="btn" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><img src="/images/btn_next.png" alt="다음" width="19" /></a>-->
+	<!--</div>-->
+	<!--//paging 영역-->
+
+</section>

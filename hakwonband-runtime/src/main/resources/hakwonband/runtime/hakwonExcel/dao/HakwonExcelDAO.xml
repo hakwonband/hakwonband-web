@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.hakwonExcel.dao.HakwonExcelDAO">
+
+	<select id="getTime" resultType="String">
+		select now()
+	</select>
+
+	<insert id="insertHakwon" parameterType="HakwonExcel" useGeneratedKeys="true">
+	<![CDATA[
+		/*	hakwonExcelDao.insertHakwon	*/
+		insert into tb_hakwon (
+			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, admin_reg_yn, hakwon_status, excel_reg_yn
+		) values(
+			'1', #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, 'Y', '001', 'Y'
+		)
+
+	]]>
+		<selectKey keyProperty="hakwonNo" resultType="String">
+			select last_insert_id()
+		</selectKey>
+
+	</insert>
+
+	<insert id="insertHakwonInfo" parameterType="HakwonExcel">
+	<![CDATA[
+		/*	hakwonExcelDao.insetHakwonInfo	*/
+		insert into tb_hakwon_info (
+			hakwon_no, hakwon_name, udp_date
+		) values (
+			#{hakwonNo}, #{hakwonName}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학원 주소 등록 -->
+	<insert id="insertHakwonAddress" parameterType="HakwonExcel">
+	<![CDATA[
+		insert into tb_hakwon_address (
+			hakwon_no, addr_no, zip_code, old_sido, old_gugun, old_dong, all_addr_text, old_addr1
+		)
+		select
+			#{hakwonNo}
+			, a.addr_no
+			, a.zip_code
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.bldg_name
+			, a.bunji
+			, '${hakwonSido} ${hakwonGungu} ${hakwonDong}'
+			, '${hakwonSido} ${hakwonGungu} ${hakwonDong}'
+		from
+			tb_address_zip a
+		where
+			a.zip_code = #{zip_code}
+			and a.sido = #{sido}
+			and a.gugun = #{gungu}
+			and a.dong = #{dong}
+		limit 1
+	]]>
+	</insert>
+</mapper>

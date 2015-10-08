@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+	<Resource name="jdbc/hakwonband" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000"
+		username="hakwonband" password="DBwjqthr90()" driverClassName="org.mariadb.jdbc.Driver"
+		validationQuery="SELECT 1" testOnBorrow="false" testWhileIdle="true"
+		timeBetweenEvictionRunsMillis="60000" minEvictableIdleTimeMillis="1800000"
+		url="jdbc:mariadb://bumworld.net:8889/hakwonband_dev_db?interactiveClient=true&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+	/>
+
+</Context>

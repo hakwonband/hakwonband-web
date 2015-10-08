@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.BannerDAO">
+
+	<!-- 학원 베너 리스트 -->
+	<select id="hakwonBannerList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	BannerDAO.hakwonBannerList	*/
+		select
+			b.hakwon_no
+			, a.banner_size
+			, b.title
+			, b.banner_file_no
+			, get_file_path(b.banner_file_no) as banner_file_path
+		from
+			tb_hakwon_address x
+			, tb_address_zip y
+			, tb_advertise_local_date a
+			, tb_advertise_req b
+		where
+			x.hakwon_no = #{hakwon_no}
+			and x.addr_no = y.addr_no
+			and y.sido = a.sido
+			and y.gugun = a.gugun
+			and y.dong = a.dong
+			and a.view_month = DATE_FORMAT(now(), '%Y%m')
+			and a.advertise_req_no = b.advertise_req_no
+			and b.deposit_yn = 'Y'
+		order by
+			a.banner_size desc
+	]]>
+	</select>
+
+	<!-- 지역 베너 리스트 -->
+	<select id="localBannerList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	BannerDAO.localBannerList	*/
+		select
+			b.hakwon_no
+			, a.banner_size
+			, b.title
+			, b.banner_file_no
+			, get_file_path(b.banner_file_no) as banner_file_path
+		from
+			tb_advertise_local_date a
+			, tb_advertise_req b
+		where
+			a.sido = #{sido}
+			and a.gugun = #{gugun}
+			and a.dong = #{dong}
+			and a.view_month = DATE_FORMAT(now(), '%Y%m')
+			and a.advertise_req_no = b.advertise_req_no
+			and b.deposit_yn = 'Y'
+		order by
+			a.banner_size desc
+	]]>
+	</select>
+
+</mapper>

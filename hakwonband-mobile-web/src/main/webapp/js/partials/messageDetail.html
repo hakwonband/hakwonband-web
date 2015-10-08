@@ -1,0 +1,84 @@
+<section>
+	<h2 class="tit hide">보낸메세지 상세보기</h2>
+
+	<div class="view_box">
+		<h3 class="view_title">{{messageDetail.title}}</h3>
+		<div class="view_data">
+			<span class="att" ng-if="messageType == 'receive' ">작성자 : {{messageDetail.send_user_info.user_name}} /</span>
+			<span class="att" ng-if="messageType == 'send' ">받는 사람 : {{messageDetail.receive_user_info.user_name}} /</span>
+			<span class="writer">{{messageDetail.write_date}}</span>
+		</div>
+		<div class="view_cont" ng-bind-html="messageDetail.content | rawHtml"></div>
+
+		<div class="view_file_box" ng-if="normalFileArray.length > 0">
+			<h4 class="tit">첨부파일</h4>
+			<ul class="view_file_list">
+				<li ng-repeat="normalFile in normalFileArray">
+					<a href="{{ getFileFullPath(normalFile.file_path, 'down') }}" target="_blank" data-filePath="{{ normalFile.file_path }}">{{ normalFile.file_name }}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="view_img_list" ng-if="imageFileArray.length > 0">
+			<h5 class="tit">첨부된 이미지</h5>
+			<a href="{{ getFileFullPath(imageFile.file_path, 'down') }}" target="_blank" ng-repeat="imageFile in imageFileArray">
+				<img ng-src="{{ getFileFullPath(imageFile.thumb_file_path) }}" class="img_view_block"/>
+			</a>
+<!--
+			<h5 class="tit">첨부된 이미지</h5>
+			<div class="imgfile_view">
+				<button type="button" class="prev">이전</button>
+				<div class="view">
+					<a href="{{ getFileFullPath(imageFile.file_path, 'down') }}" target="_blank" ng-repeat="imageFile in imageFileArray">
+						<img ng-src="{{ getFileFullPath(imageFile.thumb_file_path) }}" alt="" width="40"/>
+					</a>
+				</div>
+				<button type="button" class="next">다음</button>
+			</div>
+-->
+		</div>
+
+	</div>
+
+	<!--버튼 영역-->
+	<div class="btn_area_c mb_20">
+		<button type="button" class="btn btn_style_info btn_block btn_bold" ng-click="historyBack()">목록보기</button>
+	</div>
+	<!--//버튼 영역-->
+
+	<div class="sec_con_list" ng-if="messageDetail.group_yn != 'Y'">
+		<ul class="ul_type_04">
+			<!-- ng-if="replyList.length != 0" -->
+			<li class="line_n" ng-repeat="replyItem in replyList">
+				<!-- 자기 댓글 -->
+				<div class="reply_txt" ng-if="currentUserNo == replyItem.reg_user_no">
+					<span class="my_reply">내 댓글</span>
+					<div  ng-bind-html="replyItem.reply_content | rawHtml"></div>
+					<span class="date">{{ replyItem.reg_date_long }}</span>
+				</div>
+
+				<!-- 타인 댓글 -->
+				<div class="reply_list" ng-if="currentUserNo != replyItem.reg_user_no">
+					<div class="reply_img">
+						<img ng-src="{{ getFileFullPath(replyItem.photo_file_path) }}" alt="" width="37" height="37"/>
+					</div>
+					<div class="reply_cont">
+						<div class="name fn_02"> {{ replyItem.reg_user_name }} </div>
+						<div class="cont" ng-bind-html="replyItem.reply_content | rawHtml"></div>
+						<span class="date">{{replyItem.reg_date_long}}</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<div class="re_write_box">
+			<textarea cols="30" rows="3" name="" title="댓글 입력" placeholder="댓글을 입력하세요" id="replyValue" ng-model="replyInfo.reply_content"></textarea>
+			<button type="button" class="btn btn_style_submit btn_block" ng-click="registReply()">입력</button>
+		</div>
+	</div>
+
+	<!--버튼 영역-->
+	<div class="btn_area_c" ng-if="replyList.length >= 30">
+		<button type="button" class="btn btn_style_info btn_block btn_bold" ng-click="historyBack()">목록보기</button>
+	</div>
+	<!--//버튼 영역-->
+
+</section>

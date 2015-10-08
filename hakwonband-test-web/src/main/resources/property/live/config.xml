@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<message><![CDATA[학원밴드 학원 입니다.]]></message>
+	<serviceDomain><![CDATA[http://hakwon.hakwonband.com]]></serviceDomain>
+
+	<site>
+		<admin><![CDATA[http://admin.hakwon.teamoboki.com]]></admin>
+		<hakwon><![CDATA[http://hakwon.hakwon.teamoboki.com]]></hakwon>
+		<manager><![CDATA[http://manager.hakwon.teamoboki.com]]></manager>
+		<mobile><![CDATA[http://m.hakwon.teamoboki.com]]></mobile>
+		<pc><![CDATA[http://www.hakwon.teamoboki.com]]></pc>
+	</site>
+
+	<fileServer>
+		<storage>
+			<dir>/hakwon-band/source/hakwon-attatch</dir>
+		</storage>
+		<upload>
+			<maxSize>524288000</maxSize><!-- 1024*1024*10 = 10485760 10메가, 524288000 500메가  -->
+		</upload>
+		<attatchDomain>https://attatch.hakwonband.com</attatchDomain>
+		<downDomain>https://down.hakwonband.com</downDomain>
+	</fileServer>
+
+	<push>
+		<ios>
+			<live>
+				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-production.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</live>
+			<dev>
+				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-sandbox.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</dev>
+		</ios>
+		<gcm>
+			<key>AIzaSyDnpzHMxJa2hTTDZcve4zqrPW9z9hSte_w</key>
+			<retry>5</retry>
+		</gcm>
+	</push>
+
+</hakwonband>

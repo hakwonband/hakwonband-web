@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<message><![CDATA[로컬 학원밴드 관리자 입니다.]]></message>
+	<serviceDomain><![CDATA[http://admin.hakwon.teamoboki.com]]></serviceDomain>
+	<mobileHost><![CDATA[http://m.hakwon.teamoboki.com]]></mobileHost>
+
+	<api>
+		<crossDomain><![CDATA[http://www.hakwon.teamoboki.com]]></crossDomain>
+		<crossDomain><![CDATA[http://local.hakwon.teamoboki.com]]></crossDomain>
+		<crossDomain><![CDATA[http://127.0.0.1]]></crossDomain>
+		<crossDomain><![CDATA[http://localhost]]></crossDomain>
+	</api>
+
+	<site>
+		<admin><![CDATA[http://admin.hakwon.teamoboki.com]]></admin>
+		<hakwon><![CDATA[http://hakwon.hakwon.teamoboki.com]]></hakwon>
+		<manager><![CDATA[http://manager.hakwon.teamoboki.com]]></manager>
+		<mobile><![CDATA[http://m.hakwon.teamoboki.com]]></mobile>
+		<pc><![CDATA[http://www.hakwon.teamoboki.com]]></pc>
+	</site>
+
+	<fileServer>
+		<storage>
+			<dir>/hakwon-band/source/hakwon-attatch</dir>
+		</storage>
+		<upload>
+			<maxSize>524288000</maxSize><!-- 1024*1024*10 = 10485760 10메가, 524288000 500메가  -->
+		</upload>
+		<attatchDomain>http://attatch.hakwon.teamoboki.com</attatchDomain>
+		<downDomain>http://down.hakwon.teamoboki.com</downDomain>
+	</fileServer>
+
+	<api>
+		<juso>
+			<host>http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do</host>
+			<confirmmKey>bnVsbDIwMTQxMjEwMDk0NDU0</confirmmKey>
+		</juso>
+	</api>
+
+	<push>
+		<ios>
+			<live>
+				<certificatePath>D:/develop/workspace/bumworld/hakwonband-project/hakwonband-admin-web/src/main/resources/ios/new-hakwon-aps-for-production.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</live>
+			<dev>
+				<certificatePath>D:/develop/workspace/bumworld/hakwonband-project/hakwonband-admin-web/src/main/resources/ios/new-hakwon-aps-for-sandbox.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</dev>
+		</ios>
+		<gcm>
+			<key>AIzaSyC-ih5SCCZf5kLSuZPOas5Pei25_wiyJus</key>
+			<retry>5</retry>
+		</gcm>
+	</push>
+
+</hakwonband>

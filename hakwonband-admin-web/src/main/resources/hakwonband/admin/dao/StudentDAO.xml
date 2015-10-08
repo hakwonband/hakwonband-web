@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.StudentDAO">
+
+	<!-- 학생 리스트 -->
+	<select id="studentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	StudentDAO.studentList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, b.user_name
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, calc_age(b.user_birthday) as user_age
+			, (select concat(x.school_name, ' (', get_code_name('008', x.school_level), ') ', x.level, '학년') from tb_student_school x where x.user_no = a.user_no) as school_info
+		from
+			tb_user a
+			, tb_user_info b
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			, tb_hakwon_member c
+		where
+			c.hakwon_no = #{hakwonNo}
+			and c.user_type = '006'
+			and c.user_no = a.user_no
+			and a.user_type = c.user_type
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNull( hakwonNo )">
+		where
+			a.user_type= '006'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			a.user_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 학생 리스트 -->
+	<select id="studentCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	StudentDAO.studentCount	*/
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_user_info b
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			, tb_hakwon_member c
+		where
+			c.hakwon_no = #{hakwonNo}
+			and c.user_type = '006'
+			and c.user_no = a.user_no
+			and a.user_type = c.user_type
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNull( hakwonNo )">
+		where
+			a.user_type= '006'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	</select>
+
+</mapper>

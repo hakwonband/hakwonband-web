@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>학원밴드</title>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, target-densitydpi=medium-dpi" />
+	<meta name="format-detection" content="telephone=no">
+
+	<meta name="author" content="hakwonband">
+	<meta name="title" content="소셜 학원네트워크 학원밴드" />
+	<meta name="url" content="https://www.hakwonband.com" />
+	<meta name="subject" content="소셜 학원네트워크 학원밴드">
+	<meta name="keywords" content="소셜 학원네트워크 학원 학원밴드 학원앱 원장님 학부모 선생님 학생관리 학원홍보 학원광고 학원공지알림">
+	<meta name="description" content="학원밴드는 학원네트워크를 기반으로한 소셜 도구로 학원원장님, 선생님, 학부모, 학생 모두가 간단한 절차를 통해 가입하여 여러 학원간 공지나 알림을 실시간으로 받고 원활한 소통을 하게 합니다. 지역기반 주요 학원정보도 받아볼수 있으며 학원밴드를 통해 학원홍보를 할수도 있습니다.">
+	<meta name="copyright" content="hakwonband">
+	<meta name="robots" content="ALL">
+
+	<meta property="og:url" content="https://www.hakwonband.com/">
+	<meta property="og:site_name" content="HAKWONBAND">
+	<meta property="og:title" content=" 소셜 학원네트워크 학원밴드">
+	<meta property="og:description" content=" 학원밴드는 학원네트워크를 기반으로한 소셜 도구로 학원원장님, 선생님, 학부모, 학생 모두가 간단한 절차를 통해 가입하여 여러 학원간 공지나 알림을 실시간으로 받고 원활한 소통을 하게 합니다. 지역기반 주요 학원정보도 받아볼수 있으며 학원밴드를 통해 학원홍보를 할수도 있습니다.">
+	<meta property="og:image" content="/images/facebook_screen.png">
+
+
+	<link rel="shortcut icon" href="/images/logo/114x114.png" />
+	<link rel="apple-touch-icon" href="/images/logo/144x144.png" />
+
+</head>
+
+<body>
+
+<div data-view="login">
+	아이디 : <input type="text" name="user_id" value="student01">
+	비번 : <input type="text" name="passwd" value="0000">
+	<button type="button" data-act="login">로그인</button>
+	<span data-view="login_user"></span>
+</div>
+<div data-view="upload">
+	파일 타입<br />
+	이미지 : <input type="radio" name="file_type" value="img"><br />
+	전체 : <input type="radio" name="file_type" value="all"><br />
+	멀티/단건<br />
+	멀티 : <input type="radio" name="multiple_yn" value="Y"><br />
+	단건 : <input type="radio" name="multiple_yn" value="N"><br />
+	<input type="file" name="upload" multiple><br />
+	* 멀티건인경우는 파일타입은 전체로 처리 부탁드립니다.(파라미터를 멀티에 이미지로 전달하지는 않을겁니다.)
+</div>
+<br />
+<div>
+	파라미터 정보<br />
+	fileType : 파일타입, img/all(string)<br />
+	multipleYn : 멀티플 YN, Y/N(string)<br />
+	callBack : 콜백 함수명(string)(콜백받는 함수는 파라미터로 json ojbect를 받고 있습니다.)<br />
+	upload : 업로드 정보(json obj)<br />
+	-> url : 업로드 url(string host + '/hakwon/upload.do')<br />
+	-> param : 업로드 파라미터(json obj)<br />
+	-> url : 업로드 url(string)<br />
+	-> cookie : 쿠키(string)<br />
+
+	** javascript 인터페이스에서 파라미터로 json Object를 받지 못하면 string으로 파싱해서 전달하도록 하겠습니다.(확인해 주세요.)
+	** callback 받는 함수에서도 json object로 전달이 안되면 string으로 받아서 사용하도록 하겠습니다.(확인해 주세요.)
+</div>
+<div data-view="upload_result"></div>
+
+<form id="sampleUpload">
+	<input type="file" name="sample_upload"><br />
+	<input type="text" name="uploadType" value="002"><br />
+	<button type="button" dat-act="sampleUpload">샘플 업로드</button>
+</form>
+
+<!-- 외부 lib js -->
+<script type="text/javascript" src="/js/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/lib/tmpl/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="/js/lib/ezmark-1.0/jquery.ezmark.min.js"></script>
+<script type="text/javascript" src="/js/lib/merge.js"></script>
+<script type="text/javascript" src="/js/lib/underscore-1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="/js/lib/moment.js"></script>
+
+<!-- angular js -->
+<script type="text/javascript" src="/js/lib/angular-1.3.3/angular.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.3.3/angular-route.js"></script>
+
+<!-- 공통 js -->
+<script type="text/javascript" src="/js/constants/constant.jsp"></script>
+
+<script type="text/javascript" src="/js/common/common.prototype.js"></script>
+<script type="text/javascript" src="/js/common/common.js"></script>
+<script type="text/javascript" src="/js/common/bumworld.html5.upload.js"></script><!-- 파일 업로더 -->
+<script type="text/javascript" src="/js/common/hakwonApp.js"></script><!-- angularJS hakwonApp 모듈선언 -->
+<script type="text/javascript" src="/js/tmpl/hakwonTmpl.js"></script>
+
+
+<!-- 팩토리 공통기능 start -->
+<script type="text/javascript" src="/js/module/factory/CommUtil.js"></script>
+
+<!-- 서비스 모듈(배포시 하나의 파일로 머지할 계획) start -->
+<script type="text/javascript" src="/js/module/index.js"></script>
+<script type="text/javascript" src="/js/module/login.js"></script>
+<script type="text/javascript" src="/js/module/signUp.js"></script>
+<script type="text/javascript" src="/js/module/userMain.js"></script>
+<script type="text/javascript" src="/js/module/member.js"></script>
+<script type="text/javascript" src="/js/module/message.js"></script>
+<script type="text/javascript" src="/js/module/hakwon/hakwon.js"></script>
+<script type="text/javascript" src="/js/module/hakwon/teacher.js"></script>
+<script type="text/javascript" src="/js/module/hakwon/notice.js"></script>
+<script type="text/javascript" src="/js/module/hakwon/event.js"></script>
+<script type="text/javascript" src="/js/module/advertise.js"></script>
+<!-- 서비스 모듈 end -->
+
+<!-- 외부 모듈 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+<script type="text/javascript">
+$(window).ready(function() {
+	console.log('window ready');
+
+	$('button[data-act=login]').click(function() {
+		var user_id	= $('input[name=user_id]').val();
+		var passwd	= $('input[name=passwd]').val();
+
+		var paramObj = {userId:user_id, userPass:passwd};
+
+		var queryString = $.param(paramObj);
+			$.ajax({
+				url: contextPath+"/login.do",
+				type: "post",
+				data: $.param(paramObj, true),
+				dataType: "json",
+				success: function(data) {
+					if( data.error ) {
+						alert('로그인을 실패 했습니다.');
+						return false;
+					}
+					var colData = data.colData;
+					console.log('colData', colData);
+					if( colData && colData.flag == CommonConstant.Flag.success ) {
+						$('span[data-view=login_user]').html(colData.authUserInfo.user_id);
+					} else if( colData.flag == 'approvedWait' ) {
+						alert('승인 대기 중 입니다.');
+					} else {
+						alert('계정 정보를 확인 해 주세요.');
+					}
+				},
+				error: function(xhr, textStatus, errorThrown) {
+					alert('로그인을 실패 했습니다.');
+				}
+			});
+	});
+
+	$('input[name=upload]').click(function() {
+		var fileType = $('input[name=file_type]:checked').val();
+		if( !fileType ) {
+			alert('파일 타입을 선택해 주세요.');
+			return false;
+		}
+		var multipleYn = $('input[name=multiple_yn]:checked').val();
+		if( !multipleYn ) {
+			alert('단건/멀티 인지 선택 주세요.');
+			return false;
+		}
+
+		if( multipleYn == 'Y' ) {
+			fileType = 'all';
+		}
+
+		var param = {};
+		param.fileType = fileType;
+		param.multipleYn = multipleYn;
+		param.callBack = 'uploadCallBack';
+		param.upload = {
+			url : window.location.protocol+'//'+window.location.host+contextPath+'/hakwon/upload.do'
+			, param : {uploadType:'002'}
+			, cookie : document.cookie
+		};
+
+		console.log('param', param);
+		window.PLATFORM.fileChooser(JSON.stringify(param));
+
+		return false;
+	});
+
+	/*	샘플 업로드	*/
+	$('button[dat-act=sampleUpload]').click(function() {
+		var frm = $('#sampleUpload')[0];
+
+		if( isNull(frm['sample_upload'].value) ) {
+			alert('업로드 파일을 선택해 주세요.');
+			return false;
+		}
+
+		frm.encoding = 'multipart/form-data';
+		frm.method = 'post';
+		frm.action = window.location.protocol+'//'+window.location.host+contextPath+'/hakwon/upload.do';
+		frm.submit();
+	});
+});
+
+/*	업로드 콜백	*/
+function uploadCallBack(uploadJson) {
+	console.log('uploadJson', uploadJson);
+	$('div[data-view=upload_result]').html(uploadJson);
+}
+</script>
+
+</body>
+</html>

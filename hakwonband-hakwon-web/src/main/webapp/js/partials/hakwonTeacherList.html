@@ -1,0 +1,80 @@
+<!--
+<div class="contact_box_config_btn">
+	<button type="button" class="btn btn-primary" ng-click="sendMessageAllTeacher()">단체 메세지 보내기</button>
+</div>
+-->
+
+<div class="ibox-content box_nodata" ng-if="isTeachers == false">
+	등록된 선생님이 없습니다.
+</div>
+
+<div class="ibox-content" ng-if="isTeachers == true">
+	<div class="contact-box people_contact_box" ng-click="item.isSelected = !item.isSelected" ng-class="{'active' : item.isSelected == true}" data-teacher-no="{{item.user_no}}" ng-repeat="item in teacherList">
+		<div class="profile_img_box">
+			<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.photo_file_path) }}" alt="프로필 사진">
+			<h3 class="title_name">{{ item.user_name }}</h3>
+		</div>
+		<ul class="contact-box-info">
+			<li>아이디 : {{ item.user_id }}</li>
+			<li>핸드폰 : <a href="tel:{{item.tel1_no}}">{{ item.tel1_no }}</a></li>
+			<li>성별/나이 : {{ getUserGender(item.user_gender) }} / {{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age+"세" }}</li>
+
+
+			<!-- 담당교과 입력전 -->
+			<li ng-if="!item.subject">
+				<button type="button" class="btn btn-info m-t" ng-click="isEdit = !isEdit">담당교과 입력</button>
+				<div ng-show="isEdit">
+					<input type="text" size="30" class="input_style" ng-init="item.tempSubject = item.subject" ng-model="item.tempSubject">
+					<button type="button" class="btn btn-info" ng-click="editSubject(item); isEdit = false">완료</button>
+				</div>
+			</li>
+
+			<!-- 담당교과 입력후 -->
+			<li ng-if="item.subject">담당교과 : {{item.subject}}
+				<button type="button" class="btn badge" ng-click="isShow = !isShow">
+					<i class="fa fa-pencil" title="수정"></i>
+				</button>
+				<!-- 담당교과 입력버튼 클릭 후 -->
+				<div ng-show="isShow">
+					<input type="text" size="30" class="input_style" ng-init="item.tempSubject = item.subject" ng-model="item.tempSubject">
+					<button type="button" class="btn btn-info" ng-click="editSubject(item); isShow = false">완료</button>
+				</div>
+			</li>
+			<li>
+				<button type="button" class="btn btn-danger m-t" ng-click="hakwonTeacherOut(item.user_no)">선생님 학원 탈퇴</button>
+			</li>
+		</ul>
+		<button type="button" class="btn btn-default btn_message" ng-click="sendMessage(item)"><i class="fa fa-envelope-o"></i> 메세지 보내기</button>
+	</div>
+</div>
+<!--
+<div class="ibox-content text-right">
+	<button type="button" class="btn btn-primary" ng-click="sendMessageSelectedTeacher()">선택 완료</button>
+</div>
+-->
+
+<div class="modal inmodal" id="teacher_out_layer" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content animated fadeIn">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">선생님 학원 탈퇴</h4>
+			</div>
+			<div class="modal-body">
+				<textarea rows="5" cols="" name="teacherOutMessage" class="form-control m-b" placeholder="학원 탈퇴시킬 선생님에게 메세지를 입력해 주세요."></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-white" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-primary" data-act="teacherOutAct">확인</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 신규 paging 영역-->
+<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+	<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+	<button ng-repeat="page in pageInfo.pages"class="btn btn-white"  ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+	<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i></button>
+</div>
+<!--// 신규 paging 영역-->

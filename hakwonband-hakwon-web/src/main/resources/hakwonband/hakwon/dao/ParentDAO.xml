@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.ParentDAO">
+
+	<!-- 학부모 리스트 -->
+	<select id="parentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ParentDAO.parentList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, b.user_name
+			, b.user_gender
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, calc_age(b.user_birthday) as user_age
+			, date_format(d.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+		from
+			tb_hakwon c
+			, tb_hakwon_member d
+			, tb_user a
+			, tb_user_info b
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.hakwon_no = d.hakwon_no
+			and d.user_type= '005'
+			and d.user_no = a.user_no
+			and a.user_no = b.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
+			and b.user_name like concat('%', #{search_text}, '%')
+		</if>
+	<![CDATA[
+		order by
+			d.reg_date desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 학부모 리스트 카운트 -->
+	<select id="parentCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	ParentDAO.parentCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon c
+			, tb_hakwon_member d
+			, tb_user_info b
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.hakwon_no = d.hakwon_no
+			and d.user_type= '005'
+			and d.user_no = b.user_no
+		]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
+			and b.user_name like concat('%', #{search_text}, '%')
+		</if>
+	</select>
+
+	<!-- 반소속 학부모 리스트 -->
+	<select id="classParentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ParentDAO.classParentList	*/
+		select
+			distinct b.parent_user_no
+			, c.user_type
+			, c.user_id
+			, c.user_email
+			, c.approved_yn
+			, c.use_yn
+			, c.reg_date
+			, d.user_name
+			, d.user_gender
+			, d.tel1_no
+			, get_file_path(d.photo_file_no) as user_photo_path
+			, calc_age(d.user_birthday) as user_age
+			, (select group_concat(get_user_info(y.user_no) SEPARATOR 0x12) from tb_student_parent x, tb_user_info y, tb_student_school z where x.parent_user_no = b.parent_user_no and x.student_user_no = y.user_no and x.student_user_no = z.user_no) as child_list
+			, (select count(1) from tb_hakwon_member where hakwon_no = a.hakwon_no and user_no = b.parent_user_no) as is_hakwon_member
+ 		from
+	  		tb_hakwon_class_student a
+	  		, tb_student_parent b
+	  		, tb_user c
+	  		, tb_user_info d
+ 		where
+ 			a.hakwon_no = #{hakwon_no}
+ 	  		and a.class_no = #{class_no}
+ 	  		and a.student_user_no = b.student_user_no
+ 	  		and b.parent_user_no = c.user_no
+ 	  		and b.parent_user_no = d.user_no
+ 	  	order by
+ 	  		user_name asc
+ 	  	limit
+ 	  		#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 반소속 학부모 리스트 카운트 -->
+	<select id="classParentCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	ParentDAO.classParentCount	*/
+		select
+			count(1)
+ 		from
+	  		tb_hakwon_class_student a
+	  		, tb_student_parent b
+ 		where
+ 			a.hakwon_no = #{hakwon_no}
+ 	  		and a.class_no = #{class_no}
+ 	  		and a.student_user_no = b.student_user_no
+	]]>
+	</select>
+
+</mapper>

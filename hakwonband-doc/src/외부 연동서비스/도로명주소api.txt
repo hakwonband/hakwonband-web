@@ -1,0 +1,5 @@
+URL	http://hakwon.hakwon.teamoboki.com/
+인증키 : MzgxMzIwMzg2MDU5MTIwMTQxMTIxMTA0OTA4
+
+URL	http://admin.hakwon.teamoboki.com/
+인증키 : bnVsbDIwMTQxMjEwMDk0NDU0

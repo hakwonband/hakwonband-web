@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.TeacherDAO">
+
+	<!-- 선생님 리스트 -->
+	<select id="teacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	TeacherDAO.teacherList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, b.user_name
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, (select group_concat(x.subject SEPARATOR '/') from tb_hakwon_teacher x where x.user_no = a.user_no) as teacher_subject
+			, (select group_concat(y.hakwon_name SEPARATOR '/') from tb_hakwon_teacher x, tb_hakwon y where x.user_no = a.user_no and x.hakwon_no = y.hakwon_no) as hakwon_names
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_user a
+			, tb_user_info b
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			, tb_hakwon_teacher c
+		where
+			c.hakwon_no = #{hakwonNo}
+			and c.user_no = a.user_no
+			and a.user_type= '004'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNull( hakwonNo )">
+		where
+			a.user_type= '004'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			b.user_name asc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 선생님 카운트 -->
+	<select id="teacherCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	TeacherDAO.teacherCount	*/
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_user_info b
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			, tb_hakwon_teacher c
+		where
+			c.hakwon_no = #{hakwonNo}
+			and c.user_no = a.user_no
+			and a.user_type= '004'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNull( hakwonNo )">
+		where
+			a.user_type= '004'
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or b.user_id like concat('%', #{searchText}, '%')
+				or a.user_email like concat('%', #{searchText}, '%')
+			)
+		</if>
+	</select>
+
+
+	<!-- 선생님 학원 리스트 -->
+	<select id="hakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	TeacherDAO.hakwonList	*/
+		select
+			b.hakwon_name
+			, b.hakwon_no
+			, get_file_path(c.logo_file_no) as logo_file_path
+			, (select group_concat(y.class_title SEPARATOR '/')
+				from tb_hakwon_class_teacher x, tb_hakwon_class y
+				where x.hakwon_no = a.hakwon_no and x.teacher_user_no = a.user_no and x.class_no = y.class_no) as class_name
+			, d.old_sido
+			, (select cate_name from tb_hakwon_cate where cate_code = b.hakwon_cate) as hakwon_cate_name
+			, get_code_name('012', b.hakwon_status) as hakwon_status_name
+		from
+			tb_hakwon_teacher a
+			, tb_hakwon b
+			, tb_hakwon_info c
+			, tb_hakwon_address d
+		where
+			a.user_no = #{teacherUserNo}
+			and a.hakwon_no = b.hakwon_no
+			and a.hakwon_no = c.hakwon_no
+			and a.hakwon_no = d.hakwon_no
+	]]>
+	</select>
+
+</mapper>

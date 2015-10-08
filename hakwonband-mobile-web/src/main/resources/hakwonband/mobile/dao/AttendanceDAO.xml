@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.AttendanceDAO">
+
+	<!-- 출결 데이터 조회 -->
+	<select id="selectAttendanceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	attendanceDao.selectAttendanceList	*/
+		select
+			a.student_no
+			, a.hakwon_no
+			, DATE_FORMAT(a.start_date,'%Y-%m-%d %r') as start_date
+			, DATE_FORMAT(a.end_date,'%Y-%m-%d %r') as end_date
+			, a.data_type
+			, b.hakwon_name
+			, get_file_path(b.logo_file_no) as file_path
+			, c.user_name
+			, c.user_id
+			, c.user_gender
+			, get_file_path(c.photo_file_no) as profile_path
+			, case when(date(a.start_date) = date(now())) then 'Y' else 'N' end as is_today
+			, (case
+					when(weekday(a.start_date) = 0) then '월'
+					when(weekday(a.start_date) = 1) then '화'
+					when(weekday(a.start_date) = 2) then '수'
+					when(weekday(a.start_date) = 3) then '목'
+					when(weekday(a.start_date) = 4) then '금'
+					when(weekday(a.start_date) = 5) then '토'
+					when(weekday(a.start_date) = 6) then '일'
+				end) as day_week
+		from
+			tb_attendance a
+			, tb_hakwon_info b
+			, tb_user_info c
+		where
+			a.student_no = #{studentNo}
+			and a.hakwon_no = b.hakwon_no
+			and a.student_no = c.user_no
+	]]>
+	<if test=" dataType != null and dateType != '' ">
+			and a.data_type = #{dataType}
+	</if>
+	<if test=" startDate != null and startDate != '' ">
+		<![CDATA[
+			and a.start_date >= '${startDate} 00:00:00'
+			and a.start_date < '${endDate} 00:00:00'
+		]]>
+	</if>
+		order by a.attendance_no desc
+		limit ${startNo}, ${pageScale}
+	</select>
+
+	<!-- 학생정보 조회 -->
+	<select id="selectStudentInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	attendanceDao.selectStudentInfo	*/
+		select
+			a.user_no
+			, a.user_name
+			, a.user_id
+			, a.user_gender
+			, get_file_path(a.photo_file_no) as file_path
+		from
+			tb_user_info a
+		where
+			a.user_no = #{studentNo}
+
+	]]>
+	</select>
+
+</mapper>

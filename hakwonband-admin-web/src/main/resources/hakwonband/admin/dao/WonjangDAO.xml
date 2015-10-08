@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.WonjangDAO">
+
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* WonjangDAO.approvedUserUpdate */
+		update tb_user set
+			approved_yn = #{approvedYn}
+		where
+			user_no in
+	]]>
+	<foreach collection="userNoArray" item="item" index="index" separator="," open="(" close=")">
+		${item}
+	</foreach>
+	</update>
+
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserInfoUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* WonjangDAO.approvedUserInfoUpdate */
+		update tb_user_info set
+			approved_date = now()
+			, approved_user_no = #{user_no}
+		where
+			user_no in
+	]]>
+	<foreach collection="userNoArray" item="item" index="index" separator="," open="(" close=")">
+		${item}
+	</foreach>
+	</update>
+
+</mapper>

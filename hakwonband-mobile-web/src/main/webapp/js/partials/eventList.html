@@ -1,0 +1,35 @@
+<section>
+	<div class="sec_title">
+		<h2 class="tit">이벤트</h2>
+	</div>
+
+	<!-- 이벤트 없음 -->
+	<div class="sec_con_02" ng-if="!isEventList">
+		<div class="data_none">
+			이벤트가 없습니다.
+		</div>
+	</div>
+
+	<div class="sec_con_list" ng-if="isEventList">
+		<ul class="ul_type_01">
+			<li ng-repeat="item in eventListObj.eventList">
+				<div class="list_subj">
+					<a href="" ng-click="goEventDetail(item)">{{item.event_title}}</a>
+					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.begin_date) && item.read_status == 0 " />
+				</div>
+				<div class="list_date">
+					종료일 : {{item.end_date}}
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+
+</section>

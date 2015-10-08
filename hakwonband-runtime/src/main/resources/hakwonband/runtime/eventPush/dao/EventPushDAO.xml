@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.eventPush.dao.EventPushDAO">
+
+	<!-- 이벤트 푸시 발송 대상 리스트 -->
+	<select id="eventPushTargetList" resultType="dataMap">
+	<![CDATA[
+		/*	EventPushDAO.eventPushTargetList	*/
+		select
+			a.event_no
+			, a.hakwon_no
+			, (select hakwon_name from tb_hakwon where hakwon_no = a.hakwon_no) as hakwon_name
+			, a.event_title
+			, a.begin_date
+		from
+			tb_event a
+		where
+			a.push_send_yn is null
+			and a.begin_date = CURDATE()
+		order by
+			a.event_no asc
+	]]>
+	</select>
+
+	<!-- 이벤트 푸시 발송 업데이트 -->
+	<update id="eventPushSendUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* EventPushDAO.eventPushSendUpdate */
+		update tb_event set
+			push_send_yn = 'Y'
+		where
+			event_no = #{event_no}
+	]]>
+	</update>
+
+	<!-- 학원 멤버의 디바이스 리스트 -->
+ 	<select id="hakwonMemberDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* EventPushDAO.hakwonMemberDeviceList */
+		select
+			x.device_token
+			, x.device_type
+		from
+			tb_login_hist x
+			, tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+</mapper>

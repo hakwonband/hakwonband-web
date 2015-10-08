@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.AdvertisePriceDAO">
+
+	<!-- 월별 가격 리스트 -->
+	<select id="yearMonthPriceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertisePriceDAO.yearMonthPriceList	*/
+		select
+			a.price_no
+			, a.price_year_month
+			, right(a.price_year_month, 2) as month
+			, a.banner_size
+			, a.price
+			, a.reg_user_no
+			, a.reg_date
+		from
+			tb_advertise_price a
+		where
+			a.price_year_month between concat(#{year}, '01') and concat(#{year}, '12')
+		order by
+			a.price_year_month asc
+	]]>
+	</select>
+
+	<!-- 월별 가격 리스트 삭제 -->
+	<delete id="deleteMonthPrice" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertisePriceDAO.deleteMonthPrice	*/
+		delete from tb_advertise_price
+		where
+			price_year_month between concat(#{year}, '01') and concat(#{year}, '12')
+	]]>
+	</delete>
+
+	<!-- 월별 가격 리스트 등록 -->
+	<insert id="insertMonthPrice" parameterType="java.util.List">
+	<![CDATA[
+		/*	AdvertisePriceDAO.insertMonthPrice	*/
+		insert into tb_advertise_price (
+			price_year_month, banner_size, price, reg_user_no, reg_date
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.yearMonth}
+			, #{item.bannerSize}
+			, #{item.price}
+			, #{item.user_no}
+			, now()
+		)
+		</foreach>
+	</insert>
+
+	<!-- 월별 가격 리스트 이력 등록 -->
+	<insert id="insertMonthPriceHist" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertisePriceDAO.insertMonthPriceHist	*/
+		insert into tb_advertise_price_hist (
+			price_no, price_year_month, banner_size, price, reg_user_no, reg_date
+		)
+		select
+			price_no, price_year_month, banner_size, price, reg_user_no, reg_date
+		from
+			tb_advertise_price
+		where
+			price_year_month between concat(#{year}, '01') and concat(#{year}, '12')
+	]]>
+	</insert>
+
+</mapper>

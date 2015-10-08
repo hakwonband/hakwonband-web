@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.test.dao.ApiDAO">
+
+	<insert id="insertApi" parameterType="apiForm">
+	<![CDATA[
+		/*	ApiDAO.insertApi	*/
+		insert into tb_test_api (
+			service_type, api_name, api_desc, api_url, method, headers, form, reg_user_name
+		) values(
+			#{serviceType}, #{apiName}, #{apiDesc}, #{apiUrl}, #{method}, #{headers}, #{form}, #{regUserName}
+		)
+	]]>
+	</insert>
+
+	<update id="modifyApi" parameterType="apiForm">
+	<![CDATA[
+		/*	ApiDAO.modifyApi	*/
+		update tb_test_api set
+			service_type = #{serviceType}
+			, api_name = #{apiName}
+			, api_desc = #{apiDesc}
+			, api_url = #{apiUrl}
+			, method = #{method}
+			, headers = #{headers}
+			, form = #{form}
+			, reg_user_name = #{regUserName}
+		where
+			api_no = #{apiNo}
+	]]>
+	</update>
+
+	<insert id="insertApiHist" parameterType="apiForm">
+	<![CDATA[
+		/*	ApiDAO.insertApiHist	*/
+		insert into tb_test_api_hist (
+			api_no, service_type, api_name, api_desc, api_url, method, headers, form, reg_user_name
+		)
+		select
+			a.api_no
+			, a.service_type
+			, a.api_name
+			, a.api_desc
+			, a.api_url
+			, a.method
+			, a.headers
+			, a.form
+			, a.reg_user_name
+		from
+			tb_test_api a
+		where
+			a.api_no = #{apiNo}
+	]]>
+	</insert>
+
+	<select id="selectApiList" parameterType="apiForm" resultType="apiForm">
+	<![CDATA[
+		/*	ApiDAO.selectApiList	*/
+		select
+			api_no as apiNo
+			, service_type as serviceType
+			, api_name as apiName
+			, api_desc as apiDesc
+			, api_url as apiUrl
+			, method as method
+			, headers as headers
+			, form as form
+			, reg_user_name as regUserName
+		from
+			tb_test_api
+		where
+			service_type = #{serviceType}
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( regUserName )">
+			and reg_user_name = #{regUserName}
+		</if>
+	<![CDATA[
+		order by
+			api_no asc
+	]]>
+	</select>
+
+	<select id="selectApi" parameterType="apiForm" resultType="apiForm">
+	<![CDATA[
+		/*	ApiDAO.selectApi	*/
+		select
+			api_no as apiNo
+			, service_type as serviceType
+			, api_name as apiName
+			, api_desc as apiDesc
+			, api_url as apiUrl
+			, method as method
+			, headers as headers
+			, form as form
+			, reg_user_name as regUserName
+		from
+			tb_test_api
+		where
+			api_no = #{apiNo}
+	]]>
+	</select>
+
+	<select id="selectApiRegUserList" resultType="string">
+	<![CDATA[
+		/*	ApiDAO.selectApiRegUserList	*/
+		select
+			reg_user_name
+		from
+			tb_test_api
+		group by
+			reg_user_name
+		order by
+			reg_user_name asc
+	]]>
+	</select>
+
+</mapper>

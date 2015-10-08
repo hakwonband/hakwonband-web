@@ -1,0 +1,38 @@
+<section>
+	<h2 class="tit">{{className}} 공지사항</h2>
+
+	<div class="sec_blk">
+		<!-- 공지사항 없음 -->
+		<div class="sec_con_02" ng-if="!isNoticeList">
+			<div class="data_none">
+				공지사항이 없습니다.
+			</div>
+		</div>
+
+		<div class="sec_con_02" ng-repeat="item in listObj.noticeReqList">
+			<div class="notice_tit">
+				<a href="" ng-click="goNoticeDetail($event)" data-idx="{{item.notice_no}}">
+					{{item.title}}
+				</a>
+				<img src="/images/ico_new.gif" alt="" width="15" ng-if="isNewItem(item.new_date) && item.read_status == 0"/>
+			</div>
+			<div class="notice_cont">
+				<div class="cont img" ng-if="item.thumbFileList.length > 0">
+					<img ng-src="{{thumbImg.thumb_file_full_path}}" alt="" width="48" height="48" ng-repeat="thumbImg in item.thumbFileList | limitTo:3" />
+
+					<span class="more" ng-if="item.thumbFileList.length > 3">+{{item.thumbFileList.length-3}}</span>
+				</div>
+				<span class="date">{{item.reg_date}}</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+
+</section>

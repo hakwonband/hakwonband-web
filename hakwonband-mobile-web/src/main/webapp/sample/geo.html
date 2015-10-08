@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>geo</title>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, target-densitydpi=medium-dpi" />
+	<meta name="format-detection" content="telephone=no">
+
+	<script type="text/javascript" src="./js/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script type="text/javascript">
+</script>
+
+</head>
+
+<body>
+
+<button type="button" data-act="getGeo">좌표</button>
+<button type="button" data-act="getLoc">안드로이드 위치</button>
+<div data-view="result"></div>
+<script type="text/javascript">
+
+$(window).load(function() {
+	var geocoder = new google.maps.Geocoder();
+	$('button[data-act=getGeo]').click(function() {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			console.debug('success position', position);
+			$('div[data-view=result]').html('success<br>'+JSON.stringify(position));
+
+			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			geocoder.geocode({'latLng' : latlng}, function(results, status) {
+				if( results && results.length > 0 ) {
+					var geoObj = results[0];
+					console.log(geoObj.formatted_address);
+				}
+			});
+
+		}, function(position) {
+			console.debug('error position', position);
+			$('div[data-view=result]').html('error<br>'+JSON.stringify(position));
+		}, {maximumAge:0, enableHighAccuracy:true, timeout: 30000});
+	});
+
+	$('button[data-act=getLoc]').click(function() {
+		window.PLATFORM.getLocation();
+	});
+});
+
+	function locationCallBack(gpsStr) {
+		alert('gpsStr['+gpsStr+']');
+	}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.CounselDAO">
+
+	<!-- 상담 등록 -->
+	<insert id="insertCounsel" parameterType="dataMap" useGeneratedKeys="true">
+	<![CDATA[
+		/*	CounselDAO.insertCounsel	*/
+		insert into tb_counsel (
+			hakwon_no
+			, counsellor_no
+			, counselee_no
+			, counsel_title
+			, counsel_content
+			, counsel_date
+			, reg_date
+		) values (
+			#{hakwonNo}
+			, #{counsellorNo}
+			, #{counseleeNo}
+			, #{title}
+			, #{content}
+			, #{couselDate}
+			, now()
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="int">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<update id="updateCounsel" parameterType="dataMap">
+	<![CDATA[
+		/*	CounselDAO.updateCounsel	*/
+		update tb_counsel set
+			counselee_no		= #{counseleeNo}
+			, counsel_title		= #{title}
+			, counsel_content	= #{content}
+			, counsel_date		= STR_TO_DATE(#{couselDate}, '%Y-%m-%d')
+		where
+			counsel_no			= #{counselNo}
+			and (
+				counsellor_no = #{userNo}
+				or 'true' = #{isWonjang}
+			)
+	]]>
+	</update>
+
+
+
+	<!-- 상담자 검색 -->
+	<select id="selectCounselee" parameterType="dataMap" resultType="dataMap">
+		/*	counselDao.selectCounselee	*/
+		select
+			a.user_no
+			, a.user_id
+			, a.user_email
+			, b.user_name
+			, b.user_gender
+			, b.user_birthday
+			, get_file_path(b.photo_file_no) as user_photo_path
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_hakwon_member c
+		where
+			a.user_no = b.user_no
+			and a.use_yn = 'Y'
+			and a.approved_yn = 'Y'
+			and b.user_name like '%${counseleeName}%'
+			and c.hakwon_no = #{hakwonNo}
+			and c.user_no = a.user_no
+			and c.member_yn = 'Y'
+		order by a.user_no asc
+	</select>
+
+
+	<!-- 상담 리스트 조회 -->
+	<select id="selectCounselList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CounselDAO.selectCounselList	*/
+		select
+			a.counsel_no
+			, (select x.user_name from tb_user_info x where x.user_no = a.counsellor_no) as counsellor_name
+			, a.counsellor_no
+			, a.counselee_no
+			, b.user_type as counselee_type
+			, c.user_name as counselee_name
+			, c.user_id as counselee_id
+			, c.user_gender as counselee_gender
+			, c.user_birthday as counselee_birth
+			, a.counsel_title
+			, a.counsel_content
+			, a.counsel_date
+			, DATE_FORMAT(a.reg_date,'%Y-%m-%d') as reg_date
+			, get_file_path(c.photo_file_no) as user_photo_path
+		from
+			tb_counsel a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.counselee_no = b.user_no
+			and a.counselee_no = c.user_no
+			and b.user_type = #{counseleeType}
+		]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate ) ">
+			and a.counsel_date between #{startDate} and #{endDate}
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and a.counselee_no in (select student_user_no from tb_hakwon_class_student where class_no = #{classNo})
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" 'id' == searchType ">
+			and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" 'name' == searchType ">
+			and c.user_name like '%${searchText}%'
+			</if>
+		</if>
+		<if test=" '004' == userTyape ">
+			and a.counseller_no = #{userNo}
+		</if>
+		and a.use_yn = 'Y'
+		order by a.counsel_date desc
+		limit
+			${startNo}, ${pageScale}
+	</select>
+
+	<select id="selectCounselCount" parameterType="dataMap" resultType="int">
+		<![CDATA[
+		/*	counselDao.selectCounselCount	*/
+		select
+			count(a.counsel_no)
+		from
+			tb_counsel a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.counselee_no = b.user_no
+			and a.counselee_no = c.user_no
+			and b.user_type = #{counseleeType}
+		]]>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( startDate ) and @hakwonband.util.StringUtil@isNotNull( endDate ) ">
+			and a.counsel_date between #{startDate} and #{endDate}
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( classNo ) ">
+			and a.counselee_no in (select student_user_no from tb_hakwon_class_student where class_no = #{classNo})
+		</if>
+		<if test=" @hakwonband.util.StringUtil@isNotNull( searchText ) ">
+			<if test=" 'id' == searchType ">
+			and c.user_id like '%${searchText}%'
+			</if>
+			<if test=" 'name' == searchType ">
+			and c.user_name like '%${searchText}%'
+			</if>
+		</if>
+		<if test=" '004' == userTyape ">
+			and a.counseller_no = #{userNo}
+		</if>
+			and a.use_yn = 'Y'
+	</select>
+
+
+	<!-- 상담 상세 조회 -->
+	<select id="selectCounselDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CounselDAO.selectCounselDetail	*/
+		select
+			a.counsel_no
+			, a.counselee_no
+			, b.user_type as counselee_type
+			, c.user_name as counselee_name
+			, c.user_gender as counselee_gender
+			, c.user_birthday as counselee_birth
+			, a.counsel_title
+			, a.counsel_content
+			, a.counsel_date
+			, DATE_FORMAT(a.reg_date,'%Y-%m-%d') as reg_date
+			, (select user_name from tb_user_info where user_no = a.counsellor_no) as counsellor_name
+			, (select get_file_path(photo_file_no) from tb_user_info where user_no = a.counsellor_no) as counsellor_photo
+		from
+			tb_counsel a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.counsel_no = #{counselNo}
+			and a.counselee_no = b.user_no
+			and a.counselee_no = c.user_no
+	]]>
+		<if test=" '004' == userTyape ">
+			and a.counseller_no = #{userNo}
+		</if>
+	</select>
+
+	<!-- 파일 정보 조회 -->
+	<select id="selectCounselFiles" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CounselDAO.selectCounselFiles	*/
+		select
+			a.file_no
+			, a.file_parent_type
+			, a.file_parent_no
+			, a.file_name
+			, a.save_file_name
+			, a.file_size
+			, a.file_ext_type
+			, a.file_ext
+			, a.file_path_prefix
+			, a.file_path
+			, a.image_yn
+			, a.thumb_file_path
+			, a.ip_address
+			, a.reg_date
+			, a.reg_user_no
+		from
+			tb_file a
+		where
+			a.file_parent_no = #{counselNo}
+			and a.file_use_yn = 'Y'
+			and a.file_del_yn = 'N'
+		order by file_no desc
+	]]>
+	</select>
+
+
+	<delete id="deleteCounsel" parameterType="dataMap">
+		/*	CounselDAO.deleteCounsel	*/
+		update tb_counsel set
+			use_yn = 'N'
+		where
+			counsel_no = #{counselNo}
+			and (
+				counsellor_no = #{userNo}
+				or 'true' = #{isWonjang}
+			)
+	</delete>
+
+	<!-- 파일 정보 업데이트 -->
+	<update id="updateFileInfo" parameterType="dataMap">
+		/*	CounselDAO.updateFileInfo	*/
+		update tb_file
+		set
+			file_parent_no = #{idx}
+			, file_use_yn = 'Y'
+		where
+			file_no in (${fileList})
+	</update>
+
+
+
+	<!-- 부모님 조회 -->
+	<select id="selectParents" parameterType="dataMap" resultType="dataMap">
+		/*	counselDao.selectFamilyMembers	*/
+		select
+			a.parent_user_no as user_no
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_path
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.student_user_no = #{counseleeNo}
+			and a.parent_user_no = b.user_no
+		order by b.user_gender desc
+	</select>
+
+	<!-- 자식 조회 -->
+	<select id="selectChildren" parameterType="dataMap" resultType="dataMap">
+		/*	counselDao.selectChildren	*/
+		select
+			a.student_user_no as user_no
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_path
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.parent_user_no = #{counseleeNo}
+			and a.student_user_no = b.user_no
+	</select>
+
+</mapper>

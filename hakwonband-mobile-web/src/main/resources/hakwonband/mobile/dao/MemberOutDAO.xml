@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.MemberOutDAO">
+
+	<delete id="delHakwonClassStudent" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delHakwonClassStudent */
+		delete from tb_hakwon_class_student
+		where
+			student_user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonMember" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delHakwonMember */
+		delete from tb_hakwon_member
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delUser" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delUser */
+		delete from tb_user
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delUserInfo" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delUserInfo */
+		delete from tb_user_info
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delStudentParent" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delStudentParent */
+		delete from tb_student_parent
+		where
+			student_user_no = #{user_no}
+			or parent_user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delStudentSchool" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delStudentSchool */
+		delete from tb_student_school
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delLoginHist" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delLoginHist */
+		delete from tb_login_hist
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delMessage" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delMessage */
+		delete from tb_message
+		where
+			send_user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delMessageReceiver" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delMessageReceiver */
+		delete from tb_message_receiver
+		where
+			receive_user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delContentRead" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delContentRead */
+		delete from tb_content_read
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<delete id="delEventUser" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.delEventUser */
+		delete from tb_event_user
+		where
+			user_no = #{user_no}
+	]]>
+	</delete>
+
+	<!-- 파일들을 미사용 상태로 업데이트 -->
+	<update id="fileUnUsingUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	MemberOutDAO.fileUnUsingUpdate	*/
+		update tb_file set
+			file_use_yn = 'N'
+		where
+			reg_user_no = #{user_no}
+	]]>
+	</update>
+
+	<insert id="insertOutHist" parameterType="dataMap">
+	<![CDATA[
+		/* MemberOutDAO.insertOutHist */
+		insert into tb_user_out(
+			user_no, user_type, user_id, user_email, req_date, comment
+		) values (
+			#{user_no}, #{user_type}, #{user_id}, #{user_email}, now(), #{comment}
+		)
+	]]>
+	</insert>
+</mapper>

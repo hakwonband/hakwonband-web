@@ -1,0 +1,64 @@
+<section>
+	<h2 class="tit hide">반 상세</h2>
+
+	<div class="sec_blk_02">
+		<div class="list_img view">
+			<img ng-src="{{ getFileFullPath(detail.file_path,'class', true) }}" width="75" height="75" />
+		</div>
+		<div class="list_cont view">
+			<div class="tit">
+				{{detail.class_title}}
+			</div>
+			<div class="cont">
+				<span>{{detail.class_intro}}</span>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<section ng-if="teacherList && teacherList.length > 0">
+	<div class="sec_title">
+		<h2 class="tit">담당 선생님</h2>
+	</div>
+
+	<ul class="techer_list">
+		<li ng-repeat="item in teacherList">
+			<img ng-src="{{ getFileFullPath(item.photo_file_path,'photo', true) }}" width="32" height="32" class="profile_img" />
+			<p><em>{{item.user_name}}</em> / {{item.subject ? item.subject +' / ' : ''}}{{item.gender === 'M' ? '남' : '여'}}</p>
+			<button type="button" class="btn_letter" ng-click="sendMessage(item.teacher_user_no);">쪽지보내기</button>
+		</li>
+	</ul>
+</section>
+
+<section class="line_n">
+	<div class="sec_title">
+		<h2 class="tit">공지사항</h2>
+	</div>
+
+	<div class="sec_con_list">
+		<ul class="ul_type_01">
+			<li ng-repeat="item in listObj.noticeReqList">
+				<div class="list_subj">
+					<a href="{{siteUrls.noticeDetail}}?hakwon_no={{detail.hakwon_no}}&class_no={{detail.class_no}}&notice_no={{item.notice_no}}">
+						{{item.title}}
+					</a>
+					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.new_date) && item.read_status == 0"/>
+				</div>
+				<div class="list_date">
+					등록일 : {{item.reg_date}}
+				</div>
+			</li>
+			<div ng-if="!isNoticeList" style="text-align:center;font-size:12px;padding:5px 0;">
+				등록된 공지사항이 없습니다.
+			</div>
+		</ul>
+	</div>
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+</section>

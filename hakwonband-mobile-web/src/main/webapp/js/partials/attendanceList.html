@@ -1,0 +1,37 @@
+<section>
+	<div class="{{userAuth.userType == '005'?'sec_half':'sec_blk'}}">
+		<select name="dataType" ng-change="dataChange()" ng-model="dataType" title="등하원/승하차" >
+			<option value="">전체</option>
+			<option value="001">등하원</option>
+			<option value="002">승하차</option>
+		</select>
+	</div>
+	<div class="sec_half" ng-show="userAuth.userType == '005'">
+		<select name="student_no" ng-change="studentChange()" title="학생이름" ng-model="student" ng-options="student.user_name for student in userAuth.familyList track by student.user_no"></select>
+	</div>
+
+	<ul class="attandance_list">
+		<li class="no_data" ng-if="!attendanceList || attendanceList.length == 0">결과가 없습니다.</li>
+		<li ng-repeat="attendance in attendanceList">
+			<div class="academy_info">
+				<img src="{{attendance.file_path?DefaultInfo.downPath+attendance.file_path:DefaultInfo.hakwonLogo}}" alt="" width="32" />
+				{{attendance.hakwon_name}}
+			</div>
+			<span class="point_text point_text_01" ng-if="attendance.data_type == '001'">등하원</span>
+			<span class="point_text point_text_02" ng-if="attendance.data_type == '002'">승하차</span>
+
+			<span class="time"><span class="text_info">{{attendance.data_type == '001'?'등원':'승차'}}</span> {{attendance.start_date}}</span>
+			<span class="time"><span class="text_info">{{attendance.data_type == '001'?'하원':'하차'}}</span> {{attendance.end_date}}</span>
+			<span class="week" ng-if="attendance.is_today == 'Y'">오늘</span>
+			<span class="week" ng-if="attendance.is_today == 'N'">{{attendance.day_week}}</span>
+		</li>
+	</ul>
+
+	<!--paging 영역-->
+	<div class="sec_paging">
+		<button type="button" ng-click="prevPage()" class="btn big_pre">&lt; 이전</button>
+		<button type="button" ng-click="nextPage()" class="btn big_next">다음 &gt;</button>
+	</div>
+	<!--//paging 영역-->
+
+</section>

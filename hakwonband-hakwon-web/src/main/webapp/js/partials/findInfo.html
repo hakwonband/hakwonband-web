@@ -1,0 +1,49 @@
+<div class="middle-box findidpwscreen text-center animated fadeInDown">
+	<h1 class="logo-name"><small>HAKWONBAND</small><br>FIND ID/PW</h1>
+	<div class="findidpw" ng-init="selectedTab = 'findId'">
+
+		<ul class="nav nav-tabs" >
+			<li ng-class="{'active':selectedTab === 'findId'}" ng-click="selectedTab = 'findId'; initialize()"><a href="">&nbsp;&nbsp;&nbsp;아이디 찾기&nbsp;&nbsp;&nbsp;</a></li>
+			<li ng-class="{'active':selectedTab === 'findPw'}" ng-click="selectedTab = 'findPw'; initialize()"><a href="">&nbsp;&nbsp;비밀번호 찾기&nbsp;&nbsp;</a></li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane" ng-class="{'active':selectedTab === 'findId'}">
+				<div ng-if="!checkUserId">
+					<form class="m-t" role="form" action="">
+						<div class="form-group">
+							<input type="text" class="form-control m-b-xs" placeholder="이름" ng-model="userInfo.user_name">
+							<input type="tel" class="form-control" placeholder="전화번호" ng-model="userInfo.tel1_no">
+						</div>
+						<button type="button" class="btn btn-primary btn-lg block full-width m-b" ng-click="procCheckUserId()">완료</button>
+					</form>
+				</div>
+				<!-- 아이디 찾기 결과 -->
+				<div ng-if="checkUserId">
+					<p class="m-t-xl m-b-xl">가입된 아이디는 <strong class="text-info">{{userInfo.user_id}}</strong> 입니다</p>
+					<button type="button" class="btn btn-primary btn-lg block full-width m-b" ng-click="goLogin()">로그인 하러가기</button>
+				</div>
+			</div>
+
+			<div class="tab-pane" ng-class="{'active':selectedTab === 'findPw'}">
+				<div ng-if="!checkUserPwd">
+					<form class="m-t" role="form" action="">
+						<div class="form-group">
+							<input type="text" class="form-control m-b-xs" placeholder="아이디" ng-model="userInfo.user_id">
+							<input type="text" class="form-control m-b-xs" placeholder="이름" ng-model="userInfo.user_name">
+							<input type="tel" class="form-control" placeholder="전화번호" ng-model="userInfo.tel1_no">
+						</div>
+						<button type="button" class="btn btn-primary btn-lg block full-width m-b" ng-click="procCheckUserPwd()">완료</button>
+					</form>
+				</div>
+				<div ng-if="checkUserPwd">
+					<!-- 비밀번호 찾기 결과 -->
+					<p class="m-t-xl m-b-xl">가입된 이메일로<br>임시 비밀번호가 전송되었습니다.</p>
+					<button type="button" class="btn btn-primary btn-lg block full-width m-b" ng-click="goLogin()">로그인 하러가기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p class="m-t"> <small>HAKWONBAND &copy; 2015</small> </p>
+</div>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.HakwonDAO">
+
+	<!-- 선택 학원 상세정보 -->
+	<select id="hakwonDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.hakwonDetail	*/
+		select
+			a.hakwon_code
+			, a.master_user_no
+			, d.user_name as master_user_name
+			, a.hakwon_no
+			, a.hakwon_cate
+			, get_cate_name(a.hakwon_cate) as hakwon_cate_name
+			, b.hakwon_name
+			, b.tel_no_1
+			, b.tel_no_2
+			, b.logo_file_no
+			, b.introduction
+			, get_file_path(b.logo_file_no) as logo_file_path
+			, c.addr_no
+			, c.old_sido
+			, c.old_addr1
+			, c.old_addr2
+			, c.street_addr1
+			, c.street_addr2
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_hakwon_address c
+			, tb_user_info d
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.hakwon_status in ('001', '003')
+			and a.hakwon_no = b.hakwon_no
+			and b.hakwon_no = c.hakwon_no
+			and a.master_user_no = d.user_no
+	]]>
+	</select>
+
+	<!-- 선택 학원 학생 반 리스트 -->
+	<select id="hakwonUserClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+	/*	HakwonDAO.hakwonUserClassList	*/
+	select
+		b.class_no
+		, b.class_title
+	from
+		tb_hakwon_class_student a
+		, tb_hakwon_class b
+	where
+		a.hakwon_no = #{hakwon_no}
+		and a.student_user_no = #{user_no}
+		and a.hakwon_no = b.hakwon_no
+		and a.class_no = b.class_no
+	order by
+		b.class_order asc
+	]]>
+	</select>
+
+	<!-- 학원 전체 선생님 리스트 -->
+	<select id="hakwonTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonTeacherList*/
+		select
+			a.hakwon_no
+			, a.user_no
+			, a.subject
+			, b.user_name
+			, b.user_gender
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(str_to_date(b.user_birthday, '%Y-%m-%d')) as user_age
+			, b.tel1_no
+			, b.tel2_no
+			, b.user_url
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = b.user_no
+			and approved_yn = 'Y'
+		order by
+			b.user_name asc
+	 ]]>
+	</select>
+
+
+	<!-- 학생 학원 전체 선생님 리스트 -->
+	<select id="allClassTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.allClassTeacherList */
+		select
+ 			b.teacher_user_no as user_no
+ 			, d.user_name
+ 			, e.hakwon_no
+ 			, b.class_no
+			, CONCAT(d.user_name, ' - ', c.hakwon_name, ' - ', e.class_title) as user_info
+		from
+			tb_hakwon_class_student a
+			, tb_hakwon_class_teacher b
+			, tb_hakwon_info c
+			, tb_user_info d
+			, tb_hakwon_class e
+		where
+			a.student_user_no = #{user_no}
+			and a.class_no = b.class_no
+			and b.hakwon_no = c.hakwon_no
+			and b.teacher_user_no = d.user_no
+			and b.class_no = e.class_no
+		order by
+			d.user_name asc
+	 ]]>
+	</select>
+
+	<!-- 학부모 학원 전체 선생님 리스트 -->
+	<select id="parentAllClassTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.parentAllClassTeacherList */
+		select
+ 			b.teacher_user_no as user_no
+ 			, d.user_name
+ 			, e.hakwon_no
+ 			, b.class_no
+			, CONCAT(d.user_name, ' - ', c.hakwon_name, ' - ', e.class_title) as user_info
+		from
+			tb_hakwon_class_student a
+			, tb_hakwon_class_teacher b
+			, tb_hakwon_info c
+			, tb_user_info d
+			, tb_hakwon_class e
+			, tb_student_parent f
+		where
+			f.parent_user_no = #{user_no}
+			and f.approved_yn = 'Y'
+			and f.student_user_no = a.student_user_no
+			and a.class_no = b.class_no
+			and b.hakwon_no = c.hakwon_no
+			and b.teacher_user_no = d.user_no
+			and b.class_no = e.class_no
+		order by
+			d.user_name asc
+	 ]]>
+	</select>
+
+	<!-- 반 정보 검색 -->
+	<select id="selectClassStudent" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* HakwonDAO.selectClassStudent*/
+		select
+			count(1)
+		from
+			tb_hakwon_class_student
+		where
+			hakwon_no = #{hakwon_no}
+			and student_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 자식이 정회원인지 체크 -->
+	<select id="checkChildHakwonMember" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* HakwonDAO.checkChildHakwonMember*/
+	select
+		count(1)
+	from
+		tb_student_parent a
+		, tb_hakwon_class_student b
+	where
+		a.parent_user_no = #{user_no}
+		and a.student_user_no = b.student_user_no
+		and b.hakwon_no = #{hakwon_no}
+	]]>
+	</select>
+
+	<!-- 멤버에서 삭제 -->
+	<delete id="deleteHakwonMember" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.deleteHakwonMember*/
+		delete from tb_hakwon_member
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{user_no}
+	]]>
+	</delete>
+
+	<!-- 공지사항 작성시 카테고리 리스트 -->
+	<select id="noticeCateList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.noticeCateList */
+		select
+ 			a.cate_name,
+ 			a.cate_order
+		from
+			tb_notice_cate a
+		where
+			a.hakwon_no = #{hakwon_no}
+		order by
+			a.cate_order asc
+	]]>
+	</select>
+
+	<!-- 메제시 이동 원장님 학원 번호 -->
+	<select id="messageMoveMasterHakwonInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.messageMoveMasterHakwonInfo */
+		select a.hakwon_no
+		from tb_hakwon a
+		where a.master_user_no = #{user_no}
+		order by a.hakwon_name asc
+		limit 1
+	]]>
+	</select>
+
+	<!-- 메제시 이동 선생님 학원 번호 -->
+	<select id="messageMoveTeacherHakwonInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.messageMoveTeacherHakwonInfo */
+		select a.hakwon_no from tb_hakwon_teacher a
+		where a.user_no = #{user_no} and a.approved_yn = 'Y'
+		order by a.hakwon_no asc
+		limit 1
+	]]>
+	</select>
+</mapper>

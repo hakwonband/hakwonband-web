@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.manager.dao.MessageSendDAO">
+
+	<!-- 메세지 등록 -->
+	<insert id="messageInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	MessageSendDAO.messageInsert	*/
+		insert into tb_message (
+			title
+			, preview_content
+			, content
+			, group_yn
+			, hakwon_no
+			, send_user_no
+			, send_date
+			, write_user_no
+			, write_date
+			, message_type
+			, message_target
+		) values (
+			#{title}
+			, #{preview_content}
+			, #{content}
+			, #{group_yn}
+			, -1
+			, #{send_user_no}
+			, now()
+			, #{send_user_no}
+			, now()
+			, #{messageType}
+			, #{messageTarget}
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 메세지 받은 사용자 카운트 업데이트 -->
+	<update id="updateMessageReceiverCount" parameterType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.updateMessageReceiverCount */
+		update tb_message set
+			receiver_count = (select count(1) from tb_message_receiver where message_no = #{messageNo})
+		where
+			message_no = #{messageNo}
+	]]>
+	</update>
+
+	<!-- 보낸 메세지 receiver 테이블에 다중 등록 -->
+	<insert id="messageReceiverMultiInsert" parameterType="java.util.List">
+	<![CDATA[
+		/* MessageSendDAO.messageReceiverMultiInsert */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=",">
+	   (
+			#{item.message_no}
+			, #{item.hakwon_no}
+			, #{item.receive_user_no}
+	   )
+		</foreach>
+ 	</insert>
+
+	<!-- 원장님 대상 검색 -->
+	<select id="targetSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.targetSearch */
+		select
+			b.user_no
+			, a.hakwon_name
+			, a.hakwon_no
+			, b.user_type
+			, b.user_id
+			, b.user_email
+			, b.approved_yn
+			, b.use_yn
+			, b.reg_date
+			, c.user_name
+			, c.user_gender
+			, c.tel1_no
+			, get_file_path(c.photo_file_no) as user_photo_path
+			, calc_age(c.user_birthday) as user_age
+			, '' as parent_list
+		from
+			tb_hakwon a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.manager_no = #{manager_no}
+			and a.master_user_no = b.user_no
+			and b.use_yn = 'Y'
+			and b.user_no = c.user_no
+			and (
+				c.user_name like concat('%', #{searchText}, '%')
+				or
+				b.user_id like concat('%', #{searchText}, '%')
+			)
+		order by
+			user_name asc
+	]]>
+	</select>
+
+	<!-- 매니저 학원 원장님 리스트 -->
+	<select id="hakwonMasterList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.hakwonMasterList */
+		select
+			a.master_user_no as receive_user_no
+			, a.hakwon_no
+			, #{messageNo} as message_no
+			, #{user_no} as send_user_no
+		from tb_hakwon a
+		where
+			a.manager_no = #{manager_no}
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetHakwonList )">
+			and a.hakwon_no in (${targetHakwonList})
+		</if>
+	</select>
+
+	<!-- 검색 대상의 디바이스 정보 -->
+	<select id="searchHakwonDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	MessageSendDAO.searchHakwonDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+		from
+			tb_login_hist a
+		where
+			a.user_no in (${searchHakwonNoArray})
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 메세지 발송 사용자 검색 -->
+	<select id="targetUserList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.targetUserList */
+		select
+			a.user_no
+			, b.user_name
+		from
+			tb_hakwon a
+		where
+			a.manager_no = #{manager_no}
+			and a.master_user_no in (${targetUserNoArray})
+			and a.user_no = b.user_no
+	]]>
+	</select>
+</mapper>

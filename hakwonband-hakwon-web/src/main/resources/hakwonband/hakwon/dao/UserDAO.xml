@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.UserDAO">
+
+	<!-- 회원 상세정보 -->
+	<select id="userDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* UserDAO.userDetail */
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, b.user_name
+			, b.user_gender
+			, b.user_birthday
+			, calc_age(str_to_date(b.user_birthday,'%Y-%m-%d')) as user_age
+			, date_format(b.approved_date, '%Y년%m월%d일 %H:%i') as approved_date
+			, b.approved_user_no
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, b.tel1_no
+			, b.tel2_no
+			, b.user_url
+			, date_format(b.last_login_date, '%Y년%m월%d일 %H:%i') as last_login_date
+			, b.last_login_ip
+			, b.agree01
+			, b.agree02
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and a.user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 회원가입시 user_id 중복 체크 -->
+	<select id="checkUserId" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* UserDAO.checkUserId */
+		select
+			count(1)
+		from
+			tb_user a
+		where
+			a.user_id = #{user_id}
+	]]>
+	</select>
+
+	<!-- 회원가입시 email 중복 체크 -->
+	<select id="checkEmail" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* UserDAO.checkEmail */
+		select
+			count(1)
+		from
+			tb_user a
+		where
+			a.user_email = #{user_email}
+	]]>
+	</select>
+
+	<!-- 회원가입 1차 기본정보 입력 -->
+	<insert id="insertUser" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.insertUser */
+		insert into tb_user (
+			user_type, user_id, user_email, user_password, use_yn, reg_date
+		) values (
+			#{user_type}, #{user_id}, #{user_email}, #{user_password}, 'Y', now()
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 회원가입 2차 부가정보 입력 -->
+	<insert id="insertUserInfo" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.insertUserInfo */
+		insert into tb_user_info (
+			user_no, user_id, user_name, user_gender, user_birthday, photo_file_no, tel1_no, tel2_no, user_url, agree01, agree02
+		) values (
+			#{user_no}, #{user_id}, #{user_name}, #{user_gender}, #{user_birthday}, #{photo_file_no}, #{tel1_no}, #{tel2_no}, #{user_url}, #{agree01}, #{agree02}
+		)
+	]]>
+	</insert>
+
+	<!-- 사용자 비밀번호 및 이메일 정보 수정 -->
+	<update id="updateUser" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.updateUser */
+		update tb_user
+	]]>
+		<set>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( user_email )">
+				user_email = #{user_email},
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( user_password )">
+				user_password = #{user_password}
+			</if>
+		</set>
+	<![CDATA[
+		where user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 사용자 부가정보 수정 -->
+	<update id="updateUserInfo" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.updateUserInfo */
+		update tb_user_info
+	]]>
+		<set>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( user_name )">
+				user_name = #{user_name},
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( user_gender )">
+				user_gender = #{user_gender},
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( user_birthday )">
+				user_birthday = #{user_birthday},
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( tel1_no )">
+				tel1_no = #{tel1_no},
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotBlank( tel2_no )">
+				tel2_no = #{tel2_no}
+			</if>
+		</set>
+	<![CDATA[
+		where user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 사용자 프로필 사진 수정 -->
+	<update id="updateUserPhoto" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.updateUserInfo */
+		update tb_user_info set photo_file_no = #{photo_file_no} where user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 사용자 사용여부 변경 -->
+	<update id="updateUseYn"  parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.updateUseYn */
+		update tb_user set use_yn = #{use_yn} where user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 사용자 삭제 -->
+	<delete id="deleteUser"  parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.deleteUser */
+		delete tb_user natural join tb_user_info where user_no = #{user_no}
+	]]>
+	</delete>
+
+	<select id="userApprovedCheck" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/* WonjangDAO.userApprovedCheck */
+		select approved_yn
+		from tb_user
+		where user_no = #{teacherUserNo}
+	]]>
+	</select>
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* WonjangDAO.approvedUserUpdate */
+		update tb_user set
+			approved_yn = #{approvedYn}
+		where
+			user_no = #{teacherUserNo}
+	]]>
+	</update>
+
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUserInfoUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* WonjangDAO.approvedUserInfoUpdate */
+		update tb_user_info set
+			approved_date = now()
+			, approved_user_no = #{user_no}
+		where
+			user_no = #{teacherUserNo}
+	]]>
+	</update>
+
+
+	<!-- 사용자 상세 정보 -->
+	<!-- and (a.approved_yn = 'N' or a.approved_yn is null) -->
+	<select id="userInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userInfo	*/
+		select
+			a.user_no
+			, b.user_name
+			, b.user_id
+			, a.user_email
+			, case when b.user_gender = 'M' then '남' else '여' end as user_gender_name
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, get_code_name('001', a.user_type) as user_type_name
+			, calc_age(b.user_birthday) as user_age
+			, b.attendance_code
+		]]>
+		<if test=" hakwon_no != null and hakwon_no != '' ">
+			, c.receipt_date
+		</if>
+		from
+			tb_user a
+			, tb_user_info b
+		<if test=" hakwon_no != null and hakwon_no != '' ">
+			, tb_hakwon_member c
+		</if>
+	<![CDATA[
+		where
+			a.user_no = #{user_no}
+			and a.user_type= #{user_type}
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+	]]>
+		<if test=" hakwon_no != null and hakwon_no != '' ">
+			and c.hakwon_no = #{hakwon_no}
+			and c.user_no = a.user_no
+		</if>
+	</select>
+
+	<!-- 사용자 학교 정보 -->
+	<select id="userSchoolInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userSchoolInfo	*/
+		select
+			a.school_name
+			, get_code_name('008', a.school_level)
+			, a.level
+		from
+			tb_student_school a
+		where
+			a.user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 학부모 리스트 -->
+	<select id="parentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.parentList	*/
+		select
+			a.parent_user_no
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.student_user_no = #{student_user_no}
+			and a.parent_user_no = b.user_no
+		order by
+			b.user_gender asc
+	]]>
+	</select>
+
+
+	<!-- 학생 리스트 -->
+	<select id="childList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.childList	*/
+		select
+			a.student_user_no
+			, b.user_name
+			, b.user_gender
+			, b.user_id
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.parent_user_no = #{parent_user_no}
+			and a.student_user_no = b.user_no
+		order by
+			b.user_birthday asc
+	]]>
+	</select>
+
+	<update id="updateReceiptDate" parameterType="dataMap">
+	<![CDATA[
+		/*	userDao.updateReceiptDate	*/
+		update tb_hakwon_member
+		set
+			receipt_date = #{receiptDate}
+		where
+			hakwon_no = #{hakwonNo}
+			and user_no = #{studentNo}
+	]]>
+	</update>
+
+</mapper>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.HakwonDAO">
+
+	<!-- 학원 리스트 -->
+	<select id="hakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.hakwonList	*/
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, date_format(a.reg_date, '%Y.%m.%d %H') as reg_date
+			, a.hakwon_name
+			, b.user_id as master_user_id
+			, b.user_name as master_user_name
+			, (select user_type from tb_user where user_no = b.user_no) as user_type
+			, get_file_path(c.logo_file_no) as logo_file_path
+			, (select cate_name from tb_hakwon_cate where cate_code = a.hakwon_cate) as hakwon_cate_name
+			, d.old_addr1
+			, a.hakwon_status
+			, get_code_name('012', a.hakwon_status) as hakwon_status_name
+			, a.admin_reg_yn
+		from
+			tb_hakwon a
+			, tb_user_info b
+			, tb_hakwon_info c
+			, tb_hakwon_address d
+		where
+			a.hakwon_no = c.hakwon_no
+			and a.master_user_no = b.user_no
+			and a.hakwon_no = d.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( adminRegYn )">
+			<if test="'Y'.toString() eq adminRegYn">
+			and a.admin_reg_yn = 'Y'
+			</if>
+			<if test="'N'.toString() eq adminRegYn">
+			and a.admin_reg_yn is null
+			</if>
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonCateCode )">
+			and a.hakwon_cate = #{hakwonCateCode}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonStatus )">
+			and a.hakwon_status = #{hakwonStatus}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (a.hakwon_name like concat('%', #{searchText}, '%') or b.user_name like concat('%', #{searchText}, '%'))
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and d.old_sido = #{sido}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( gugun )">
+			and d.old_gugun = #{gugun}
+		</if>
+	<![CDATA[
+		order by
+			a.hakwon_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+
+	<!-- 학원 리스트 카운트 -->
+	<select id="hakwonCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	HakwonDAO.hakwonCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_user_info b
+			, tb_hakwon_address d
+		where
+			a.master_user_no = b.user_no
+			and a.master_user_no = b.user_no
+			and a.hakwon_no = d.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( adminRegYn )">
+			<if test="'Y'.toString() eq adminRegYn">
+			and a.admin_reg_yn = 'Y'
+			</if>
+			<if test="'N'.toString() eq adminRegYn">
+			and a.admin_reg_yn is null
+			</if>
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonCateCode )">
+			and a.hakwon_cate = #{hakwonCateCode}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwonStatus )">
+			and a.hakwon_status = #{hakwonStatus}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (a.hakwon_name like concat('%', #{searchText}, '%') or b.user_name like concat('%', #{searchText}, '%'))
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and d.old_sido = #{sido}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( gugun )">
+			and d.old_gugun = #{gugun}
+		</if>
+	</select>
+
+	<!-- 사용자 학원 리스트 -->
+	<select id="userHakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.userHakwonList	*/
+		select
+			b.hakwon_name
+			, b.hakwon_no
+			, get_file_path(c.logo_file_no) as logo_file_path
+			, (select group_concat(y.class_title SEPARATOR '/')
+				from tb_hakwon_class_student x, tb_hakwon_class y
+				where x.hakwon_no = a.hakwon_no and x.student_user_no = a.user_no and x.class_no = y.class_no) as class_name
+			, d.old_sido
+			, (select cate_name from tb_hakwon_cate where cate_code = b.hakwon_cate) as hakwon_cate_name
+			, get_code_name('012', b.hakwon_status) as hakwon_status_name
+		from
+			tb_hakwon_member a
+			, tb_hakwon b
+			, tb_hakwon_info c
+			, tb_hakwon_address d
+		where
+			a.user_no = #{user_no}
+			and a.hakwon_no = b.hakwon_no
+			and a.hakwon_no = c.hakwon_no
+			and a.hakwon_no = d.hakwon_no
+	]]>
+	</select>
+
+	<!-- 학원 등록 -->
+	<insert id="insertHakwon" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon (
+			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, admin_reg_yn, hakwon_status
+		) values(
+			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, 'Y', '001'
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+
+	<!-- 학원 info 등록 -->
+	<insert id="insertHakwonInfo" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon_info (
+			hakwon_no, hakwon_name, tel_no_1, logo_file_no, udp_date
+		) values(
+			#{hakwonNo}, #{hakwonName}, #{telNo}, #{logoFileNo}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학원 주소 등록 -->
+	<insert id="insertHakwonAddress" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon_address (
+			hakwon_no, addr_no, zip_code, old_sido, old_gugun, old_dong, old_ri, old_bldg_name, old_bunji, all_addr_text
+			, old_addr1, old_addr2, street_addr1, street_addr2
+		)
+		select
+			#{hakwonNo}
+			, a.addr_no
+			, a.zip_code
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.ri
+			, a.bldg_name
+			, a.bunji
+			, #{allAddrText}
+			, #{oldAddr1}
+			, #{oldAddr2}
+			, #{streetAddr1}
+			, #{streetAddr2}
+		from
+			tb_address_zip a
+		where
+			a.addr_no = #{addrNo}
+	]]>
+	</insert>
+
+
+	<!-- 학원 정보 -->
+	<select id="hakwonAddressCheck" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	HakwonDAO.hakwonAddressCheck	*/
+		select count(1) from tb_hakwon_address where hakwon_no = #{hakwonNo}
+	]]>
+	</select>
+
+	<!-- 학원 정보 -->
+	<select id="hakwonInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.hakwonInfo	*/
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, a.reg_date
+			, a.hakwon_name
+			, a.hakwon_cate
+			, b.user_id as master_user_id
+			, b.user_name as master_user_name
+			, calc_age(b.user_birthday) as master_user_age
+			, get_file_path(b.photo_file_no) as master_photo_file_path
+			, case when b.user_gender = 'M' then '남' else '여' end as master_user_gender_name
+			, (select user_type from tb_user where user_no = b.user_no) as user_type
+			, get_file_path(c.logo_file_no) as logo_file_path
+			, c.logo_file_no
+			, (select cate_name from tb_hakwon_cate where cate_code = a.hakwon_cate) as hakwon_cate_name
+			, d.addr_no
+			, d.old_sido
+			, d.old_addr1
+			, d.old_addr2
+			, d.street_addr1
+			, d.street_addr2
+			, c.tel_no_1
+			, a.hakwon_status
+			, get_code_name('012', a.hakwon_status) as hakwon_status_name
+			, c.introduction
+		from
+			tb_hakwon a
+			, tb_user_info b
+			, tb_hakwon_info c
+			, tb_hakwon_address d
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.hakwon_no = c.hakwon_no
+			and a.master_user_no = b.user_no
+			and a.hakwon_no = d.hakwon_no
+	]]>
+		<if test=" 'Y'.toString() eq adminRegYn ">
+			and a.admin_reg_yn = #{adminRegYn}
+		</if>
+	</select>
+
+	<!-- 학원 수정 -->
+	<update id="modifyHakwon" parameterType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.modifyHakwon	*/
+		update tb_hakwon set
+			hakwon_name = #{hakwonName}
+			, hakwon_cate = #{hakwonCate}
+		where
+			hakwon_no = #{hakwonNo}
+			and admin_reg_yn = 'Y'
+	]]>
+	</update>
+
+	<!-- 학원 정보 수정 -->
+	<update id="modifyHakwonInfo" parameterType="dataMap">
+	<![CDATA[
+		/*	HakwonDAO.modifyHakwonInfo	*/
+		update tb_hakwon_info set
+			hakwon_name = #{hakwonName}
+			, tel_no_1 = #{telNo}
+			, logo_file_no = #{logoFileNo}
+		where
+			hakwon_no = #{hakwonNo}
+	]]>
+	</update>
+
+
+	<!-- 학원 삭제 -->
+	<delete id="deleteHakwon" parameterType="dataMap">
+	<![CDATA[
+		delete from tb_hakwon
+		where
+			hakwon_no = #{hakwonNo}
+	]]>
+	</delete>
+
+	<!-- 학원 정보 삭제 -->
+	<delete id="deleteHakwonInfo" parameterType="dataMap">
+	<![CDATA[
+		delete from tb_hakwon_info
+		where
+			hakwon_no = #{hakwonNo}
+	]]>
+	</delete>
+
+	<!-- 학원 주소 삭제 -->
+	<delete id="deleteHakwonAddress" parameterType="dataMap">
+	<![CDATA[
+		delete from tb_hakwon_address
+		where
+			hakwon_no = #{hakwonNo}
+	]]>
+	</delete>
+
+
+	<!-- 학원내 반리스트 조회 -->
+	<select id="hakwonClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonClassList  */
+		select
+			a.class_no
+			, a.class_order
+			, a.class_title
+			, a.class_intro
+			, a.logo_file_no
+			, get_file_path(a.logo_file_no) as logo_file_path
+			, date_format(a.reg_date, '%Y%m%d') as reg_date
+			, (select count(1) from tb_hakwon_class_student where class_no = a.class_no) as student_count
+		from
+			tb_hakwon_class a
+		where
+			a.hakwon_no = #{hakwonNo}
+		order by
+			a.class_order asc
+	]]>
+	</select>
+
+	<!-- 학원 리스트 to String -->
+	<select id="hakwonListToString" parameterType="dataMap" resultType="string">
+		/*	HakwonDAO.hakwonListToString	*/
+		select group_concat(hakwon_name)
+		from tb_hakwon
+		where
+			hakwon_no in
+		<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 학원 상태 업데이트 -->
+	<update id="hakwonStatusUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonStatusUpdate  */
+		update tb_hakwon set
+			hakwon_status = #{status}
+		where
+			hakwon_no = #{hakwonNo}
+	]]>
+	</update>
+
+	<!-- 학원 소개 미리보기 등록 -->
+	<insert id="insertPreviewIntro" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.insertPreviewIntro */
+		insert into tb_preview_intro (
+			hakwon_no, introduction
+		) values (
+			#{hakwon_no}, #{introduction}
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 학원 소개 수정 -->
+	<update id="updateHakwonIntro" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.updateHakwonIntro*/
+		update tb_hakwon_info set
+			introduction = #{introduction}
+			, udp_date = now()
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</update>
+</mapper>

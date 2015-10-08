@@ -1,0 +1,76 @@
+<form action="">
+	<div class="ibox m">
+		<div class="ibox-content form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="academy_write_01">학원명</label>
+				<div class="col-sm-11">
+					<input type="text" class="form-control" placeholder="20자까지" id="academy_write_01" name="hakwonName" ng-model="hakwonObj.hakwon_name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="academy_write_02">전화번호</label>
+				<div class="col-sm-11">
+					<input type="tel" class="form-control" placeholder="" id="academy_write_02" ng-model="hakwonObj.tel_no_1">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">업종</label>
+				<div class="col-sm-11">
+
+					<select class="form-control"
+							name="" title="학년 선택"
+							ng-model="hakwonObj.hakwon_cate"
+							ng-options="item.cateCode as item.cateName for item in hawonCategories">
+					</select>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="academy_write_04">지번주소</label>
+				<div class="col-sm-11">
+					<div class="col-md-4 input-group m-b">
+						<input type="text" class="form-control" name="searchOldDong" placeholder="동 이름으로 검색" id="academy_write_04">
+						<span class="input-group-btn"> <button type="button" data-act="searchOldAddr" class="btn btn-primary">검색</button> </span>
+					</div>
+					<ul class="address_search_result" style="display:none;" data-view="oldAddrList"></ul>
+					<div class="row">
+						<div class="col-md-6">
+							<input type="text" name="oldAddr1" class="form-control" placeholder="검색된 주소" readOnly="true" ng-model="hakwonObj.old_addr1">
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="oldAddr2" class="form-control" placeholder="기타주소 입력" ng-model="hakwonObj.old_addr2">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="academy_write_05">도로명주소</label>
+				<div class="col-sm-11">
+					<div class="col-md-4 input-group m-b">
+						<input type="text" name="searchStreetDong" class="form-control" placeholder="동 이름으로 검색" id="academy_write_05">
+						<span class="input-group-btn"> <button type="button" data-act="searchStreetDong" class="btn btn-primary">검색</button> </span>
+					</div>
+					<ul class="address_search_result" style="display:none;" data-view="streetAddrList"></ul>
+					<div class="row">
+						<div class="col-md-6">
+							<input type="text" name="streetAddr1" class="form-control" placeholder="검색된 주소" readOnly="true" ng-model="hakwonObj.street_addr1">
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="streetAddr2" class="form-control" placeholder="기타주소 입력" ng-model="hakwonObj.street_addr2">
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="ibox-content text-right">
+			<button type="button" class="btn btn-default" ng-click="cancelModify()">취소하기</button>
+			<button type="button" class="btn btn-primary" ng-click="confirmModify()">완료하기</button>
+		</div>
+	</div>
+</form>
+
+

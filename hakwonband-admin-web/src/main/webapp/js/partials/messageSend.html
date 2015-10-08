@@ -1,0 +1,146 @@
+<div class="ibox-content form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-1 control-label">타입</label>
+		<div class="col-sm-11">
+			<select class="form-control m-b" name="messageType">
+				<option value="area">지역</option>
+				<option value="hakwonSearch">학원</option>
+				<option value="userSearch">사용자</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="area" style="display:none;">
+		<label class="col-sm-1 control-label">시/도 선택</label>
+		<div class="col-sm-11">
+			<select class="form-control m-b" name="sido">
+				<option value="all">전체</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="area" style="display:none;">
+		<label class="col-sm-1 control-label">구/군 선택</label>
+		<div class="col-sm-11" data-view="gugunList"></div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="area" style="display:none;">
+		<label class="col-sm-1 control-label">업종</label>
+		<div class="col-sm-11" data-view="hakwonCateList"></div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="area" style="display:none;">
+		<label class="col-sm-1 control-label">사용자 그룹</label>
+		<div class="col-sm-11" data-view="userGroup">
+			<label class="i-checks ca_checks" for="area_user_check_ca_01">
+				<input type="checkbox" name="userType" value="003" id="area_user_check_ca_01">원장님
+			</label>
+			<label class="i-checks ca_checks" for="area_user_check_ca_02">
+				<input type="checkbox" name="userType" value="004" id="area_user_check_ca_02">선생님
+			</label>
+			<label class="i-checks ca_checks" for="area_user_check_ca_03">
+				<input type="checkbox" name="userType" value="005" id="area_user_check_ca_03">학부모
+			</label>
+			<label class="i-checks ca_checks" for="area_user_check_ca_04">
+				<input type="checkbox" name="userType" value="006" id="area_user_check_ca_04">학생
+			</label>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">시/도 선택</label>
+		<div class="col-sm-11">
+			<select class="form-control m-b" name="sido">
+				<option value="">선택하세요.</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">구/군 선택</label>
+		<div class="col-sm-11" data-view="gugunList">
+			<select class="form-control m-b" name="gugun">
+			</select>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">검색하기</label>
+		<div class="col-sm-11">
+			<div class="input-group">
+				<input type="text" name="hakwonSearchText" class="form-control" placeholder="학원명 및 원장님 이름으로 검색"> <span class="input-group-btn"> <button type="button" data-act="hakwonSearch" class="btn btn-primary">검색하기</button></span>
+			</div>
+			<p>학원 검색 결과는 최대 50건까지만 노출됩니다. 지역 및 학원명등 검색어를 정확히 입력해 주세요.</p>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">사용자 그룹</label>
+		<div class="col-sm-11" data-view="userGroup">
+			<label class="i-checks ca_checks" for="hakwonSearch_user_check_ca_01">
+				<input type="checkbox" name="userType" value="003" id="hakwonSearch_user_check_ca_01">원장님
+			</label>
+			<label class="i-checks ca_checks" for="hakwonSearch_user_check_ca_02">
+				<input type="checkbox" name="userType" value="004" id="hakwonSearch_user_check_ca_02">선생님
+			</label>
+			<label class="i-checks ca_checks" for="hakwonSearch_user_check_ca_03">
+				<input type="checkbox" name="userType" value="005" id="hakwonSearch_user_check_ca_03">학부모
+			</label>
+			<label class="i-checks ca_checks" for="hakwonSearch_user_check_ca_04">
+				<input type="checkbox" name="userType" value="006" id="hakwonSearch_user_check_ca_04">학생
+			</label>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">검색결과</label>
+		<div class="col-sm-11">
+			<ul class="search_name_list"></ul>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="hakwonSearch" style="display:none;">
+		<label class="col-sm-1 control-label">선택자</label>
+		<div class="col-sm-11">
+			<ul class="chosen_select"></ul>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="userSearch" style="display:none;">
+		<label class="col-sm-1 control-label">검색하기</label>
+		<div class="col-sm-11">
+			<div class="input-group">
+				<input type="text" class="form-control" name="userSearchText" placeholder="이름 또는 아이디로 검색"> <span class="input-group-btn"> <button type="button" data-act="userSearch" class="btn btn-primary">검색하기</button></span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="userSearch" style="display:none;">
+		<label class="col-sm-1 control-label">검색결과</label>
+		<div class="col-sm-11">
+			<ul class="search_name_list"></ul>
+		</div>
+	</div>
+	<div class="form-group" data-view="commMenu" data-view-type="userSearch" style="display:none;">
+		<label class="col-sm-1 control-label">선택자</label>
+		<div class="col-sm-11">
+			<ul class="chosen_select"></ul>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-1 control-label">내용</label>
+		<div class="col-sm-11">
+			<textarea cols="140" rows="10" name="messageContent" class="form-control"></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-1 control-label">파일첨부</label>
+		<div class="col-sm-11">
+			<span class="btn btn-primary">파일 업로드</span> <input type="file" class="input_file" data-act="file_upload" multiple>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-1 control-label">첨부파일</label>
+		<div class="col-sm-11">
+			<p>
+				<span><i class="fa fa-paperclip"></i> 0개파일 첨부</span>
+			</p>
+			<div class="attachment">
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="ibox-content text-right">
+		<button type="button" data-act="cancel" class="btn btn-default">취소하기</button>
+		<button type="button" data-act="send" class="btn btn-primary">등록하기</button>
+	</div>
+</div>

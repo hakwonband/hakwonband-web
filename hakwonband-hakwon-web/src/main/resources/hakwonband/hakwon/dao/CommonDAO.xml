@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.CommonDAO">
+
+	<insert id="insertErrorLog" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.insertErrorLog	*/
+		insert into tb_error_log (
+			was_instance, was_ip, was_port, request_content, exception_trace, error_req_type, error_message, ajax_yn, req_ip, req_date, function_param
+		) values (
+			#{wasInstance}, #{wasIp}, #{wasPort}, #{requestContent}, #{exceptionTrace}, #{errorreqType}, #{errorMessage}, #{ajaxYN}, #{reqIp}, now(), #{functionParam}
+		)
+	]]>
+	</insert>
+
+
+	<select id="errorLogList" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.errorLogList	*/
+		select
+			a.error_no
+			, a.was_instance
+			, a.was_ip
+			, a.was_port
+			, a.error_req_type
+			, a.error_message
+			, a.ajax_yn
+			, a.req_ip
+			, a.req_date
+		from
+			tb_error_log a
+		order by
+			a.error_no desc
+	]]>
+	</select>
+
+	<select id="errorLogDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.errorLogDetail	*/
+		select
+			a.error_no
+			, a.was_instance
+			, a.was_ip
+			, a.was_port
+			, a.request_content
+			, a.exception_trace
+			, a.function_param
+			, a.error_req_type
+			, a.error_message
+			, a.ajax_yn
+			, a.req_ip
+			, date_format(a.req_date, '%Y년%m월%d일 %H:%i') as req_date
+		from
+			tb_error_log a
+		where
+			a.error_no = #{errorNo}
+	]]>
+	</select>
+
+	<select id="selectTime" resultType="String">
+		select now();
+	</select>
+
+
+	<!-- 계정 로그인 -->
+	<select id="selectLoginInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.selectLoginInfo	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, b.user_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_id = #{userId}
+			and a.user_password = #{userPass}
+			and a.user_no = b.user_no
+			and a.use_yn = 'Y'
+			and a.user_type in ('003', '004')
+	]]>
+	</select>
+
+	<!-- 로그인 이력 등록 -->
+	<insert id="insertLoginHis" parameterType="dataMap" >
+	<![CDATA[
+		/*	CommonDAO.insertLoginHis	*/
+		insert into tb_login_hist (
+			user_no
+			, user_type
+			, auth_key
+			, login_ip
+			, login_date
+			, last_access_date
+			, device_token
+			, device_type
+			, is_production
+		) values(
+			#{userNo}
+			, #{userType}
+			, #{authKey}
+			, #{loginIp}
+			, now()
+			, now()
+			, #{deviceToken}
+			, #{deviceType}
+			, #{isProduction}
+		)
+	]]>
+	</insert>
+
+	<!-- 인증 코드로 계정 로그인 -->
+	<select id="authCheckUser" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.authCheckUser	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, b.user_name
+			, get_file_path(b.photo_file_no) as profile_path
+			, x.device_token
+			, x.device_type
+		from
+			tb_login_hist x
+			, tb_user a
+			, tb_user_info b
+		where
+			x.auth_key = #{authKey}
+			and x.logout_yn is null
+			and x.logout_date is null
+			and x.user_no = a.user_no
+			and x.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+			and a.user_type in ('003', '004')
+	]]>
+	</select>
+
+	<!-- config 조회 -->
+	<select id="selectConfigVal" parameterType="string" resultType="string">
+	<![CDATA[
+		/*	CommonDAO.selectConfigVal	*/
+		select config_val
+		from tb_config
+		where config_key = #{configKey}
+	]]>
+	</select>
+
+	<!-- 디바이스 로그인 이력 삭제 -->
+	<delete id="cleanDeviceLoginHist" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.cleanDeviceLoginHist	*/
+		delete from tb_login_hist
+		where
+			(user_no = #{user_no} and device_token is not null)
+			or (device_token = #{deviceToken} and device_token is not null)
+	]]>
+	</delete>
+
+	<!-- 디바이스  삭제 -->
+	<delete id="deviceDelete" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.deviceDelete	*/
+		delete from tb_login_hist
+		where
+			device_token = #{deviceToken}
+	]]>
+	</delete>
+
+	<!-- 로그인 이력 삭제 -->
+	<delete id="deleteLoginHis" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.deleteLoginHis	*/
+		delete from tb_login_hist
+		where auth_key = #{authKey}
+	]]>
+	</delete>
+
+
+	<!-- 설정 조회 -->
+	<select id="selectConfig" parameterType="string" resultType="string">
+	<![CDATA[
+		/*	CommonDAO.selectConfig	*/
+		select a.config_val
+		from tb_config a
+		where a.config_key = #{value}
+	]]>
+	</select>
+
+	<!-- 반 학생들의 디바이스 리스트 -->
+ 	<select id="classStudentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* CommonDAO.classStudentDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_class_student a
+		where
+			a.class_no = #{class_no}
+			and a.student_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 반 학생들의 부모 디바이스 리스트 -->
+ 	<select id="classParentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* CommonDAO.classParentDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+			select
+				distinct b.parent_user_no
+			from
+				tb_hakwon_class_student a
+				, tb_student_parent b
+			where
+				a.class_no = #{class_no}
+				and a.student_user_no = b.student_user_no
+			) y
+		where
+			y.parent_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 학원 멤버의 디바이스 리스트 -->
+ 	<select id="hakwonMemberDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* CommonDAO.hakwonMemberDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 앱 버전 조회 -->
+	<select id="getAppVersion" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.getAppVersion	*/
+		select
+			app_version
+			, device_type
+		from tb_app_info
+	]]>
+	</select>
+
+	<!-- code to String -->
+	<select id="codeToString" parameterType="dataMap" resultType="string">
+		/*	CommonDAO.codeToString	*/
+		select group_concat(code_name)
+		from tb_code
+		where
+			code_group = #{codeGroup}
+			and code in
+		<foreach collection="codeList" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 사용자 디바이스 정보 -->
+	<select id="getUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.getUserDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+			, a.user_no
+		from
+			tb_login_hist a
+		where
+			a.user_no = #{receiveUserNo}
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 관리자 디바이스 정보 -->
+	<select id="getAdminDeviceToken" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.getAdminDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+			, a.user_no
+		from
+			tb_login_hist a
+		where
+			a.user_no in (1,2,3)
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 학원 멤버 디바이스 정보 -->
+	<select id="getHakwonMemberDeviceToken" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.getHakwonMemberDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+			, a.user_no
+		from
+			tb_login_hist a
+		where
+			a.user_no in ( select user_no from tb_hakwon_member where hakwon_no = #{hakwon_no} )
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 로그인 사용자 디바이스 토큰 업데이트 -->
+	<update id="loginUserDeviceTokenUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.loginUserDeviceTokenUpdate	*/
+		update tb_login_hist set
+			device_token = #{device_token}
+			, device_type = #{device_type}
+			, is_production = #{is_production}
+		where
+			auth_key = #{auth_key}
+	]]>
+	</update>
+</mapper>

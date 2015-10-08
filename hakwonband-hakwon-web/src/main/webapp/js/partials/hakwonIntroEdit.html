@@ -1,0 +1,100 @@
+<div class="col-md-3">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h2>학원정보</h2>
+		</div>
+		<div class="ibox-content no-padding border-left-right">
+			<img alt="image" class="img-responsive" ng-src="{{ getLogoFullPath() }}" src="/assets/img/profile_big.jpg">
+		</div>
+		<div class="ibox-content profile-content">
+			<h3><strong>{{ hakwonObj.hakwon_name }}</strong></h3>
+			<ul>
+				<li>{{hakwonObj.old_sido}} / {{hakwonObj.hakwon_name}}</li>
+				<li>{{ getAllAddrText() }}</li>
+				<li>{{hakwonObj.tel_no_1}}</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="col-md-9">
+	<div class="ibox float-e-margins">
+		<div class="ibox-content form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-1 control-label">내용</label>
+				<div class="col-sm-11">
+					<!--<textarea cols="140" data-lib="editor" rows="10" class="form-control" ng-model="hakwonObj.introduction"></textarea>-->
+					<textarea cols="140" data-lib="editor" rows="10" class="form-control">{{ hakwonObj.introduction }}</textarea>
+				</div>
+			</div>
+			<!--
+			<div class="form-group">
+				<label class="col-sm-1 control-label">지도첨부</label>
+				<div class="col-sm-11">
+					<div class="input-group">
+						<input type="text" name="mapHtml" class="form-control">
+						<span class="input-group-btn"> <button type="button" data-act="mapInsert" class="btn btn-primary">지도삽입</button> </span>
+					</div>
+				</div>
+			</div>
+			-->
+			<div class="form-group">
+				<label class="col-sm-1 control-label">지도첨부</label>
+				<div class="col-sm-11">
+					<div class="input-group">
+						<input type="text" name="daumMapHtml" class="form-control">
+						<span class="input-group-btn"> <button type="button" data-act="daumMapInsert" class="btn btn-primary">지도삽입</button> </span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">Youtube 동영상 첨부</label>
+				<div class="col-sm-11">
+					<div class="input-group">
+						<input type="text" name="youtubeID" class="form-control">
+						<span class="input-group-btn"> <button type="button" data-act="youtubeInsert" placeholder="Youtube 동영상 코드를 입력해 주세요." class="btn btn-primary">동영상 삽입</button> </span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">파일첨부</label>
+				<div class="col-sm-11">
+					<span class="btn btn-primary">파일 업로드</span>
+					<input type="file" class="input_file" data-act="file_upload" ng-click="checkMaxFileCnt($event)" multiple>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">첨부파일</label>
+				<div class="col-sm-11">
+					<p>
+						<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span>
+					</p>
+					<div class="attachment" data-list='attachment' ng-if="fileList.length > 0">
+
+						<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
+							<div class="file">
+								<div class="icon" ng-if="item.image_yn != 'Y'">
+									<i class="fa fa-file"></i>
+								</div>
+								<div class="image" ng-if="item.image_yn == 'Y'">
+									<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
+								</div>
+								<div class="file-name">
+									<p>{{item.file_name}}</p>
+								</div>
+								<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
+							</div>
+						</div>
+
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ibox-content text-right">
+			<button type="button" class="btn btn-default" ng-click="cancelEdit()">취소하기</button>
+			<button type="button" class="btn btn-primary" ng-click="confirmEdit()">등록하기</button>
+			<button type="button" class="btn btn-primary" ng-click="previewIntro()">미리보기</button>
+		</div>
+	</div>
+</div>

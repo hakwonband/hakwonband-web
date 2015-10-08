@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.MasterDAO">
+
+	<!-- 학원 리스트 -->
+	<select id="masterHakwonAllList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonAllList */
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, a.reg_date
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, b.hakwon_name
+			, a.hakwon_status
+			, get_code_name('012', a.hakwon_status) as hakwon_status_name
+			, a.hakwon_cate
+			, get_cate_name(a.hakwon_cate) as hakwon_cate_name
+			, get_file_path(b.logo_file_no) as logo_file_path
+			, (select count(1) from tb_hakwon_teacher where hakwon_no = a.hakwon_no and approved_yn = 'Y' ) teacher_count
+			, (select count(1) from tb_hakwon_member where hakwon_no = a.hakwon_no and user_type = '006' ) student_count
+			, (select count(1) from tb_hakwon_member where hakwon_no = a.hakwon_no and user_type = '005' ) parents_count
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.master_user_no = #{user_no}
+			and a.hakwon_no = b.hakwon_no
+		order by
+			b.hakwon_name asc
+	]]>
+	</select>
+
+	<!-- 학원 리스트 -->
+	<select id="masterHakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.hakwonList */
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, a.reg_date
+			, b.hakwon_name
+			, get_file_path(b.logo_file_no) as logo_path
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.master_user_no = #{master_user_no}
+			and a.hakwon_status = '001'
+			and a.hakwon_no = b.hakwon_no
+		order by
+			b.hakwon_name asc
+	]]>
+	</select>
+
+	<!-- 학원 리스트 카운트-->
+	<select id="masterHakwonListCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MasterDAO.hakwonList */
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.master_user_no = #{master_user_no}
+			and a.hakwon_status = '001'
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	</select>
+
+	<!-- 학원 등록 -->
+	<insert id="insertHakwon" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon (
+			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, hakwon_status
+		) values(
+			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, '001'
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 학원 info 등록 -->
+	<insert id="insertHakwonInfo" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon_info (
+			hakwon_no, hakwon_name, tel_no_1, logo_file_no, udp_date
+		) values(
+			#{hakwonNo}, #{hakwonName}, #{telNo}, #{logoFileNo}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학원 주소 등록 -->
+	<insert id="insertHakwonAddress" parameterType="dataMap">
+	<![CDATA[
+		insert into tb_hakwon_address (
+			hakwon_no, addr_no, zip_code, old_sido, old_gugun, old_dong, old_ri, old_bldg_name, old_bunji, all_addr_text
+			, old_addr1, old_addr2, street_addr1, street_addr2
+		)
+		select
+			#{hakwonNo}
+			, a.addr_no
+			, a.zip_code
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.ri
+			, a.bldg_name
+			, a.bunji
+			, #{allAddrText}
+			, #{oldAddr1}
+			, #{oldAddr2}
+			, #{streetAddr1}
+			, #{streetAddr2}
+		from
+			tb_address_zip a
+		where
+			a.addr_no = #{addrNo}
+	]]>
+	</insert>
+
+	<!-- 학원 정보 수정 -->
+	<update id="masterHakwonUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonUpdate*/
+		update tb_hakwon set
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_cate )">
+			hakwon_cate = #{hakwon_cate},
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_name )">
+			hakwon_name = #{hakwon_name}
+		</if>
+	<![CDATA[
+		where
+			hakwon_no = #{hakwon_no}
+			and master_user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 학원 부가정보 수정 -->
+	<update id="masterHakwonInfoUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonInfoUpdate*/
+		update tb_hakwon_info set
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_name )">
+		 	hakwon_name = #{hakwon_name},
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( tel_no_1 )">
+			tel_no_1 = #{tel_no_1},
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( tel_no_2 )">
+			tel_no_2 = #{tel_no_2},
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( introduction )">
+			introduction = #{introduction},
+		</if>
+			udp_date = now()
+	<![CDATA[
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</update>
+
+	<!-- 학원 주소 삭제 (학원주소 변경시 삭제 후, insert가 용이함) -->
+	<delete id="masterHakwonAddressDelete" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonAddressDelete */
+		delete from tb_hakwon_address where hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<!-- 학원 반 정보 등록 -->
+	<insert id="masterHakwonClassInsert" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonClassInsert */
+		insert into tb_hakwon_class (
+			hakwon_no, class_order, class_title, class_intro, reg_date, udp_date
+		) values (
+			#{hakwon_no}, #{class_order}, #{class_title}, #{class_intro}, now(), now()
+		)
+	]]>
+	</insert>
+
+	<!-- 반 정보 수정 -->
+	<update id="updateClassInfo" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.updateClassInfo*/
+		update tb_hakwon_class set
+			class_title = #{class_title}
+			, class_intro = #{class_intro}
+		where
+			class_no = #{class_no}
+	]]>
+	</update>
+
+	<!-- 반 삭제 전, 소속 선생님과 학생 카운트 체크 -->
+	<select id="checkClassMemberCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MasterDAO.checkClassMemberCount*/
+		select sum(x.cnt) from (
+			select count(1) as cnt from tb_hakwon_class_teacher a where a.hakwon_no = #{hakwon_no} and a.class_no = #{class_no}
+			union all
+			select count(1) as cnt from tb_hakwon_class_student a where a.hakwon_no = #{hakwon_no} and a.class_no = #{class_no}
+		) x
+	 ]]>
+	</select>
+
+	<!-- 반 삭제 -->
+	<delete id="deleteClass" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.deleteClass*/
+		delete from tb_hakwon_class
+		where
+			hakwon_no = #{hakwon_no}
+			and class_no = #{class_no}
+			and hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{master_user_no})
+	]]>
+	</delete>
+
+	<!-- 학원 반 정보(선생님) 등록 -->
+	<insert id="insertClassTeacher" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.insertClassTeacher */
+		insert into tb_hakwon_class_teacher (
+			hakwon_no, class_no, teacher_user_no, reg_date
+		) values (
+			#{hakwon_no}, #{class_no}, #{teacher_user_no}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학원 반 선생님 삭제 -->
+	<delete id="deleteClassTeacher" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.deleteClassTeacher*/
+		delete from tb_hakwon_class_teacher
+		where
+			hakwon_no = #{hakwon_no}
+			and class_no = #{class_no}
+			and teacher_user_no = #{teacher_user_no}
+			and hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{master_user_no})
+	]]>
+	</delete>
+
+	<!-- 선생님 담당과목 수정 -->
+	<update id="updateTeacherSubject" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.updateTeacherSubject */
+		update tb_hakwon_teacher set
+			approved_yn = 'Y'
+			, subject = #{subject}
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{teacher_user_no}
+	 ]]>
+	</update>
+
+	<!-- 선생님 담당교과 수정 -->
+	<update id="masterUpdateTeacherSubject" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterUpdateTeacherOk */
+		update tb_hakwon_teacher set
+			subject = #{subject}
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{teacher_user_no}
+	 ]]>
+	</update>
+
+	<!-- 학원 전체 선생님 리스트 -->
+	<select id="masterTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterTeacherList*/
+		select
+			a.hakwon_no
+			, a.user_no
+			, a.subject
+			, b.user_name
+			, b.user_gender
+			, calc_age(str_to_date(b.user_birthday, '%Y-%m-%d')) as user_age
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, b.tel1_no
+			, b.tel2_no
+			, b.user_url
+			, c.user_id
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+			and a.approved_yn = 'Y'
+			and c.approved_yn = 'Y'
+		order by
+			a.reg_date desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 학원 전체 선생님 리스트 카운트 -->
+	<select id="masterTeacherListCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MasterDAO.masterTeacherListCount*/
+		select
+			count(1)
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+			and a.approved_yn = 'Y'
+			and c.approved_yn = 'Y'
+	 ]]>
+	</select>
+
+	<!-- 학원 선생님 검색 (반에 미등록된 선생님 체크) -->
+	<select id="searchTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.searchTeacherList*/
+		select
+			a.hakwon_no
+			, a.user_no
+			, a.subject
+			, b.user_name
+			, b.user_gender
+			, calc_age(str_to_date(b.user_birthday, '%Y-%m-%d')) as user_age
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, b.tel1_no
+			, b.tel2_no
+			, b.user_url
+			, c.user_id
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+			and c.approved_yn = 'Y'
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.user_name like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
+		order by
+			a.reg_date desc
+	]]>
+	</select>
+
+	<!-- 학원 선생님 검색 카운트 (반에 미등록된 선생님 체크) -->
+	<select id="searchTeacherListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MasterDAO.searchTeacherListTotCount*/
+		select
+			count(1)
+		from
+			tb_hakwon_teacher a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+			and b.user_no = c.user_no
+			and c.approved_yn = 'Y'
+	 ]]>
+	 	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.user_name like concat('%', #{searchText}, '%')
+		</if>
+	</select>
+
+	<!-- 학원 소개 수정 -->
+	<update id="masterUpdateHakwonIntro" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterUpdateHakwonIntro*/
+		update tb_hakwon_info set
+			introduction = #{introduction}
+			, udp_date = now()
+		where
+			hakwon_no = #{hakwon_no}
+			and 1 = (
+				select count(1)
+				from tb_hakwon
+				where hakwon_no = #{hakwon_no} and master_user_no = #{user_no}
+			)
+	]]>
+	</update>
+
+	<!-- 승인/거절 처리 -->
+	<update id="approvedUpdate" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.approvedUpdate */
+		update tb_user set
+			approved_yn = #{approvedYn}
+		where
+			user_no in
+	]]>
+	<foreach collection="userNoArray" item="item" index="index" separator="," open="(" close=")">
+		${userNoArray[index]}
+	</foreach>
+	</update>
+
+	<!-- 미승인 선생님 리스트 -->
+	<select id="unauthorizedTeacherList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MasterDAO.unauthorizedTeacherList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, a.reg_date
+			, b.user_name
+			, b.user_gender
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, c.hakwon_name
+			, calc_age(b.user_birthday) as user_age
+			, c.hakwon_no
+			, b.user_gender
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_hakwon c
+			, tb_hakwon_teacher d
+		where
+			c.master_user_no = #{user_no}
+			and c.hakwon_no = d.hakwon_no
+			and (d.approved_yn = 'N' or d.approved_yn is null)
+			and d.user_no = a.user_no
+			and a.user_type= '004'
+			and a.user_no = b.user_no
+		order by
+			b.user_name asc
+	]]>
+	</select>
+
+	<!-- 선생님 승인 -->
+	<update id="teacherHakwonApproved" parameterType="dataMap">
+	<![CDATA[
+		/*	MasterDAO.teacherHakwonApproved	*/
+		update tb_hakwon_teacher set
+			approved_yn = 'Y'
+		where
+			hakwon_no = #{hakwonNo}
+			and user_no = #{teacherUserNo}
+	]]>
+	</update>
+
+	<!-- 선생님 학원 등록 -->
+	<insert id="teacherHakwonInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	MasterDAO.teacherHakwonInsert	*/
+		insert into tb_hakwon_teacher (
+			hakwon_no, user_no, subject, approved_yn, reg_date
+		) values(
+			#{hakwonNo}, #{teacherUserNo}, '', 'Y', now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학원내 반리스트 조회 -->
+	<select id="hakwonClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.hakwonClassList  */
+		select
+			a.class_no
+			, a.class_order
+			, a.class_title
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+			, (select count(1) from tb_hakwon_class_student where hakwon_no = a.hakwon_no and class_no = a.class_no) as student_count
+		from
+			tb_hakwon_class a
+		where
+			a.hakwon_no = #{hakwon_no}
+		order by
+			a.class_title asc
+	]]>
+	</select>
+
+	<!-- 미승인 학원 리스트 -->
+	<select id="unauthorizedHakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.unauthorizedHakwonList  */
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, a.reg_date
+			, b.hakwon_name
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.master_user_no = #{master_user_no}
+			and a.hakwon_status = '002'
+			and a.hakwon_no = b.hakwon_no
+		order by
+			b.hakwon_name asc
+	]]>
+	</select>
+
+	<!-- 학원에서 선생님 제거 -->
+	<delete id="teacherHakwonDelete" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.teacherHakwonDelete  */
+		delete from tb_hakwon_teacher
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{teacher_user_no}
+			and 1 = (select count(1) from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{user_no})
+	]]>
+	</delete>
+
+	<!-- 반에서 선생님 제거 -->
+	<delete id="teacherClassDelete" parameterType="dataMap">
+	<![CDATA[
+		/* MasterDAO.teacherClassDelete  */
+		delete from tb_hakwon_class_teacher
+		where
+			hakwon_no = #{hakwon_no}
+			and teacher_user_no = #{teacher_user_no}
+	]]>
+	</delete>
+</mapper>

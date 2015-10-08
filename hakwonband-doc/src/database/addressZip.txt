@@ -1,0 +1,25 @@
+
+drop table if exists tb_address_zip;
+create table tb_address_zip (
+	addr_no					integer			not null	auto_increment	comment '주소 번호'
+	, zip_code				char(7)			not null					comment '우편 번호'
+	, sido					varchar(4)		not null					comment '시도'
+	, gugun					varchar(17)		not null					comment '구군'
+	, dong					varchar(26)									comment '읍면동'
+	, ri					varchar(15)									comment '리'
+	, bldg_name				varchar(42)									comment '빌딩명'
+	, bunji					varchar(17)									comment '번지,아파트동,호수'
+	, data_date				date			not null					comment '데이타 날짜'
+	, seq					integer										comment '임시(나중에 지운다.)'
+	, primary key (addr_no)
+)
+engine = innodb
+character set utf8
+comment = '우편 번호'
+;
+
+http://www.zipfinder.co.kr/ 에서 파일 다운로드
+txt 파일을 csv 로 변경해서 dbeaver로 로드해서 export sql 한다.
+
+csv 파일로 변환시에 파일 인코딩을 MS929로 변경한다.
+UTF-8은 한글이 깨지고 그냥 euc-kr로 깨지는 문제가 발생 한다.

@@ -1,0 +1,96 @@
+<!-- 반 상세정보 include -->
+<div class="col-md-3" ng-include="'/js/partials/classDetail.html'"></div>
+
+<div class="col-md-9">
+	<div class="ibox">
+		<div class="ibox-title">
+			<h3>담당선생님 추가하기</h3>
+			<div class="ibox-tools">
+				<a class="collapse-link">
+					<i class="fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+		<div class="ibox-content">
+			<div class="input-group m-b-xl">
+				<input type="text" class="form-control" placeholder="이름으로 찾아 선생님 추가하기" ng-model="searchText" ng-keydown="searchTeacherEnter($event)">
+				<span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="searchTeacherClick()">검색</button> </span>
+			</div>
+
+			<ul class="find_people_result row">
+				<li class="col-md-6" ng-repeat="item in hakwonTeacherList">
+					<div class="people_list_box">
+						<img class="img-circle" ng-src="{{ getFileFullPath(item.photo_file_path) }}" alt="{{ item.user_name }}프로필" width="30" height="30">
+						<strong class="name">{{ item.user_name }}</strong> <span>{{ getUserGender(item.user_gender) }}/{{ item.subject }}</span>
+						<button class="btn btn-default btn_add" type="button" ng-if="checkClassTeacher(item) == true" ng-click="addTeacherClass(item)">추가 </button>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="ibox">
+		<div class="ibox-content text-right">
+			<button class="btn btn-primary btn_message" type="button" ng-click="checkAllTeacher()">전체선택</button>
+			<button class="btn btn-primary btn_message" type="button" ng-click="sendMessageList()">선택자 메세지 보내기</button>
+		</div>
+
+		<!-- 선생님 없음 -->
+		<div class="ibox-content" ng-if="isTeachers == false">
+			<div class="contact-box box_nodata">
+				등록된 선생님이 없습니다.
+			</div>
+		</div>
+
+		<div class="ibox-content" ng-if="isTeachers == true">
+			<div class="contact-box people_contact_box" ng-click="item.isSelected = !item.isSelected" ng-class="{'active' : item.isSelected == true}" ng-repeat="item in teacherList">
+				<div class="profile_img_box">
+					<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.photo_file_path) }}" alt="프로필 사진">
+					<h3 class="title_name">{{ item.user_name }}</h3>
+				</div>
+				<ul class="contact-box-info">
+					<li>아이디 : {{ item.user_id }}</li>
+					<li>핸드폰 : <a href="">{{ item.tel1_no }}</a></li>
+					<li>성별/나이 : {{ getUserGender(item.user_gender) }} / {{ item.age }}세</li>
+
+					<!-- 담당교과 입력전 -->
+					<li ng-if="!item.subject">
+						<button type="button" class="btn btn-info m-t" ng-click="isShow = !isShow">담당교과 입력</button>
+						<div ng-show="isShow">
+							<input type="text" size="30" class="input_style" ng-init="item.tempSubject = item.subject" ng-model="item.tempSubject">
+							<button type="button" class="btn btn-info" ng-click="editSubject(item); isShow = false">완료</button>
+						</div>
+					</li>
+
+					<!-- 담당교과 입력후 -->
+					<li ng-if="item.subject">담당교과 : {{ item.subject }}
+						<button type="button" class="btn badge" ng-click="isEdit = ! isEdit">
+							<i class="fa fa-pencil" title="수정"></i>
+						</button>
+
+						<!-- 담당교과 입력버튼 클릭 후 -->
+						<div ng-show="isEdit">
+							<input type="text" size="30" class="input_style" ng-init="item.tempSubject = item.subject" ng-model="item.tempSubject">
+							<button type="button" class="btn btn-info" ng-click="editSubject(item); isEdit = false">완료</button>
+						</div>
+					</li>
+
+				</ul>
+				<button type="button" class="btn btn-default btn_message" ng-click="sendMessage(item)"><i class="fa fa-envelope-o"></i> 메세지 보내기</button>
+				<button type="button" class="btn btn-warning btn_message" ng-click="removeTeacherClass(item)">선생님 삭제</button>
+			</div>
+
+		</div>
+		<div class="ibox-content text-right">
+			<button class="btn btn-primary btn_message" type="button" ng-click="checkAllTeacher()">전체선택</button>
+			<button class="btn btn-primary btn_message" type="button" ng-click="sendMessageList()">선택자 메세지 보내기</button>
+		</div>
+	</div>
+
+	<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+		<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+		<button ng-repeat="page in pageInfo.pages"class="btn btn-white"  ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i></button>
+	</div>
+
+</div>

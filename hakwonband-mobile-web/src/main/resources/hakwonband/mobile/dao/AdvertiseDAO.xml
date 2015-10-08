@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.AdvertiseDAO">
+
+	<!-- 블럭 광고 리스트 -->
+	<select id="blockList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.blockList	*/
+		select
+			a.old_sido
+			, a.old_gugun
+			, a.old_dong
+			, get_file_path(c.banner_file_no) as banner_file_path
+			, c.banner_size
+			, c.hakwon_no
+			, d.hakwon_name
+			, get_file_path(e.logo_file_no) as logo_file_path
+			, get_cate_name(d.hakwon_cate) as hakwon_cate_name
+			, e.tel_no_1
+			, d.admin_reg_yn
+		from
+			tb_hakwon_address a
+			, tb_advertise_local_date b
+			, tb_advertise_req c
+			, tb_hakwon d
+			, tb_hakwon_info e
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.old_sido = b.sido
+			and a.old_gugun = b.gugun
+			and a.old_dong = b.dong
+			and b.view_month = date_format(now(), '%Y%m')
+			and b.advertise_req_no = c.advertise_req_no
+			and c.deposit_yn = 'Y'
+			and c.stop_admin_yn = 'N'
+			and c.hakwon_no = d.hakwon_no
+			and d.hakwon_status in ('001', '003')
+			and d.hakwon_cate <> (select hakwon_cate from tb_hakwon where hakwon_no = a.hakwon_no)
+			and c.hakwon_no = e.hakwon_no
+		order by
+			c.banner_size desc
+	]]>
+	</select>
+
+	<!-- 지역 광고 리스트 -->
+	<select id="areaList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.areaList	*/
+		select
+			a.old_sido
+			, a.old_gugun
+			, a.old_dong
+			, b.hakwon_no
+			, c.hakwon_name
+			, get_file_path(d.logo_file_no) as logo_file_path
+			, get_cate_name(c.hakwon_cate) as hakwon_cate_name
+			, d.tel_no_1
+			, c.admin_reg_yn
+		from
+			tb_hakwon_address a
+			, tb_hakwon_address b
+			, tb_hakwon c
+			, tb_hakwon_info d
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.old_sido = b.old_sido
+			and a.old_gugun = b.old_gugun
+			and a.old_dong = b.old_dong
+			and b.hakwon_no = c.hakwon_no
+			and c.hakwon_status in ('001', '003')
+			and c.hakwon_cate <> (select hakwon_cate from tb_hakwon where hakwon_no = a.hakwon_no)
+			and b.hakwon_no = d.hakwon_no
+		order by
+			c.admin_reg_yn asc
+			, c.hakwon_no asc
+		limit
+			35
+	]]>
+	</select>
+
+	<!-- 공통 광고 리스트 -->
+	<select id="commList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.commList	*/
+		select
+			a.old_sido
+			, a.old_gugun
+			, a.old_dong
+			, b.hakwon_no
+			, c.hakwon_name
+			, get_file_path(d.logo_file_no) as logo_file_path
+			, get_cate_name(c.hakwon_cate) as hakwon_cate_name
+			, d.tel_no_1
+			, c.admin_reg_yn
+		from
+			tb_hakwon_address a
+			, tb_hakwon_address b
+			, tb_hakwon c
+			, tb_hakwon_info d
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.old_sido = b.old_sido
+			and a.old_gugun = b.old_gugun
+			and b.hakwon_no = c.hakwon_no
+			and c.hakwon_status in ('001', '003')
+			and c.hakwon_cate <> (select hakwon_cate from tb_hakwon where hakwon_no = a.hakwon_no)
+			and b.hakwon_no = d.hakwon_no
+		order by
+			c.admin_reg_yn asc
+			, c.hakwon_no asc
+		limit
+			20
+	]]>
+	</select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<section>
+	<div class="sec_title">
+		<h2 class="tit hide">탭영역</h2>
+	</div>
+
+	<div class="sec_blk">
+		<div class="sec_tab">
+			<a href="#findId" class="on">아이디 찾기</a>
+			<a href="#findPw">비밀번호 찾기</a>
+		</div>
+	</div>
+</section>
+
+<section ng-if="!isFound" class="sec_findid">
+	<div class="sec_title">
+		<h2 class="tit hide">아이디 찾기</h2>
+	</div>
+
+	<div class="sec_blk">
+		<div class="sec_input">
+			<input type="text" ng-model="user_name" name="user_name" title="이름 입력" placeholder="이름" />
+			<input type="text" ng-model="tel1_no" name="tel1_no" title="전화번호 입력" placeholder="전화번호" />
+		</div>
+
+		<!--버튼 영역-->
+		<button type="button" class="btn btn_style_submit btn_block btn_bold" ng-click="findId()">완료</button>
+		<!--//버튼 영역-->
+	</div>
+</section>
+
+<section ng-show="isFound">
+	<div class="sec_title">
+		<h2 class="tit hide">아이디 찾기 결과</h2>
+	</div>
+
+	<div class="sec_blk">
+		<div class="sec_result">
+			가입된 아이디는<br /><span>{{foundId}}</span> 입니다.
+		</div>
+
+		<!--버튼 영역-->
+		<button type="button" class="btn btn_style_submit btn_block btn_bold" ng-click="goLogin();">로그인 하러 가기</button>
+		<!--//버튼 영역-->
+	</div>
+</section>

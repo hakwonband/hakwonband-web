@@ -1,0 +1,84 @@
+	<div class="ibox">
+		<div class="ibox-content message_page">
+			<!-- 메세지 단위 시작 -->
+			<div class="ibox-content message_page" ng-if="messages.length === 0">
+				<div class="box_nodata">
+				보낸 메세지가 없습니다.
+				</div>
+			</div>
+
+			<div class="feed-element message_box" ng-class="{active:message.isShow}" ng-repeat="message in messages">
+				<span class="pull-left" ng-click="toggleMessage(message.receive_no);"><img alt="image" class="img-circle" ng-src="{{createFileFullPath(message.photo_file_path,'photo')}}"></span>
+				<div class="media-body">
+					<small class="pull-right" ng-click="toggleMessage(message.receive_no);"><span class="text-muted">{{message.write_date}}</span></small>
+					<p ng-click="toggleMessage(message.receive_no);"><span class="badge .badge-plain">{{message.user_type_text}}</span> <strong>{{message.user_name}}</strong> {{message.user_id}} / {{message.user_gender==='M'?'남':'여'}}{{message.age ? ' / ' + message.age : ''}}</p>
+					<!-- 메세지 텍스트 시작 -->
+					<p class="message_body_text" ng-if="message.isShow && !!message.contents" ng-click="toggleMessage(message.receive_no);" ng-bind-html="message.contents | rawHtml"></p>
+					<!-- 메세지 텍스트 끝 -->
+
+					<!-- 첨부 파일 영역 시작 -->
+					<p style="height:30px;">
+						<span><i class="fa fa-paperclip"></i> {{message.file_count}} 개파일 첨부</span>
+					</p>
+					<div class="attachment" ng-if="message.isShow && message.file_count > 0">
+						<div class="file-box" ng-repeat="item in message.files" data-file-no="{{item.file_no}}">
+							<div class="file">
+								<a href="{{ createFileFullPath(item.file_path, 'down') }}" target="_blank">
+									<!-- 일반 파일 처리 -->
+									<div class="icon" ng-if="item.image_yn != 'Y'">
+										<i class="fa fa-file"></i>
+									</div>
+									<!-- 이미지 파일 처리 -->
+									<div class="image" ng-if="item.image_yn == 'Y'">
+										<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ createFileFullPath(item.file_path, 'attachment') }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
+									</div>
+
+									<div class="file-name">
+										<p>{{item.file_name}}</p>
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<!-- 첨부 파일 영역 끝 -->
+
+					<!-- 댓글 영역 시작 -->
+					<div class="comment_box">
+						<div class="comment_count text-right"><i class="fa fa-comment"></i> {{message.reply_count}}개의 댓글</div>
+						<div class="comment_well" ng-if="message.isShow">
+							<!-- 상대방 댓글은 class="feed-element" 내 댓글은 class="well" -->
+							<div ng-repeat="comment in message.comments">
+								<div class="feed-element" ng-if="comment.reg_user_no !== user_no">
+									<a href="#" class="pull-left">
+										<img alt="image" class="img-circle" ng-src="{{createFileFullPath(comment.photo_file_path,'photo')}}">
+									</a>
+									<div class="media-body">
+										<strong>{{comment.reg_user_name}}</strong> <span ng-bind-html="comment.reply_content | rawHtml"></span>
+										<small class="text-muted">{{comment.reg_date_long}}</small>
+									</div>
+								</div>
+								<div class="well" ng-if="comment.reg_user_no === user_no">
+									<div ng-bind-html="comment.reply_content | rawHtml"></div>
+									<small class="text-muted">{{comment.reg_date_long}}</small>
+								</div>
+							</div>
+							<!-- 댓글 쓰기 시작 -->
+							<div class="comment_write has-success">
+							<textarea rows="3" cols="30" id="comment_{{message.receive_no}}" class="form-control"></textarea>
+							<button type="button" class="btn btn-primary btn-lg m-b" ng-click="writeComment(message.receive_no);">댓글입력</button>
+							</div>
+							<!-- 댓글 쓰기 끝 -->
+						</div>
+					</div>
+					<!-- 댓글 영역 끝 -->
+				</div>
+			</div>
+			<!-- 메세지 단위 끝 -->
+		</div>
+		<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+			<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+			<button type="button" class="btn btn-white" ng-repeat="page in pageInfo.pages" ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+			<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i> </button>
+		</div>
+	</div>

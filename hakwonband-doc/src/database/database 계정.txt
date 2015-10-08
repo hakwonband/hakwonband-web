@@ -1,0 +1,19 @@
+
+------------------------------------------------
+- dev 접속 정보
+------------------------------------------------
+host : bumworld.net
+port : 8889
+database : hakwonband_dev_db
+user : hakwonband
+pass : DBwjqthr90()
+
+
+------------------------------------------------
+- live 접속 정보
+------------------------------------------------
+host : 미정
+port : 미정
+database : hakwonband_live_db
+user : hakwonband
+pass : 미정

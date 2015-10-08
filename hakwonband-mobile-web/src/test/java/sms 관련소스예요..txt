@@ -1,0 +1,199 @@
+<?
+session_start();
+
+include "../../include/connect.inc";
+
+if (!empty($reserved_date)) {
+  $ddate = explode("-", $reserved_date);
+  $reserved_year = $ddate[0];
+  $reserved_month = $ddate[1];
+  $reserved_day = $ddate[2];
+}
+
+$temp = explode("|", $me_to);
+$Merge_name = "";
+$sms = 0;
+
+if($se_level > 1) {
+	$result_a = mysql_query("select * from sub_admin where sa_id = '$se_academy'", $CONNECT);
+	$row_a = mysql_fetch_array($result_a);
+	$sms = $row_a['sa_sms'];
+	
+
+	if($sms < count($temp)-1 and ($mode == "2" or $mode == "3")) {
+		echo("<script>alert('보낼문자수가 잔여문자수보다 초과했습니다!');history.back();</script>");
+		exit;
+	}
+
+}
+
+$minulSms = 0;	//줄어들 문자수
+
+for ($i = 1 ; $i <= count($temp) ; $i++) {
+	$imsi = explode("$", $temp[$i]);
+
+	if($imsi[0] != "" and $imsi[0] != "on") {
+		$me_to_name = "";
+		$result_m = mysql_query("SELECT st_name FROM student WHERE st_id = '" . $imsi[0] . "'", $CONNECT);
+		$row_m = mysql_fetch_array($result_m);
+		$me_to_name = $row_m['st_name'];
+
+		$me_from_name = $se_name;
+//print_r($row_a);
+//exit;
+
+		if ($mode == "1" or $mode == "2") {//쪽지보내기
+			$dbinsert = "insert into t_memo(me_seq, me_to, me_to_name, me_from,
+													me_from_name, me_title, me_content, mode, me_date, me_check, su, me_type, me_type_gubun, me_academy)
+											values('', '" . $imsi[0] . "', '$me_to_name','$se_id', '$me_from_name', '$me_title',
+															'$me_content', '$se_level', now(), 'N', '$su', 'j','$mode', '$se_academy')";
+			$result = mysql_query($dbinsert,$CONNECT);
+		}
+
+		if ($mode == "2" or $mode == "3" or $mode == "8") {//문자보내기
+			if ($mode == "8") {$minulSms += 3;} else {$minulSms += 1;}
+			$dbinsert = "insert into t_memo(me_seq, me_to, me_to_name, me_from,
+													me_from_name, me_title, me_content, mode, me_date, me_check, su, me_type, me_type_gubun, me_academy)
+											values('', '" . $imsi[0] . "', '$me_to_name', '$se_id', '$me_from_name', '$me_title',
+															'$send_number <br> $me_content', '$se_level', now(), 'N', '$su', 'm', '$mode', '$se_academy')";
+
+			$result = mysql_query($dbinsert,$CONNECT);
+		}
+		
+		if ($imsi[1] != "" and count($temp)<=2) { $Merge_name = $Merge_name . $imsi[1]; } 
+
+       elseif ($imsi[1] != "" and count($temp)>2) { 
+
+         if ($Merge_name) $Merge_name .= ",";      
+
+           $Merge_name = $Merge_name . $imsi[1];
+
+}
+
+  else {}
+
+}
+}
+
+if($mode == "2" or $mode == "3" or $mode == "8") {
+	$result_a = mysql_query("UPDATE sub_admin set sa_sms = sa_sms - $minulSms where sa_id = '$se_academy'", $CONNECT);
+	//echo "UPDATE sub_admin set sa_sms = sa_sms - $minulSms where sa_id = '$se_academy'";
+	//exit;
+}
+
+mysql_close($CONNECT);
+
+
+function sms_send($msg_type, $name, $phone, $msg, $callback, $reserve="", $reserve_time="", $etc1="", $etc2="") {
+
+	$host		= "www.mymunja.co.kr";		//마이문자 도메인 주소
+
+	$id		= "eduklearning";		//	회원 아이디  입력해 주세요.
+	$pass	= "k006611";		//	비밀번호 입력해 주세요.
+
+	$param = "remote_id=".$id;
+	$param	.= "&remote_pass=".$pass;
+	$param .= "&remote_reserve=".$reserve;
+	$param .= "&remote_reservetime=".$reserve_time;
+	$param .= "&remote_name=".$name;
+	$param .= "&remote_phone=".$phone;
+	$param .= "&remote_callback=".$callback;
+	$param .= "&remote_msg=".$msg;
+	$param .= "&remote_etc1=".$etc1;
+	$param .= "&remote_etc2=".$etc2;
+	
+	if ($msg_type == "2" or $msg_type == "8") {
+		$path	 = "/Remote/RemoteMms.html";
+	} else {
+		$path	 = "/Remote/RemoteSms.html";
+
+	}
+
+	$fp = @fsockopen($host,80,$errno,$errstr,30); 
+
+	$return = "";
+
+	if (!$fp) {
+
+		die($_err.$errstr.$errno);
+
+	} else { 
+
+		fputs($fp, "POST ".$path." HTTP/1.1\r\n");
+		fputs($fp, "Host: ".$host."\r\n");
+		fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+		fputs($fp, "Content-length: ".strlen($param)."\r\n");
+		fputs($fp, "Connection: close\r\n\r\n");
+		fputs($fp, $param."\r\n\r\n");
+
+		while(!feof($fp)) $return .= fgets($fp,4096);
+
+	} 
+
+	fclose ($fp); 
+
+	$_temp_array		= explode("\r\n\r\n", $return);
+	$_temp_array2	= explode("\r\n", $_temp_array[1]);
+
+
+	$return_string	= $_temp_array2[1];
+
+	return $return_string;
+
+}//	end fuction 
+
+
+
+
+
+
+
+
+if($mode == "2" or $mode == "3" or $mode == "8") {
+//($msg_type, $name, $phone, $msg, $callback, $reserve="", $reserve_time="", $etc1="", $etc2="") 
+	
+	if ($reserved_flag == "1") {
+	
+		$reserve_time = $reserved_year."-".$reserved_month."-".$reserved_day." ".$reserved_hour.":".$reserved_minute;
+
+	}
+
+	$result = sms_send($mode, '',$Merge_name, $me_content, $send_number, $reserved_flag, $reserve_time);
+	//전송결과코드|전송결과메시지|잔여건수
+
+?>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+	window.onload = function() {
+		alert("전송했습니다!");
+//		document.SMSFORM.submit();
+
+		 location.href="stu_list.html?offset=<?=$offset?>&st_hak=<?=$st_hak?>&se_type=<?=$se_type?>&se_content=<?=$se_content?>&st_date1=<?=$st_date1?>&status=<?=$status?>";
+
+	}
+//-->
+</SCRIPT>
+
+<?
+}else {
+
+	if ($result){
+		//echo $dbinsert;
+		if($loc == "mi") {
+			echo "<meta http-equiv='Refresh' content='0; URL=../manage/default_list.html?offset=$offset&st_hak=$st_hak&se_type=$se_type&se_content=$se_content'>";
+		}elseif($loc != "") { //쪽지보내고 돌아오는페이지
+			echo "<meta http-equiv='Refresh' content='0; URL=$loc?offset=$offset&st_hak=$st_hak&se_type=$se_type&se_content=$se_content'>";
+		}elseif($se_level == 4 or $se_level == 5 or $se_level == 6 or $se_level == 7) {
+			echo "<meta http-equiv='Refresh' content='0; URL=../member/stu_list.html?offset=$offset&st_hak=$st_hak&se_type=$se_type&se_content=$se_content'>";
+		}else {
+			echo "<meta http-equiv='Refresh' content='0; URL=../member/memo_list.html?offset=$offset&st_hak=$st_hak&se_type=$se_type&se_content=$se_content'>";
+		}
+	}else{
+		//echo $dbinsert;
+		echo "<script>alert('선택된 사람이없어 전송되지 않았습니다.');history.back();</script>";
+	}
+
+}
+?>

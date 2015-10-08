@@ -1,0 +1,20 @@
+<section>
+	<h2 class="tit hide">이벤트 상세보기</h2>
+
+	<div class="view_box">
+		<h3 class="view_title">{{eventObj.eventDetail.event_title}}</h3>
+		<div class="view_data">
+			<span class="att">작성자 : {{eventObj.eventDetail.reg_user_name}}</span> /
+			<span class="writer">종료일 : {{eventObj.eventDetail.end_date}}</span>
+		</div>
+		<div class="view_cont" ng-bind-html="eventObj.eventDetail.event_content | rawHtml"></div>
+		<div class="btn_box" ng-if="eventObj.eventDetail.isJoinEvent == false && eventObj.eventDetail.isExpireEvent == false">
+			<button type="button" class="btn btn_style_submit btn_block btn_bold" ng-click="joinEvent($event)" data-idx="{{eventObj.eventDetail.event_no}}">이벤트 참여하기</button>
+		</div>
+	</div>
+
+	<!--버튼 영역-->
+	<button type="button" class="btn btn_style_info btn_block btn_bold" ng-click="goEventList()">목록보기</button>
+	<!--//버튼 영역-->
+
+</section>

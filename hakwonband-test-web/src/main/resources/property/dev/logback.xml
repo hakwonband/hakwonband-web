@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<appender name="hakwonbandFileAppender" class="ch.qos.logback.core.FileAppender">
+		<file>/hakwon-band/logs/hakwon-web/${server.type}-was-hakwonband.log</file>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+	<appender name="hakwonbandTcpAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<remoteHost>bumworld.net</remoteHost>
+		<port>9860</port>
+
+		<includeCallerInfo>true</includeCallerInfo>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+			<customFields>{"site":"hakwonband-hakwon-web", "serverType":"dev"}</customFields>
+		</encoder>
+	</appender>
+
+	<logger name="java.sql" level="error" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</logger>
+
+	<logger name="jdbc.resultset" level="error" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</logger>
+
+	<logger name="jdbc.connection" level="error" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</logger>
+
+
+	<logger name="org.springframework" level="error" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</logger>
+
+	<logger name="hakwonband" level="debug" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</logger>
+
+	<root level="info" additivity="false">
+		<appender-ref ref="hakwonbandFileAppender" />
+		<appender-ref ref="hakwonbandTcpAppender" />
+	</root>
+
+</configuration>

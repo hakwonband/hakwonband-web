@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.ExcelUploadDAO">
+
+	<select id="getTime" resultType="String">
+		select now()
+	</select>
+	
+	<insert id="insertHakwon" parameterType="HakwonExcel" useGeneratedKeys="true">
+	<![CDATA[
+		/*	hakwonExcelDao.insertHakwon	*/
+		insert into tb_hakwon (
+			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, admin_reg_yn, hakwon_status, excel_reg_yn
+		) values(
+			'1', #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, 'Y', '001', 'Y'
+		)
+	
+	]]>
+		<selectKey keyProperty="hakwonNo" resultType="String">
+			select last_insert_id()
+		</selectKey>
+	
+	</insert>
+	
+	<!-- 학원 정보 인서트 -->
+	<insert id="insertHakwonInfo" parameterType="HakwonExcel">
+	<![CDATA[
+		/*	hakwonExcelDao.insetHakwonInfo	*/
+		insert into tb_hakwon_info (
+			hakwon_no, hakwon_name, udp_date, tel_no_1
+		) values (
+			#{hakwonNo}, #{hakwonName}, now(), #{hakwonContact}
+		)
+	]]>
+	</insert>
+	
+	<!-- 학원 주소 등록 -->
+	<insert id="insertHakwonAddress" parameterType="HakwonExcel">
+	<![CDATA[
+		/*	excelUpload.insertHakwonAddress	*/
+		insert into tb_hakwon_address (
+			hakwon_no
+			, addr_no
+			, zip_code
+			, old_sido
+			, old_gugun
+			, old_dong
+			, all_addr_text
+			, old_addr1
+		) values (
+			#{hakwonNo}
+			, #{addressNo}
+			, #{hakwonZipCode}
+			, #{hakwonSido}
+			, #{hakwonGungu}
+			, #{hakwonDong}
+			, '${hakwonSido} ${hakwonGungu} ${hakwonDong}'
+			, '${hakwonSido} ${hakwonGungu} ${hakwonDong}'
+		)
+	]]>
+	</insert>
+	
+	<!-- 학원 주소 번호 조회 -->
+	<select id="selectHakwonAddressInfo" parameterType="HakwonExcel" resultType="DataMap">
+	<![CDATA[
+		/*	excelUpload.selectHakwonAddressInfo	*/
+		select
+			a.addr_no
+			, a.zip_code
+		from
+			tb_address_zip a
+		where
+			a.sido = #{hakwonSido}
+			and a.gugun = #{hakwonGungu}
+			and a.dong = #{hakwonDong}
+		order by a.addr_no
+		limit 1
+	]]>
+	</select>
+	
+	<!-- 학원 카테고리 코드 조회 -->
+	<select id="selectHakwonCate" resultType="int">
+	<![CDATA[
+		/*	excelUpload.selectHakwonCate	*/
+		select
+			a.cate_code
+		from
+			tb_hakwon_cate a
+	]]>	
+	</select>
+	
+</mapper>

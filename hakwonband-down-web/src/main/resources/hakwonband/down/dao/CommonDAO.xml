@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.down.dao.CommonDAO">
+
+	<!-- 인증 코드로 계정 로그인 -->
+	<select id="authCheckUser" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.authCheckUser	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, b.user_name
+			, get_file_path(b.photo_file_no) as profile_path
+		from
+			tb_login_hist x
+			, tb_user a
+			, tb_user_info b
+		where
+			x.auth_key = #{authKey}
+			and x.logout_yn is null
+			and x.logout_date is null
+			and x.user_no = a.user_no
+			and x.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+	]]>
+	</select>
+
+	<select id="fileInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.fileInfo	*/
+		select
+			a.file_name
+			, a.file_size
+			, a.file_ext_type
+		from
+			tb_file a
+		where
+			a.file_path = #{filePath}
+	]]>
+	</select>
+</mapper>

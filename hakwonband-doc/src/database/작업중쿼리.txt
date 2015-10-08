@@ -1,0 +1,13 @@
+select
+	a.*
+	, b.*
+from
+	tb_advertise_local_date a
+	, tb_advertise_req b
+	, tb_address_zip x
+where
+	a.view_month = DATE_FORMAT(now(), '%Y%m')
+	and a.advertise_req_no = b.advertise_req_no
+	and b.deposit_yn = 'Y '
+	and x.addr_no = 21258
+	and x.sido = a.sido and x.gugun = a.gugun and x.dong = a.dong

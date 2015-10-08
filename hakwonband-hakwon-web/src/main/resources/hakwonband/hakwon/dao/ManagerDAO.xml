@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.ManagerDAO">
+
+	<select id="hakwonManagerInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.hakwonManagerInfo	*/
+		select
+			c.user_no
+			, c.user_id
+			, c.user_name
+			, c.tel1_no
+			, b.manager_no
+			, c.photo_file_no
+			, get_file_path(c.photo_file_no) as photo_file_path
+		from
+			tb_hakwon a
+			, tb_manager b
+			, tb_user_info c
+		where
+			a.hakwon_no = #{hakwonNo}
+			and a.manager_no = b.manager_no
+			and b.user_no = c.user_no
+	]]>
+	</select>
+
+	<select id="managerSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.managerSearch	*/
+		select
+			a.manager_no
+			, b.user_no
+			, b.user_id
+			, b.user_name
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+		from
+			tb_manager a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and (a.manager_no = #{searchText} or b.user_name like concat('%', #{searchText}, '%') )
+		order by
+			b.user_name asc
+	]]>
+	</select>
+
+	<update id="hakwonManagerSetting" parameterType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.hakwonManagerSetting	*/
+		update tb_hakwon set
+			manager_no = #{managerNo}
+		where
+			hakwon_no = #{hakwonNo}
+			and master_user_no = #{userNo}
+	]]>
+	</update>
+
+</mapper>

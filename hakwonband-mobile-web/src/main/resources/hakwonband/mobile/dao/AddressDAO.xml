@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.AddressDAO">
+
+	<!-- 시도 리스트 -->
+	<select id="sidoList" resultType="string">
+	<![CDATA[
+		/*	AddressDAO.sidoList	*/
+		select sido
+		from tb_address_zip
+		group by sido
+		order by sido asc
+	]]>
+	</select>
+
+	<!-- 구군 리스트 -->
+	<select id="gugunList" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/*	AddressDAO.gugunList	*/
+		select gugun
+		from tb_address_zip
+		where sido = #{sido}
+		group by gugun
+		order by gugun asc
+	]]>
+	</select>
+
+</mapper>

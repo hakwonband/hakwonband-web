@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<message><![CDATA[로컬 학원밴드 학원 입니다.]]></message>
+	<serviceDomain><![CDATA[http://hakwon.hakwon.teamoboki.com]]></serviceDomain>
+	<mobileHost><![CDATA[http://m.hakwon.teamoboki.com]]></mobileHost>
+
+	<crossDomain>
+		<host><![CDATA[http://admin.hakwon.teamoboki.com]]></host>
+		<host><![CDATA[http://manager.hakwon.teamoboki.com]]></host>
+		<host><![CDATA[http://hakwon.hakwon.teamoboki.com]]></host>
+		<host><![CDATA[http://mobile.hakwon.teamoboki.com]]></host>
+		<host><![CDATA[http://test.hakwon.teamoboki.com]]></host>
+		<host><![CDATA[http://www.hakwon.teamoboki.com]]></host>
+
+		<host><![CDATA[http://admin.hakwon.teamoboki.com:8081]]></host>
+		<host><![CDATA[http://manager.hakwon.teamoboki.com:8081]]></host>
+		<host><![CDATA[http://hakwon.hakwon.teamoboki.com:8081]]></host>
+		<host><![CDATA[http://mobile.hakwon.teamoboki.com:8081]]></host>
+		<host><![CDATA[http://test.hakwon.teamoboki.com:8081]]></host>
+		<host><![CDATA[http://www.hakwon.teamoboki.com:8081]]></host>
+
+		<host><![CDATA[http://local.hakwon.teamoboki.com:8080]]></host>
+	</crossDomain>
+
+	<site>
+		<admin><![CDATA[http://admin.hakwon.teamoboki.com]]></admin>
+		<hakwon><![CDATA[http://hakwon.hakwon.teamoboki.com]]></hakwon>
+		<manager><![CDATA[http://manager.hakwon.teamoboki.com]]></manager>
+		<mobile><![CDATA[http://m.hakwon.teamoboki.com]]></mobile>
+		<pc><![CDATA[http://www.hakwon.teamoboki.com]]></pc>
+	</site>
+
+	<fileServer>
+		<storage>
+			<dir>/hakwon-band/source/hakwon-attatch</dir>
+		</storage>
+		<upload>
+			<maxSize>524288000</maxSize><!-- 1024*1024*10 = 10485760 10메가, 524288000 500메가  -->
+		</upload>
+		<attatchDomain>http://attatch.hakwon.teamoboki.com</attatchDomain>
+		<downDomain>http://down.hakwon.teamoboki.com</downDomain>
+	</fileServer>
+
+	<api>
+		<juso>
+			<host>http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do</host>
+			<confirmmKey>bnVsbDIwMTQxMjEwMDk0NDU0</confirmmKey>
+		</juso>
+	</api>
+
+	<push>
+		<ios>
+			<live>
+				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-production.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</live>
+			<dev>
+				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-sandbox.p12</certificatePath>
+				<pass>qwer1234</pass>
+			</dev>
+		</ios>
+		<gcm>
+			<key>AIzaSyC-ih5SCCZf5kLSuZPOas5Pei25_wiyJus</key>
+			<retry>5</retry>
+		</gcm>
+	</push>
+
+	<sns>
+		<kakao>faaad97058b00b1dd6b62c2b17933495</kakao>
+	</sns>
+
+</hakwonband>

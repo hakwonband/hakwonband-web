@@ -1,0 +1,85 @@
+<div class="counselList">
+	<section class="wrapper wrapper-content row">
+		<div class="ibox">
+			<div class="ibox-title"><h2>{{counselTitle}}</h2></div>
+
+			<div class="ibox-content">
+				<div class="col-md-2">
+					<select name="classNo" class="form-control">
+						<option value="">반명</option>
+						<option ng-repeat="item in classList" value="{{item.class_no}}">
+							{{item.class_title}}
+						</option>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<select name="searchType" class="form-control">
+						<option value="name">이름</option>
+						<option value="id">아이디</option>
+					</select>
+				</div>
+				<div class="col-md-2 input-group">
+					<input type="text" class="form-control" placeholder="검색어 입력" ng-keydown="searchCounselEnter($event)" name="searchText">
+					<span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="counselSearch">검색</button> </span>
+				</div>
+			</div>
+
+			<div class="ibox-content data_period_reset">
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="001">당일</button>
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="002">일주일</button>
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="003">1개월</button>
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="004">3개월</button>
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="005">6개월</button>
+				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="006">12개월</button>
+
+				<div class="input-daterange input-group">
+					<input type="date" name="startDate" value="{{startDate}}" class="input-sm form-control">
+					<span class="input-group-addon">to</span>
+					<input type="date" name="endDate" value="{{endDate}}" class="input-sm form-control">
+				</div>
+			</div>
+
+			<div class="ibox-content">
+				<table class="table table-hover table_link">
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>상담날짜</th>
+							<th>상담원</th>
+							<th width="30%">내용</th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in counselList" style="cursor: pointer;" counsel-no={{item.counsel_no}}>
+
+							<td>
+								<a href="#" onclick="return false;">
+									<img class="img-circle" ng-src="{{ getPhotoFileFullPath(item.user_photo_path) }}" alt="{{ item.counselee_name }} 프로필" width="35" height="35">
+									{{ item.counselee_name }}({{ item.counselee_id }})
+								</a>
+							</td>
+							<td>{{ item.counsel_date }}</td>
+							<td>{{ item.counsellor_name }}</td>
+							<td ng-click="content_view(item.counsel_no)">
+								<div ng-bind-html="item.counsel_content | rawHtml" style="height:1em; line-height:1.2em; overflow:hidden;" data-view="counsel_content" data-id="{{item.counsel_no}}"></div>
+							</td>
+							<td><button class="btn btn-default btn" ng-click="modifyView(item.counsel_no)">수정</button></td>
+						</tr>
+						<tr ng-if="counselList.length == 0">
+							<td colspan="6" align="center">조회된 결과가 없습니다.</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+				<div class="text-center m-b-xl m-t-xl" id="eg-custom-paging">
+				</div>
+
+			</div>
+			<!-- <div class="ibox-content text-right">
+				<button class="btn btn-primary" type="button" title="수납 등록">수납 등록</button>
+			</div> -->
+		</div>
+	</section>
+</div>

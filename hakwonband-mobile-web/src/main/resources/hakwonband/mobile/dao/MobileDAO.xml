@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.MobileDAO">
+
+	<!-- 가입시 학원 검색 -->
+	<select id="hakwonSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.hakwonSearch	*/
+		select
+			a.hakwon_code
+			, a.hakwon_no
+			, a.hakwon_cate
+			, b.hakwon_name
+			, b.tel_no_1
+			, b.tel_no_2
+			, get_file_path(b.logo_file_no) as file_path
+			, c.old_addr1
+			, c.old_addr2
+			, c.street_addr1
+			, c.street_addr2
+			, (select cate_name from tb_hakwon_cate where cate_code = a.hakwon_cate) as cate_name
+			, get_user_name(a.master_user_no) as user_name
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_hakwon_address c
+		where
+			a.hakwon_no = b.hakwon_no
+			and (a.hakwon_name = #{search_text} or a.hakwon_code = #{search_text} )
+			and a.hakwon_no = c.hakwon_no
+			and a.hakwon_status in ('001', '003')
+			and a.admin_reg_yn is null
+		order by
+			b.hakwon_name asc
+	]]>
+	</select>
+
+	<!-- 학원 검색 -->
+	<select id="hakwonSearchList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.hakwonSearchList	*/
+		select
+			a.hakwon_code
+			, a.hakwon_no
+			, a.hakwon_cate
+			, b.hakwon_name
+			, b.tel_no_1
+			, b.tel_no_2
+			, get_file_path(b.logo_file_no) as file_path
+			, c.old_sido
+			, c.old_addr1
+			, c.old_addr2
+			, c.street_addr1
+			, c.street_addr2
+			, (select cate_name from tb_hakwon_cate where cate_code = a.hakwon_cate) as cate_name
+			, get_user_name(a.master_user_no) as user_name
+			, a.admin_reg_yn
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_hakwon_address c
+		where
+			a.hakwon_no = b.hakwon_no
+			and a.hakwon_status in ('001', '003')
+			and a.hakwon_no = c.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( sido )">
+			and c.old_sido = #{sido}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( gugun )">
+			and c.old_gugun = #{gugun}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( hakwon_cate )">
+			and a.hakwon_cate = #{hakwon_cate}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( search_text )">
+			and (
+				a.hakwon_name like concat('%', #{search_text}, '%')
+				or c.all_addr_text like concat('%', #{search_text}, '%')
+			)
+		</if>
+	<![CDATA[
+		order by
+			a.admin_reg_yn asc
+			, b.hakwon_name asc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 학원 검색 -->
+	<select id="hakwonSearchListCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	MobileDAO.hakwonSearchListCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_hakwon_address c
+		where
+			a.hakwon_no = b.hakwon_no
+			and a.hakwon_status in ('001', '003')
+			and a.hakwon_no = c.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( sido )">
+			and c.old_sido = #{sido}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( gugun )">
+			and c.old_gugun = #{gugun}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( hakwon_cate )">
+			and a.hakwon_cate = #{hakwon_cate}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotBlank( search_text )">
+			and (
+				a.hakwon_name like concat('%', #{search_text}, '%')
+				or c.all_addr_text like concat('%', #{search_text}, '%')
+			)
+		</if>
+	</select>
+
+	<!-- 학생 검색 -->
+	<select id="studentSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MobileDAO.studentSearch*/
+		select
+			a.user_no
+			, a.user_id
+			, a.user_name
+			, get_file_path(a.photo_file_no) as file_path
+			, calc_age(a.user_birthday) as age
+			, b.school_name
+			, b.school_level
+			, b.level
+		from
+			tb_user_info a, tb_student_school b
+		where
+			a.user_id = #{user_id}
+			and a.user_no = b.user_no
+	]]>
+	</select>
+
+	<!-- 학생 승인 목록 조회 -->
+	<select id="parentApprovedYn" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.parentApprovedYn	*/
+		select
+			a.parent_user_no
+			, a.approved_yn
+			, b.user_name
+			, get_file_path(b.photo_file_no) as file_path
+		from
+			tb_student_parent a, tb_user_info b
+		where
+			a.student_user_no = #{user_no}
+			and b.user_no = a.parent_user_no
+			and a.approved_yn = 'N'
+	]]>
+	</select>
+
+	<!-- 학생 부모 신청 -->
+	<insert id="insertParentApproved" parameterType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.insertParentApproved	*/
+		insert into tb_student_parent (
+			student_user_no, parent_user_no, approved_yn, req_date
+		) values (
+			#{student_user_no}, #{parent_user_no}, 'N', now()
+		)
+	]]>
+	</insert>
+
+	<!-- 학생 신청 확인 정보 -->
+	<select id="selectCheckStudentParent" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		select
+			a.user_no
+			, a.user_id
+			, a.user_name
+			, b.approved_yn
+		from
+			tb_user_info a, tb_student_parent b
+		where
+			a.user_id = #{user_id}
+			and a.user_no = b.student_user_no
+			and b.parent_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 학부모 승인 -->
+	<update id="updateParentApproved" parameterType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.updateParentApproved	*/
+		update tb_student_parent set
+			approved_yn = 'Y'
+			, approved_date = now()
+		where
+			student_user_no = #{student_user_no}
+			and parent_user_no = #{parent_user_no}
+	]]>
+	</update>
+
+
+	<!-- 학부모 승인 거절 -->
+	<delete id="deleteParentApproved" parameterType="dataMap">
+	<![CDATA[
+		delete from tb_student_parent where student_user_no = #{student_user_no}
+	]]>
+	</delete>
+
+	<!-- 가입 학원 목록 -->
+	<select id="userHakwonList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.userHakwonList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.hakwon_no
+			, b.hakwon_name
+			, b.tel_no_1
+			, b.tel_no_2
+			, get_file_path(b.logo_file_no) as file_path
+			, c.master_user_no
+			, get_user_name(c.master_user_no) as master_user_name
+		from
+			tb_hakwon_member a
+			, tb_hakwon_info b
+			, tb_hakwon c
+		where
+			a.user_no = #{user_no}
+			and a.hakwon_no = b.hakwon_no
+			and b.hakwon_no = c.hakwon_no
+			and c.hakwon_status in ('001', '003')
+		order by
+			c.hakwon_no asc
+	]]>
+	</select>
+
+	<!-- 가입 학원 반 전체 목록 -->
+	<select id="allHakwonClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.allHakwonClassList	*/
+		select
+			x.hakwon_no
+			, x.class_no
+			, y.class_title
+		from
+			tb_hakwon_class_student x
+			, tb_hakwon_class y
+		where
+			x.student_user_no = #{user_no}
+			and x.class_no = y.class_no
+		order by
+			x.hakwon_no asc
+			, y.class_order asc
+	]]>
+	</select>
+
+	<!-- 자식 가입 학원 반 전체 목록 -->
+	<select id="childHakwonClassList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.childHakwonClassList	*/
+		select
+			x.hakwon_no
+			, x.class_no
+			, y.class_title
+		from
+			tb_student_parent a
+			, tb_hakwon_class_student x
+			, tb_hakwon_class y
+		where
+			a.parent_user_no = #{user_no}
+			and a.student_user_no = x.student_user_no
+			and x.class_no = y.class_no
+		group by
+			x.hakwon_no
+			, x.class_no
+		order by
+			x.hakwon_no asc
+			, y.class_order asc
+	]]>
+	</select>
+
+
+	<!-- 학원 상세 검색(비가입) -->
+	<select id="selectHakwonDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectHakwonDetail	*/
+		select
+			a.hakwon_code
+			, a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_cate
+			, b.hakwon_name
+			, get_cate_name(a.hakwon_cate) as cate_name
+			, get_file_path(b.logo_file_no) as file_path
+			, b.tel_no_1
+			, b.tel_no_2
+			, c.old_sido
+			, c.all_addr_text
+			, c.old_addr1
+			, c.old_addr2
+			, c.street_addr1
+			, c.street_addr2
+			, get_user_name(a.master_user_no) as user_name
+			, a.admin_reg_yn
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_hakwon_address c
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.hakwon_status in ('001', '003')
+			and a.hakwon_no = b.hakwon_no
+			and b.hakwon_no = c.hakwon_no
+	]]>
+	</select>
+
+	<!-- 학원 멤버 조회 -->
+	<select id="selectHakwonMember" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectHakwonMember	*/
+		select
+			a.hakwon_no
+			, a.user_no
+			, a.user_type
+		from
+			tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 학원 멤버  -->
+	<select id="selectHakwonIntroduction" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectHakwonIntroduction	*/
+		select
+			a.hakwon_name
+			, get_file_path(a.logo_file_no) as file_path
+			, a.introduction
+			, a.tel_no_1
+			, a.tel_no_2
+		from
+			tb_hakwon_info a
+		where
+			a.hakwon_no = #{hakwon_no}
+	]]>
+	</select>
+
+	<!-- 반상세 보기 -->
+	<select id="selectClassDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectClassDetail	*/
+		select
+			a.class_no
+			, a.hakwon_no
+			, a.class_order
+			, a.class_title
+			, a.class_intro
+			, a.logo_file_no
+			, get_file_path(a.logo_file_no) as file_path
+		from
+			tb_hakwon_class a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.class_no = #{class_no}
+	]]>
+	</select>
+
+	<select id="selectClassTeacher" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectClassTeacher	*/
+		select
+			a.hakwon_no
+			, a.class_no
+			, a.teacher_user_no
+			, b.subject
+			, c.user_name
+			, c.user_gender
+			, calc_age(c.user_birthday) as age
+			, c.photo_file_no
+			, get_file_path(c.photo_file_no) as photo_file_path
+		from
+			tb_hakwon_class_teacher a
+			, tb_hakwon_teacher b
+			, tb_user_info c
+		where
+			a.class_no = #{class_no}
+			and a.hakwon_no = b.hakwon_no
+			and a.teacher_user_no = b.user_no
+			and b.approved_yn = 'Y'
+			and a.teacher_user_no = c.user_no
+		order by
+			c.user_name asc
+	]]>
+	</select>
+
+	<!-- 카테고리 네임 -->
+	<select id="selectHakwonCateName" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	MobileDAO.selectHakwonCateName	*/
+		select
+			a.cate_name
+			, a.cate_order
+			, a.cate_code
+		from
+			tb_hakwon_cate a
+		order by
+			a.cate_order asc
+	]]>
+	</select>
+</mapper>

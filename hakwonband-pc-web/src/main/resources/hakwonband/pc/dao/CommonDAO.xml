@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.pc.dao.CommonDAO">
+
+	<!-- 문의 메일 등록 -->
+	<insert id="insertQuestionsMail" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.insertQuestionsMail	*/
+		insert into tb_questions_mail (
+			title, user_email, phone, content, req_date
+		) values(
+			#{title}, #{email}, #{phone}, #{content}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 관리자 디바이스 리스트 조회 -->
+	<select id="adminDeviceList" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.adminDeviceList	*/
+		select
+			b.device_token
+			, b.device_type
+		from
+			tb_user a
+			, tb_login_hist b
+		where
+			a.user_type = '001'
+			and a.user_no = b.user_no
+			and b.device_token is not null
+	]]>
+	</select>
+
+</mapper>

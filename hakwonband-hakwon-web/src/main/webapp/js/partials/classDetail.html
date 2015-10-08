@@ -1,0 +1,65 @@
+<div class="ibox float-e-margins" ng-controller="classInfoDetailController">
+	<div class="ibox-title">
+		<h2>MENU</h2>
+	</div>
+	<div class="ibox-content class_menu">
+		<ul>
+			<li ng-class="{'active' : menuType === 'notice', '' : menuType !== 'notice'}">
+				<a href="" ng-click="changeViewForType('notice')">공지사항</a>
+			</li>
+			<li ng-class="{'active' : menuType === 'student', '' : menuType !== 'student'}">
+				<a href="" ng-click="changeViewForType('student')">학생</a>
+			</li>
+			<li ng-class="{'active' : menuType === 'parent', '' : menuType !== 'parent'}">
+				<a href="" ng-click="changeViewForType('parent')">학부모</a>
+			</li>
+			<li>
+				<li><a href="" ng-click="openAttendancePop('attend')">등원/하원</a></li>
+			</li>
+			<li>
+				<li><a href="" ng-click="openAttendancePop('bus')">승차/하차</a></li>
+			</li>
+		</ul>
+	</div>
+
+	<div class="ibox-title" data-toggle="classInfo">
+		<h2>반 정보</h2>
+	</div>
+	<div class="ibox-content no-padding border-left-right class_photo" data-view="classInfo">
+		<img alt="image" class="img-responsive" ng-src="{{ getFileFullPath() }}" src="" data-view="class_logo_preview">
+		<button class="btn btn-default btn-rounded btn_edit" type="button" title="프로필수정" ng-if="checkAuthType()" ><i class="fa fa-camera"></i> </button>
+		<input type="file" class="input_file" data-act="class_logo_upload" accept="image/*" ng-if="checkAuthType()">
+	</div>
+	<div class="ibox-content profile-content" data-view="classInfo">
+		<div class="class_profile">
+			<h3>
+				<strong>{{ classDetail.class_title }}</strong>
+				<button type="button" class="btn badge" ng-show="checkAuthType()" ng-click="isShow = !isShow">
+					<i class="fa fa-pencil" title="수정"></i>
+				</button>
+			</h3>
+			<p>{{ classDetail.class_intro }}</p>
+			<button type="button" class="btn btn-default btn-block m-t-xl" ng-if="checkAuthType()" ng-click="removeClass()">반 삭제하기</button>
+		</div>
+
+		<!-- 수정버튼 누르면 나타남 -->
+		<div class="class_profile_edit" ng-show="isShow">
+			<input type="text" class="form-control" placeholder="반 명 (한글, 영문 10자 까지)" ng-model="classDetail.class_title">
+			<textarea cols="" rows="" class="form-control m-t-xs m-b-xs" placeholder="반 설명 (한글, 영문 25자 까지)" ng-model="classDetail.class_intro"></textarea>
+			<button type="button" class="btn btn-info btn-block" ng-click="confirmEdit(); isShow = false;">완료</button>
+		</div>
+		<div style="margin-top: 30px;">
+			출결알림 발송 &nbsp; <input type="checkbox" name="useYnAttPush" ng-click="pushStatusChangeFun()">
+		</div>
+	</div>
+	<div class="ibox-content class_teacher_list" data-view="classInfo">
+		<h4>담당 선생님 <button class="btn btn-default btn-circle btn_nav_edit" type="button" title="담당선생님 추가 삭제" ng-if="checkAuthType()" ng-click="changeViewForType('teacher')"><i class="fa fa-cog"></i> </button></h4>
+		<ul>
+			<li ng-repeat="item in classTeacherList">
+				<img class="img-circle" ng-src="{{ getPhotoFileFullPath(item.photo_file_path) }}" src="/assets/img/profile.jpg" alt="프로필" width="30" height="30">
+				<strong class="name">{{ item.user_name }}</strong> <span>{{ getUserGender(item.user_gender) }}/{{ item.subject }}</span>
+				<button class="btn btn-default btn_message" type="button" title="메세지 보내기" ng-click="sendMessageTeacher(item)"><i class="fa fa-envelope"></i> </button>
+			</li>
+		</ul>
+	</div>
+</div>

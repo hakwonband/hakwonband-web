@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.fileClean.dao.FileCleanDAO">
+
+	<!-- 사용하지 않는 파일 조회 -->
+	<select id="getUnUsingFileList" resultType="dataMap">
+	<![CDATA[
+		/*	FileCleanDAO.getUnUsingFileList	*/
+		select
+			file_no
+			, save_file_name
+			, file_path
+			, thumb_file_path
+			, file_path_prefix
+		from
+			tb_file
+		where
+			(file_parent_no is null and reg_date < DATE(DATE_SUB(NOW(), INTERVAL 7 DAY)))
+			or file_del_yn = 'Y'
+			or (file_parent_no is not null and file_use_yn = 'W' and reg_date < DATE(DATE_SUB(NOW(), INTERVAL 7 DAY)))
+		order by
+			file_no desc
+		limit 5
+	]]>
+	</select>
+
+	<!-- 파일 삭제 -->
+	<delete id="UnUsingFileDelete" parameterType="dataMap">
+	<![CDATA[
+		/*	FileCleanDAO.UnUsingFileDelete	*/
+		delete from tb_file where file_no = #{file_no}
+	]]>
+	</delete>
+
+</mapper>

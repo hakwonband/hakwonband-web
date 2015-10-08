@@ -1,0 +1,23 @@
+
+<!-- 등록된 학원이 없는 경우 -->
+<div class="contact-box box_nodata" ng-if="hakwonAllList.length == 0">
+	등록된 학원이 없습니다
+</div>
+
+<!-- 학원이 있는 경우 -->
+<div ng-if="hakwonAllList.length > 0">
+	<!-- 새로운 반은 class="new_class"를 붙여준다. -->
+	<div class="contact-box class_box" ng-repeat="item in hakwonAllList">
+		<a href="/main.do#/main?hakwon_no={{item.hakwon_no}}">
+			<img class="img-circle m-t-xs img-responsive" ng-src="{{ CommUtil.createFileFullPath(item.logo_file_path, 'hakwon') }}" alt="">
+			<h3 class="title_name">{{item.hakwon_name}}(상태:{{item.hakwon_status_name}})</h3>
+			<p class="contact-box-info" ng-if="item.approved_yn">
+				{{item.approved_yn=="N"?"거절":"승인"}}
+			</p>
+			<p class="contact-box-info" ng-if="!item.approved_yn">
+				미 승인
+			</p>
+		</a>
+	</div>
+	<div class="clearfix"></div>
+</div>

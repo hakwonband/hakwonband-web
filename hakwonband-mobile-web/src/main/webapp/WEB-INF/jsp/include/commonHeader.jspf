@@ -1,0 +1,12 @@
+<%@page pageEncoding="utf-8"%>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+	<script type="text/javascript" src="/js/constant.jsp"></script>
+
+	<script type="text/javascript" src="<%=jsPath %>/lib/jquery-2.1.1.min.js"></script>
+
+	<script type="text/javascript" src="<%=jsPath%>/common/common.prototype.js"></script>
+
+	<!-- html5 업로드 -->
+	<script type="text/javascript" src="<%=jsPath%>/lib/bumworld.html5.upload.js"></script>

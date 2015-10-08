@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.ConfigDAO">
+
+	<!-- 설정 조회 -->
+	<select id="selectConfig" parameterType="dataMap" resultType="string">
+	<![CDATA[
+		/*	ConfigDAO.selectConfig	*/
+		select
+			a.config_val
+		from
+			tb_config a
+		where
+			a.config_key = #{configKey}
+	]]>
+	</select>
+
+	<update id="updateConfig" parameterType="dataMap">
+	<![CDATA[
+		/*	ConfigDAO.updateConfig	*/
+		update tb_config set
+			config_val = #{configVal}
+		where
+			config_key = #{configKey}
+	]]>
+	</update>
+</mapper>

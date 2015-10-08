@@ -1,0 +1,89 @@
+<section>
+
+	<div class="sec_blk">
+
+		<div class="sec_title">
+			<h2 class="tit_02">프로필 정보</h2>
+		</div>
+
+		<div class="sec_photo">
+			<div class="img_photo">
+				<img ng-src="{{ getFileFullPath(authUserInfo.photo_file_path, true) }}" alt="프로필" width="125" height="125" data-view="photo_preview"/>
+				<div class="photofile">
+					<span class="photo">파일 업로드</span>
+					<input type="file" class="input_file" title="파일 업로드" data-act="photo_upload" accept="image/*">
+				</div>
+
+					<!--<button type="button" class="photo" ng-click="uploadPhotoFile()">사진 찾기</button>-->
+			</div>
+			<!--<input type="file" data-act="photo_upload" class="btn btn-primary" accept="image/*">-->
+			<span class="id" ng-model="authUserInfo.user_id">{{authUserInfo.user_id}}</span>
+		</div>
+
+		<!-- 입력 form -->
+		<div class="sec_input mb_0" data-area="memberModifyArea">
+
+			<input type="text" name="userName" title="이름 입력" placeholder="{{ userAuth.userType=='006'?'이름':'홍길동 학부모' }}" ng-model="authUserInfo.user_name"/>
+			<input type="password" name="userPassword" title="비밀번호 입력" placeholder="변경 할때만 비밀번호를 입력해 주세요." ng-model="authUserInfo.user_password"/>
+			<input type="password" name="userCheckPassword" title="비밀번호 확인 입력" placeholder="비밀번호 확인" ng-model="authUserInfo.chk_password"/>
+			<div class="select_chk three">
+				<input type="number" name="birthdayYear" title="생년 입력 예){{userAuth.userType=='006'?'2006':'1980'}}" onkeydown="commProto.onlyNumber(event)" onkeypress="commProto.onlyNumber(event)" placeholder="생년 입력 예){{userAuth.userType=='006'?'2006':'1980'}}" />
+				<select name="birthdayMonth" title="월 선택" >
+					<option value="">월 선택</option>
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>
+				<select name="birthdayDay" title="일 선택" >
+					<option value="">일 선택</option>
+				</select>
+			</div>
+			<div class="input_box">
+				<div class="chk">
+					<input type="radio" name="userGender" id="gender_m" value="M"/> <label for="gender_m" class="wp_40">남</label>
+					<input type="radio" name="userGender" id="gender_f" value="F"/> <label for="gender_f">여</label>
+				</div>
+			</div>
+			<input type="text" name="userTelNo" title="전화번호 예)0107779999" placeholder="전화번호 예)0107779999" ng-model="authUserInfo.tel1_no"/>
+			<div class="input_chk">
+				<input type="text" name="userEmail" title="이메일주소 입력" placeholder="이메일주소" ng-model="authUserInfo.user_email"/>
+				<button type="button" class="btn btn_style_info btn_bold" ng-click="checkEmail()">중복확인</button>
+			</div>
+
+			<div ng-show="isStudent">
+				<input type="text" name="" title="학교명 입력" placeholder="학교명" ng-model="authUserInfo.school_name"/>
+
+				<div class="select_chk two">
+					<select name="" title="교육과정 선택"
+							ng-change="changeSchoolLevel()"
+							ng-model="authUserInfo.school_level"
+							ng-options="school.LEVEL as school.NAME for school in schoolLevel">
+					</select>
+					<select name="" title="학년 선택"
+							ng-model="authUserInfo.level"
+							ng-options="grade.LEVEL as grade.NAME for grade in gradeLevel"
+							style="width: 49%;">
+					</select>
+				</div>
+			</div>
+
+		</div>
+		<!-- //입력 form -->
+
+	</div>
+
+	<!--버튼 영역-->
+	<button type="button" class="btn btn_style_submit btn_block" ng-click="editUserInfo()">정보 수정 완료</button><br /><br />
+	<button type="button" class="btn btn_style_cancel btn_block btn_bold" data-act="cancel">취소</button>
+	<!--//버튼 영역-->
+
+</section>

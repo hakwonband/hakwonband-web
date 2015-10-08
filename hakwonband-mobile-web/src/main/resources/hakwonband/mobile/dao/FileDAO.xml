@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.mobile.dao.FileDAO">
+
+	<insert id="insertFile" parameterType="dataMap">
+	<![CDATA[
+		/*	FileDAO.insertFile	*/
+		insert into tb_file (
+			file_parent_type, file_parent_no, file_name, save_file_name, file_size, file_ext_type
+			, file_ext, file_path_prefix, file_path, image_yn, thumb_file_path
+			, ip_address, reg_date, reg_user_no, file_use_yn, file_del_yn
+		) values(
+			#{file_parent_type}, #{file_parent_no}, #{file_name}, #{save_file_name}, #{file_size}, #{file_ext_type}
+			, #{file_ext}, #{file_path_prefix}, #{file_path}, #{image_yn}, #{thumb_file_path}
+			, #{ip_address}, now(), #{user_no}, #{file_use_yn}, 'N'
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+	
+	<!-- 파일들을 사용상태로 업데이트 -->
+	<update id="usingUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	FileDAO.usingUpdate	*/
+		update tb_file set
+			file_parent_no = #{file_parent_no}
+			, file_use_yn = 'Y'
+		where
+			file_no in (${file_no_list})
+	]]>
+		<if test="file_parent_type != 001 and user_type != 003">
+			and reg_user_no = #{reg_user_no}
+		</if>
+	</update>
+
+	<!-- 파일들을 미사용 상태로 업데이트 -->
+	<update id="unUsingUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	FileDAO.unUsingUpdate	*/
+		update tb_file set
+			file_use_yn = 'N'
+		where
+			file_parent_no = #{file_parent_no}
+			and file_parent_type = #{file_parent_type}
+	]]>
+		<if test="file_parent_type != 001 and user_type != 003">
+			and reg_user_no = #{reg_user_no}
+		</if>
+	</update>
+	
+	<!-- 파일상태 삭제로 변경 -->
+	<update id="deleteFile" parameterType="dataMap">
+	<![CDATA[
+		/*	FileDAO.deleteFile	*/
+		update 
+			tb_file
+		set 
+			file_use_yn = 'N'
+			, file_del_yn = 'Y'
+		where
+			file_no = #{file_no}
+	]]>
+	</update>
+	
+	<!-- 특정 컨텐츠의 파일 리스트 -->
+	<select id="fileList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	FileDAO.fileList	*/
+		select
+			a.file_no
+			, a.file_parent_type
+			, a.file_name
+			, a.save_file_name
+			, a.file_size
+			, a.file_ext_type
+			, a.file_ext
+			, a.file_path_prefix
+			, a.file_path
+			, a.image_yn
+			, a.thumb_file_path
+			, date_format(a.reg_date, '%Y년%m월%d일 %H:%i') as reg_date
+		from
+			tb_file a
+		where
+			a.file_parent_no = #{file_parent_no}
+			and a.file_parent_type = #{file_parent_type}
+			and a.file_use_yn = 'Y'
+			and a.file_del_yn = 'N'
+		order by
+			a.file_no asc
+	]]>
+	</select>
+	
+</mapper>

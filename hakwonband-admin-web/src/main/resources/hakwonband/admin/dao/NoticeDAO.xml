@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.NoticeDAO">
+
+	<!-- 공지사항 리스트 -->
+	<select id="noticeList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.noticeList */
+		select
+			a.notice_no
+			, a.notice_type
+			, a.notice_parent_no
+			, a.title
+			, a.preview_content
+			, a.reg_user_no
+			, b.user_name as reg_user_name
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, a.udp_user_no
+			, date_format(a.udp_date, '%Y.%m.%d') as udp_date
+			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
+			, (select count(1) from tb_content_reply where content_type = '001' and content_parent_no = a.notice_no) as reply_count
+	]]>
+		<if test="'004'.toString() eq notice_type">
+			, (select hakwon_name from tb_hakwon where hakwon_no = a.notice_parent_no) as hakwon_name
+			, get_code_name('001', c.user_type) as user_type_name
+		</if>
+	<![CDATA[
+		from
+			tb_notice a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.content_status = '001'
+			and a.notice_type = #{notice_type}
+			and a.reg_user_no = b.user_no
+			and a.reg_user_no = c.user_no
+	]]>
+		<if test="notice_type != '004' ">
+			and a.notice_parent_no = #{notice_parent_no}
+		</if>
+	<![CDATA[
+		order by
+			a.notice_no desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 공지사항 리스트 카운트 확인 -->
+	<select id="noticeListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* noticeDAO.noticeListTotCount */
+		select
+			COUNT(*) as count
+		from
+			tb_notice a
+			, tb_user_info b
+		where
+			a.content_status = '001'
+			and a.notice_type = #{notice_type}
+			and a.reg_user_no = b.user_no
+	]]>
+		<if test="notice_type != '004' ">
+			and a.notice_parent_no = #{notice_parent_no}
+		</if>
+	</select>
+
+	<!-- 공지사항 상세조회 -->
+	<select id="noticeDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* noticeDAO.noticeDetail */
+		select
+			a.notice_no
+			, a.notice_type
+			, a.notice_parent_no
+			, a.title
+			, a.preview_content
+			, a.content
+			, a.reply_yn
+			, a.reg_user_no
+			, b.user_name as reg_user_name
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, a.udp_user_no
+			, date_format(a.udp_date, '%Y.%m.%d') as udp_date
+			, get_code_name('001', c.user_type) as reg_user_type_name
+			, get_file_path(b.photo_file_no) as reg_user_photo_path
+		from
+			tb_notice a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.notice_no = #{notice_no}
+			and a.content_status = '001'
+			and a.reg_user_no = b.user_no
+			and b.user_no = c.user_no
+	]]>
+		<if test="'004'.toString() eq notice_type">
+			and a.notice_type = #{notice_type}
+		</if>
+	</select>
+
+	<!-- 학원 공지사항 등록 -->
+	<insert id="noticeInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	noticeDAO.noticeInsert	*/
+		insert into tb_notice (
+			notice_type
+			, notice_parent_no
+			, title
+			, preview_content
+			, content
+			, content_status
+			, reply_yn
+			, reg_user_no
+			, reg_date
+		) values (
+			#{notice_type}
+			, #{notice_parent_no}
+			, #{title}
+			, #{preview_content}
+			, #{content}
+			, '001'
+			, #{reply_yn}
+			, #{reg_user_no}
+			, now()
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 공지사항 내용 수정 -->
+	<update id="noticeUpdate" parameterType="dataMap">
+	<![CDATA[
+	/*	noticeDAO.noticeUpdate	*/
+		update
+			tb_notice
+	]]>
+		<set>
+			udp_user_no = #{udp_user_no}
+			, udp_date	= now()
+			<if test="@hakwonband.util.StringUtil@isNotNull( notice_type )">
+				, notice_type = #{notice_type}
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotNull( notice_parent_no )">
+				, notice_parent_no = #{notice_parent_no}
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotNull( title )">
+				, title = #{title}
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotNull( preview_content )">
+				, preview_content = #{preview_content}
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotNull( content )">
+				, content = #{content}
+			</if>
+			<if test="@hakwonband.util.StringUtil@isNotNull( reply_yn )">
+				, reply_yn = #{reply_yn}
+			</if>
+		</set>
+	<![CDATA[
+		where
+			notice_no = #{notice_no}
+	]]>
+		<if test="'004'.toString() eq user_type">
+			and reg_user_no = #{user_no}
+		</if>
+	</update>
+
+	<!-- 공지사항 삭제 -->
+	<update id="noticeDelete" parameterType="dataMap">
+	<![CDATA[
+	/* noticeDAO.noticeDelete */
+		update tb_notice set
+			content_status	= '002'
+			, udp_user_no	= #{user_no}
+			, udp_date		= now()
+		where
+			notice_no = #{notice_no}
+	]]>
+		<if test="'004'.toString() eq user_type">
+			and reg_user_no = #{user_no}
+		</if>
+	</update>
+
+</mapper>

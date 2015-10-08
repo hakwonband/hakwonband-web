@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.MessageSendDAO">
+
+	<!-- 메세지 등록 -->
+	<insert id="messageInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	MessageSendDAO.messageInsert	*/
+		insert into tb_message (
+			title
+			, preview_content
+			, content
+			, group_yn
+			, hakwon_no
+			, send_user_no
+			, send_date
+			, write_user_no
+			, write_date
+			, message_type
+			, message_target
+		) values (
+			#{title}
+			, #{preview_content}
+			, #{content}
+			, #{group_yn}
+			, -1
+			, #{send_user_no}
+			, now()
+			, #{send_user_no}
+			, now()
+			, #{messageType}
+			, #{messageTarget}
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 메세지 받은 사용자 카운트 업데이트 -->
+	<update id="updateMessageReceiverCount" parameterType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.updateMessageReceiverCount */
+		update tb_message set
+			receiver_count = (select count(1) from tb_message_receiver where message_no = #{messageNo})
+		where
+			message_no = #{messageNo}
+	]]>
+	</update>
+
+	<!-- 보낸 메세지 receiver 테이블에 등록 -->
+	<insert id="messageReceiverSingleInsert" parameterType="dataMap">
+	<![CDATA[
+		/* MessageSendDAO.messageReceiverSingleInsert */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		) values (
+	   		#{message_no}
+	   		, #{hakwon_no}
+		   	, #{receive_user_no}
+		)
+	]]>
+ 	</insert>
+
+
+	<!-- 보낸 메세지 receiver 테이블에 다중 등록 -->
+	<insert id="messageReceiverMultiInsert" parameterType="java.util.List">
+	<![CDATA[
+		/* MessageSendDAO.messageReceiverMultiInsert */
+		insert into tb_message_receiver (
+			message_no, hakwon_no, receive_user_no
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=",">
+	   (
+	   		#{item.message_no}
+	   		, '-1'
+		   	, #{item.receive_user_no}
+	   )
+		</foreach>
+ 	</insert>
+
+	<!-- 메세지 그룹별 다중 등록(지역 & 사용자) -->
+ 	<insert id="messageReceiverAreaGroupInsert" parameterType="dataMap">
+ 	<![CDATA[
+		/* MessageSendDAO.messageReceiverAreaGroupInsert */
+		insert into tb_message_receiver (
+			receive_user_no, hakwon_no, message_no
+		)
+		select '', '', '' from dual where 1 = 0
+	]]>
+	<!-- 원장님 -->
+	<if test="'Y'.toString() eq targetUserMaster">
+		union all
+		select
+			distinct a.master_user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon a
+			, tb_hakwon_address b
+		where
+			a.admin_reg_yn is null
+		<if test="hakwonCateList != null">
+			and a.hakwon_cate in
+			<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = b.hakwon_no
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and b.old_sido = #{sido}
+		</if>
+		<if test="gugunList != null">
+			and b.old_gugun in
+			<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+	</if>
+	<!-- 선생님 -->
+	<if test="'Y'.toString() eq targetUserTeacher">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon a
+			, tb_hakwon_address b
+			, tb_hakwon_teacher c
+		where
+			a.admin_reg_yn is null
+		<if test="hakwonCateList != null">
+			and a.hakwon_cate in
+			<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = b.hakwon_no
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and b.old_sido = #{sido}
+		</if>
+		<if test="gugunList != null">
+			and b.old_gugun in
+			<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = c.hakwon_no
+			and c.approved_yn = 'Y'
+	</if>
+	<!-- 학생 -->
+	<if test="'Y'.toString() eq targetUserStudent">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon a
+			, tb_hakwon_address b
+			, tb_hakwon_member c
+		where
+			a.admin_reg_yn is null
+		<if test="hakwonCateList != null">
+			and a.hakwon_cate in
+			<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = b.hakwon_no
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and b.old_sido = #{sido}
+		</if>
+		<if test="gugunList != null">
+			and b.old_gugun in
+			<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = c.hakwon_no
+			and c.user_type = '006'
+	</if>
+	<!-- 학부모 -->
+	<if test="'Y'.toString() eq targetUserParent">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon a
+			, tb_hakwon_address b
+			, tb_hakwon_member c
+		where
+			a.admin_reg_yn is null
+		<if test="hakwonCateList != null">
+			and a.hakwon_cate in
+			<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = b.hakwon_no
+		<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+			and b.old_sido = #{sido}
+		</if>
+		<if test="gugunList != null">
+			and b.old_gugun in
+			<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+			and a.hakwon_no = c.hakwon_no
+			and c.user_type = '005'
+	</if>
+	</insert>
+
+
+	<!-- 메세지 그룹별 다중 등록(학원 & 사용자) -->
+ 	<insert id="messageReceiverHakwonGroupInsert" parameterType="dataMap">
+ 	<![CDATA[
+		/* MessageSendDAO.messageReceiverHakwonGroupInsert */
+		insert into tb_message_receiver (
+			receive_user_no, hakwon_no, message_no
+		)
+		select '', '', '' from dual where 1 = 0
+	]]>
+	<!-- 원장님 -->
+	<if test="'Y'.toString() eq targetUserMaster">
+		union all
+		select
+			distinct a.master_user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon a
+		where
+			a.admin_reg_yn is null
+			and a.hakwon_no in
+			<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+	</if>
+	<!-- 선생님 -->
+	<if test="'Y'.toString() eq targetUserTeacher">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon_teacher c
+		where
+			c.hakwon_no in
+			<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+			and c.approved_yn = 'Y'
+	</if>
+	<!-- 학생 -->
+	<if test="'Y'.toString() eq targetUserStudent">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon_member c
+		where
+			c.hakwon_no in
+			<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+			and c.user_type = '006'
+	</if>
+	<!-- 학부모 -->
+	<if test="'Y'.toString() eq targetUserParent">
+		union all
+		select
+			distinct c.user_no as receive_user_no
+			, '-1'
+			, #{messageNo}
+		from
+			tb_hakwon_member c
+		where
+			c.hakwon_no in
+			<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+			and c.user_type = '005'
+	</if>
+	</insert>
+
+	<!-- 지역 그룹의 디바이스 정보 -->
+	<select id="areaGroupUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+		/*	MessageSendDAO.areaGroupUserDeviceToken	*/
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as receive_user_no from dual where 1 = 0
+			<!-- 원장님 -->
+			<if test="'Y'.toString() eq targetUserMaster">
+				union all
+				select
+					distinct a.master_user_no as receive_user_no
+				from
+					tb_hakwon a
+					, tb_hakwon_address b
+				where
+					a.admin_reg_yn is null
+				<if test="hakwonCateList != null">
+					and a.hakwon_cate in
+					<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = b.hakwon_no
+				<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+					and b.old_sido = #{sido}
+				</if>
+				<if test="gugunList != null">
+					and b.old_gugun in
+					<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+			</if>
+			<!-- 선생님 -->
+			<if test="'Y'.toString() eq targetUserTeacher">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon a
+					, tb_hakwon_address b
+					, tb_hakwon_teacher c
+				where
+					a.admin_reg_yn is null
+				<if test="hakwonCateList != null">
+					and a.hakwon_cate in
+					<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = b.hakwon_no
+				<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+					and b.old_sido = #{sido}
+				</if>
+				<if test="gugunList != null">
+					and b.old_gugun in
+					<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = c.hakwon_no
+					and c.approved_yn = 'Y'
+			</if>
+			<!-- 학생 -->
+			<if test="'Y'.toString() eq targetUserStudent">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon a
+					, tb_hakwon_address b
+					, tb_hakwon_member c
+				where
+					a.admin_reg_yn is null
+				<if test="hakwonCateList != null">
+					and a.hakwon_cate in
+					<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = b.hakwon_no
+				<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+					and b.old_sido = #{sido}
+				</if>
+				<if test="gugunList != null">
+					and b.old_gugun in
+					<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = c.hakwon_no
+					and c.user_type = '006'
+			</if>
+			<!-- 학부모 -->
+			<if test="'Y'.toString() eq targetUserParent">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon a
+					, tb_hakwon_address b
+					, tb_hakwon_member c
+				where
+					a.admin_reg_yn is null
+				<if test="hakwonCateList != null">
+					and a.hakwon_cate in
+					<foreach collection="hakwonCateList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = b.hakwon_no
+				<if test="@hakwonband.util.StringUtil@isNotNull( sido )">
+					and b.old_sido = #{sido}
+				</if>
+				<if test="gugunList != null">
+					and b.old_gugun in
+					<foreach collection="gugunList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+					and a.hakwon_no = c.hakwon_no
+					and c.user_type = '005'
+			</if>
+			) y
+		where
+			x.user_no = y.receive_user_no
+			and x.device_token is not null
+	</select>
+
+	<!-- 학원 그룹의 디바이스 정보 -->
+	<select id="hakwonGroupUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+		/*	MessageSendDAO.hakwonGroupUserDeviceToken	*/
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as receive_user_no from dual where 1 = 0
+			<!-- 원장님 -->
+			<if test="'Y'.toString() eq targetUserMaster">
+				union all
+				select
+					distinct a.master_user_no as receive_user_no
+				from
+					tb_hakwon a
+				where
+					a.admin_reg_yn is null
+					and a.hakwon_no in
+					<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+			</if>
+			<!-- 선생님 -->
+			<if test="'Y'.toString() eq targetUserTeacher">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon_teacher c
+				where
+					c.hakwon_no in
+					<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+					and c.approved_yn = 'Y'
+			</if>
+			<!-- 학생 -->
+			<if test="'Y'.toString() eq targetUserStudent">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon_member c
+				where
+					c.hakwon_no in
+					<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+					and c.user_type = '006'
+			</if>
+			<!-- 학부모 -->
+			<if test="'Y'.toString() eq targetUserParent">
+				union all
+				select
+					distinct c.user_no as receive_user_no
+				from
+					tb_hakwon_member c
+				where
+					c.hakwon_no in
+					<foreach collection="hakwonList" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+					and c.user_type = '005'
+			</if>
+			) y
+		where
+			x.user_no = y.receive_user_no
+			and x.device_token is not null
+	</select>
+
+	<!-- 검색 대상의 디바이스 정보 -->
+	<select id="searchUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	MessageSendDAO.searchUserDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+		from
+			tb_login_hist a
+		where
+			a.user_no in (${searchUserNoArray})
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 원장님 반 대상 디바이스 검색 -->
+	<select id="masterTargetClassUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetClassUserDeviceToken */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as user_no from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+				union all
+				select distinct teacher_user_no as user_no
+				from tb_hakwon_class_teacher
+				where hakwon_no = #{hakwon_no} and class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+				union all
+				select distinct a.student_user_no as user_no
+				from tb_hakwon_class_student a
+				where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array})
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+				union all
+				select distinct b.parent_user_no as user_no
+				from tb_hakwon_class_student a, tb_student_parent b
+				where a.hakwon_no = #{hakwon_no} and a.class_no in (${target_class_array}) and a.student_user_no = b.student_user_no
+		</if>
+	<![CDATA[
+			) y
+		where
+			x.user_no = y.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 원장님 사용자 그룹 대상 디바이스 리스트 -->
+	<select id="masterTargetUserGroupDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.masterTargetUserGroupDeviceToken */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select '' as user_no from dual where 1 = 0
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserTeacher )">
+				union all
+				select user_no from tb_hakwon_teacher where hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudent )">
+				union all
+				select distinct a.student_user_no as user_no
+				from tb_hakwon_class_student a
+				where a.hakwon_no = #{hakwon_no}
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParent )">
+				union all
+				select distinct b.parent_user_no as user_no
+				from tb_hakwon_class_student a, tb_student_parent b
+				where a.hakwon_no = #{hakwon_no} and a.student_user_no = b.student_user_no
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserStudentNon )">
+				union all
+				select distinct a.user_no
+				from tb_hakwon_member a
+				where
+					a.hakwon_no = #{hakwon_no} and a.user_type = '006'
+					and not exists ( select 1 from tb_hakwon_class_student e where e.hakwon_no = #{hakwon_no} and e.student_user_no=a.user_no )
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( targetUserParentNon )">
+				union all
+				select distinct a.user_no
+				from tb_hakwon_member a
+				where
+					a.hakwon_no = #{hakwon_no} and a.user_type = '005'
+					and not exists ( select 1 from tb_hakwon_class_student x, tb_student_parent y where x.hakwon_No = #{hakwon_no} and x.student_user_no = y.student_user_no and y.parent_user_no = a.user_no )
+		</if>
+	<![CDATA[
+			) y
+		where
+			x.user_no = y.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+
+
+
+
+	<!-- 반 학생들의 디바이스 리스트 -->
+ 	<select id="teacherTargetClassStudent" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.teacherTargetClassStudent */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select distinct student_user_no
+				from tb_hakwon_class_student
+				where hakwon_no = #{hakwon_no} and class_no = #{class_no}
+			) a
+		where
+			a.student_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 메세지 그룹별 다중 등록(반&학부모) -->
+	<select id="teacherTargetClassParent" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* MessageSendDAO.teacherTargetClassParent */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+				select distinct b.parent_user_no
+				from tb_hakwon_class_student a , tb_student_parent b
+				where
+					a.hakwon_no = #{hakwon_no}
+					and a.class_no = #{class_no}
+					and a.student_user_no = b.student_user_no
+			) a
+		where
+			a.student_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+</mapper>

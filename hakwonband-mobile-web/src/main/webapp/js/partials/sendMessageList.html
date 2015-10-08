@@ -1,0 +1,38 @@
+<section>
+	<h2 class="tit hide">보낸메세지</h2>
+
+	<div class="sec_blk">
+
+		<!-- 메세지 없을 때 -->
+		<div class="sec_con_02"  ng-if="!isMessage">
+			<div class="data_none">
+				보낸메세지가 없습니다.
+			</div>
+		</div>
+
+		<div class="sec_con_02" ng-repeat="item in sendMessageObj.sendMessageList" ng-click="goMessageDetail(item)">
+			<div class="alarm_tit">
+				<span class="img">
+					<img ng-src="{{ getFileFullPath(item.logo_file_path, 'hakwon', true) }}" alt="" width="20" />
+				</span>
+				<span class="att">{{item.hakwon_name}}</span>
+				<span class="writer">{{item.receive_user_name}} / {{item.write_date}}</span>
+			</div>
+			<div class="alarm_cont">
+				<a href="">
+					{{item.title}}
+				</a>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="sec_paging" ng-if="pageInfo">
+		<button type="button" class="btn prev" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)">이전</button>
+		<button ng-repeat="page in pageInfo.pages" ng-class="{on: page == pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn next" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)">다음</button>
+	</div>
+	<!--// 신규 paging 영역-->
+
+</section>

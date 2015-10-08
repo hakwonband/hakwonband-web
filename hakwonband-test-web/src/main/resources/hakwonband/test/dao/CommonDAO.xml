@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.test.dao.CommonDAO">
+
+	<!-- 계정 로그인 -->
+	<select id="selectLoginInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	commonDAO.selectLoginInfo	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, b.user_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_id = #{userId}
+			and a.user_password = #{userPass}
+			and a.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+			and a.user_type in ('003', '004')
+	]]>
+	</select>
+
+	<!-- 로그인 이력 등록 -->
+	<insert id="insertLoginHis" parameterType="dataMap" >
+	<![CDATA[
+		/*	commonDAO.insertLoginHis	*/
+		insert into tb_login_hist (
+			user_no
+			, user_type
+			, auth_key
+			, login_ip
+			, login_date
+			, last_access_date
+		) values(
+			#{userNo}
+			, #{userType}
+			, #{authKey}
+			, #{loginIp}
+			, now()
+			, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 인증 코드로 계정 로그인 -->
+	<select id="getUserInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	commonDAO.getUserInfo	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, a.user_id
+			, a.user_email
+			, b.user_name
+		from
+			tb_login_hist x
+			, tb_user a
+			, tb_user_info b
+		where
+			x.auth_key = #{authKey}
+			and x.logout_yn is null
+			and x.logout_date is null
+			and x.user_no = a.user_no
+			and x.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+	]]>
+	</select>
+
+</mapper>

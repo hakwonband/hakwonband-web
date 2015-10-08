@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.manager.dao.ReadDAO">
+
+	<!-- 컨텐츠 확인시 읽은 상태 등록 -->
+	<insert id="insertContentRead" parameterType="dataMap">
+	<![CDATA[
+		/*	ReadDAO.insertContentRead	*/
+		insert into tb_content_read (
+			content_type
+			, content_parent_no
+			, user_no
+			, read_date
+		) values (
+			#{content_type}
+			, #{content_parent_no}
+			, #{user_no}
+			, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 기존 읽은상태 등록내역 확인 -->
+	<select id="contentReadCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	ReadDAO.contentReadCount	*/
+		select
+			count(1)
+		from
+			tb_content_read a
+		where
+			a.content_type = #{content_type}
+			and a.content_parent_no = #{content_parent_no}
+			and user_no = #{user_no}
+	]]>
+	</select>
+</mapper>

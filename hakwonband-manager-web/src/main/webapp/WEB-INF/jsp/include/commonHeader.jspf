@@ -1,0 +1,35 @@
+<%@page pageEncoding="utf-8"%>
+	<meta charset="utf-8">
+
+<script type="text/javascript">
+	var contextPath = '<%=contextPath%>';
+	var imgPath		= '<%=imgPath%>';
+	var jsPath		= '<%=jsPath%>';
+	var cssPath		= '<%=cssPath%>';
+</script>
+
+	<script type="text/javascript" src="<%=jsPath %>/lib/jquery-2.1.1.min.js"></script>
+
+	<!-- text editor -->
+	<script type="text/javascript" src="<%=jsPath %>/lib/tinymce-4.1.5/tinymce.min.js"></script>
+
+	<script type="text/javascript" src="<%=jsPath%>/common/common.constant.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/common/common.prototype.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/common/base.js"></script>
+
+	<!-- html5 업로드 -->
+	<script type="text/javascript" src="<%=jsPath%>/lib/bumworld.html5.upload.js"></script>
+
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="<%=jsPath%>/lib/bootstrap-3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<%=jsPath%>/lib/bootstrap-3.2.0/css/bootstrap-theme.min.css">
+	<script type="text/javascript" src="<%=jsPath%>/lib/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+
+	<!-- bootstrap-datepicker -->
+	<link rel="stylesheet" href="<%=jsPath%>/lib/bootstrap-3.2.0/plugin/datepicker/css/datepicker.css">
+	<script type="text/javascript" src="<%=jsPath%>/lib/bootstrap-3.2.0/plugin/datepicker/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/lib/bootstrap-3.2.0/plugin/datepicker/locales/bootstrap-datepicker.kr.js"></script>
+
+	<!-- tmpl 플러그인 -->
+	<script type="text/javascript" src="<%=jsPath%>/lib/tmpl/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/lib/tmpl/jquery.tmplPlus.min.js"></script>

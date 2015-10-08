@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.ReplyDAO">
+
+	<!-- 부모 컨텐츠의 댓글 리스트 -->
+	<select id="replyList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* ReplyDAO.replyList */
+		select
+			a.reply_no
+			, a.title
+			, a.reply_content
+			, a.reg_user_no
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date_long
+			, b.user_name as reg_user_name
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(str_to_date(b.user_birthday, '%Y-%m-%d')) as reg_user_age
+			, b.user_gender
+			, c.user_type
+			, c.user_id as reg_user_id
+			, get_code_name('001', c.user_type) as user_type_name
+		from
+			tb_content_reply a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.reg_user_no = b.user_no
+			and a.reg_user_no = c.user_no
+			and a.content_type = #{content_type}
+			and a.content_parent_no = #{content_parent_no}
+		order by
+			a.reply_no asc
+	]]>
+	</select>
+
+	<!-- 신규 댓글 리스트 갱신 조회 (특정 댓글번호 이상의 신규 댓글 조회) -->
+	<select id="newReplyList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* ReplyDAO.replyNewList */
+		select
+			a.reply_no
+			, a.title
+			, a.reply_content
+			, a.reg_user_no
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date_long
+			, b.user_name as reg_user_name
+			, b.photo_file_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(str_to_date(b.user_birthday, '%Y-%m-%d')) as reg_user_age
+			, b.user_gender
+			, c.user_type
+			, c.user_id as reg_user_id
+			, get_code_name('001', c.user_type) as user_type_name
+		from
+			tb_content_reply a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.reply_no > #{reply_no}
+			and a.reg_user_no = b.user_no
+			and a.reg_user_no = c.user_no
+			and a.content_type = #{content_type}
+			and a.content_parent_no = #{content_parent_no}
+		order by
+			a.reply_no asc
+	]]>
+	</select>
+
+	<!-- 댓글 등록 -->
+	<insert id="replyInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	ReplyDAO.replyInsert	*/
+		insert into tb_content_reply (
+			title
+			, reply_content
+			, content_type
+			, content_parent_no
+			, reg_user_no
+			, reg_date
+		) values (
+			#{title}
+			, #{reply_content}
+			, #{content_type}
+			, #{content_parent_no}
+			, #{reg_user_no}
+			, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 댓글 삭제 -->
+	<delete id="replyDelete" parameterType="dataMap">
+	<![CDATA[
+	/*	ReplyDAO.replyDelete	*/
+		delete from tb_content_reply where reg_user_no = #{user_no} and reply_no = #{reply_no}
+	]]>
+	</delete>
+
+</mapper>

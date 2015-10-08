@@ -1,0 +1,51 @@
+<div class="ibox m">
+	<div class="ibox-content">
+		<div class="text-right" ng-if="isMobile">
+			<button type="button" class="btn btn-primary" ng-if="checkAuthType()" ng-click="goNoticeEdit()">공지사항 등록</button>
+		</div>
+		<table class="table table-hover table_link" ng-if="noticeListTotCount == 0">
+			<thead>
+			<tr>
+				<th>제목</th>
+				<th>날짜 / 작성자</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td colspan="2" class="box_nodata">공지사항이 없습니다.</td>
+			</tr>
+			</tbody>
+		</table>
+		<table class="table table-hover table_link" ng-if="noticeListTotCount != 0">
+			<thead>
+			<tr>
+				<th>제목</th>
+				<th>날짜 / 작성자</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr ng-repeat="item in noticeList">
+				<td>
+					<a href="" ng-click="goNoticeDetail(item)">
+						{{ item.title }}
+						<strong ng-if="item.reply_yn== 'Y'">({{item.reply_count}})</strong>
+						<strong class="badge badge-danger" ng-if="isNewItem(item.reg_date) && item.read_status == 0">N</strong>
+					</a>
+				</td>
+				<td><span>{{ item.reg_date }} / {{ item.reg_user_name }}</span></td>
+			</tr>
+			</tbody>
+		</table>
+		<div class="text-right">
+			<button type="button" class="btn btn-primary" ng-if="checkAuthType()" ng-click="goNoticeEdit()">공지사항 등록</button>
+		</div>
+	</div>
+
+	<!-- 신규 paging 영역-->
+	<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+		<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+		<button ng-repeat="page in pageInfo.pages"class="btn btn-white"  ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+		<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i></button>
+	</div>
+	<!--// 신규 paging 영역-->
+</div>

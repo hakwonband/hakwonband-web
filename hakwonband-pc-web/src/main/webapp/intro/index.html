@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>학원밴드 소개 | HAKWON BAND</title>
+
+	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen" href="css/common.css" />
+	<!--[if lt IE 9]>
+	<script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+<header>
+	<h1><a href="#">학원밴드</a></h1>
+	<nav>
+		<ul>
+			<!-- li 클릭하면 active 클래스 붙이도록! -->
+			<li class="active"><a href="#about" class="nav_01">서비스 소개</a></li>
+			<li><a href="#down" class="nav_02">앱 다운로드</a></li>
+			<li><a href="#guide" class="nav_03">서비스 가이드</a></li>
+			<li><a href="#request" class="nav_04">서비스 신청</a></li>
+			<li><a href="#contact" class="nav_05">제휴안내 및 고객센터</a></li>
+			<li><a href="https://m.hakwonband.com" class="nav_06">로그인</a></li>
+		</ul>
+	</nav>
+</header>
+
+<section class="img_slide_box" id="about">
+
+	<!-- 이미지 컨트롤 버튼. 클릭하면 해당 이미지로 감. -->
+	<ul class="img_slice_control_btn">
+		<li><button data-act="topImg" data-order="1" type="button">학원밴드, 어떤 앱인가요?</button></li>
+		<li><button data-act="topImg" data-order="2" type="button">언제, 어디서나 학원밴드</button></li>
+		<li><button data-act="topImg" data-order="3" type="button">빠르게! 쉽게! 학원밴드</button></li>
+	</ul>
+
+	<div class="img_box">
+		<img data-view="1" alt="학원밴드, 어떤 앱인가요?" src="images/intro_01.png">
+		<img style="display:none;" data-view="2" alt="언제, 어디서나 학원밴드" src="images/intro_02.png">
+		<img style="display:none;" data-view="3" alt="빠르게! 쉽게! 학원밴드" src="images/intro_03.png">
+	</div>
+</section>
+
+<section class="about_box">
+	<iframe width="960" height="720" src="https://www.youtube.com/embed/eUR4djD95QI" frameborder="0" allowfullscreen class="mov_box"></iframe>
+
+	<h1>학원밴드 왜 좋은가요?</h1>
+
+	<h2 class="title_01">첫째, 여러 학원의 소식을 한번에 받자!</h2>
+	<img alt="직장인인 저는 여러 학원을 다니는 우리아이의 학원소식을 일일이 체크하기 너무 힘들었는데 여러 학원의 소식을 한번에 받아볼 수 있어서 너무 좋았어요 - 37세 워킹맘" src="images/capture_01.png">
+
+	<h2 class="title_02">둘째, 궁금했던 학원이야기 바로바로!</h2>
+	<img alt="미술학원을 운영하고 있습니다. 매일 아이들이 만든 작품을 반 친구들과 공유할 수도 있고 작품을 개별적으로 사진찍어 학부모님께 바로 전송해 드렸더니 정말 좋아하셨어요. - 48세 미술학원 원장님" src="images/capture_02.png">
+
+	<h2 class="title_03">셋째, 여러 학원의 소식을 한번에 받자!</h2>
+	<img alt="우리동네에 무슨 학원이 있는지 어떤 학우너을 보내야 하는지 알기가 쉽지 않았어요. 일일이 알아봐야 했었는데 우리동네 학원정보를 한번에 볼 수 있어서 너무 좋아요. - 40세 주부" src="images/capture_03.png">
+
+	<h2 class="title_04">넷째, 학원홍보를 쉽고 간편하게!</h2>
+	<img alt="좋은 선생님들과 열심히 가르치고 학원 업그레이드 열심히 했는데도 주변에 홍보하기가 쉽지 않았어요. 그런데 학원밴드를 통해 간편하고 쉽게 홍보할 수 있어서 정말 편합니다. 학원인들에게 없어서는 안될 훌륭한 앱입니다. 최고에요! - 46세 종합학원 원장님" src="images/capture_04.png">
+
+	<a href="brochure.html" target="_blank" class="go_brochure">학원밴드 브로슈어 보기</a>
+
+	<img alt="플립러닝 무엇이 좋은가요?" src="images/flipped.png" class="flipped_box">
+</section>
+
+<section class="app_down_box" id="down">
+	<h1>앱 다운로드</h1>
+	<img alt="학원밴드 앱  핸드폰 화면" src="images/img_phone.png" class="img_phone">
+	<img alt="편리하고 스마트한 학원관리 앱! 지금 바로 설치하세요!" src="images/down_text.png" class="down_text">
+
+	<a href="#" onclick="alert('준비 중 입니다.'); return false;" class="down_app_appstore"><img alt="Download on the App Store" src="images/btn_down_01.png"></a>
+	<a href="https://play.google.com/store/apps/details?id=com.hakwon.app" target="_blank" class="down_app_googleplay"><img alt="Get it on Google Play" src="images/btn_down_02.png"></a>
+</section>
+
+<section class="service_guide_box" id="guide">
+	<h1>서비스가이드</h1>
+	<ol>
+		<li class="step_01">앱 다운로드 - Google play store 또는 APP store를 통해 학원밴드 앱을 다운로드 합니다.</li>
+		<li class="step_02">회원가입 - 회원으로 가입하고 학원정보를 등록합니다</li>
+		<li class="step_03">가입승인 - 원장님은 사이트 관리자의, 선생님은 해당학원 원장님의 가입 승인 후 사용 가능합니다.</li>
+		<li class="step_04">사용시작 - 이제 학원밴드를 마음껏 이용하세요!</li>
+	</ol>
+</section>
+
+<section class="service_request_box" id="request">
+	<h1>서비스 신청</h1>
+	<img alt="지금 시작하세요! 고민하지 말고 학원밴드 서비스를 신청하세요. 간편한 회원가입과 승인절차로 바로 서비스 이용이 가능합니다." src="images/text_start.png">
+
+	<a href="https://hakwon.hakwonband.com/index.html#/signUp" class="service_start_01">원장님/선생님 서비스 신청하기</a>
+	<a href="https://m.hakwonband.com/index.do#/signUp" class="service_start_02">학생/학부모 서비스 신청하기</a>
+</section>
+
+<section class="contact_box" id="contact">
+	<h1>제휴문의 및 고객센터</h1>
+	<img alt="담당자에게 메일을 보내 드립니다. 제휴정보나 기타 사항을 문의하세요." src="images/text_mail.png" class="text_contact">
+	<form action="">
+		<fieldset>
+			<legend>메일보내기</legend>
+			<ul>
+				<li>
+					<label for="mail_title"><img alt="제목(필수)" src="images/mail_label_01.gif"></label>
+					<input type="text" name="title" id="mail_title">
+				</li>
+				<li>
+					<label for="mail_email"><img alt="이메일(필수)" src="images/mail_label_02.gif"></label>
+					<input type="email" name="email" id="mail_email">
+				</li>
+				<li>
+					<label for="mail_phone"><img alt="연락받을 전화번호(필수)" src="images/mail_label_03.gif"></label>
+					<input type="number" name="phone" id="mail_phone">
+				</li>
+				<li>
+					<label for="mail_contents"><img alt="학원명과 학원주소와 기타문의 및 가입내용들을 적어주세요." src="images/mail_label_04.gif"></label>
+					<textarea rows="8" name="content" cols="70" id="mail_contents"></textarea>
+				</li>
+			</ul>
+
+			<button type="button" data-act="questionsSend" class="mail_submit"><img alt="메일 보내기" src="images/btn_mail_submit.png"></button>
+		</fieldset>
+	</form>
+</section>
+
+
+<script type="text/javascript">
+
+	$(function() {
+		$('button[data-act=topImg]').click(function() {
+			var dataOrder = $(this).attr('data-order');
+			if( dataOrder == 1 ) {
+				$('div.img_box > img[data-view=1]').show();
+				$('div.img_box > img[data-view=2]').hide();
+				$('div.img_box > img[data-view=3]').hide();
+			} else if( dataOrder == 2 ) {
+				$('div.img_box > img[data-view=1]').hide();
+				$('div.img_box > img[data-view=2]').show();
+				$('div.img_box > img[data-view=3]').hide();
+			} else if( dataOrder == 3 ) {
+				$('div.img_box > img[data-view=1]').hide();
+				$('div.img_box > img[data-view=2]').hide();
+				$('div.img_box > img[data-view=3]').show();
+			}
+		});
+	});
+
+	$('button[data-act=questionsSend]').click(function() {
+		if($('input[name=title]').val().trim() === ''){
+			alert('제목을 입력하여 주십시오.');
+			$('input[name=title]').focus();
+			return false;
+		} else if($('input[name=email]').val().trim() === '') {
+			alert('이메일을 입력하여 주십시오.');
+			$('input[name=email]').focus();
+			return false;
+		} else if($('input[name=phone]').val().trim() === '') {
+			alert('연락처를 입력하여 주십시오.');
+			$('input[name=phone]').focus();
+			return false;
+		} else if($('textarea[name=content]').val().trim() === '') {
+			alert('문의하실 내용을 입력하여 주십시오.');
+			$('textarea[name=content]').focus();
+			return false;
+		} else {
+
+			var param = {
+				title:$('input[name=title]').val()
+				, email:$('input[name=email]').val()
+				, phone:$('input[name=phone]').val()
+				, content:$('textarea[name=content]').val()
+			};
+			console.log('param', param);
+
+			var queryString = $.param(param, true);
+			jQuery.ajax({
+				url: "/questionsMail.do",
+				type: "post",
+				data: queryString,
+				dataType: "json",
+				success: function(data) {
+					if( data.colData && data.colData.flag == "success" ) {
+						$('input[name=title]').val('');
+						$('input[name=email]').val('');
+						$('input[name=phone]').val('');
+						$('textarea[name=content]').val('');
+						alert('문의 메일을 요청 했습니다.');
+					} else {
+						alert('문의 메일 요청을 실패 했습니다.');
+					}
+				},
+				error: function(xhr, textStatus, errorThrown) {
+					alert('문의 메일 요청을 실패 했습니다.');
+				}
+			});
+			return false;
+		}
+	});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66935015-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.UserDAO">
+
+	<!-- 사용자 프로필 사진 수정 -->
+	<update id="updateUserPhoto" parameterType="dataMap">
+	<![CDATA[
+		/* UserDAO.updateUserInfo */
+		update tb_user_info set photo_file_no = #{photo_file_no} where user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 미승인 사용자 리스트 -->
+	<select id="unauthorizedUserList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.unauthorizedUserList	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, a.approved_yn
+			, a.use_yn
+			, b.user_name
+			, b.user_gender
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as user_photo_path
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_type= #{userType}
+			and (a.approved_yn = 'N' or a.approved_yn is null)
+			and a.user_no = b.user_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or a.user_id like concat('%', #{searchText}, '%')
+				or b.tel1_no like concat('%', #{searchText}, '%')
+			)
+	</if>
+	<![CDATA[
+		order by
+			a.reg_date desc
+			, b.user_name asc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 미승인 사용자 카운트 -->
+	<select id="unauthorizedUserCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	UserDAO.unauthorizedUserCount	*/
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_type= #{userType}
+			and (a.approved_yn = 'N' or a.approved_yn is null)
+			and a.user_no = b.user_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or a.user_id like concat('%', #{searchText}, '%')
+				or b.tel1_no like concat('%', #{searchText}, '%')
+			)
+	</if>
+	</select>
+
+	<!-- 사용자 상세 정보 -->
+	<!-- and (a.approved_yn = 'N' or a.approved_yn is null) -->
+	<select id="userInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userInfo	*/
+		select
+			a.user_no
+			, b.user_name
+			, a.user_email
+			, case when b.user_gender = 'M' then '남' else '여' end as user_gender_name
+			, b.tel1_no
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, get_code_name('001', a.user_type) as user_type_name
+			, calc_age(b.user_birthday) as user_age
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, a.use_yn
+			, b.attendance_code
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = #{user_no}
+			and a.user_type= #{user_type}
+			and a.approved_yn = 'Y'
+			and a.user_no = b.user_no
+	]]>
+	</select>
+
+	<!-- 사용자 학교 정보 -->
+	<select id="userSchoolInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userSchoolInfo	*/
+		select
+			a.school_name
+			, get_code_name('008', a.school_level)
+			, a.level
+		from
+			tb_student_school a
+		where
+			a.user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 학부모 리스트 -->
+	<select id="parentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.parentList	*/
+		select
+			a.parent_user_no
+			, b.user_name
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.student_user_no = #{student_user_no}
+			and a.parent_user_no = b.user_no
+		order by
+			b.user_gender asc
+	]]>
+	</select>
+
+
+	<!-- 학생 리스트 -->
+	<select id="childList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.childList	*/
+		select
+			a.student_user_no
+			, b.user_name
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_student_parent a
+			, tb_user_info b
+		where
+			a.parent_user_no = #{parent_user_no}
+			and a.student_user_no = b.user_no
+		order by
+			b.user_birthday asc
+	]]>
+	</select>
+
+	<!-- 사용자 리스트 -->
+	<select id="userList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userList	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, get_file_path(b.photo_file_no) as photo_file_path
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and (b.user_name like concat('%', #{searchText}, '%') or b.user_id like concat('%', #{searchText}, '%'))
+		order by
+			b.user_name asc
+		limit 50
+	]]>
+	</select>
+
+	<!-- 사용자 정지 및 활성화 -->
+	<update id="userStopChange" parameterType="dataMap">
+	<![CDATA[
+		/*	UserDAO.userStopChange	*/
+		update tb_user set
+			use_yn = #{use_yn}
+		where
+			user_no = #{user_no}
+	]]>
+	</update>
+</mapper>

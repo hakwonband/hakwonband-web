@@ -1,0 +1,30 @@
+<section>
+	<h2 class="tit">선생님</h2>
+
+	<div class="sec_blk">
+
+		<!-- 선생님 없음 -->
+		<div class="sec_con_02" ng-if="hakwonTeacherList.length <= 0">
+			<div class="data_none">
+				등록된 선생님이 없습니다.
+			</div>
+		</div>
+
+		<div class="sec_con_list" ng-if="hakwonTeacherList.length > 0">
+			<ul class="ul_type_02">
+				<li ng-repeat="teacher in hakwonTeacherList">
+					<div class="list_img_02">
+						<img ng-src="{{ getFileFullPath(teacher.photo_file_path, 'photo', true) }}" alt="" width="32" height="32" />
+					</div>
+					<div class="list_info">
+						<em>{{teacher.user_name}}</em> / {{teacher.subject}} / <em>{{ getUserGender(teacher.user_gender) }}</em>
+						<!--/ {{teacher.user_age}}세-->
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+
+
+</section>

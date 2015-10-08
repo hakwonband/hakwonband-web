@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.AdvertiseDAO">
+
+	<!-- 광고 요청 등록 -->
+	<insert id="insertAdvertiseReq" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseReq	*/
+		insert into tb_advertise_req (
+			hakwon_no, title, banner_file_no, banner_size, bank_info, stop_admin_yn, stop_master_yn, reg_user_no, reg_date
+		) values (
+			#{hakwonNo}, #{title}, #{bannerFileNo}, #{bannerSize}, #{bankInfo}, 'N', 'N', #{regUserNo}, now()
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 광고 가격 등록 -->
+	<update id="updateAdvertiseReqPrice" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseReqPrice	*/
+		update tb_advertise_req set
+			price = #{totalPrice}
+		where
+			advertise_req_no = #{advertiseReqNo}
+			and reg_user_no = #{regUserNo}
+	]]>
+	</update>
+
+	<!-- 광고 수정 -->
+	<update id="updateAdvertiseReq" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseReq	*/
+		update tb_advertise_req set
+			title = #{title}
+			, banner_file_no = #{bannerFileNo}
+		where
+			advertise_req_no = #{advertiseReqNo}
+			and reg_user_no = #{userNo}
+	]]>
+	</update>
+
+	<!-- 광고 취소 -->
+	<update id="updateAdvertiseReqCancel" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseReqCancel	*/
+		update tb_advertise_req set
+			cancel_yn = 'Y'
+			, cancel_date = now()
+		where
+			advertise_req_no = #{reqNo}
+			and reg_user_no = #{userNo}
+	]]>
+	</update>
+
+	<!-- 광고 지불 정보 등록 -->
+	<insert id="insertAdvertiseReqPayInfo" parameterType="java.util.List">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseReqPayInfo	*/
+		insert into tb_advertise_req_pay_info (
+			advertise_req_no, view_month, banner_size, price, dong_count, total_price
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.advertiseReqNo}
+			, #{item.viewMonth}
+			, #{item.bannerSize}
+			, #{item.price}
+			, #{item.dongCount}
+			, #{item.totalPrice}
+		)
+		</foreach>
+	</insert>
+
+	<!-- 광고 지역 등록 -->
+	<insert id="insertAdvertiseLocal" parameterType="java.util.List">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseLocal	*/
+		insert into tb_advertise_local_date (
+			advertise_req_no, view_month, sido, gugun, dong, banner_size
+		) values
+	]]>
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.advertiseReqNo}
+			, #{item.viewMonth}
+			, #{item.sido}
+			, #{item.gugun}
+			, #{item.dong}
+			, #{item.bannerSize}
+		)
+		</foreach>
+	</insert>
+
+	<!-- 광고 요청 리스트 -->
+	<select id="advertiseReqList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqList	*/
+		select
+			c.advertise_req_no
+			, c.title
+			, c.banner_file_no
+			, get_file_path(c.banner_file_no) as banner_file_path
+			, c.cancel_yn
+			, c.deposit_yn
+			, c.banner_size
+			, c.price
+			, b.hakwon_name
+			, (select count(1) from tb_advertise_local_date where advertise_req_no = c.advertise_req_no and date_format(now(), '%Y%m') = view_month) as view_month_count
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_advertise_req c
+		where
+			a.master_user_no = #{userNo}
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<![CDATA[
+			and a.hakwon_no = c.hakwon_no
+		order by
+			c.advertise_req_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 광고 요청 카운트 -->
+	<select id="advertiseReqTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqTotCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_advertise_req b
+		where
+			a.master_user_no = #{userNo}
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<![CDATA[
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	</select>
+
+
+	<!-- 광고 요청 상세 -->
+	<select id="advertiseReqDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqDetail	*/
+		select
+			b.advertise_req_no
+			, b.title
+			, b.banner_file_no
+			, get_file_path(b.banner_file_no) as banner_file_path
+			, b.banner_size
+			, b.cancel_yn
+			, b.cancel_date
+			, b.stop_admin_yn
+			, b.deposit_yn
+			, b.price
+			, b.bank_info
+		from
+			tb_hakwon a
+			, tb_advertise_req b
+		where
+			a.master_user_no = #{userNo}
+			and a.hakwon_no = b.hakwon_no
+			and b.advertise_req_no = #{reqNo}
+	]]>
+	</select>
+
+	<!-- 광고 요청 지역 리스트 -->
+	<select id="advertiseReqLocalList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqLocalList	*/
+		select
+			a.advertise_req_no
+			, a.view_month
+			, case when date_format(now(), '%Y%m') = a.view_month then 'Y'
+			 else 'N' end as current_view
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.banner_size
+		from
+			tb_advertise_local_date a
+		where
+			a.advertise_req_no = #{reqNo}
+		order by
+			a.view_month asc
+			, a.sido asc
+			, a.gugun asc
+			, a.dong asc
+	]]>
+	</select>
+
+	<!-- 등록 광고 구군 리스트 -->
+	<select id="regDongBannerList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.regDongBannerList	*/
+		select
+			a.dong
+			, b.view_month
+			, sum(b.banner_size) as banner_total_count
+		from
+			(select sido, gugun, dong from tb_address_zip where sido = #{sido} and gugun = #{gugun} group by dong) a
+			, tb_advertise_local_date b
+			, tb_advertise_req c
+		where
+			a.sido = b.sido
+			and a.gugun = b.gugun
+			and a.dong = b.dong
+			and b.view_month BETWEEN DATE_FORMAT(now(),'%Y%m')
+			and DATE_FORMAT(now() + INTERVAL 11 MONTH,'%Y%m')
+			and b.advertise_req_no = c.advertise_req_no
+			and c.cancel_yn is null
+		group by
+			a.dong
+			, b.view_month
+		order by
+			b.view_month asc
+			, a.dong asc
+	]]>
+	</select>
+
+	<!-- 학원 등록 광고 구군 리스트 -->
+	<select id="hakwonRegDongBannerList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.hakwonRegDongBannerList	*/
+		select
+			a.dong
+			, b.view_month
+			, sum(b.banner_size) as banner_total_count
+		from
+			(select sido, gugun, dong from tb_address_zip where sido = #{sido} and gugun = #{gugun} group by dong) a
+			, tb_advertise_local_date b
+			, tb_advertise_req c
+		where
+			a.sido = b.sido
+			and a.gugun = b.gugun
+			and a.dong = b.dong
+			and b.view_month BETWEEN DATE_FORMAT(now(),'%Y%m')
+			and DATE_FORMAT(now() + INTERVAL 11 MONTH,'%Y%m')
+			and b.advertise_req_no = c.advertise_req_no
+			and c.hakwon_no = #{hakwonNo}
+			and c.cancel_yn is null
+		group by
+			a.dong
+			, b.view_month
+		order by
+			b.view_month asc
+			, a.dong asc
+	]]>
+	</select>
+
+	<!-- 요청 월 베너 가격 -->
+	<select id="monthBannerPrice" parameterType="java.util.List" resultType="dataMap">
+		<foreach collection="list" item="item" separator="union">
+		<![CDATA[
+		/*	AdvertiseDAO.monthBannerPrice	*/
+		select
+			#{item.adMonth} as adMonth
+			, #{item.bannerSize} as bannerSize
+			, a.price
+		from tb_advertise_price a
+		where
+			a.price_year_month = #{item.adMonth}
+			and a.banner_size = #{item.bannerSize}
+		]]>
+		</foreach>
+	</select>
+
+	<!-- 학원 등록 광고 구군 리스트 -->
+	<select id="hakwonRegMonthPriceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.hakwonRegMonthPriceList	*/
+		select
+			a.view_month
+			, a.banner_size
+			, a.price
+			, a.dong_count
+			, a.total_price
+		from tb_advertise_req_pay_info a
+		where a.advertise_req_no = #{reqNo}
+		order by a.view_month asc
+	]]>
+	</select>
+</mapper>

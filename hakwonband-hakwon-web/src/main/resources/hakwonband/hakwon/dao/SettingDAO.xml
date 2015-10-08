@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.SettingDAO">
+
+	<!-- 공지 카테고리 조회 -->
+	<select id="noticeCateList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* SettingDAO.noticeCateList */
+		select
+			a.cate_no as cateNo
+ 			, a.cate_name as cateName
+ 			, a.cate_order as cateOrder
+		from
+			tb_notice_cate a
+		where
+			a.hakwon_no = #{hakwonNo}
+		order by
+			a.cate_order asc
+	 ]]>
+	</select>
+
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteNoticeCate" parameterType="dataMap">
+	<![CDATA[
+		/*	SettingDAO.deleteNoticeCate	*/
+		delete from tb_notice_cate
+		where
+			hakwon_no = #{hakwonNo}
+			and cate_no = #{cateNo}
+	]]>
+	</delete>
+
+	<!-- 카테고리 수정 -->
+	<update id="modifyNoticeCate" parameterType="dataMap">
+	<![CDATA[
+		/*	SettingDAO.modifyNoticeCate	*/
+		update tb_notice_cate set
+			cate_name = #{cateName}
+			, cate_order = #{cateOrder}
+		where
+			hakwon_no = #{hakwonNo}
+			and cate_no = #{cateNo}
+	]]>
+	</update>
+
+	<!-- 카테고리 등록 -->
+	<insert id="insertNoticeCate" parameterType="dataMap">
+	<![CDATA[
+		/*	SettingDAO.insertNoticeCate	*/
+		insert into tb_notice_cate(
+			hakwon_no, cate_name, cate_order
+		) values (
+			#{hakwonNo}
+			, #{cateName}
+			, #{cateOrder}
+		)
+	]]>
+	</insert>
+
+</mapper>

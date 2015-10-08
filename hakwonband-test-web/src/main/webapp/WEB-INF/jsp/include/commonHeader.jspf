@@ -1,0 +1,32 @@
+<%@page pageEncoding="utf-8"%>
+	<meta charset="utf-8">
+
+<script type="text/javascript">
+	var contextPath = '<%=contextPath%>';
+	var imgPath		= '<%=imgPath%>';
+	var jsPath		= '<%=jsPath%>';
+	var cssPath		= '<%=cssPath%>';
+	var assetsPath	= '<%=assetsPath%>';
+	var authKey		= '<%=authKey%>';
+
+	var pageModule = {};
+</script>
+
+	<link href="<%=assetsPath%>/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<%=assetsPath%>/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="<%=assetsPath%>/css/animate.css" rel="stylesheet">
+	<link href="<%=assetsPath%>/css/style.css" rel="stylesheet">
+
+	<script type="text/javascript" src="<%=jsPath %>/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
+
+	<script type="text/javascript" src="<%=assetsPath%>/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="<%=jsPath%>/common/common.constant.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/common/common.prototype.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/common/base.js"></script>
+
+	<!-- tmpl 플러그인 -->
+	<script type="text/javascript" src="<%=jsPath%>/lib/tmpl/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="<%=jsPath%>/lib/tmpl/jquery.tmplPlus.min.js"></script>
+
+	<script type="text/javascript" src="<%=jsPath %>/lib/jquery-2.1.1/lib/jquery.cookie.js"></script>

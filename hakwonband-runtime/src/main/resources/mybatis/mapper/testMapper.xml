@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+
+	<!-- 사용자 정보 조회 -->
+	<select id="getUserInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	test.getUserInfo	*/
+		select
+			b.user_no as userNo
+			, b.user_email as userEmail
+			, c.user_name as userName
+			, c.user_profile_no as userProfileNo
+		from
+			tb_user b
+			, tb_user_info c
+		where
+			b.user_no = 1
+			and b.use_yn = 'Y'
+			and b.user_no = c.user_no
+	]]>
+	</select>
+
+</mapper>

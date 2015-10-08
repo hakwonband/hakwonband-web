@@ -1,0 +1,68 @@
+<section>
+	<div class="sec_title">
+		<h2 class="tit hide">회원가입</h2>
+	</div>
+
+	<div class="sec_blk">
+		<div class="sec_step">
+			<a class="on" ng-class="{'': nextStep, 'on': !nextStep}" ng-click="returnStep()"><span>회원가입 1단계</span></a>
+			<a ng-class="{'on': nextStep, '': !nextStep}"><span>회원가입 2단계</span></a>
+		</div>
+
+		<div class="input_box agree_box" ng-show="!nextStep">
+			<div class="chk">
+				<input type="checkbox" name="agree01" id="agree_01" value="Y" /> <label for="agree_01">학원밴드 이용약관 동의</label>
+				<a href="https://www.hakwonband.com/info.html" target="_blank" class="view">보기</a>
+			</div>
+			<div class="chk">
+				<input type="checkbox" name="agree02" id="agree_02" value="Y" /> <label for="agree_02">개인정보취급방침 동의</label>
+				<a href="https://www.hakwonband.com/protection.html" target="_blank" class="view">보기</a>
+			</div>
+		</div>
+
+		<!--버튼 영역-->
+		<button type="button" ng-show="!nextStep" class="btn btn_style_student btn_block mb_10" ng-click="moveNextStep('006')">학생</button>
+		<button type="button" ng-show="!nextStep" class="btn btn_style_parents btn_block mb_10" ng-click="moveNextStep('005')">학부모</button>
+		<button type="button" ng-show="!nextStep" class="btn btn_style_chief btn_block mb_10" ng-click="moveNextStep('003')">원장님</button>
+		<button type="button" ng-show="!nextStep" class="btn btn_style_teacher btn_block" ng-click="moveNextStep('004')">선생님</button>
+
+<!--
+		<div class="btn" ng-show="!nextStep">
+			<button type="button" class="btn_type_08 mb_5" ng-click="moveNextStep('006')">학생</button>
+			<button type="button" class="btn_type_09" ng-click="moveNextStep('005')">학부모</button>
+		</div>
+-->
+		<!--//버튼 영역-->
+	</div>
+</section>
+
+<div ng-show="nextStep">
+	<section class="sec_register">
+		<div class="sec_blk mb_0">
+
+			<div class="sec_title">
+				<h2 class="tit_02">필수 입력사항</h2>
+			</div>
+
+			<!-- 입력 form -->
+			<div class="sec_input mb_0">
+				<div class="input_chk">
+					<input type="text" name="user_id" title="아이디 입력" placeholder="아이디"  ng-keydown="resetIdCheck($event)" />
+					<button type="button" class="btn btn_style_info btn_bold" ng-click="checkId()">중복확인</button>
+				</div>
+				<input type="password" name="user_password" title="비밀번호 입력" placeholder="비밀번호" />
+				<input type="password" name="user_password_confirm" title="비밀번호 확인 입력" placeholder="비밀번호 확인" />
+			</div>
+			<!-- //입력 form -->
+
+		</div>
+	</section>
+
+
+	<section>
+		<!--버튼 영역-->
+		<button type="button" class="btn btn_style_submit btn_bold btn_block" ng-click="complate();">회원가입완료</button>
+		<!--//버튼 영역-->
+
+	</section>
+</div>

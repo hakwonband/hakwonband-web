@@ -1,0 +1,46 @@
+<section>
+	<div class="sec_blk">
+		<div class="sec_title">
+			<h2 class="tit_02">프로필 정보</h2>
+		</div>
+		<div class="sec_photo">
+			<div class="img_photo">
+				<img ng-src="{{ CommUtil.createFileFullPath(userInfo.userPhotoPath, 'photo', true) }}" alt="프로필" width="125" height="125" data-view="photo_preview"/>
+				<div class="photofile">
+					<span class="photo">파일 업로드</span>
+					<input type="file" class="input_file" title="파일 업로드" data-act="photo_upload" accept="image/*">
+				</div>
+			</div>
+			<span class="id">{{userInfo.userId}}</span>
+		</div>
+		<ul class="my_info_list mb_30">
+			<li>이름 : {{userInfo.userName}}</li>
+			<li>전화번호 : {{userInfo.tel1No}}</li>
+			<li>이메일 주소 : {{userInfo.userEmail}}</li>
+			<li>출결코드 : {{userInfo.attendanceCode}}</li>
+			<li>{{!userInfo.userAge||userInfo.userAge==0?"생일 미입력":userInfo.userAge+"세"}} / {{userInfo.userGender=="M"?"남":(userInfo.userGender=="F"?"여":"")}}</li>
+			<!-- 학생일경우 학교정보 -->
+			<li ng-if="userInfo.userType == '006' && userInfo.schoolInfo">
+				{{userInfo.schoolInfo.school_name}}
+				{{userInfo.schoolInfo.school_level_name?"("+userInfo.schoolInfo.school_level_name+")":""}}
+				{{userInfo.schoolInfo.level?" / "+userInfo.schoolInfo.level+"학년":""}}
+			</li>
+			<li ng-if="userInfo.userType == '006' && !userInfo.schoolInfo">학교 정보 미입력</li>
+		</ul>
+	</div>
+
+	<!--버튼 영역-->
+	<button type="button" class="btn btn_style_submit btn_block btn_bold mb_10" data-act="modify">프로필 정보 수정</button>
+	<button type="button" class="btn btn_style_cancel btn_block btn_bold" data-act="logout">로그아웃</button>
+	<p class="bye_link"><a href="#" data-act="memberOut">학원밴드 탈퇴하기</a></p>
+	<!--//버튼 영역-->
+	<br /><br /><br /><br />
+	<span style="opacity:0;" ng-click="debugOn()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	<div ng-if="isDebug === true">
+		<div>browser : {{browserVal}}</div><br />
+		<div>clickEvent : {{clickEvent}}</div><br />
+		<div>{{userAuthVal}}</div><br />
+		<button type="button" ng-click="getMobileAuthKey()">인증키 재 요청</button><br />
+		<button type="button" ng-click="getTestMessage()">테스트 메시지 요청</button><br />
+	</div>
+</section>

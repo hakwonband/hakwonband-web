@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.CommonDAO">
+
+	<insert id="insertErrorLog" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.insertErrorLog	*/
+		insert into tb_error_log (
+			was_instance, was_ip, was_port, request_content, exception_trace, error_req_type, error_message, ajax_yn, req_ip, req_date, function_param
+		) values (
+			#{wasInstance}, #{wasIp}, #{wasPort}, #{requestContent}, #{exceptionTrace}, #{errorreqType}, #{errorMessage}, #{ajaxYN}, #{reqIp}, now(), #{functionParam}
+		)
+	]]>
+	</insert>
+
+
+	<select id="errorLogList" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.errorLogList	*/
+		select
+			a.error_no
+			, a.was_instance
+			, a.was_ip
+			, a.was_port
+			, a.error_req_type
+			, a.error_message
+			, a.ajax_yn
+			, a.req_ip
+			, a.req_date
+		from
+			tb_error_log a
+		order by
+			a.error_no desc
+	]]>
+	</select>
+
+	<select id="errorLogDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.errorLogDetail	*/
+		select
+			a.error_no
+			, a.was_instance
+			, a.was_ip
+			, a.was_port
+			, a.request_content
+			, a.exception_trace
+			, a.function_param
+			, a.error_req_type
+			, a.error_message
+			, a.ajax_yn
+			, a.req_ip
+			, date_format(a.req_date, '%Y년%m월%d일 %H:%i') as req_date
+		from
+			tb_error_log a
+		where
+			a.error_no = #{errorNo}
+	]]>
+	</select>
+
+	<select id="selectTime" resultType="String">
+		select now();
+	</select>
+
+
+	<!-- 관리자 계정 로그인 -->
+	<select id="selectLoginInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.selectLoginInfo	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, b.user_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_id = #{userId}
+			and a.user_password = #{userPass}
+			and a.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+			and a.user_type = '001'
+	]]>
+	</select>
+
+	<insert id="insertLoginHis" parameterType="dataMap" >
+	<![CDATA[
+		/*	CommonDAO.insertLoginHis	*/
+		insert into tb_login_hist (
+			user_no
+			, user_type
+			, auth_key
+			, login_ip
+			, login_date
+			, last_access_date
+			, device_token
+			, device_type
+			, is_production
+		) values(
+			#{userNo}
+			, #{userType}
+			, #{authKey}
+			, #{loginIp}
+			, now()
+			, now()
+			, #{deviceToken}
+			, #{deviceType}
+			, #{isProduction}
+		)
+	]]>
+	</insert>
+
+	<!-- 관리자 계정 로그인 -->
+	<select id="authCheckUser" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.authCheckUser	*/
+		select
+			a.user_no
+			, a.user_type
+			, a.user_id
+			, a.user_email
+			, b.user_name
+			, x.device_token
+			, x.device_type
+		from
+			tb_login_hist x
+			, tb_user a
+			, tb_user_info b
+		where
+			x.auth_key = #{authKey}
+			and x.logout_yn is null
+			and x.logout_date is null
+			and x.user_no = a.user_no
+			and x.user_no = b.user_no
+			and a.approved_yn = 'Y'
+			and a.use_yn = 'Y'
+			and a.user_type = '001'
+	]]>
+	</select>
+
+	<!-- 사용자 디바이스 정보 -->
+	<select id="getUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.getUserDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+			, a.user_no
+		from
+			tb_login_hist a
+		where
+			a.user_no = #{reciveUserNo}
+			and a.device_token is not null
+	]]>
+	</select>
+
+	<!-- 디바이스 로그인 이력 삭제 -->
+	<delete id="cleanDeviceLoginHist" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.cleanDeviceLoginHist	*/
+		delete from tb_login_hist
+		where
+			(user_no = #{user_no} and device_token is not null)
+			or (device_token = #{deviceToken} and device_token is not null)
+	]]>
+	</delete>
+
+	<insert id="insertQuestionsMail" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.insertQuestionsMail	*/
+		insert into tb_questions_mail (
+			title, user_email, phone, content, req_date
+		) values(
+			#{title}, #{email}, #{phone}, #{content}, now()
+		)
+	]]>
+	</insert>
+
+	<!-- 로그인 이력 삭제 -->
+	<delete id="deleteLoginHis" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.deleteLoginHis	*/
+		delete from tb_login_hist
+		where auth_key = #{authKey}
+	]]>
+	</delete>
+
+	<!-- 공통 코드 조회 -->
+	<select id="getCodeList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.getCodeList	*/
+		select
+			code, code_name
+		from tb_code
+		where code_group = #{codeGroup} and code <> '000'
+		order by code asc
+	]]>
+	</select>
+
+	<!-- 전체 사용자 디바이스 정보 -->
+	<select id="getAllDeviceToken" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	CommonDAO.getAllDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.user_no
+			, a.is_production
+		from
+			tb_login_hist a
+		where
+			a.device_token is not null
+		group by
+			a.user_no
+			, a.device_token
+			, a.device_type
+	]]>
+	</select>
+
+	<!-- 앱 버전 추가 등록 -->
+	<insert id="insertAppVersion" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.insertAppVersion	*/
+		insert into tb_app_info(app_version, device_type, req_date) values(#{appVersion}, #{deviceType}, now())
+	]]>
+	</insert>
+
+	<!-- 앱 버전 조회 -->
+	<select id="getAppVersion" resultType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.getAppVersion	*/
+		select
+			app_version
+			, device_type
+		from tb_app_info
+	]]>
+	</select>
+
+
+	<!-- code to String -->
+	<select id="codeToString" parameterType="dataMap" resultType="string">
+		/*	CommonDAO.codeToString	*/
+		select group_concat(code_name)
+		from tb_code
+		where
+			code_group = #{codeGroup}
+			and code in
+		<foreach collection="codeList" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 로그인 사용자 디바이스 토큰 업데이트 -->
+	<update id="loginUserDeviceTokenUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	CommonDAO.loginUserDeviceTokenUpdate	*/
+		update tb_login_hist set
+			device_token = #{device_token}
+			, device_type = #{device_type}
+			, is_production = #{is_production}
+		where
+			auth_key = #{auth_key}
+	]]>
+	</update>
+
+</mapper>

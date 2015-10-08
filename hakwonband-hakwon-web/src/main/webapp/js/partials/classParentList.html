@@ -1,0 +1,50 @@
+<!-- 반 상세정보 include -->
+<div class="col-md-3" ng-include="'/js/partials/classDetail.html'"></div>
+
+<div class="col-md-9">
+	<div class="ibox">
+		<div class="ibox-content text-right">
+			<button class="btn btn-primary btn_message" type="button"  ng-click="checkAllParent()">전체선택</button>
+			<button class="btn btn-primary btn_message" type="button"  ng-click="sendMessageList()">선택자 메세지 보내기</button>
+		</div>
+
+		<!-- 학부모 없음 -->
+		<div class="ibox-content" ng-if="classParentList.length <= 0">
+			<div class="m-b">박스를 클릭하여 원하는 사람을 선택할 수 있습니다.</div>
+			<div class="contact-box box_nodata">등록된 학부모가 없습니다.</div>
+		</div>
+
+		<div class="ibox-content" ng-if="classParentList.length > 0">
+			<div class="m-b">박스를 클릭하여 원하는 사람을 선택할 수 있습니다.</div>
+				<div class="contact-box people_contact_box" ng-click="parentSelect(item)" ng-class="{'active' : item.isSelected == true}" ng-repeat="item in classParentList">
+					<div class="profile_img_box">
+						<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.user_photo_path) }}" alt="프로필 사진">
+						<h3 class="title_name" ng-if="item.user_name">{{ item.user_name }}</h3>
+					</div>
+					<ul class="contact-box-info">
+						<li>아이디 : {{ item.user_id }}</li>
+						<li>핸드폰 : <a href="tel:{{ item.tel1_no }}">{{ item.tel1_no }}</a></li>
+						<li>성별/나이 : {{ getUserGender(item.user_gender) }} / {{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age+"세" }}</li>
+
+						<li ng-if="item.relationList.length > 0" ng-repeat="subItem in item.relationList">학생 :
+							<img class="img-circle" ng-src="{{ getFileFullPath(subItem.user_photo_path) }}" alt="프로필" width="30" height="30">
+							<strong class="name">{{ subItem.user_name }}</strong> <span>{{ getUserGender(subItem.user_gender) }}/{{ subItem.school_name }}/{{ subItem.school_level }}학년</span>
+						</li>
+					</ul>
+					<button type="button" class="btn btn-default btn_message" ng-click="sendMessage(item)"><i class="fa fa-envelope-o"></i> 메세지 보내기</button>
+				</div>
+			</div>
+
+		<div class="ibox-content text-right">
+			<button class="btn btn-primary btn_message" type="button" ng-click="checkAllParent()">전체선택</button>
+			<button class="btn btn-primary btn_message" type="button" ng-click="sendMessageList()">선택자 메세지 보내기</button>
+		</div>
+
+		<div class="text-center m-b-xl m-t-xl" ng-if="pageInfo">
+			<button type="button" class="btn btn-white" ng-if="pageInfo.prevPage" ng-click="movePage(pageInfo.prevPage)"><i class="fa fa-chevron-left"></i></button>
+			<button ng-repeat="page in pageInfo.pages"class="btn btn-white"  ng-class="{active: page === pageInfo.curPage}" ng-click="movePage(page)">{{page}}</button>
+			<button type="button" class="btn btn-white" ng-if="pageInfo.nextPage" ng-click="movePage(pageInfo.nextPage)"><i class="fa fa-chevron-right"></i></button>
+		</div>
+
+	</div>
+</div>

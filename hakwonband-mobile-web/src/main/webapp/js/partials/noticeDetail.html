@@ -1,0 +1,73 @@
+<section>
+	<h2 class="tit hide">공지사항 상세보기</h2>
+
+	<div class="sec_con_list">
+		<h3 class="view_title">{{ noticeDetail.title }}</h3>
+		<div class="view_data">
+			<span class="att">작성자 : {{ noticeDetail.user_name }}</span> /
+			<span class="writer">{{ noticeDetail.reg_date }}</span>
+		</div>
+		<div class="view_cont" ng-bind-html="noticeDetail.content | rawHtml"></div>
+
+		<div class="view_file_box" ng-if="normalFileArray.length > 0">
+			<h4 class="tit">첨부파일</h4>
+			<ul class="view_file_list">
+				<li ng-repeat="normalFile in normalFileArray">
+					<a href="{{ getFileFullPath(normalFile.file_path, 'down') }}" target="_blank" data-filePath="{{ getFileFullPath(normalFile.file_path, 'attachment') }}">{{ normalFile.file_name }}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="view_img_list" ng-if="imageFileArray.length > 0">
+			<h5 class="tit">첨부된 이미지</h5>
+			<div class="imgfile_view">
+				<button type="button" class="prev">이전</button>
+				<div class="view">
+					<a href="{{ getFileFullPath(imageFile.file_path, 'down') }}" target="_blank" ng-repeat="imageFile in imageFileArray">
+						<img ng-src="{{ getFileFullPath(imageFile.thumb_file_path, 'attachment') }}" alt="" width="40"/>
+					</a>
+				</div>
+				<button type="button" class="next">다음</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="sec_con_list reply_area" ng-show=" noticeDetail.reply_yn == 'Y' ">
+		<div class="re_write_box">
+			<textarea cols="30" rows="3" name="replyContent" title="댓글 입력" placeholder="댓글을 입력하세요" id="replyValue" ng-model="replyInfo.reply_content"></textarea>
+			<button type="button" class="btn btn_style_submit btn_block" ng-click="insertReply()">입력</button>
+		</div>
+
+		<ul class="ul_type_01">
+			<li class="line_n" ng-repeat="item in replyList">
+				<div class="reply_list">
+					<div class="reply_img">
+						<img ng-src="{{ getFileFullPath(item.photo_file_path, 'photo', true) }}" alt="" width="37" height="37" />
+					</div>
+					<div class="reply_cont">
+						<div class="name">{{item.reg_user_name}} <span>/ {{item.user_type_name}}</span></div>
+						<div class="cont" ng-bind-html="item.reply_content | rawHtml"></div>
+						<span class="date">{{item.reg_date_long}}</span>
+					</div>
+					<div class="reply_btn" ng-if="item.reg_user_no == authUserNo">
+						<button type="button" class="btn_type_04" ng-click="deleteReply(item.reply_no)">삭제</button>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+	</div>
+
+	<!--더보기 영역-->
+	<!--<div class="sec_blk">-->
+		<!--<button type="button" class="btn_more">더보기</button>-->
+		<!--<button type="button" class="btn_top">위로</button>-->
+	<!--</div>-->
+	<!--//더보기 영역-->
+
+	<!--버튼 영역-->
+	<div class="btn_area_c mb_25">
+		<button type="button" class="btn btn_style_info btn_block btn_bold" ng-click="historyBack()">목록보기</button>
+	</div>
+	<!--//버튼 영역-->
+
+</section>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="file">
+	<!-- 파일 권한 부모 업데이트 -->
+	<update id="updateFileParent" parameterType="dataMap">
+	<![CDATA[
+		/*	file.updateFileParent	*/
+		update tb_file set
+			file_parent_no = #{fileParentNo}
+			, file_use_yn = #{fileUseYn}
+		where
+			file_no in (${fileArray})
+			and reg_user_no = #{userNo}
+	]]>
+	</update>
+
+	<!-- 인덱싱 컨텐츠 조회 -->
+	<select id="getContentInfo" parameterType="dataMap" resultType="collabee.pc.web.model.ContentIndexingModel">
+	<![CDATA[
+		/*	content.getContentInfo	*/
+		select
+			a.content_no
+			, a.title
+			, a.content
+			, a.content_parent_no
+			, a.content_type
+			, a.write_user_no
+			, b.user_name as write_user_name
+		    , ifnull(b.team_name, '부서 정보 없음') as write_team_name
+			, date_format(a.write_date, '%Y%m%d%H%i%S%f') as write_date
+			, date_format(c.upd_date, '%Y%m%d%H%i%S%f') AS upd_date
+			, ( select group_concat(d.file_name SEPARATOR #{separatorChar}) from tb_file d where d.file_parent_no = a.content_no and d.file_use_yn = 'Y' and d.file_del_yn = 'N' ) as file_name_array
+		from
+			tb_content a
+		    , tb_user_info b
+		    , tb_content_info c
+		where
+		    a.content_no = #{contentNo}
+		    and a.write_user_no = b.user_no
+		    and a.content_no = c.content_no
+		order by c.upd_date desc
+		limit 1
+	]]>
+	</select>
+
+	<!-- 임시 컨텐츠 리스트 조회 -->
+	<select id="tempContentList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	content.tempContentList	*/
+		select
+			a.content_no
+			, a.content_type
+			, a.content_parent_no
+			, a.title
+			, a.preview_content
+			, a.content_level
+			, a.write_user_no
+			, b.user_name as reg_user_name
+			, ifnull(b.team_name, '부서 정보 없음') as reg_team_name
+			, ifnull(b.user_duty, '') as reg_user_duty
+			, date_format(a.write_date, '%Y%m%d%H%i%S') as write_date
+			, a.reg_user_no
+			, a.reg_date
+			, (select count(1) from tb_schedule where content_no = a.content_no) as schedule_count
+		from
+			tb_content a
+			, tb_user_info b
+		where
+			a.reg_user_no = #{userNo}
+			and a.content_status = '002'		--	임시 컨텐츠
+			and a.content_type = #{contentType}	--	컨텐츠 타입
+	]]>
+	<if test="contentType == '001'">
+			and a.content_parent_no = #{projectNo}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotBlank( lastContentNo )">
+	<![CDATA[
+			and a.content_no > #{lastContentNo}
+			and a.reg_user_no = b.user_no
+		order by
+			a.content_no asc
+	]]>
+	</if>
+	<if test="@hakwonband.util.StringUtil@isBlank( lastContentNo )">
+	<![CDATA[
+			and a.reg_user_no = b.user_no
+		order by
+			a.content_no desc
+	]]>
+	</if>
+	</select>
+
+
+	<!-- 초기 컨텐츠 등록 -->
+	<insert id="insertInitContent" parameterType="dataMap">
+	<![CDATA[
+		/*	content.insertInitContent	*/
+		insert into tb_content (
+			content_type, content_parent_no, title, preview_content, content, content_status, content_level, write_user_no, write_date, reg_user_no, reg_date
+		) select
+			'002'
+			, #{userNo}
+			, x.title
+			, x.preview_content
+			, x.content
+			, '001'
+			, '001'
+			, #{userNo}
+			, now()
+			, #{userNo}
+			, now()
+		from tb_content x
+		where
+			x.content_no = #{adminContentNo}
+	]]>
+	</insert>
+</mapper>

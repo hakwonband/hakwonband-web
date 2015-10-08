@@ -1,0 +1,210 @@
+
+<div class="step1">
+	<div class="container animated fadeInDown">
+		<h1 class="logo-name text-center">JOIN HAKWONBAND</h1>
+
+		<div class="ibox" ng-if="currentStep === '01'">
+			<div class="ibox-title">
+				<h2 class="heading_left">회원가입 1단계 - 가입 종류 선택</h2>
+			</div>
+			<form action="" class="join_step_01">
+				<div class="ibox-content form-horizontal">
+
+					<p>가입 종류를 선택해 주세요</p>
+
+					<div class="select_join_type infont text-center" style="padding:100px 0;">
+						<!-- 선택한 label의 class를 class="btn btn-primary btn-lg" 로 바꿔주세요 -->
+
+						<!-- 선택하지 않은 항목 -->
+						<label for="radio1" style="margin-right:30px;" ng-class="{'btn btn-primary btn-lg':regUserInfo.user_type === '003', 'btn btn-default btn-lg btn-outline':regUserInfo.user_type !== '003'}">
+							<input type="radio" id="radio1" name="radio" class="select_type" ng-model="regUserInfo.user_type" value="003">
+							<i class="fa fa-university"></i>
+							<span>원장님</span>
+						</label>
+
+						<!-- 선택된 항목 -->
+						<label for="radio2" ng-class="{'btn btn-primary btn-lg':regUserInfo.user_type === '004', 'btn btn-default btn-lg btn-outline':regUserInfo.user_type !== '004'}">
+							<input type="radio" id="radio2" name="radio" class="select_type" ng-model="regUserInfo.user_type" value="004">
+							<i class="fa fa-graduation-cap"></i>
+							<span>선생님</span>
+						</label>
+					</div>
+				</div>
+				<div class="ibox-content text-right">
+					<button type="reset" class="btn btn-default" ng-click="signUpCancel()">취소하기</button>
+					<button type="button" class="btn btn-primary" ng-click="moveSecondStep()">다음단계</button>
+				</div>
+			</form>
+		</div>
+
+
+
+		<div class="ibox" ng-if="currentStep === '02'">
+			<div class="ibox-title">
+				<h2 class="heading_left">회원가입 2단계 - 개인정보 입력</h2>
+			</div>
+			<form action="" class="join_step_01">
+				<div class="ibox-content form-horizontal">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+
+							<!-- 인풋 입력값에 따른 상황. div 에다가 has-success, has-warning, has-error 태그를 붙여 인풋박스 색깔을 변화시켜줌.  -->
+							<!--<div class="form-group has-success">-->
+								<!--<label class="col-sm-2 control-label" for="userId">성공</label>-->
+								<!--<div class="col-sm-10 input-group" style="padding:0 15px;">-->
+									<!--<input type="text" class="form-control" placeholder="성공">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group has-warning">-->
+								<!--<label class="col-sm-2 control-label" for="userId">주의</label>-->
+								<!--<div class="col-sm-10 input-group" style="padding:0 15px;">-->
+									<!--<input type="text" class="form-control" placeholder="주의">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="form-group has-error">-->
+								<!--<label class="col-sm-2 control-label" for="userId">에러</label>-->
+								<!--<div class="col-sm-10 input-group" style="padding:0 15px;">-->
+									<!--<input type="text" class="form-control" placeholder="에러">-->
+								<!--</div>-->
+							<!--</div>-->
+							<!-- 여기까지는 상황 예제 설명이니 개발시 참고 후 지우세요~ -->
+
+
+							<div class="form-group"  ng-class="{'has-success' : checkUserId === 'notexist', 'has-error' : checkUserId === 'exist'}">
+								<label class="col-sm-2 control-label" for="userId">아이디</label>
+								<div class="col-sm-10 input-group" style="padding:0 15px;">
+									<input id="userId" name="userId" type="text" class="form-control" placeholder="영문, 숫자로 4~15자" ng-model="regUserInfo.user_id" ng-keydown="resetIdCheck($event)">
+									<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="checkDuplicateUserId()">중복확인</button></span>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkUserPwd === 'true', 'has-error' : checkUserPwd === 'false'}">
+								<label class="col-sm-2 control-label" for="password">비밀번호</label>
+								<div class="col-sm-10">
+									<input id="password" name="password" type="password" class="form-control" placeholder="영문+숫자로 8자이상" ng-model="regUserInfo.user_password">
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkPwdConfirm === 'true', 'has-error' : checkPwdConfirm === 'false'}">
+								<label class="col-sm-2 control-label" for="confirm">비밀번호 확인</label>
+								<div class="col-sm-10">
+									<input id="confirm" name="confirm" type="password" class="form-control" placeholder="비밀번호 한번더. 영문+숫자로 8자이상" ng-model="regUserInfo.chk_password">
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkUserName === 'true', 'has-error' : checkUserName === 'false'}">
+								<label class="col-sm-2 control-label" for="userName">이름</label>
+								<div class="col-sm-10">
+									<input id="userName" name="userName" type="text" class="form-control" ng-model="regUserInfo.user_name">
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkBirthday === 'true', 'has-error' : checkBirthday === 'false'}">
+								<label class="col-sm-2 control-label" for="birthday">생년월일</label>
+								<div class="col-sm-10">
+									<input id="birthday" name="birthday" type="date" class="form-control" ng-model=" regUserInfo.user_birthday ">
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkUserGender === 'true', 'has-error' : checkUserGender === 'false'}">
+								<label class="col-sm-2 control-label" for="join_06">성별</label>
+								<div class="col-sm-10">
+									<select name="userGender" title="이름 선택"
+											class="form-control required" name="sex" id="join_06"
+											ng-change="changeUserGender()"
+											ng-model="regUserInfo.user_gender"
+											ng-options="item.CODE as item.NAME for item in genderOptions">
+									</select>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkUserPhone === 'true', 'has-error' : checkUserPhone === 'false'}">
+								<label class="col-sm-2 control-label" for="phone">전화번호</label>
+								<div class="col-sm-10">
+									<input id="phone" name="phone" type="tel" class="form-control" placeholder="띄어쓰기 없이 숫자만 입력" ng-model="regUserInfo.tel1_no">
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-success' : checkEmail === 'notexist', 'has-error' : checkEmail === 'exist'}">
+								<label class="col-sm-2 control-label">이메일</label>
+								<div class="col-sm-10 input-group" style="padding:0 15px;">
+									<input id="email" name="email" type="text" class="form-control" ng-model="regUserInfo.user_email" ng-keydown="resetEmailCheck($event)">
+									<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="checkDuplicateEmail()">중복확인</button></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox-content text-right">
+					<button type="button" class="btn btn-default" ng-click="moveFirstStep()">이전단계</button>
+					<!-- 원장님일 경우 -->
+					<button type="button" class="btn btn-primary" ng-if="regUserInfo.user_type == '003'" ng-click="moveCompleteStep()">완료</button>
+					<button type="button" class="btn btn-primary" ng-if="regUserInfo.user_type == '004'" ng-click="moveThirdStep()">다음단계</button>
+				</div>
+			</form>
+		</div>
+
+
+
+		<!-- 1단계에서 선생님 선택시에만 나타나는 단계 -->
+		<div class="ibox" ng-if="currentStep === '03'">
+			<div class="ibox-title">
+				<h2 class="heading_left">회원가입 3단계 - 학원정보 입력</h2>
+			</div>
+			<form action="" class="join_step_01">
+				<div class="ibox-content form-horizontal">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+
+							<div class="form-group" ng-class="{'has-success' : searchHakwon === 'true', 'has-error' : searchHakwon === 'false', 'has-warning' : searchHakwon === ''}">
+								<label class="col-sm-2 control-label" for="hakwon_code">학원코드</label>
+								<div class="col-sm-10 input-group" style="padding:0 15px;">
+									<input id="hakwon_code" name="hakwon_code" type="text" class="form-control" placeholder="학원코드 10자리를 입력해 주세요" ng-model="regUserInfo.hakwon_code" ng-keydown="resetHakwonCodeCheck($event)">
+									<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="searchHakwonInfo()">확인하기</button></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">결과</label>
+								<div ng-if="searchHakwon === ''" class="col-sm-10 text-info font-bold" style="font-size:large;">
+									학원코드 입력 후, 확인하기 버튼을 클릭해 주시기 바랍니다.
+								</div>
+								<div ng-if="searchHakwon === 'false'" class="col-sm-10 text-info font-bold" style="font-size:large;">
+									해당 학원이 존재하지 않습니다. 코드를 확인해 주시기 바랍니다.
+								</div>
+								<div ng-if="searchHakwon === 'true'" class="col-sm-10 text-info font-bold" style="font-size:large;">
+									{{regUserInfo.hakwon_name}} / {{regUserInfo.master_user_name}} 원장.<br>원장님의 승인 후 가입이 완료됩니다.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ibox-content text-right">
+					<button type="button" class="btn btn-default" ng-click="moveSecondStep()">이전단계</button>
+					<button type="button" class="btn btn-primary" ng-click="moveCompleteStep()">완료</button>
+				</div>
+			</form>
+		</div>
+
+
+
+		<div class="ibox" ng-if="currentStep === '04'">
+			<div class="ibox-title">
+				<h2 class="heading_left">회원가입 완료</h2>
+			</div>
+			<form action="" class="join_step_01">
+				<div class="ibox-content form-horizontal">
+					<div class="row" style="padding:200px 0;">
+						<div class="col-md-8 col-md-offset-2">
+							<p class="text-info font-bold text-center" style="font-size:large; line-height:2em;">
+								회원가입이 완료되었습니다.<br>
+
+								<!-- 원장님일 경우 -->
+								<span ng-if="regUserInfo.user_type == '003'">관리자의 승인 후 회원가입이 완료 됩니다.<br></span>
+
+								<!-- 선생님일 경우 -->
+								<span ng-if="regUserInfo.user_type == '004'">원장님의 승인 후 회원가입이 완료 됩니다.<br></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+
+		<p class="m-t-xl m-b-xl text-center"> <small>HAKWONBAND &copy; 2015</small> </p>
+	</div>
+</div>

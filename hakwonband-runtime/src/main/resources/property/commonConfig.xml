@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<!-- 기준 리싸이즈 -->
+	<file>
+		<resize>600</resize>
+	</file>
+
+</hakwonband>

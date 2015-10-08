@@ -1,0 +1,34 @@
+{
+	"name": "hakwonband-hakwonweb"
+	, "version": "0.0.1"
+	, "authors": [
+		"bumworld"
+	]
+	, "homepage": "hakwon.hakwonband.com"
+	, "dependencies": {
+		"jquery": "2.1.1"
+		, "jquery-ui": "1.11.4"
+		, "jquery.cookie" : "1.4.1"
+
+		, "angular": "1.3.9"
+		, "angular-route": "1.3.9"
+		, "angular-resource": "1.3.9"
+		, "angular-sanitize": "1.3.9"
+		, "angular-animate": "1.3.9"
+		, "angular-i18n": "1.3.9"
+		, "angular-touch": "1.3.9"
+		, "angular-bootstrap" : "0.13.3"
+
+		, "moment": "2.10.6"
+		, "requirejs": "2.1.20"
+		, "underscore": "1.7.0"
+		, "tinymce" : "4.1.7"
+
+		, "bower": "*"
+		, "install": "~1.0.4"
+	}
+	, "resolutions": {
+		"jquery": "2.1.1"
+		, "angular": "1.3.9"
+	}
+}

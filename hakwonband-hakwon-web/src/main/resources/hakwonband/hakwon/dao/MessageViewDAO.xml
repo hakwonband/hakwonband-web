@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.MessageViewDAO">
+
+	<!-- 보낸 그룹 메세지 리스트 -->
+	<select id="sendGroupMessageList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.sendGroupMessageList */
+		select
+			c.title
+			, a.user_no
+			, b.user_name
+			, date_format(c.send_date, '%Y.%m.%d %H:%i') as send_date
+			, c.receiver_count
+			, c.message_no
+			, c.group_yn
+			, (select count(1) from tb_file where file_parent_type = '002' and file_parent_no = c.message_no and file_use_yn = 'Y' and file_del_yn = 'N') as file_count
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_message c
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'Y'
+			and a.user_no = b.user_no
+			and a.user_no = c.send_user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and c.title like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
+		order by
+			c.message_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 보낸 그룹 메세지 카운트 -->
+	<select id="sendGroupMessageCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MessageViewDAO.sendGroupMessageCount */
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_message c
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'Y'
+			and a.user_no = c.send_user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and c.title like concat('%', #{searchText}, '%')
+		</if>
+	</select>
+
+	<!-- 보낸 싱글 메세지 리스트 -->
+	<select id="sendSingleMessageList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.sendSingleMessageList */
+		select
+			c.title
+			, a.user_no
+			, b.user_name
+			, date_format(c.send_date, '%Y.%m.%d %H:%i') as send_date
+			, c.receiver_count
+			, c.message_no
+			, (select count(1) from tb_file where file_parent_type = '002' and file_parent_no = c.message_no and file_use_yn = 'Y' and file_del_yn = 'N') as file_count
+			, (select count(1) from tb_content_reply where content_type = '002' and content_parent_no = d.receive_no) as reply_count
+			, d.receive_no
+			, c.group_yn
+			, get_user_info(d.receive_user_no) as receive_user_info
+			, date_format(d.receive_date, '%Y.%m.%d %H:%i') as receive_date
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_message c
+			, tb_message_receiver d
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'N'
+			and a.user_no = b.user_no
+			and a.user_no = c.send_user_no
+			and c.message_no = d.message_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and c.title like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
+		order by
+			c.message_no desc
+			, d.receive_no asc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 보낸 그룹 메세지 카운트 -->
+	<select id="sendSingleMessageCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MessageViewDAO.sendSingleMessageCount */
+		select
+			count(1)
+		from
+			tb_user a
+			, tb_message c
+			, tb_message_receiver d
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'N'
+			and a.user_no = c.send_user_no
+			and c.message_no = d.message_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and c.title like concat('%', #{searchText}, '%')
+		</if>
+	</select>
+
+	<!-- 보낸 그룹 메세지 상세 -->
+	<select id="sendGroupMessageDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.sendGroupMessageDetail */
+		select
+			date_format(c.send_date, '%Y.%m.%d %H:%i') as send_date
+			, c.message_no
+			, c.title
+			, c.preview_content
+			, c.content
+			, c.group_yn
+			, c.message_type
+			, c.message_target
+			, c.receiver_count
+			, get_user_info(c.send_user_no) as send_user_info
+		from
+			tb_message c
+		where
+			c.message_no = #{messageNo}
+			and c.send_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 보낸 싱글 메세지 상세 -->
+	<select id="sendSingleMessageDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.sendSingleMessageDetail */
+		select
+			date_format(c.send_date, '%Y.%m.%d %H:%i') as send_date
+			, c.message_no
+			, c.title
+			, c.preview_content
+			, c.content
+			, c.group_yn
+			, c.message_type
+			, c.message_target
+			, c.receiver_count
+			, get_user_info(c.send_user_no) as send_user_info
+			, get_user_info(d.receive_user_no) as receive_user_info
+		from
+			tb_message c
+			, tb_message_receiver d
+		where
+			d.receive_no = #{receiveNo}
+			and d.message_no = c.message_no
+			and c.send_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 사용자 리스트 정보 -->
+	<select id="userListInfo" parameterType="dataMap" resultType="dataMap">
+		/*	MessageViewDAO.userListInfo	*/
+		select
+			b.user_name
+			, b.user_no
+			, b.user_id
+			, a.user_type
+			, c.code_name as user_type_name
+			, get_file_path(b.photo_file_no) as user_photo_path
+		from
+			tb_user a
+			, tb_user_info b
+			, tb_code c
+		where
+			a.user_no in
+		<foreach collection="targetUserList" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+			and a.user_no = b.user_no
+			and c.code_group = '001'
+			and a.user_type = c.code
+	</select>
+
+
+	<!-- 받은 메세지 리스트 -->
+	<select id="receiveMessageList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.receiveMessageList */
+		select
+			a.receive_no
+			, a.message_no
+			, b.send_user_no
+			, date_format(b.send_date, '%Y.%m.%d %p %h:%i') as send_date
+			, a.receive_user_no
+			, date_format(a.receive_date, '%Y.%m.%d %p %h:%i') as receive_date
+			, a.hakwon_no
+			, b.title
+			, b.content
+			, b.preview_content
+			, date_format(b.write_date, '%Y.%m.%d %p %h:%i') as write_date
+			, (select count(1) from tb_content_reply where content_type = '002' and content_parent_no = a.receive_no) as reply_count
+			, (select count(1) from tb_file where file_parent_type = '002' and file_parent_no = a.message_no and file_use_yn = 'Y' and file_del_yn = 'N') as file_count
+			, a.receive_no
+			, get_user_info(b.send_user_no) as send_user_info
+			, get_user_info(a.receive_user_no) as receive_user_info
+		from
+			tb_message_receiver a
+			, tb_message b
+		where
+			a.receive_user_no = #{receive_user_no}
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_no )">
+			and (a.hakwon_no = #{hakwon_no} or a.hakwon_no = -1)
+		</if>
+	<![CDATA[
+			and a.message_no = b.message_no
+		order by
+			a.message_no desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 받은 메세지 리스트 카운트 -->
+	<select id="receiveMessageListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MessageViewDAO.receiveMessageListTotCount */
+		select
+			count(1)
+		from
+			tb_message_receiver a
+		where
+			a.receive_user_no = #{receive_user_no}
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_no )">
+			and (a.hakwon_no = #{hakwon_no} or a.hakwon_no = -1)
+		</if>
+	</select>
+
+	<!-- '신규' 받은 메세지 리스트 카운트 값 -->
+	<select id="newReceiveMessageCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* MessageViewDAO.newReceiveMessageCount */
+		select
+			count(1)
+		from
+			tb_message_receiver a
+		where
+			a.receive_user_no = #{receive_user_no}
+			and a.receive_date is null
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_no )">
+			and (a.hakwon_no = #{hakwon_no} or a.hakwon_no = -1)
+		</if>
+	</select>
+
+	<!-- 받은 메세지 상세 -->
+	<select id="receiveMessageDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.receiveMessageDetail */
+		select
+			date_format(c.send_date, '%Y.%m.%d %H:%i') as send_date
+			, c.message_no
+			, c.title
+			, c.preview_content
+			, c.content
+			, c.group_yn
+			, c.message_type
+			, c.message_target
+			, c.receiver_count
+			, get_user_info(c.send_user_no) as send_user_info
+			, get_user_info(d.receive_user_no) as receive_user_info
+			, c.group_yn
+		from
+			tb_message c
+			, tb_message_receiver d
+		where
+			d.receive_no = #{receiveNo}
+			and d.message_no = c.message_no
+			and d.receive_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 받은 메세지 상세조회시 받은날짜 업데이트 -->
+	<update id="updateMessageReceiveDate" parameterType="dataMap">
+	<![CDATA[
+		/* MessageDAO.updateMessageReceiveDate */
+		update tb_message_receiver set
+			receive_date = now()
+		where
+			receive_no = #{receiveNo}
+			and receive_user_no = #{user_no}
+			and receive_date is null
+	]]>
+	</update>
+
+	<!-- 받은 사용자 리스트 -->
+	<select id="receiveUserList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.receiveUserList */
+		select
+			a.receive_user_no
+			, date_format(a.receive_date, '%Y.%m.%d %p %h:%i') as receive_date
+			, get_code_name('001', b.user_type) as user_type_name
+			, c.user_name
+			, c.user_id
+			, get_file_path(c.photo_file_no) as user_photo_path
+		from
+			tb_message_receiver a
+			, tb_user b
+			, tb_user_info c
+		where
+			a.message_no = #{message_no}
+			and a.receive_user_no = b.user_no
+			and a.receive_user_no = c.user_no
+		order by
+			b.user_type asc
+			, c.user_name asc
+	]]>
+	</select>
+
+	<!-- 메세지 사용자 정보 -->
+	<select id="messageUserInfo" parameterType="dataMap" resultType="dataMap">
+		/*	MessageViewDAO.messageUserInfo	*/
+		select
+			a.receive_user_no
+			, (select user_type from tb_user where user_no = a.receive_user_no) as receive_user_type
+			, b.send_user_no
+			, (select user_type from tb_user where user_no = b.send_user_no) as send_user_type
+			, b.hakwon_no
+			, b.title
+			, a.receive_no
+		from
+			tb_message_receiver a
+			, tb_message b
+		where
+			a.receive_no = #{receive_no}
+			and a.message_no = b.message_no
+	</select>
+</mapper>

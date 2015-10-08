@@ -1,0 +1,472 @@
+package hakwonband.mobile.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import hakwonband.common.BaseAction;
+import hakwonband.common.constant.CommonConstant;
+import hakwonband.mobile.common.constant.HakwonConstant;
+import hakwonband.mobile.model.DevicePushData;
+import hakwonband.mobile.service.AsyncService;
+import hakwonband.mobile.service.CommonService;
+import hakwonband.mobile.service.HakwonService;
+import hakwonband.mobile.service.UserService;
+import hakwonband.push.PushMessage;
+import hakwonband.push.UserDevice;
+import hakwonband.util.CookieUtils;
+import hakwonband.util.DataMap;
+import hakwonband.util.SecuUtil;
+import hakwonband.util.StringUtil;
+import net.sf.uadetector.UserAgentStringParser;
+import net.sf.uadetector.service.UADetectorServiceFactory;
+
+/**
+ * 공통 컨트롤러
+ * @author bumworld
+ *
+ */
+@Controller
+public class CommonController extends BaseAction {
+
+	public static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+
+	@Resource(name = "messageSourceAccessor")
+	protected MessageSourceAccessor messageSource;
+
+	@Autowired
+	private CommonService commonService;
+
+	@Autowired
+	private HakwonService hakwonService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private AsyncService asyncService;
+
+	private static final UserAgentStringParser uaParser = UADetectorServiceFactory.getResourceModuleParser();
+
+	/*	쿠키 저장 시간	*/
+	private static final int cookieSaveTime = 1 * 90 * 24 * 60 * 60;
+
+	/**
+	 * index
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/index")
+	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
+		return new ModelAndView("/index");
+	}
+
+	/**
+	 * 로그인
+	 *
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value = "/login")
+	public void login(HttpServletRequest request, HttpServletResponse response) {
+		String flag			= CommonConstant.Flag.fail;
+		String userId		= StringUtil.replaceNull(request.getParameter("userId"));
+		String userPass		= StringUtil.replaceNull(request.getParameter("userPass"));
+		String deviceToken	= StringUtil.replaceNull(request.getParameter("deviceToken"));
+		String deviceType	= StringUtil.replaceNull(request.getParameter("deviceType"));
+		String isProduction	= StringUtil.replaceNull(request.getParameter("isProduction"));
+		String loginSave	= StringUtil.replaceNull(request.getParameter("loginSave"));
+		String idSave		= StringUtil.replaceNull(request.getParameter("idSave"));
+		if( "true".equalsIgnoreCase(isProduction) ) {
+			isProduction = "Y";
+		} else {
+			isProduction = "N";
+		}
+		if( "ios".equals(deviceType) ) {
+			/*	임시	*/
+			isProduction = "Y";
+		}
+
+		if( "(null)".equals(deviceType) ) {
+			deviceType = "";
+		}
+
+		/*	디바이스는 아이디 저장 및 로그인 유지를 항상 한다.	*/
+		if( (StringUtil.isNotBlank(deviceToken) && StringUtil.isNotBlank(deviceToken)) || "ios".equals(deviceType) ) {
+			loginSave = "Y";
+			idSave = "Y";
+		}
+
+		DataMap colData = new DataMap();
+		/*	필수 파라미터 체크	*/
+		if(StringUtil.isNotNull(userId) && StringUtil.isNotNull(userPass)) {
+
+			String reqIpAddr = getClientIpAddress(request);
+			DataMap param = new DataMap();
+			param.put("userId",			userId);
+			param.put("userPass",		SecuUtil.sha256(userPass));
+			param.put("reqIpAddr",		reqIpAddr);
+			param.put("userAgent",		uaParser.parse(request.getHeader("User-Agent")));
+			param.put("deviceToken",	deviceToken);
+			param.put("deviceType",		deviceType);
+			param.put("isProduction",	isProduction);
+
+			DataMap authUserInfo = commonService.executeLogin(param);
+			/*	조회 성공	*/
+			if(authUserInfo != null ) {
+				logger.debug("auth user info : " + authUserInfo.toString());
+
+				/*	미승인 사용자는 	*/
+				if( authUserInfo.equals("approved_yn", "Y") == false ) {
+					sendFlag("approvedWait", request, response);
+					return ;
+				}
+
+				int cookieExpires = -1;
+				if( "Y".equals(loginSave) ) {
+					cookieExpires = cookieSaveTime;
+				}
+
+				CookieUtils cookieUtils = new CookieUtils(request, response, true);
+				cookieUtils.setCookie(CommonConstant.Cookie.hkBandAuthKey, authUserInfo.getString("authKey"), cookieExpires);
+
+				/**
+				 * 아이디 저장
+				 */
+				if( "Y".equals(idSave) ) {
+					cookieUtils.setCookie(CommonConstant.Cookie.saveId, userId, cookieSaveTime);
+				}
+
+				/**
+				 * 학생이나 학부모인 경우에는 부모/자식 리스트를 로드한다.
+				 */
+				if( authUserInfo.equals("user_type", HakwonConstant.UserType.STUDENT) ) {
+					List<DataMap> familyList = userService.parentList(authUserInfo);
+					colData.put("familyList", familyList);
+
+					/*	학교 정보	*/
+					DataMap schoolInfo = userService.schoolInfo(authUserInfo);
+					colData.put("schoolInfo", schoolInfo);
+				} else if( authUserInfo.equals("user_type", HakwonConstant.UserType.PARENT) ) {
+					List<DataMap> familyList = userService.childList(authUserInfo);
+
+					colData.put("familyList", familyList);
+				}
+
+
+				colData.put("authUserInfo", authUserInfo);
+
+				flag = CommonConstant.Flag.success;
+			} else {
+				flag = CommonConstant.Flag.notexist;
+			}
+		} else {
+			flag = CommonConstant.Flag.param_error;
+		}
+		colData.put("flag",	flag);
+
+		sendColData(colData, request, response);
+	}
+
+	/**
+	 * 인증 체크
+	 *
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value = "/authCheck")
+	public void authCheck(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap colData = new DataMap();
+		colData.put("authUserInfo", authUserInfo);
+
+		if( authUserInfo != null ) {
+			/**
+			 * 학생이나 학부모인 경우에는 부모/자식 리스트를 로드한다.
+			 */
+			if( authUserInfo.equals("user_type", HakwonConstant.UserType.STUDENT) ) {
+				List<DataMap> parentList = userService.parentList(authUserInfo);
+				colData.put("familyList", parentList);
+
+				/*	학교 정보	*/
+				DataMap schoolInfo = userService.schoolInfo(authUserInfo);
+				colData.put("schoolInfo", schoolInfo);
+			} else if( authUserInfo.equals("user_type", HakwonConstant.UserType.PARENT) ) {
+				List<DataMap> childList = userService.childList(authUserInfo);
+				colData.put("familyList", childList);
+			}
+		}
+
+		/*	app 버전 조회	*/
+		List<DataMap> appVersionList = commonService.getAppVersion();
+		colData.put("appVersionList", appVersionList);
+
+		sendColData(colData, request, response);
+	}
+
+	/**
+	 * 로그 아웃
+	 *
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+
+		String authKey = (String)request.getAttribute(CommonConstant.Cookie.hkBandAuthKey);
+		DataMap param = new DataMap();
+		param.put("authKey",	authKey);
+
+		commonService.executeLogout(param);
+
+		CookieUtils cookieUtils = new CookieUtils(request, response, true);
+		cookieUtils.delCookie(CommonConstant.Cookie.hkBandAuthKey);
+
+		return new ModelAndView("redirect:/index.html");
+	}
+
+	/**
+	 * 로그 아웃
+	 *
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/ajaxLogout")
+	public void ajaxLogout(HttpServletRequest request, HttpServletResponse response) {
+
+		String authKey = (String)request.getAttribute(CommonConstant.Cookie.hkBandAuthKey);
+		DataMap param = new DataMap();
+		param.put("authKey",	authKey);
+
+		commonService.executeLogout(param);
+
+		CookieUtils cookieUtils = new CookieUtils(request, response, true);
+		cookieUtils.delCookie(CommonConstant.Cookie.hkBandAuthKey);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
+	 * 메세지 요청
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/message")
+	public ModelAndView message(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		if( authUserInfo == null ) {
+			return new ModelAndView("redirect:https://m.hakwonband.com/");
+		} else {
+			logger.debug("authUserInfo : " + authUserInfo);
+
+			String hakwonNo = request.getParameter("hakwonNo");
+			String userType = authUserInfo.getString("user_type");
+			logger.info("\n!!!!!!!!!!!!message hakwonNo["+hakwonNo+"] userType["+userType+"]");
+
+			if( HakwonConstant.UserType.STUDENT.equals(userType) || HakwonConstant.UserType.PARENT.equals(userType) ) {
+				return new ModelAndView("redirect:https://m.hakwonband.com/#/receiveMessageList?"+System.currentTimeMillis());
+			} else if( HakwonConstant.UserType.WONJANG.equals(userType) || HakwonConstant.UserType.TEACHER.equals(userType) ) {
+				if( StringUtil.isBlank(hakwonNo) ) {
+					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do");
+				} else {
+					if( "-1".equals(hakwonNo) ) {
+						DataMap hakwonInfo = userService.messageMoveHakwonInfo(authUserInfo);
+						hakwonNo = hakwonInfo.getString("hakwon_no");
+					}
+					logger.info("\n!!!!master&teacher hakwon_no["+hakwonNo+"]");
+					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&t="+System.currentTimeMillis());
+				}
+			} else if( HakwonConstant.UserType.ADMIN.equals(userType) ) {
+				return new ModelAndView("redirect:https://admin.hakwonband.com/");
+			} else if( HakwonConstant.UserType.MANAGER.equals(userType) ) {
+				return new ModelAndView("redirect:https://manager.hakwonband.com/");
+			} else {
+				return new ModelAndView("redirect:https://m.hakwonband.com/");
+			}
+		}
+	}
+
+	/**
+	 * 출결 결과
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/attendanceList")
+	public ModelAndView attendanceList(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		if( authUserInfo == null ) {
+			return new ModelAndView("redirect:https://m.hakwonband.com/");
+		} else {
+			String student_no		= request.getParameter("student_no");
+			String attendance_no	= request.getParameter("attendance_no");
+			String attendance_type	= request.getParameter("attendance_type");
+
+			return new ModelAndView("redirect:https://m.hakwonband.com/#/attendanceList?student_no="+student_no+"&attendance_no="+attendance_no+"&attendance_type="+attendance_type+"&t="+System.currentTimeMillis());
+		}
+	}
+
+	/**
+	 * 미리 보기
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/preview")
+	public ModelAndView preview(HttpServletRequest request, HttpServletResponse response) {
+
+		String previewNo = request.getParameter("preview_no");
+
+		DataMap param = new DataMap();
+		param.put("preview_no",	previewNo);
+
+		DataMap previewData = commonService.getPreview(param);
+		request.setAttribute("previewData",	previewData);
+
+		return new ModelAndView("/preview");
+	}
+
+	/**
+	 * 푸시키 저장
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/setPushNotiKey")
+	public void setPushNotiKey(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		String authKey		= (String)request.getAttribute(CommonConstant.Cookie.hkBandAuthKey);
+
+		String key			= request.getParameter("key");
+		String deviceType	= request.getParameter("deviceType");
+		String isProduction	= request.getParameter("isProduction");
+		if( "true".equalsIgnoreCase(isProduction) ) {
+			isProduction = "Y";
+		} else {
+			isProduction = "N";
+		}
+		if( "ios".equals(deviceType) ) {
+			/*	임시	*/
+			isProduction = "Y";
+		}
+		if( "(null)".equals(deviceType) ) {
+			deviceType = "";
+		}
+
+		if( CommonConstant.DeviceType.android.equalsIgnoreCase(deviceType) ) {
+			deviceType = CommonConstant.DeviceType.android;
+		} else if( CommonConstant.DeviceType.ios.equalsIgnoreCase(deviceType) ) {
+			deviceType = CommonConstant.DeviceType.ios;
+		} else {
+			sendFlag("invalidDeviceType", request, response);
+			return ;
+		}
+
+		if( authUserInfo == null ) {
+			/*	로그인 하기 전이라 저장할 필요 없다.	*/
+		} else {
+			DataMap param = new DataMap();
+			param.put("user_no",		authUserInfo.getString("user_no"));
+			param.put("auth_key",		authKey);
+			param.put("device_token",	key);
+			param.put("device_type",	deviceType);
+			param.put("is_production",	isProduction);
+
+			commonService.updateDevicePushKey(param);
+		}
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
+	 * 학원 정보
+	 * /hakwonInfo.do?hakwonNo=520
+	 * {
+  "hakwon_code" : "jNRzFyzYe7",
+  "master_user_no" : 71,
+  "master_user_name" : "범원장",
+  "hakwon_no" : 448,
+  "hakwon_cate" : "011",
+  "hakwon_cate_name" : "수영학원(스포츠)",
+  "hakwon_name" : "범원장 학원 입니다.",
+  "tel_no_1" : "02-784-4512",
+  "logo_file_path" : "",
+  "addr_no" : 3807,
+  "old_sido" : "서울",
+  "old_addr1" : "서울 동작구 사당동 ",
+  "old_addr2" : "기타 주소 입니다.",
+  "street_addr1" : "",
+  "street_addr2" : ""
+}
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/hakwonInfo")
+	public ModelAndView hakwonInfo(HttpServletRequest request, HttpServletResponse response) {
+
+		String hakwonNo = request.getParameter("hakwonNo");
+
+		if( StringUtils.isBlank(hakwonNo) ) {
+			return new ModelAndView("redirect:/index.do");
+		} else {
+			DataMap param = new DataMap();
+			param.put("hakwon_no", hakwonNo);
+
+			/* 학원 상세정보 조회 */
+			DataMap hakwonDetail = hakwonService.hakwonDetail(param);
+			request.setAttribute("hakwonDetail", hakwonDetail);
+		}
+
+		return new ModelAndView("/hakwon");
+	}
+
+	@RequestMapping("/testFun")
+	public void testFun(HttpServletRequest request, HttpServletResponse response) {
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	@RequestMapping("/testMsg")
+	public void testMsg(HttpServletRequest request, HttpServletResponse response) {
+
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap param = new DataMap();
+		param.put("reciveUserNo",	authUserInfo.getString("user_no"));
+
+		List<UserDevice> userDeviceList = commonService.getUserDevice(param);
+
+		PushMessage pushMessage = new PushMessage();
+		pushMessage.setTicker("학원밴드 입니다.");
+		pushMessage.setTitle("테스트 메세지 입니다.");
+		pushMessage.setContent("");
+		pushMessage.setLink_url("https://m.hakwonband.com/");
+
+		DevicePushData devicePushData = new DevicePushData(pushMessage, userDeviceList);
+
+		asyncService.pushMobileDevice(devicePushData);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+}

@@ -1,0 +1,56 @@
+<div class="counselInsert">
+	<input type="hidden" name="counseleeNo" value="{{counseleeNo}}">
+	<section class="wrapper wrapper-content row">
+		<div class="ibox">
+			<div class="ibox-content form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-1 control-label">검색하기</label>
+					<div class="col-sm-11">
+						<div class="input-group">
+							<input type="text" class="form-control" name="counseleeName" ng-model="searchOptions.counselee_name" ng-keydown="searchCounseleeEnter($event)" placeholder="이름으로 검색">
+							<span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="counseleeSearch">검색하기</button></span>
+						</div>
+					</div>
+				</div>
+				<!-- 검색하기 버튼 클릭시 결과 나타남. 클릭 전에는 나타나지 않음 -->
+				<div class="form-group">
+					<label class="col-sm-1 control-label">검색결과</label>
+					<div class="col-sm-11">
+						<ul class="search_name_list find_counselee_result">
+							<li style="cursor: pointer;" ng-repeat="item in counseleeList" counselee-no="{{ item.user_no }}" counselee-name="{{ item.user_name }}" counselee-id="{{ item.user_id }}">
+								<span class="student_add_box">
+									<img class="img-circle" ng-src="{{ getPhotoFileFullPath(item.user_photo_path) }}" alt="{{ item.user_name }} 프로필" width="35" height="35">
+									<strong class="name">{{item.user_name}}</strong> {{item.user_id}} / {{ getUserGender(item.user_gender) }} / {{ !item.user_age||item.user_age==0?"생일 미입력":item.user_age }}
+								</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 끝 -->
+				<div class="form-group">
+					<label class="col-sm-1 control-label">선택자</label>
+					<div class="col-sm-11">
+						<strong>{{counseleeName}}</strong>  {{counseleeId}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">상담 날짜</label>
+					<div class="col-sm-11">
+						<input type="date" name="counselDate"  class="form-control" ng-model="counselDate">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-1 control-label">내용</label>
+					<div class="col-sm-11">
+						<textarea cols="140" rows="10" class="form-control" name="content">{{counselContent}}</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="ibox-content text-right">
+				<button type="button" class="btn btn-default" title="삭제" ng-click="counselDelete()">삭제</button>
+				<button type="button" class="btn btn-default" ng-click="counselInsertCancel()">취소하기</button>
+				<button type="button" class="btn btn-primary" ng-click="counselUpdate()">저장</button>
+			</div>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<appender name="hakwonbandFileAppender" class="ch.qos.logback.core.FileAppender">
+		<file>/hakwon-band/logs/runtime/${server.type}-${runtime.service.name}.log</file>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<logger name="java.sql" level="error">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</logger>
+
+	<logger name="jdbc.resultset" level="error">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</logger>
+
+	<logger name="jdbc.connection" level="error">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</logger>
+
+
+	<logger name="org.springframework" level="error">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</logger>
+
+	<logger name="hakwonband" level="debug">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</logger>
+
+	<logger name="client.log" level="info" additivity="false">
+		<appender-ref ref="clientAppender" />
+	</logger>
+
+
+	<root level="info">
+		<appender-ref ref="hakwonbandFileAppender" />
+	</root>
+
+</configuration>

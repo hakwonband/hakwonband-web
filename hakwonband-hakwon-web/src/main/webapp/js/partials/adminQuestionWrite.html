@@ -1,0 +1,59 @@
+	<div class="ibox">
+		<div class="ibox-content form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-1 control-label">제목</label>
+				<div class="col-sm-11">
+					<input type="text" class="form-control" placeholder="20자까지" ng-model="title">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">내용</label>
+				<div class="col-sm-11">
+					<textarea cols="140" rows="10" ng-model="content" class="form-control" data-lib="editor"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">파일첨부</label>
+				<div class="col-sm-11">
+					<span class="btn btn-primary">파일 업로드</span>
+					<input type="file" class="input_file" data-act="file_upload" ng-click="checkMaxFileCnt($event)">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">첨부파일</label>
+				<div class="col-sm-11">
+					<p ng-if="fileList.length > 0">
+						<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span>
+					</p>
+					<div class="attachment" ng-if="fileList.length > 0">
+						<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
+							<div class="file">
+
+								<!-- 일반 파일 처리 -->
+								<div class="icon" ng-if="item.image_yn != 'Y'">
+									<i class="fa fa-file"></i>
+								</div>
+								<!-- 이미지 파일 처리 -->
+								<div class="image" ng-if="item.image_yn == 'Y'">
+									<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
+								</div>
+
+								<div class="file-name">
+									<p>{{item.file_name}}</p>
+								</div>
+								<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
+
+							</div>
+						</div>
+
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ibox-content text-right">
+			<button type="button" class="btn btn-primary" ng-click="sendQuestion();">문의하기</button>
+		</div>
+
+	</div>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<hakwonband>
+
+	<!-- 기준 리싸이즈 -->
+	<file>
+		<resize>600</resize>
+	</file>
+
+	<email>
+		<pwdResetReq>
+			<title><![CDATA[학원밴드 비밀번호 재설정 요청 메일 입니다.]]></title>
+			<content>
+			<![CDATA[
+				<html>
+					<body>
+						#userName#님 비밀번호 셋팅 입니다.
+					</body>
+				</html>
+			]]>
+			</content>
+		</pwdResetReq>
+	</email>
+
+</hakwonband>

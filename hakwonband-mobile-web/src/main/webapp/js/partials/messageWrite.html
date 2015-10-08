@@ -1,0 +1,60 @@
+<section>
+	<h2 class="tit hide">메세지 보내기</h2>
+
+	<div class="sec_blk">
+		<!-- 입력 form -->
+		<div class="sec_input ">
+			<div class="select_chk">
+				<select name="" title="구분 선택"
+						ng-change="changeUserType()"
+						ng-model="messageTarget.user_type"
+						ng-options="item.user_type as item.type_name for item in userTypeOptions">
+				</select>
+			</div>
+			<div class="select_chk">
+				<select name="" title="이름 선택"
+						ng-change="changeUserName()"
+						ng-model="receiveUserInfo"
+						ng-options="item.user_data as item.user_info for item in currentOptions">
+					<option value="" selected="selected"> --메세지 받을 분 선택-- </option>
+				</select>
+			</div>
+			<textarea  name="" title="메세지 내용 입력"  placeholder="내용을 입력하세요" ng-model="messageTarget.content"></textarea>
+		</div>
+		<!-- //입력 form -->
+	</div>
+
+	<div class="btn_file_area mb_10">
+		<span class="btn btn_style_info btn_bold btn_block">파일 첨부</span>
+		<input type="file" class="input_file" data-act="file_upload" ng-click="checkMaxFileCnt($event)" multiple>
+	</div>
+
+	<div class="view_file_box">
+		<strong class="tit">첨부파일</strong>
+		<p>
+			<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span>
+		</p>
+		<ul class="view_file_list">
+			<li ng-repeat="item in fileList" ng-if=" item.image_yn == 'N' ">
+				{{ item.file_name }}
+				<button type="button" class="btn btn_style_cancel btn_small" ng-click="removeAttachFile(item.file_no)">삭제</button>
+			</li>
+		</ul>
+	</div>
+	<div class="view_img_list">
+		<strong class="tit">첨부된 이미지</strong>
+		<ul>
+			<li ng-repeat="item in fileList" ng-if=" item.image_yn == 'Y' ">
+				<img ng-src="{{ getFileFullPath(item.file_path, 'attachment', true) }}" alt="첨부 이미지" width="40" height="40"/>
+				<button type="button" class="btn btn_style_cancel btn_small" ng-click="removeAttachFile(item.file_no)">삭제</button>
+			</li>
+		</ul>
+	</div>
+
+	<!--버튼 영역-->
+	<div class="btn_area">
+		<button type="button" class="btn btn_style_submit btn_bold btn_block" data-act="sendMessage">보내기</button>
+	</div>
+	<!--//버튼 영역-->
+
+</section>

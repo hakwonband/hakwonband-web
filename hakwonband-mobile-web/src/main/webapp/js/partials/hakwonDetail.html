@@ -1,0 +1,105 @@
+<section>
+	<h2 class="tit hide">학원상세</h2>
+
+	<div class="sec_blk hakwon_view">
+		<div class="list_img view">
+			<img ng-src="{{createFileFullPath(detail.file_path,'hakwon', true)}}" alt="" width="77" />
+		</div>
+		<div class="list_cont view">
+			<div class="tit">
+				{{detail.hakwon_name}}
+			</div>
+			<ul class="view_info_list">
+				<li class="strong_color">종류 : {{detail.cate_name}}</li>
+				<li class="tel"><a href="tel:{{detail.tel_no_1}}">{{detail.tel_no_1}}&nbsp;</a></li>
+				<li>{{detail.street_addr1 ? [detail.street_addr1, detail.street_addr2].join(' ') : [detail.old_addr1, detail.old_addr2].join(' ')}}</li>
+			</ul>
+		</div>
+	</div>
+
+	<!--버튼 영역-->
+	<div class="btn_area">
+		<button type="button" class="btn btn_style_submit btn_block btn_bold mb_10" ng-click="moveToIntro(detail.hakwon_no);">학원소개</button>
+		<button type="button" class="btn btn_style_info btn_block btn_bold" ng-if="!isMember" ng-click="joinHakwon(detail.hakwon_no, detail.hakwon_name)" style="margin-top:5px;">학원 가입하기</button>
+	</div>
+	<!--//버튼 영역-->
+</section>
+
+<section>
+	<h2 class="tit">공유하기</h2>
+
+	<div class="sec_con_sns">
+		<ul>
+			<li><button type="button" class="sns_01" data-act="snsShare" data-type="facebook">페이스북</button><li>
+			<li><button type="button" class="sns_04" data-type="kakao">카카오톡</button><li>
+			<li><button type="button" class="sns_03" data-act="snsShare" data-type="line">라인</button><li>
+			<li><button type="button" class="sns_05" data-act="snsShare" data-type="band">밴드</button><li>
+			<li><button type="button" class="sns_06" data-act="snsShare" data-type="sms">메세지</button><li>
+		</ul>
+	</div>
+<!--
+	<div class="sec_con_sns">
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="facebook"><img src="/images/ico_sns_facebook.png" alt="페이스북" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="twitter"><img src="/images/ico_sns_twitter.png" alt="트위터" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="kakao"><img src="/images/ico_sns_kakao.png" alt="카카오톡" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="sms"><img src="/images/ico_sns_kakao.png" alt="문자발송" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="band"><img src="/images/ico_sns_band.png" alt="네이버 밴드" width="46" /></a>
+		<a href="http://line.me/R/msg/text/{{lineShareUrl}}"><img src="/images/ico_sns_line.png" alt="라인" width="46" /></a>
+	</div>
+-->
+</section>
+
+
+
+<section>
+	<div class="sec_title">
+		<h2 class="tit">이벤트</h2>
+		<button type="button" class="ico_more" ng-click="goHakwonEventList()">더보기</button>
+	</div>
+
+	<div class="sec_con_list">
+		<ul class="ul_type_01">
+			<li ng-repeat="item in eventList">
+				<div class="list_subj">
+					<a href="{{siteUrls.eventDetail}}?hakwon_no={{detail.hakwon_no}}&&event_no={{item.event_no}}">
+						{{item.event_title}}
+					</a>
+					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.new_date) && item.read_status == 0"/>
+				</div>
+				<div class="list_date">
+					종료일 : {{item.end_date}}
+				</div>
+			</li>
+		</ul>
+		<div ng-if="eventList.length === 0" style="text-align:center;font-size:12px;padding:5px 0;">
+			진행중인 이벤트가 없습니다.
+		</div>
+	</div>
+</section>
+
+
+<section class="line_n" ng-if="isMember">
+	<div class="sec_title">
+		<h2 class="tit">공지사항</h2>
+	</div>
+
+
+	<div class="sec_con_list">
+		<ul class="ul_type_01">
+			<li ng-repeat="item in noticeList">
+				<div class="list_subj">
+					<a href="{{siteUrls.noticeDetail}}?hakwon_no={{detail.hakwon_no}}&notice_no={{item.notice_no}}">
+						{{item.title}}
+					</a>
+					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="item.isNew"/>
+				</div>
+				<div class="list_date">
+					등록일 : {{item.reg_date}}
+				</div>
+			</li>
+			<div ng-if="noticeList.length === 0" style="text-align:center;font-size:12px;padding:5px 0;">
+				등록된 공지사항이 없습니다.
+			</div>
+		</ul>
+	</div>
+</section>

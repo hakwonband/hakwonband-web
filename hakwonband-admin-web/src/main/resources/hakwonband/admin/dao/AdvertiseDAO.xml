@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.AdvertiseDAO">
+
+	<!-- 무통장 입금 리스트 조회 -->
+	<select id="getAdvertiseBankDepositList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.getAdvertiseBankDepositList	*/
+		select
+			a.deposit_no
+			, a.amount
+			, a.bank_code
+			, date_format(a.deposit_date, '%Y.%m.%d') as deposit_date
+			, a.deposit_name
+			, a.advertise_req_no
+			, a.comment
+			, a.reg_user_no
+			, get_user_name(a.reg_user_no) as reg_user_name
+			, (select title from tb_advertise_req where advertise_req_no = a.advertise_req_no) as advertise_title
+			, a.udp_user_no
+			, a.udp_date
+			, a.mapping_user_no
+			, a.mapping_date
+		from
+			tb_advertise_bank_deposit a
+		where
+			1 = 1
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+		<if test="'depositDate'.toString() eq searchType">
+			and a.deposit_date = #{searchText}
+		</if>
+		<if test="'depositName'.toString() eq searchType">
+			and a.deposit_name like concat('%', #{searchText}, '%')
+		</if>
+	</if>
+	<if test=' "Y".toString() eq mappingFlag '>
+			and a.advertise_req_no is not null
+	</if>
+	<if test=' "N".toString() eq mappingFlag '>
+			and a.advertise_req_no is null
+	</if>
+	<![CDATA[
+		order by
+			a.deposit_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 무통장 입금 카운트 조회 -->
+	<select id="getAdvertiseBankDepositCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.getAdvertiseBankDepositCount	*/
+		select
+			count(1)
+		from
+			tb_advertise_bank_deposit a
+		where
+			1 = 1
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+		<if test="'depositDate'.toString() eq searchType">
+			and a.deposit_date = #{searchText}
+		</if>
+		<if test="'depositName'.toString() eq searchType">
+			and a.deposit_name like concat('%', #{searchText}, '%')
+		</if>
+	</if>
+	<if test=' "Y".toString() eq mappingFlag '>
+			and a.advertise_req_no is not null
+	</if>
+	<if test=' "N".toString() eq mappingFlag '>
+			and a.advertise_req_no is null
+	</if>
+	</select>
+
+	<!-- 무통장 입금 정보 조회 -->
+	<select id="getAdvertiseBankDepositInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.getAdvertiseBankDepositInfo	*/
+		select
+			a.deposit_no
+			, a.amount
+			, a.bank_code
+			, get_code_name('010', a.bank_code) as bank_name
+			, date_format(a.deposit_date, '%Y.%m.%d') as deposit_date
+			, a.deposit_name
+			, a.advertise_req_no
+			, a.comment
+			, get_user_name(a.reg_user_no) as reg_user_name
+			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
+			, a.udp_user_no
+			, a.udp_date
+			, a.mapping_user_no
+			, a.mapping_date
+			, b.title as advertise_title
+			, c.hakwon_name
+			, get_user_name(c.master_user_no) as master_user_name
+		from
+			tb_advertise_bank_deposit a
+			left outer join tb_advertise_req b on a.advertise_req_no = b.advertise_req_no
+			left outer join tb_hakwon c on c.hakwon_no = b.hakwon_no
+		where
+			a.deposit_no = #{depositNo}
+	]]>
+	</select>
+
+	<!-- 입금 맵핑 광고 검색 -->
+	<select id="advertiseSearch" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseSearch	*/
+		select
+			c.advertise_req_no
+			, c.title
+			, c.banner_file_no
+			, get_file_path(c.banner_file_no) as banner_file_path
+			, c.cancel_yn
+			, c.deposit_yn
+			, c.banner_size
+			, c.price
+			, date_format(c.reg_date, '%Y.%m.%d %H:%i') as reg_date
+			, a.hakwon_name
+			, get_file_path(d.logo_file_no) as hakwon_logo_path
+			, get_user_name(a.master_user_no) as master_user_name
+			, (select sum(total_price) from tb_advertise_req_pay_info where advertise_req_no = c.advertise_req_no) as pre_calc_price
+		from
+			tb_advertise_req c
+			, tb_hakwon a
+			, tb_hakwon_info d
+			, tb_user_info b
+		where
+			(c.deposit_yn = 'N' or c.deposit_yn is null)
+			and c.cancel_yn is null
+			and c.hakwon_no = a.hakwon_no
+			and c.hakwon_no = d.hakwon_no
+			and a.master_user_no = b.user_no
+			and (
+				c.title like concat('%', #{advertiseSearchText}, '%')
+				or a.hakwon_name like concat('%', #{advertiseSearchText}, '%')
+				or b.user_name like concat('%', #{advertiseSearchText}, '%')
+			)
+		order by
+			c.advertise_req_no asc
+	]]>
+	</select>
+
+	<!-- 광고 무통장 입금 -->
+	<insert id="insertAdvertiseBankDeposit" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseBankDeposit	*/
+		insert into tb_advertise_bank_deposit (
+			amount, bank_code, deposit_date, deposit_name, comment, reg_user_no, reg_date
+		) values(
+			#{amount}, #{bankCode}, #{depositDate}, #{depositName}, #{comment}, #{userNo}, now()
+		)
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 광고 무통장 입금 수정 -->
+	<update id="updateAdvertiseBankDeposit" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseBankDeposit	*/
+		update tb_advertise_bank_deposit set
+			amount = #{amount}
+			, bank_code = #{bankCode}
+			, deposit_date = #{depositDate}
+			, deposit_name = #{depositName}
+			, comment = #{comment}
+			, udp_user_no = #{userNo}
+			, udp_date = now()
+		where
+			deposit_no = #{depositNo}
+	]]>
+	</update>
+
+	<!-- 광고 무통장 입금 삭제 -->
+	<delete id="deleteAdvertiseBankDeposit" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseBankDeposit	*/
+		delete from tb_advertise_bank_deposit
+		where
+			deposit_no = #{depositNo}
+	]]>
+	</delete>
+
+	<!-- 광고 무통장 입금 이력	-->
+	<insert id="insertAdvertiseBankDepositHist" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.insertAdvertiseBankDepositHist	*/
+		insert into tb_advertise_bank_deposit_hist (
+			deposit_no, amount, bank_code, deposit_date, deposit_name, advertise_req_no, comment, reg_user_no, reg_date, udp_user_no, udp_date, mapping_user_no, mapping_date, delete_yn
+		)
+		select
+			deposit_no, amount, bank_code, deposit_date, deposit_name, advertise_req_no, comment, reg_user_no, reg_date, udp_user_no, udp_date, mapping_user_no, mapping_date, #{deleteYn}
+		from
+			tb_advertise_bank_deposit
+		where
+			deposit_no = #{depositNo}
+	]]>
+	<selectKey keyProperty="id" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 이미 맵핑되어 있는지 확인 -->
+	<select id="checkAlreadyAdvertiseDeposit" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.checkAlreadyAdvertiseDeposit	*/
+		select count(1)
+		from tb_advertise_req
+		where
+			advertise_req_no = #{advertiseReqNo}
+			and deposit_yn = 'Y'
+	]]>
+	</select>
+
+	<!-- 입금정보 맵핑 확인 -->
+	<select id="checkDepositMapping" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.checkDepositMapping	*/
+		select count(1)
+		from tb_advertise_bank_deposit
+		where
+			deposit_no = #{depositNo}
+			and advertise_req_no is not null
+	]]>
+	</select>
+
+	<!-- 광고 요청 입금 처리 -->
+	<update id="updateAdvertiseDeposit" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseDeposit	*/
+		update tb_advertise_req set
+			deposit_yn = #{depositYn}
+		where
+			advertise_req_no = #{advertiseReqNo}
+	]]>
+	</update>
+
+	<!-- 입금 광고 맵핑 처리 -->
+	<update id="updateAdvertiseDepositMappging" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseDepositMappging	*/
+		update tb_advertise_bank_deposit set
+			advertise_req_no = #{advertiseReqNo}
+			, mapping_user_no = #{userNo}
+			, mapping_date = now()
+		where
+			deposit_no = #{depositNo}
+			and advertise_req_no is null
+	]]>
+	</update>
+
+	<!-- 입금 광고 맵핑 취소 처리 -->
+	<update id="updateAdvertiseDepositMappgingCancel" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseDepositMappgingCancel	*/
+		update tb_advertise_bank_deposit set
+			advertise_req_no = null
+			, mapping_user_no = null
+			, mapping_date = null
+		where
+			deposit_no = #{depositNo}
+			and advertise_req_no = #{advertiseReqNo}
+	]]>
+	</update>
+
+
+
+	<!-- 광고 요청 리스트 -->
+	<select id="advertiseReqList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqList	*/
+		select
+			c.advertise_req_no
+			, c.title
+			, c.banner_file_no
+			, get_file_path(c.banner_file_no) as banner_file_path
+			, c.cancel_yn
+			, c.deposit_yn
+			, c.banner_size
+			, c.price
+			, b.hakwon_name
+			, c.stop_admin_yn
+			, (select count(1) from tb_advertise_local_date x where x.advertise_req_no = c.advertise_req_no and x.view_month = date_format(now(), '%Y%m')) as view_count
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_advertise_req c
+		where
+			c.hakwon_no = a.hakwon_no
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( depositYn )">
+			and c.deposit_yn = #{depositYn}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or c.title like concat('%', #{searchText}, '%')
+			)
+	</if>
+	<![CDATA[
+		order by
+			c.advertise_req_no desc
+		limit
+			#{startNo}, #{pageScale}
+	]]>
+	</select>
+
+	<!-- 광고 요청 카운트 -->
+	<select id="advertiseReqTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqTotCount	*/
+		select
+			count(1)
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+			, tb_advertise_req c
+		where
+			c.hakwon_no = a.hakwon_no
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( hakwonNo )">
+			and a.hakwon_no = #{hakwonNo}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( depositYn )">
+			and c.deposit_yn = #{depositYn}
+	</if>
+	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or c.title like concat('%', #{searchText}, '%')
+			)
+	</if>
+	</select>
+
+
+	<!-- 광고 요청 상세 -->
+	<select id="advertiseReqDetail" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqDetail	*/
+		select
+			b.advertise_req_no
+			, b.title
+			, b.banner_file_no
+			, get_file_path(b.banner_file_no) as banner_file_path
+			, b.banner_size
+			, b.cancel_yn
+			, b.cancel_date
+			, b.stop_admin_yn
+			, b.deposit_yn
+			, b.price
+			, a.hakwon_name
+			, a.hakwon_no
+			, b.bank_info
+		from
+			tb_hakwon a
+			, tb_advertise_req b
+		where
+			b.advertise_req_no = #{reqNo}
+			and a.hakwon_no = b.hakwon_no
+	]]>
+	</select>
+
+	<!-- 광고 중지 및 활성화 -->
+	<update id="updateAdvertiseStop" parameterType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.updateAdvertiseStop	*/
+		update tb_advertise_req set
+			stop_admin_yn = #{stopAdminYn}
+		where
+			advertise_req_no = #{reqNo}
+	]]>
+	</update>
+
+	<!-- 광고 요청 지역 리스트 -->
+	<select id="advertiseReqLocalList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.advertiseReqLocalList	*/
+		select
+			a.advertise_req_no
+			, a.view_month
+			, case when date_format(now(), '%Y%m') = a.view_month then 'Y'
+			 else 'N' end as current_view
+			, a.sido
+			, a.gugun
+			, a.dong
+			, a.banner_size
+		from
+			tb_advertise_local_date a
+		where
+			a.advertise_req_no = #{reqNo}
+		order by
+			a.view_month asc
+			, a.sido asc
+			, a.gugun asc
+			, a.dong asc
+	]]>
+	</select>
+
+	<!-- 학원 등록 광고 구군 리스트 -->
+	<select id="hakwonRegMonthPriceList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	AdvertiseDAO.hakwonRegMonthPriceList	*/
+		select
+			a.view_month
+			, a.banner_size
+			, a.price
+			, a.dong_count
+			, a.total_price
+		from tb_advertise_req_pay_info a
+		where a.advertise_req_no = #{reqNo}
+		order by a.view_month asc
+	]]>
+	</select>
+
+</mapper>
