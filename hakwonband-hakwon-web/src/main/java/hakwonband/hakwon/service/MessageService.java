@@ -11,12 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
-import hakwonband.hakwon.dao.CommonDAO;
 import hakwonband.hakwon.dao.FileDAO;
 import hakwonband.hakwon.dao.HakwonDAO;
 import hakwonband.hakwon.dao.MessageViewDAO;
-import hakwonband.hakwon.dao.ReadDAO;
-import hakwonband.hakwon.dao.ReplyDAO;
 import hakwonband.util.DataMap;
 
 /**
@@ -32,16 +29,7 @@ public class MessageService {
 	private MessageViewDAO messageViewDAO;
 
 	@Autowired
-	private ReadDAO readDAO;
-
-	@Autowired
-	private ReplyDAO replyDAO;
-
-	@Autowired
 	private FileDAO fileDAO;
-
-	@Autowired
-	private CommonDAO commonDAO;
 
 	@Autowired
 	private HakwonDAO hakwonDAO;

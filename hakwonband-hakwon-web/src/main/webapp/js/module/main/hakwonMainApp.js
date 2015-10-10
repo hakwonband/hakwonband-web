@@ -741,6 +741,25 @@ var HakwonCommon = function() {
 		$.tmpl(hakwonTmpl.common.pageNav, paramObj).appendTo(paramObj.target);
 	}
 
+	/**
+	 * 사용자 상세 링크
+	 */
+	this.userDetailLink = function(userType, userNo) {
+		console.debug('userType['+userType+'] userNo['+userNo+']');
+		var link = '';
+		if( HakwonConstant.UserType.WONJANG == userType ) {
+		} else if( HakwonConstant.UserType.STUDENT == userType ) {
+			link = '#/student/view?hakwon_no='+hakwonInfo.hakwon_no+'&studentUserNo='+userNo;
+		} else if( HakwonConstant.UserType.PARENT == userType ) {
+			link = '#/parent/view?hakwon_no='+hakwonInfo.hakwon_no+'&parentUserNo='+userNo;
+		} else if( HakwonConstant.UserType.TEACHER == userType ) {
+		}
+		if( isNull(link) ) {
+			link = '#';
+		}
+		return link;
+	}
+
 	this.onload();
 }
 var hakwonCommon = new HakwonCommon();

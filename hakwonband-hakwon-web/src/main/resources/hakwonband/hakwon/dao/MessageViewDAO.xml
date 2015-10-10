@@ -16,6 +16,9 @@
 			, c.message_no
 			, c.group_yn
 			, (select count(1) from tb_file where file_parent_type = '002' and file_parent_no = c.message_no and file_use_yn = 'Y' and file_del_yn = 'N') as file_count
+			, c.reservation_yn
+			, date_format(c.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
+			, c.reservation_send_date
 		from
 			tb_user a
 			, tb_user_info b
@@ -75,6 +78,9 @@
 			, c.group_yn
 			, get_user_info(d.receive_user_no) as receive_user_info
 			, date_format(d.receive_date, '%Y.%m.%d %H:%i') as receive_date
+			, c.reservation_yn
+			, date_format(c.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
+			, c.reservation_send_date
 		from
 			tb_user a
 			, tb_user_info b
@@ -319,6 +325,7 @@
 			, c.user_name
 			, c.user_id
 			, get_file_path(c.photo_file_no) as user_photo_path
+			, b.user_type
 		from
 			tb_message_receiver a
 			, tb_user b
