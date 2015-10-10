@@ -36,9 +36,6 @@ public class GeneralExceptionResolver extends SimpleMappingExceptionResolver {
 	@Resource(name="messageSourceAccessor")
 	private MessageSourceAccessor message;
 
-	@Autowired
-	private CommonService commonService;
-
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 

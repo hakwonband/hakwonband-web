@@ -83,6 +83,13 @@ public class MessageSendService {
 		messageMap.put("messageType",	param.getString("targetType"));
 		messageMap.put("messageTarget",	param.getString("messageTarget"));
 
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			messageMap.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			messageMap.put("reservationYn",		"Y");
+		} else {
+			messageMap.put("reservationYn",		"N");
+		}
+
 		messageSendDAO.messageInsert(messageMap);
 		long messageNo = messageMap.getLong("idx");
 		param.put("messageNo", messageNo);
@@ -257,6 +264,14 @@ public class MessageSendService {
 		messageMap.put("messageType",	param.getString("targetType"));
 		messageMap.put("messageTarget",	param.getString("messageTarget"));
 
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			messageMap.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			messageMap.put("reservationYn",		"Y");
+		} else {
+			messageMap.put("reservationYn",		"N");
+		}
+
+		System.out.println("messageMap\n" + messageMap);
 		messageSendDAO.messageInsert(messageMap);
 		long messageNo = messageMap.getLong("idx");
 		param.put("messageNo", messageNo);

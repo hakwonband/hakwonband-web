@@ -158,6 +158,9 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 	messageSendSerivce.teacherMsgSend = function() {
 		$('button[data-act=messageSend]').attr('disabled', true);
 
+		var reservationDate	= $('input[name=reservationDate]').val();
+		var reservationTime	= $('input[name=reservationTime]').val();
+
 		var messageContent = $('textarea[name=messageContent]').val();
 		var classTarget = $('select[name=classTarget]').val();
 		var targetType = $('select[name=targetType]').val();
@@ -191,6 +194,13 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			fileListArray.push(dataFileNo);
 		});
 
+		if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+			if( isNull(reservationDate) || isNull(reservationTime) ) {
+				alert('예약 날짜와 시간이 정확하지 않습니다.');
+				return ;
+			}
+		}
+
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, fileListStr : fileListArray.toString()
@@ -198,6 +208,8 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			, classTarget : classTarget
 			, targetType : targetType
 			, targetUserList : targetUserList
+			, reservationDate : reservationDate
+			, reservationTime : reservationTime
 		};
 
 		$.ajax({
@@ -271,6 +283,9 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 	messageSendSerivce.masterMsgSend = function() {
 		$('button[data-act=messageSend]').attr('disabled', true);
 
+		var reservationDate	= $('input[name=reservationDate]').val();
+		var reservationTime	= $('input[name=reservationTime]').val();
+
 		var messageContent = $('textarea[name=messageContent]').val();
 		var targetType = $('select[name=targetType]').val();
 
@@ -298,6 +313,14 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			}
 		}
 
+		if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+			if( isNull(reservationDate) || isNull(reservationTime) ) {
+				alert('예약 날짜와 시간이 정확하지 않습니다.');
+				$('button[data-act=messageSend]').attr('disabled', false);
+				return ;
+			}
+		}
+
 		var fileListArray = [];
 		$('div.file-box').each(function() {
 			var dataFileNo = $(this).attr('data-file-no');
@@ -312,6 +335,8 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			, targetUserType : targetUserType
 			, targetType : targetType
 			, targetUserList : targetUserList
+			, reservationDate : reservationDate
+			, reservationTime : reservationTime
 		};
 
 		$.ajax({
@@ -437,6 +462,14 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		});
 
 		/**
+		 * 취소
+		 */
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationCancel]', function() {
+			$('input[name=reservationDate]').val('');
+			$('input[name=reservationTime]').val('');
+		});
+
+		/**
 		 * 대상 선택
 		 */
 		$('#mainNgView').on(clickEvent, 'button[data-act=target]', function() {
@@ -464,6 +497,14 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 				$('.i-checks').iCheck({
 					checkboxClass: 'icheckbox_square-green'
+				});
+
+				/*	데이트 피커	*/
+				$('#mainNgView input[name=reservationDate]').datepicker({
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+					format: "yyyy-mm-dd"
 				});
 
 				$('label[data-type=targetUserType]').on('ifChecked ifUnchecked', function(event){

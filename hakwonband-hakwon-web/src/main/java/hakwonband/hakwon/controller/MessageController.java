@@ -23,6 +23,7 @@ import hakwonband.hakwon.service.MessageSendService;
 import hakwonband.hakwon.service.MessageService;
 import hakwonband.util.DataMap;
 import hakwonband.util.StringUtil;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * 메세지 컨트롤러
@@ -93,6 +94,14 @@ public class MessageController extends BaseAction {
 		String fileListStr		= request.getParameter("fileListStr");
 		String [] targetUserList= request.getParameterValues("targetUserList");
 
+		/*	예약 전송	*/
+		String reservationDate		= request.getParameter("reservationDate");
+		String reservationTime		= request.getParameter("reservationTime");
+		if( StringUtils.isNotBlank(reservationDate) && StringUtils.isNotBlank(reservationTime) ) {
+		} else {
+			reservationDate = "";
+			reservationTime = "";
+		}
 
 		if( "search".equals(classTarget) ) {
 			/*	검색	*/
@@ -112,6 +121,9 @@ public class MessageController extends BaseAction {
 		param.put("messageContent",	messageContent);
 		param.put("fileListStr",	fileListStr);
 		param.put("targetUserList",	targetUserList);
+
+		param.put("reservationDate",	reservationDate);
+		param.put("reservationTime",	reservationTime);
 
 		/*	메세지 대상	*/
 		if( "search".equals(classTarget) ) {
@@ -193,6 +205,15 @@ public class MessageController extends BaseAction {
 		String messageContent	= request.getParameter("messageContent");
 		String fileListStr		= request.getParameter("fileListStr");
 
+		/*	예약 전송	*/
+		String reservationDate		= request.getParameter("reservationDate");
+		String reservationTime		= request.getParameter("reservationTime");
+		if( StringUtils.isNotBlank(reservationDate) && StringUtils.isNotBlank(reservationTime) ) {
+		} else {
+			reservationDate = "";
+			reservationTime = "";
+		}
+
 
 		if( "search".equals(targetType) ) {
 			/*	검색	*/
@@ -213,6 +234,9 @@ public class MessageController extends BaseAction {
 		param.put("targetClass",	targetClass);
 		param.put("targetUserType",	targetUserType);
 		param.put("targetUserList",	targetUserList);
+
+		param.put("reservationDate",	reservationDate);
+		param.put("reservationTime",	reservationTime);
 
 		/*	메세지 대상	*/
 		if( "search".equals(targetType) ) {

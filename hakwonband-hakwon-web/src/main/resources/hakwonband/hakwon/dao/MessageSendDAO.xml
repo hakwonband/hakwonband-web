@@ -68,6 +68,8 @@
 			, write_date
 			, message_type
 			, message_target
+			, reservation_yn
+			, reservation_date
 		) values (
 			#{title}
 			, #{preview_content}
@@ -75,13 +77,27 @@
 			, #{group_yn}
 			, #{hakwon_no}
 			, #{send_user_no}
+	]]>
+		<if test="reservationYn eq 'Y'.toString()">
 			, now()
+		</if>
+		<if test="reservationYn eq 'N'.toString()">
+			, null
+		</if>
+	<![CDATA[
 			, #{send_user_no}
 			, now()
 			, #{messageType}
 			, #{messageTarget}
-		)
+			, #{reservationYn}
 	]]>
+		<if test="reservationYn eq 'Y'.toString()">
+			, str_to_date(#{reservationDate}, '%Y-%m-%d %H:%i')
+		</if>
+		<if test="reservationYn eq 'N'.toString()">
+			, null
+		</if>
+		)
 	<selectKey keyProperty="idx" resultType="long">
 		select last_insert_id()
 	</selectKey>

@@ -476,7 +476,7 @@ create table tb_message (
 	, group_yn				char(1)							not null	comment '그룹 메세지 여부'
 	, hakwon_no				integer							not null	comment '학원 번호'
 	, send_user_no			integer							not null	comment '발신자 번호'
-	, send_date				datetime						not null	comment '발신 일자'
+	, send_date				datetime									comment '발신 일자'
 	, write_user_no			integer							not null	comment '작성자 번호'
 	, write_date			datetime						not null	comment '작성 일자'
 	, message_type			varchar(15)									comment '메세지 타입'
