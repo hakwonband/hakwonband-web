@@ -3,7 +3,8 @@
 export LANG=ko_KR.UTF-8
 
 JAVA_HOME=/hakwon-band/sdk/jdk1.8.0_25
-RUNNTIME_HOME=/hakwon-band/source/hakwon-runtime/sendMailTest
+RUNNTIME_HOME=/hakwon-band/source/hakwon-runtime/rms
+
 
 CLASSPATH=$CLASSPATH:$RUNNTIME_HOME/lib/activation-1.1.jar
 CLASSPATH=$CLASSPATH:$RUNNTIME_HOME/lib/aopalliance-1.0.jar
@@ -102,7 +103,7 @@ echo $CLASSPATH
 # ----Server Infomation----
 # SERVICE_NAME 은 꼭 지정해야 한다.
 SERVER_TYPE=$1
-SERVICE_NAME="sendMailTest"
+SERVICE_NAME="rms"
 LOG_HOME="/hakwon-band/logs/runtime"
 NOHUP_LOG_FILE="${LOG_HOME}/${SERVICE_NAME}-nohup"
 HEAP_DIR="${LOG_HOME}"
@@ -139,4 +140,4 @@ USER_OPTS_ARGS="-Dserver.type=${SERVER_TYPE} -Druntime.service.name=${SERVICE_NA
 echo $USER_OPTS_ARGS
 
 
-java $USER_OPTS_ARGS hakwonband.runtime.main.SendMailTestMain > $NOHUP_LOG_FILE &
+java $USER_OPTS_ARGS hakwonband.runtime.main.ReservationMessageSendMain > $NOHUP_LOG_FILE &
