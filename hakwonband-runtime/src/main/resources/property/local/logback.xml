@@ -9,24 +9,24 @@
 		</layout>
 	</appender>
 
-	<logger name="java.sql" level="error">
+	<logger name="java.sql" level="error" additivity="false">
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
-	<logger name="jdbc.resultset" level="error">
+	<logger name="jdbc.resultset" level="error" additivity="false">
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
-	<logger name="jdbc.connection" level="error">
+	<logger name="jdbc.connection" level="error" additivity="false">
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
 
-	<logger name="org.springframework" level="error">
+	<logger name="org.springframework" level="error" additivity="false">
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
-	<logger name="hakwonband" level="debug">
+	<logger name="hakwonband" level="debug" additivity="false">
 		<appender-ref ref="consoleAppender" />
 	</logger>
 

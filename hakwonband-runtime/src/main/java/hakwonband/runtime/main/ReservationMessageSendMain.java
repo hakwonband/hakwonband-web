@@ -19,7 +19,7 @@ public class ReservationMessageSendMain extends HakwonRuntime {
 		/**
 		 * 예약 메세지 발송
 		 */
-		run(ReservationMessageSendService.class, "send");
+		run(ReservationMessageSendService.class, "executeSend");
 	}
 
     /**

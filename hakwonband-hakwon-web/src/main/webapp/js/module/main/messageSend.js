@@ -688,6 +688,13 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 			$(this.parentNode).remove();
 		});
 
+		/**
+		 * 예약 취소
+		 */
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationCancel]', function() {
+			$('input[name=reservationDate]').val('');
+			$('input[name=reservationTime]').val('');
+		});
 
 		/**
 		 * 메세지 발송
@@ -736,6 +743,14 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 
 				$('.i-checks').iCheck({
 					checkboxClass: 'icheckbox_square-green'
+				});
+
+				/*	데이트 피커	*/
+				$('#mainNgView input[name=reservationDate]').datepicker({
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+					format: "yyyy-mm-dd"
 				});
 
 				$('label[data-type=targetUserType]').on('ifChecked ifUnchecked', function(event){

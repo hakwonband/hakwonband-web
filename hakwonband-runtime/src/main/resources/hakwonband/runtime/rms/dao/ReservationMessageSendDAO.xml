@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.rms.dao.ReservationMessageSendDAO">
+
+	<!-- 발송 예약 메세지 -->
+	<select id="reservationMessageList" resultType="dataMap">
+	<![CDATA[
+		/*	ReservationMessageSendDAO.reservationMessageList	*/
+		select
+			a.message_no
+			, a.title
+			, a.group_yn
+			, a.hakwon_no
+			, a.send_user_no
+			, a.reservation_date
+			, a.message_type
+			, a.message_target
+			, c.user_type as send_user_type
+			, b.user_name as send_user_name
+			, (select concat(device_token, '|', device_type, '|', is_production) from tb_login_hist where user_no = 2 and device_token is not null order by login_date desc limit 1) as send_user_device
+		from
+			tb_message a
+			, tb_user_info b
+			, tb_user c
+		where
+			a.reservation_yn = 'Y'
+			and a.reservation_send_date is null
+			and a.reservation_date <= now()
+			and a.send_user_no = b.user_no
+			and a.send_user_no = c.user_no
+		order by
+			a.message_no asc
+	]]>
+	</select>
+
+	<!-- 발송 대상자 번호 -->
+	<select id="receiverUserDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	ReservationMessageSendDAO.receiverUserDeviceList	*/
+		select
+			b.receive_user_no as user_no
+			, c.device_token
+			, c.device_type
+			, c.is_production
+		from
+			tb_message_receiver b
+			, tb_login_hist c
+		where
+			b.message_no = #{message_no}
+			and b.receive_user_no = c.user_no
+			and c.device_token is not null
+		order by
+			c.device_type
+	]]>
+	</select>
+
+	<update id="messageSendDone" parameterType="dataMap">
+	<![CDATA[
+		/*	ReservationMessageSendDAO.messageSendDone	*/
+		update tb_message set
+			reservation_send_date = now()
+			, send_date = now()
+		where
+			message_no in (${messageNos})
+	]]>
+	</update>
+</mapper>
