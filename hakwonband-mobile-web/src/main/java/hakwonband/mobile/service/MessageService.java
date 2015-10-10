@@ -78,9 +78,6 @@ public class MessageService {
 		/* 전체 받은 메세지 리스트 카운트 */
 		int receiveMessageListTotCount = messageDAO.receiveMessageListTotCount(param);
 
-		/* 신규 받은 메세지 카운트 */
-		//int newReceiveMessageReqListTotCount = messageDAO.newMessageListTotCount(param);
-
 		DataMap resultObj = new DataMap();
 		resultObj.put("result", CommonConstant.Flag.success);
 		resultObj.put("receiveMessageList",			receiveMessageList);

@@ -86,10 +86,11 @@
 		where
 			a.receive_user_no = #{receive_user_no}
 			and a.message_no = b.message_no
+			and (b.reservation_yn = 'N' or b.reservation_send_date is not null)
 			and b.send_user_no = c.user_no
 			and c.user_no = d.user_no
 		order by
-			a.message_no desc
+			b.send_date desc
 		limit
 			#{start_no}, #{page_scale}
 	]]>
@@ -103,8 +104,11 @@
 			count(1)
 		from
 			tb_message_receiver a
+			, tb_message b
 		where
 			a.receive_user_no = #{receive_user_no}
+			and a.message_no = b.message_no
+			and (b.reservation_yn = 'N' or b.reservation_send_date is not null)
 	]]>
 	</select>
 
