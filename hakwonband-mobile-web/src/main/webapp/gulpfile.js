@@ -16,9 +16,21 @@ var merge		= require('merge-stream'),
    			, './js/lib/merge.js'
    			, './js/lib/underscore-1.7.0/underscore-min.js'
    			, './js/lib/moment.js'
-   			, './js/lib/angular-1.3.3/angular.min.js'
-   			, './js/lib/angular-1.3.3/angular-route.min.js'
-   			, './js/lib/angular-1.3.3/angular-touch.min.js'
+
+   			, './bower_components/angular/angular.min.js'
+			, './bower_components/angular-route/angular-route.min.js'
+			, './bower_components/angular-touch/angular-touch.min.js'
+
+//			, './bower_components/angular-resource/angular-resource.min.js'
+//			, './bower_components/angular-animate/angular-animate.min.js'
+//			, './bower_components/angular-sanitize/angular-sanitize.min.js'
+//			, './bower_components/angular-i18n/angular-locale_ko-kr.js'
+//			, './bower_components/angular-bootstrap/ui-bootstrap.min.js'
+
+//   			, './js/lib/angular-1.3.3/angular.min.js'
+//   			, './js/lib/angular-1.3.3/angular-route.min.js'
+//   			, './js/lib/angular-1.3.3/angular-touch.min.js'
+
    			, './js/common/common.prototype.js'
    			, './js/common/common.js'
    			, './js/common/bumworld.html5.upload.js'
