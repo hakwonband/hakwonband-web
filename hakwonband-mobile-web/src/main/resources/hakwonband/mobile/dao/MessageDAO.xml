@@ -138,6 +138,7 @@
 		where
 			a.receive_user_no = #{receive_user_no}
 			and a.message_no = b.message_no
+			and (b.reservation_yn = 'N' or b.reservation_send_date is not null)
 			and b.send_user_no = c.user_no
 			and c.user_no = d.user_no
 		order by
@@ -224,6 +225,7 @@
 			, send_date
 			, write_user_no
 			, write_date
+			, reservation_yn
 		) values (
 			#{title}
 			, #{preview_content}
@@ -234,6 +236,7 @@
 		  	, now()
 			, #{write_user_no}
 			, now()
+			, 'N'
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">

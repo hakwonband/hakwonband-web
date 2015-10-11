@@ -19,6 +19,7 @@
 			, write_date
 			, message_type
 			, message_target
+			, reservation_yn
 		) values (
 			#{title}
 			, #{preview_content}
@@ -31,6 +32,7 @@
 			, now()
 			, #{messageType}
 			, #{messageTarget}
+			, 'N'
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
