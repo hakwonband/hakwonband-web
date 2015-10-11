@@ -745,7 +745,6 @@ var HakwonCommon = function() {
 	 * 사용자 상세 링크
 	 */
 	this.userDetailLink = function(userType, userNo) {
-		console.debug('userType['+userType+'] userNo['+userNo+']');
 		var link = '';
 		if( HakwonConstant.UserType.WONJANG == userType ) {
 		} else if( HakwonConstant.UserType.STUDENT == userType ) {

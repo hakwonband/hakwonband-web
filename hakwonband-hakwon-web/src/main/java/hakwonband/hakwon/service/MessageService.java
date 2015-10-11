@@ -197,7 +197,7 @@ public class MessageService {
 
 		/* 보낸 메세지 파일 리스트 조회 */
 		param.put("file_parent_type",	CommonConstant.File.TYPE_MESSAGE);
-		param.put("file_parent_no",	messageDetail.getString("message_no"));
+		param.put("file_parent_no",		messageDetail.getString("message_no"));
 		List<DataMap> fileList = fileDAO.fileList(param);
 		colData.put("fileList", fileList);
 
@@ -226,5 +226,25 @@ public class MessageService {
 		messageViewDAO.updateMessageReceiveDate(param);
 
 		return colData;
+	}
+
+	/**
+	 * 예약 메세지 삭제
+	 * @param param
+	 * @return
+	 */
+	public void deleteReservationMsg(DataMap param) {
+
+		/*	예약 메세지 삭제	*/
+		int delCount = messageViewDAO.deleteReservationMessage(param);
+		if( delCount != 1 ) {
+			throw new HKBandException("삭제 실패");
+		}
+
+		/*	받은 메세지 삭제	*/
+		messageViewDAO.deleteReservationReceiveMessage(param);
+
+		/*	파일 삭제	*/
+		fileDAO.unUsingMessageUpdate(param);
 	}
 }

@@ -143,6 +143,9 @@
 			, c.message_target
 			, c.receiver_count
 			, get_user_info(c.send_user_no) as send_user_info
+			, c.reservation_yn
+			, c.reservation_date
+			, c.reservation_send_date
 		from
 			tb_message c
 		where
@@ -167,6 +170,9 @@
 			, c.receiver_count
 			, get_user_info(c.send_user_no) as send_user_info
 			, get_user_info(d.receive_user_no) as receive_user_info
+			, c.reservation_yn
+			, c.reservation_date
+			, c.reservation_send_date
 		from
 			tb_message c
 			, tb_message_receiver d
@@ -342,6 +348,7 @@
 
 	<!-- 메세지 사용자 정보 -->
 	<select id="messageUserInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
 		/*	MessageViewDAO.messageUserInfo	*/
 		select
 			a.receive_user_no
@@ -357,5 +364,30 @@
 		where
 			a.receive_no = #{receive_no}
 			and a.message_no = b.message_no
+	]]>
 	</select>
+
+	<!-- 예약 메세지 삭제 -->
+	<delete id="deleteReservationMessage" parameterType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.deleteReservationMessage */
+		delete from tb_message
+		where
+			message_no = #{messageNo}
+			and send_user_no = #{user_no}
+			and reservation_yn = 'Y'
+			and reservation_send_date is null
+	]]>
+	</delete>
+
+	<!-- 예약 받은 메세지 삭제 -->
+	<delete id="deleteReservationReceiveMessage" parameterType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.deleteReservationReceiveMessage */
+		delete from tb_message_receiver
+		where
+			message_no = #{messageNo}
+	]]>
+	</delete>
+
 </mapper>

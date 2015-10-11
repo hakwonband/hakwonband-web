@@ -413,6 +413,45 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 예약 메세지 삭제
+	 */
+	messageViewService.reservationMsgDelete = function(message_no, moveLocation) {
+
+		if( window.confirm('예약 메세지를 삭제하시겠습니까?') == false ) {
+			return ;
+		}
+
+		var params = {message_no:message_no};
+		$.ajax({
+			url: contextPath+"/hakwon/message/reservationMsgDelete.do",
+			type: "post",
+			data: $.param(params, true),
+			headers : hakwonInfo.getHeader(),
+			dataType: "json",
+			success: function(data) {
+				try {
+					if( data.error ) {
+						alert('예약 메세지 삭제를 실패 했습니다.');
+						return false;
+					}
+
+					var colData = data.colData;
+					if( colData.flag == CommonConstant.Flag.success ) {
+						commProto.hrefMove(moveLocation);
+					} else {
+						alert('예약 메세지 삭제를 실패 했습니다.');
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
+		});
+	};
+
 	return messageViewService;
 });
 
@@ -511,8 +550,14 @@ hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $l
 
 		var messageNo = $routeParams.messageNo;
 
+		/*	목록으로	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
 			commProto.hrefMove(PageUrl.message.sendMessageGroupList);
+		});
+
+		/*	예약 메세지 상세	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
+			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageGroupList);
 		});
 
 		$scope.$$postDigest(function() {
@@ -549,6 +594,13 @@ hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $
 
 		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
 			commProto.hrefMove(PageUrl.message.sendMessageSingleList);
+		});
+
+		/*	예약 메세지 상세	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
+			var messageNo = $(this).attr('data-message-no');
+			console.log('messageNo : ' + messageNo);
+			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageSingleList);
 		});
 
 		/*	본인 메세지 삭제	*/

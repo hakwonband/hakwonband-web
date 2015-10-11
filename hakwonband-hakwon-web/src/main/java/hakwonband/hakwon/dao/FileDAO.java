@@ -33,6 +33,14 @@ public interface FileDAO {
 	public int unUsingUpdate(DataMap param);
 
 	/**
+	 * 메세지 파일 삭제
+	 * @param param
+	 * @return
+	 */
+	public int unUsingMessageUpdate(DataMap param);
+
+
+	/**
 	 * 파일 상태 삭제로 변경
 	 * @param param
 	 * @return

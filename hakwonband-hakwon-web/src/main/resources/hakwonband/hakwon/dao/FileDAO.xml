@@ -51,6 +51,20 @@
 		</if>
 	</update>
 
+
+	<!-- 메세지 파일을 미사용 상태로 변경 -->
+	<update id="unUsingMessageUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	FileDAO.unUsingMessageUpdate	*/
+		update tb_file set
+			file_use_yn = 'N'
+		where
+			file_parent_no = #{messageNo}
+			and file_parent_type = '002'
+			and reg_user_no = #{user_no}
+	]]>
+	</update>
+
 	<!-- 파일상태 삭제로 변경 -->
 	<update id="deleteFile" parameterType="dataMap">
 	<![CDATA[
