@@ -139,7 +139,10 @@ public class MessageSendService {
 			 */
 			DataMap searchParam = new DataMap();
 			searchParam.put("searchUserNoArray", StringUtils.join(targetUserList, ','));
-			deviceList = messageSendDAO.searchUserDeviceToken(searchParam);
+
+			if( messageMap.equals("reservationYn", "N") ) {
+				deviceList = messageSendDAO.searchUserDeviceToken(searchParam);
+			}
 		} else {
 			/*	해당 반만	*/
 			DataMap receiverMap = new DataMap();
@@ -154,26 +157,32 @@ public class MessageSendService {
 				messageSendDAO.messageReceiverGroupInsertClassStudent(receiverMap);
 
 				/*	디바이스 리스트	*/
-				deviceList = messageSendDAO.teacherTargetClassStudent(receiverMap);
+				if( messageMap.equals("reservationYn", "N") ) {
+					deviceList = messageSendDAO.teacherTargetClassStudent(receiverMap);
+				}
 			} else if( "parent_all".equals(targetType) ) {
 				/*	학부모 모두	*/
 				messageSendDAO.messageReceiverGroupInsertClassParent(receiverMap);
 
 				/*	디바이스 리스트	*/
-				deviceList = messageSendDAO.teacherTargetClassParent(receiverMap);
+				if( messageMap.equals("reservationYn", "N") ) {
+					deviceList = messageSendDAO.teacherTargetClassParent(receiverMap);
+				}
 			} else if( "all".equals(targetType) ) {
 				/*	학생/학부모 모두	*/
 				messageSendDAO.messageReceiverGroupInsertClassStudent(receiverMap);
 				messageSendDAO.messageReceiverGroupInsertClassParent(receiverMap);
 
-				/*	디바이스 리스트	*/
-				List<UserDevice> deviceList1 = messageSendDAO.teacherTargetClassStudent(receiverMap);
+				if( messageMap.equals("reservationYn", "N") ) {
+					/*	디바이스 리스트	*/
+					List<UserDevice> deviceList1 = messageSendDAO.teacherTargetClassStudent(receiverMap);
 
-				List<UserDevice> deviceList2 = messageSendDAO.teacherTargetClassParent(receiverMap);
+					List<UserDevice> deviceList2 = messageSendDAO.teacherTargetClassParent(receiverMap);
 
-				deviceList = new ArrayList<UserDevice>();
-				deviceList.addAll(deviceList1);
-				deviceList.addAll(deviceList2);
+					deviceList = new ArrayList<UserDevice>();
+					deviceList.addAll(deviceList1);
+					deviceList.addAll(deviceList2);
+				}
 			}
 		}
 
@@ -326,7 +335,9 @@ public class MessageSendService {
 			 */
 			DataMap searchParam = new DataMap();
 			searchParam.put("searchUserNoArray", StringUtils.join(targetUserList, ','));
-			deviceList = messageSendDAO.searchUserDeviceToken(searchParam);
+			if( messageMap.equals("reservationYn", "N") ) {
+				deviceList = messageSendDAO.searchUserDeviceToken(searchParam);
+			}
 		} else if( "class".equals(targetType) ) {
 			/*	반 선택	*/
 			DataMap param01 = new DataMap();
@@ -367,7 +378,9 @@ public class MessageSendService {
 			/**
 			 * 반 대상자 디바이스 정보 조회
 			 */
-			deviceList = messageSendDAO.masterTargetClassUserDeviceToken(param01);
+			if( messageMap.equals("reservationYn", "N") ) {
+				deviceList = messageSendDAO.masterTargetClassUserDeviceToken(param01);
+			}
 		} else if( "userGroup".equals(targetType) ) {
 			/*	사용자 그룹 선택	*/
 
@@ -414,7 +427,9 @@ public class MessageSendService {
 			/**
 			 * 디바이스 정보 조회
 			 */
-			deviceList = messageSendDAO.masterTargetUserGroupDeviceToken(param01);
+			if( messageMap.equals("reservationYn", "N") ) {
+				deviceList = messageSendDAO.masterTargetUserGroupDeviceToken(param01);
+			}
 		} else {
 			throw new HKBandException();
 		}
