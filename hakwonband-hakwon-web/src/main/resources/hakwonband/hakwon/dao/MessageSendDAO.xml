@@ -79,10 +79,10 @@
 			, #{send_user_no}
 	]]>
 		<if test="reservationYn eq 'Y'.toString()">
-			, now()
+			, null
 		</if>
 		<if test="reservationYn eq 'N'.toString()">
-			, null
+			, now()
 		</if>
 	<![CDATA[
 			, #{send_user_no}
