@@ -74,7 +74,11 @@
 			and a.user_no = b.user_no
 	]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
-			and b.user_name like concat('%', #{search_text}, '%')
+			and (
+				b.user_name like concat('%', #{search_text}, '%')
+				or
+				b.user_id like concat('%', #{search_text}, '%')
+			)
 		</if>
 	<![CDATA[
 		order by
@@ -99,7 +103,11 @@
 			and d.user_no = b.user_no
 		]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
-			and b.user_name like concat('%', #{search_text}, '%')
+			and (
+				b.user_name like concat('%', #{search_text}, '%')
+				or
+				b.user_id like concat('%', #{search_text}, '%')
+			)
 		</if>
 	</select>
 

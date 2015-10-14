@@ -969,7 +969,7 @@ hakwonTmpl.master = {
 hakwonTmpl.student = {
 	listForm : [
 		'<div class="col-md-6 input-group col-md-offset-3">'
-		, '	<input type="text" name="searchText" class="form-control" placeholder="이름으로 검색">'
+		, '	<input type="text" name="searchText" class="form-control" placeholder="이름 및 아이디 검색">'
 		, '	<span class="input-group-btn"> <button type="button" data-act="search" class="btn btn-primary">검색</button> </span>'
 		, '</div>'
 		, '<div class="ibox m m-t-xl">'
@@ -1084,7 +1084,7 @@ hakwonTmpl.student = {
 hakwonTmpl.parent = {
 	listForm : [
 		'<div class="col-md-6 input-group col-md-offset-3">'
-		, '	<input type="text" name="searchText" class="form-control" placeholder="이름으로 검색">'
+		, '	<input type="text" name="searchText" class="form-control" placeholder="이름 및 아이디 검색">'
 		, '	<span class="input-group-btn"> <button type="button" data-act="search" class="btn btn-primary">검색</button> </span>'
 		, '</div>'
 		, '<div class="ibox m m-t-xl">'

@@ -237,7 +237,10 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 
 			$scope.noticeList 			= [];
 			$scope.noticeListTotCount	= 0;
-			$scope.page = 1;
+			$scope.page = $routeParams.page;
+			if( isNull($scope.page) ) {
+				$scope.page = 1;
+			}
 
 			/* 권한 체크 기능	*/
 			$scope.checkAuthType		= comm.checkAuthType;
@@ -246,7 +249,7 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 			$scope.isNewItem			= comm.isNewItem;
 
 			/*	학원 공지사항 리스트 정보조회	*/
-			$scope.getNoticeList();
+			$scope.getNoticeList($scope.page);
 		});
 
 		/*	공지사항 리스트 조회	*/
