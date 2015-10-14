@@ -266,6 +266,8 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 						$scope.noticeList			= CommUtil.createNewContent(colData.noticeList);
 						$scope.noticeListTotCount	= colData.noticeListTotCount;
 						$scope.pageInfo = CommUtil.getPagenationInfo(colData.noticeListTotCount, colData.pageScale, DefaultInfo.pageScale, $scope.page);
+
+						$location.search('page', pageNo);
 					} else {
 						commProto.logger({hakwonNoticeListError:data});
 					}
@@ -292,7 +294,7 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 		/*	공지사항 상세 이동	*/
 		$scope.goNoticeDetail = function(item) {
 			console.log(item);
-			$window.location.href = PageUrl.common.noticeDetail+'?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + item.notice_no;
+			$window.location.href = PageUrl.common.noticeDetail+'?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + item.notice_no + '&page='+$scope.page;
 		};
 
 	} catch(ex) {
@@ -338,6 +340,11 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 
 		if (!isNull($routeParams.notice_no)) {
 			$scope.noticeNo = $routeParams.notice_no;
+		}
+
+		$scope.page = $routeParams.page;
+		if( isNull($scope.page) ) {
+			$scope.page = 1;
 		}
 
 		$scope.replyInfo = {
@@ -477,7 +484,7 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 
 		/*	공지사항 목록이동	*/
 		$scope.goNoticeList = function() {
-			$window.location.href = PageUrl.common.noticeList+'?hakwon_no=' + $scope.hakwonNo;
+			$window.location.href = PageUrl.common.noticeList+'?hakwon_no=' + $scope.hakwonNo + '&page='+$scope.page;
 		};
 
 		/*	리플 삭제	*/

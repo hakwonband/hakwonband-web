@@ -1117,7 +1117,10 @@ hakwonMainApp.controller('classNoticeListController', function($scope, $location
 		$scope.isMobile = isMobile.any();
 
 		/*	데이터 초기화	*/
-		$scope.page						= 1;
+		$scope.page						= $routeParams.page;
+		if( isNull($scope.page) ) {
+			$scope.page = 1;
+		}
 		$scope.hakwonNo 				= '';
 		$scope.classNo					= '';
 		$scope.classDetail 				= {};
@@ -1132,10 +1135,8 @@ hakwonMainApp.controller('classNoticeListController', function($scope, $location
 
 		/*	페이지네이션 페이지 이동	*/
 		$scope.movePage = function(page) {
-			if ($scope.page === page) {
-				return;
-			}
 			$scope.page = page;
+			$location.search('page', page);
 			classService.classNoticeList($scope);
 		};
 
@@ -1162,12 +1163,12 @@ hakwonMainApp.controller('classNoticeListController', function($scope, $location
 
 		/*	반 공지사항 상세보기로 이동	*/
 		$scope.goClassNoticeDetail = function(noticeNo) {
-			CommUtil.locationHref(PageUrl.common.classNoticeDetail, {notice_no:noticeNo, class_no:$routeParams.class_no}, 'hakwon');
+			CommUtil.locationHref(PageUrl.common.classNoticeDetail, {notice_no:noticeNo, class_no:$routeParams.class_no, page:$scope.page}, 'hakwon');
 			return false;
 		};
 
 		/*	반 공지사항 리스트 조회	*/
-		$scope.getClassNoticeList();
+		$scope.movePage($scope.page);
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}
@@ -1176,7 +1177,7 @@ hakwonMainApp.controller('classNoticeListController', function($scope, $location
 /**
  * 반 공지사항 상세보기
  */
-hakwonMainApp.controller('classNoticeDetailController', function($scope, $location, $routeParams, classService, classFactory, CommUtil) {
+hakwonMainApp.controller('classNoticeDetailController', function($scope, $window, $location, $routeParams, classService, classFactory, CommUtil) {
 	console.log('hakwonMainApp classNoticeDetailController call');
 
 	try {
@@ -1208,6 +1209,11 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $locati
 
 		if (!isNull($routeParams.notice_no)) {
 			$scope.noticeNo = $routeParams.notice_no;
+		}
+
+		$scope.page = $routeParams.page;
+		if( isNull($scope.page) ) {
+			$scope.page = 1;
 		}
 
 		/*	댓글 입력 정보	*/
@@ -1265,7 +1271,7 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $locati
 
 		/*	공지사항 목록으로 이동	*/
 		$scope.goClassNoticeList = function() {
-			CommUtil.locationHref(PageUrl.common.classNoticeList, {class_no:$routeParams.class_no}, 'hakwon');
+			CommUtil.locationHref(PageUrl.common.classNoticeList, {class_no:$routeParams.class_no, page:$scope.page}, 'hakwon');
 			return false;
 		};
 

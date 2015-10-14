@@ -25,8 +25,18 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 
 		$rootScope.HakwonConstant = HakwonConstant;
 
-		console.warn($rootScope.userAuth);
-		console.warn($rootScope.HakwonConstant);
+		var originalLocationUrl = $location.url;
+		$location.urlChange = function (url, reload) {
+			console.log('urlChange['+url+']');
+			if (reload === false) {
+				var lastRoute = $route.current;
+				var un = $rootScope.$on('$locationChangeSuccess', function () {
+					$route.current = lastRoute;
+					un();
+				});
+			}
+			return originalLocationUrl.apply($location, [url]);
+		}
 
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
