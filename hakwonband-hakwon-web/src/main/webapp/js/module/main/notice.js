@@ -293,7 +293,6 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 
 		/*	공지사항 상세 이동	*/
 		$scope.goNoticeDetail = function(item) {
-			console.log(item);
 			$window.location.href = PageUrl.common.noticeDetail+'?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + item.notice_no + '&page='+$scope.page;
 		};
 
