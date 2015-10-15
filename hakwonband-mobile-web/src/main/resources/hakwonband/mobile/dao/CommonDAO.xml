@@ -75,6 +75,7 @@
 			, a.approved_yn
 			, b.user_name
 			, b.user_gender
+			, b.tel1_no
 			, calc_age(b.user_birthday) as user_age
 			, get_file_path(b.photo_file_no) as user_photo_path
 			, last_login_date

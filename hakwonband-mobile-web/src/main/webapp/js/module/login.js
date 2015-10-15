@@ -70,6 +70,7 @@ hakwonApp.service('loginService', function() {
 
 						userAuth.userName 	= colData.authUserInfo.user_name;
 						userAuth.userEmail 	= colData.authUserInfo.user_email;
+						userAuth.tel1No 	= colData.authUserInfo.tel1_no;
 						userAuth.userType 	= colData.authUserInfo.user_type;
 						userAuth.userId 	= colData.authUserInfo.user_id;
 						userAuth.userNo 	= colData.authUserInfo.user_no;
