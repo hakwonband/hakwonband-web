@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.rms.dao.ReservationNoticeSendDAO">
+
+	<!-- 발송 예약 공지 -->
+	<select id="reservationNoticeList" resultType="dataMap">
+	<![CDATA[
+		/*	ReservationNoticeSendDAO.reservationNoticeList	*/
+		select
+			a.notice_no
+			, a.notice_type
+			, a.notice_parent_no
+			, a.title
+			, a.reg_user_no
+			, b.user_name as reg_user_name
+			, case when a.notice_type = '002' then a.notice_parent_no
+				when a.notice_type = '003' then (select hakwon_no from tb_hakwon_class where class_no = a.notice_parent_no)
+				end as hakwon_no
+			, case when a.notice_type = '002' then ''
+				when a.notice_type = '003' then a.notice_parent_no
+				end as class_no
+			, case when a.notice_type = '002' then (select hakwon_name from tb_hakwon where hakwon_no = a.notice_parent_no)
+				when a.notice_type = '003' then (select hakwon_name from tb_hakwon_class x, tb_hakwon y where x.class_no = a.notice_parent_no and x.hakwon_no = y.hakwon_no)
+				end as hakwon_name
+			, case when a.notice_type = '002' then ''
+				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.notice_parent_no)
+				end as class_name
+			, (select concat(device_token, '|', device_type, '|', is_production) from tb_login_hist where user_no = a.reg_user_no and device_token is not null order by login_date desc limit 1) as send_user_device
+		from
+			tb_notice a
+			, tb_user_info b
+		where
+			a.reservation_yn = 'Y'
+			and a.notice_type in ('003', '004')
+			and a.reservation_date <= now()
+			and a.reservation_send_date is null
+			and a.content_status = '001'
+			and a.reg_user_no = b.user_no
+		order by
+			a.notice_no asc
+	]]>
+	</select>
+
+	<!-- 발송 대상자 번호 -->
+	<select id="receiverUserDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	ReservationNoticeSendDAO.receiverUserDeviceList	*/
+		select
+			b.receive_user_no as user_no
+			, c.device_token
+			, c.device_type
+			, c.is_production
+		from
+			tb_message_receiver b
+			, tb_login_hist c
+		where
+			b.message_no = #{message_no}
+			and b.receive_user_no = c.user_no
+			and c.device_token is not null
+		order by
+			c.device_type
+	]]>
+	</select>
+
+	<update id="noticeSendDone" parameterType="dataMap">
+	<![CDATA[
+		/*	ReservationNoticeSendDAO.noticeSendDone	*/
+		update tb_notice set
+			reservation_send_date = now()
+			, reg_date = now()
+		where
+			notice_no in (${noticeNos})
+	]]>
+	</update>
+
+	<!-- 학원 멤버의 디바이스 리스트 -->
+ 	<select id="hakwonMemberDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* ReservationNoticeSendDAO.hakwonMemberDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_member a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 반 학생들의 디바이스 리스트 -->
+ 	<select id="classStudentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* ReservationNoticeSendDAO.classStudentDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_class_student a
+		where
+			a.class_no = #{class_no}
+			and a.student_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 반 학생들의 부모 디바이스 리스트 -->
+ 	<select id="classParentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* ReservationNoticeSendDAO.classParentDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, (
+			select
+				distinct b.parent_user_no
+			from
+				tb_hakwon_class_student a
+				, tb_student_parent b
+			where
+				a.class_no = #{class_no}
+				and a.student_user_no = b.student_user_no
+			) y
+		where
+			y.parent_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+</mapper>

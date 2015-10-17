@@ -18,7 +18,7 @@
 			, a.message_target
 			, c.user_type as send_user_type
 			, b.user_name as send_user_name
-			, (select concat(device_token, '|', device_type, '|', is_production) from tb_login_hist where user_no = 2 and device_token is not null order by login_date desc limit 1) as send_user_device
+			, (select concat(device_token, '|', device_type, '|', is_production) from tb_login_hist where user_no = a.send_user_no and device_token is not null order by login_date desc limit 1) as send_user_device
 		from
 			tb_message a
 			, tb_user_info b
