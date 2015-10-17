@@ -76,6 +76,8 @@ header nav li.active a, header nav li a:hover{color:#007b9b;}
 .about_box .title_04{width:500px; background:url("../images/capture_title_04.png") no-repeat;}
 .about_box .go_brochure{display:block; margin:65px auto 0 auto; width:335px; height:0; padding-top:80px; line-height:2em; overflow:hidden; background:url("../images/btn_brochure.png")}
 
+.flip{text-align:center; background:url("../images/filp_bg.jpg"); height:755px; padding:20px 0px 0px 0px; border-top:10px solid #ddd; }
+
 .app_down_box{position:relative; text-align:center; background:url("../images/bg_03.png") 50% 0% no-repeat; padding:100px 0; border-top:10px solid #6a3906; height:612px;}
 .app_down_box h1{width:269px; height:0; padding-top:81px; overflow:hidden; line-height:2em; background:url("../images/title_02.png") left top no-repeat; margin:0 auto 80px auto;}
 .app_down_box .img_phone{position:absolute; top:230px; left:50%; margin-left:-383px;}
@@ -110,6 +112,3 @@ header nav li.active a, header nav li a:hover{color:#007b9b;}
 .contact_box form label{display:block; margin-bottom:7px;}
 .contact_box form input, .contact_box form textarea{display:block; border:1px solid #bfbfbf; padding:10px; font-size:18px; margin-bottom:7px; width:100%; box-sizing:border-box;}
 .contact_box form .mail_submit{margin:25px auto; display:block;}
-
-.mov_box{margin-bottom:40px;}
-.flipped_box{margin:40px 0; display:inline-block;}
