@@ -127,6 +127,14 @@ public class NoticeService {
 	public DevicePushData registNotice(DataMap param) {
 		logger.debug("registNotice param["+param+"]");
 
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			param.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			param.put("reservationYn",		"Y");
+		} else {
+			param.put("reservationYn",		"N");
+			param.put("reservationDate",	null);
+		}
+
 		DevicePushData devicePushData = null;
 
 		/* 공지사항 등록 */
@@ -159,7 +167,10 @@ public class NoticeService {
 				String hakwonNo	= param.getString("notice_parent_no");
 				DataMap tempMap = new DataMap();
 				tempMap.put("hakwon_no", hakwonNo);
-				deviceList = commonDAO.hakwonMemberDeviceList(tempMap);
+
+				if( param.equals("reservationYn", "N") ) {
+					deviceList = commonDAO.hakwonMemberDeviceList(tempMap);
+				}
 
 				DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(tempMap);
 				String title = hakwonInfo.getString("hakwon_name")+" 학원 공지사항이 등록되었습니다.";
@@ -172,14 +183,17 @@ public class NoticeService {
 				String classNo	= param.getString("notice_parent_no");
 				DataMap tempMap = new DataMap();
 				tempMap.put("class_no", classNo);
-				deviceList = commonDAO.classStudentDeviceList(tempMap);
 
-				/**
-				 * 학부모 디바이스 리스트
-				 */
-				List<UserDevice> parentDeviceList = commonDAO.classParentDeviceList(tempMap);
-				if( parentDeviceList != null && parentDeviceList.size() > 0 ) {
-					deviceList.addAll(parentDeviceList);
+				if( param.equals("reservationYn", "N") ) {
+					deviceList = commonDAO.classStudentDeviceList(tempMap);
+
+					/**
+					 * 학부모 디바이스 리스트
+					 */
+					List<UserDevice> parentDeviceList = commonDAO.classParentDeviceList(tempMap);
+					if( parentDeviceList != null && parentDeviceList.size() > 0 ) {
+						deviceList.addAll(parentDeviceList);
+					}
 				}
 
 				DataMap classInfo = hakwonDAO.classSimpleDetail(tempMap);
@@ -210,6 +224,14 @@ public class NoticeService {
 	 */
 	public DataMap editNotice(DataMap param) {
 		logger.debug("editNotice param["+param+"]");
+
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			param.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			param.put("reservationYn",		"Y");
+		} else {
+			param.put("reservationYn",		"N");
+			param.put("reservationDate",	null);
+		}
 
 		/* 공지사항 변경 */
 		int resultUpdate = noticeDAO.noticeUpdate(param);

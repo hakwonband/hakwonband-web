@@ -21,6 +21,7 @@ import hakwonband.hakwon.service.TeacherService;
 import hakwonband.util.DataMap;
 import hakwonband.util.SecuUtil;
 import hakwonband.util.StringUtil;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * 선생님 컨트롤러
@@ -304,6 +305,15 @@ public class TeacherController extends BaseAction {
 		String reply_yn				= request.getParameter("reply_yn");
 		String file_no_list			= request.getParameter("file_no_list");
 
+		/*	예약 전송	*/
+		String reservationDate		= request.getParameter("reservationDate");
+		String reservationTime		= request.getParameter("reservationTime");
+		if( StringUtils.isNotBlank(reservationDate) && StringUtils.isNotBlank(reservationTime) ) {
+		} else {
+			reservationDate = "";
+			reservationTime = "";
+		}
+
 		DataMap param = new DataMap();
 		param.put("notice_type",		"003");							// 공지사항 타입 = 반 공지
 		param.put("notice_parent_no",	class_no);						// 공지사항 부모 번호 = 반 번호
@@ -313,6 +323,9 @@ public class TeacherController extends BaseAction {
 		param.put("file_no_list", 		file_no_list);					// 파일 번호들
 		param.put("reg_user_no", 		authUserInfo.get("user_no"));	// 파일 등록자
 		param.put("reply_yn",			reply_yn);						// 공지사항 댓글 허용
+
+		param.put("reservationDate",	reservationDate);
+		param.put("reservationTime",	reservationTime);
 
 		/* 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);
@@ -346,6 +359,15 @@ public class TeacherController extends BaseAction {
 		String reply_yn			= request.getParameter("reply_yn");
 		String file_no_list		= request.getParameter("file_no_list");
 
+		/*	예약 전송	*/
+		String reservationDate		= request.getParameter("reservationDate");
+		String reservationTime		= request.getParameter("reservationTime");
+		if( StringUtils.isNotBlank(reservationDate) && StringUtils.isNotBlank(reservationTime) ) {
+		} else {
+			reservationDate = "";
+			reservationTime = "";
+		}
+
 		DataMap param = new DataMap();
 		param.put("hakwon_no",			hakwon_no);
 		param.put("notice_no",			notice_no);
@@ -357,6 +379,9 @@ public class TeacherController extends BaseAction {
 		param.put("udp_user_no",		authUserInfo.get("user_no"));
 		param.put("user_type",			authUserInfo.get("user_type"));
 		param.put("file_no_list", 		file_no_list);					// 파일 번호들
+
+		param.put("reservationDate",	reservationDate);
+		param.put("reservationTime",	reservationTime);
 
 		/* 반 공지사항 수정 */
 		DataMap colData = noticeService.editNotice(param);

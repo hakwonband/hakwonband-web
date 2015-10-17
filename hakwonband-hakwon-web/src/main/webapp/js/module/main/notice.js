@@ -503,9 +503,7 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 /**
  * 학원 공지사항 작성 - 수정
  */
-hakwonMainApp.controller('noticeEditController', function($scope, $location, $window, $routeParams, noticeService, CommUtil) {
-	console.log('hakwonMainApp noticeEditController call', $scope, $location, $window, $routeParams, noticeService, CommUtil);
-
+hakwonMainApp.controller('noticeEditController', function($scope, $location, $window, $routeParams, noticeService, CommUtil, $timeout) {
 	try {
 		/*	페이지 초기화 호출	*/
 		hakwonCommon.pageInit({isScrollTop:false});
@@ -542,6 +540,10 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 				fileNoList	= _.pluck($scope.fileList, 'file_no'),
 				params		= {};
 
+
+			var reservationDate	= $('input[name=reservationDate]').val();
+			var reservationTime	= $('input[name=reservationTime]').val();
+
 			if (isNull($scope.hakwonNo)) {
 				alert('학원 정보가 올바르지 않습니다.');
 				return ;
@@ -549,6 +551,13 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			if( isNull($scope.noticeDetail.title) ) {
 				alert('제목을 입력해 주세요.');
 				return ;
+			}
+
+			if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+				if( isNull(reservationDate) || isNull(reservationTime) ) {
+					alert('예약 날짜와 시간이 정확하지 않습니다.');
+					return ;
+				}
 			}
 
 			if ($scope.isNewNotice) {
@@ -567,6 +576,9 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			params.file_no_list 	= fileNoList.toString();
 			params.preview_content 	= params.content.substr(0, 50) + '...';
 			params.reply_yn			= $scope.elem.checked ? 'Y' : 'N' ;
+
+			params.reservationDate = reservationDate;
+			params.reservationTime = reservationTime;
 
 			console.log(apiUrl, params);
 
@@ -653,6 +665,12 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			tinymce.activeEditor.insertContent(youtubeHtml);
 		});
 
+		/*	취소	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationCancel]', function() {
+			$('input[name=reservationDate]').val('');
+			$('input[name=reservationTime]').val('');
+		});
+
 		/*	초기화	*/
 		$scope.$on('$viewContentLoaded', function() {
 			console.log('noticeEditController $viewContentLoaded');
@@ -693,6 +711,16 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			} else {
 				$scope.isNewNotice = true;
 			}
+
+			$timeout(function() {
+				/*	데이트 피커	*/
+				$('#mainNgView input[name=reservationDate]').datepicker({
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+					format: "yyyy-mm-dd"
+				});
+			},50);
 		});
 
 		/*	파일 객체 초기화 및 데이터 호출		*/

@@ -1298,7 +1298,7 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 /**
  * 반 공지사항 작성 - 수정
  */
-hakwonMainApp.controller('classNoticeEditController', function($scope, $location, $window, $routeParams, $timeout, classService, classFactory, CommUtil, afterLoad) {
+hakwonMainApp.controller('classNoticeEditController', function($scope, $location, $window, $routeParams, $timeout, classService, classFactory, CommUtil, $timeout) {
 	console.log('hakwonMainApp classNoticeEditController call');
 
 	try {
@@ -1362,6 +1362,16 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 
 			/*	공지사항 작성시, 카테고리 조회*/
 			$scope.getNoticeCateList();
+
+			$timeout(function() {
+				/*	데이트 피커	*/
+				$('#mainNgView input[name=reservationDate]').datepicker({
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+					format: "yyyy-mm-dd"
+				});
+			},50);
 
 			/*	파일 업로드 객체 생성		*/
 			if( comm.isAndroidUploader() ) {
@@ -1539,6 +1549,16 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 				return ;
 			}
 
+			var reservationDate	= $('input[name=reservationDate]').val();
+			var reservationTime	= $('input[name=reservationTime]').val();
+
+			if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+				if( isNull(reservationDate) || isNull(reservationTime) ) {
+					alert('예약 날짜와 시간이 정확하지 않습니다.');
+					return ;
+				}
+			}
+
 			if ($scope.isNewNotice) {
 				if (userAuth.userType == '003') {
 					apiUrl = '/hakwon/master/registClassNotice.do';
@@ -1564,7 +1584,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			params.preview_content 	= params.content.substr(0, 50) + '...';
 			params.reply_yn			= $scope.elem.checked ? 'Y' : 'N' ;
 
-			console.log(apiUrl, params);
+			params.reservationDate = reservationDate;
+			params.reservationTime = reservationTime;
 
 			CommUtil.ajax({url:contextPath+apiUrl, param:params, successFun:function(data) {
 				try {
@@ -1619,6 +1640,12 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			var fileUrl = $(this).attr('data-file-url');
 			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true">지원하지 않는 포멧 입니다.</audio></p>';
 			tinymce.activeEditor.insertContent(audioHtml);
+		});
+
+		/*	취소	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=reservationCancel]', function() {
+			$('input[name=reservationDate]').val('');
+			$('input[name=reservationTime]').val('');
 		});
 
 		/*	첨부 파일 삭제 처리	*/

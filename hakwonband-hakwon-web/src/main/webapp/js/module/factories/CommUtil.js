@@ -298,9 +298,3 @@ hakwonMainApp.directive('focusOn', function() {
 		});
 	};
 });
-
-hakwonMainApp.factory('afterLoad', function ($rootScope, $timeout) {
-	return function(func) {
-		$timeout(func);
-	}
-});

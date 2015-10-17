@@ -21,6 +21,8 @@
 			, date_format(a.udp_date, '%Y.%m.%d') as udp_date
 			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
 			, (select count(1) from tb_content_reply where content_type = '001' and content_parent_no = a.notice_no) as reply_count
+			, a.reservation_yn
+			, a.reservation_date
 		from
 			tb_notice a,
 			tb_user_info b
@@ -82,6 +84,8 @@
 			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
 			, a.udp_user_no
 			, date_format(a.udp_date, '%Y.%m.%d') as udp_date
+			, a.reservation_yn
+			, a.reservation_date
 		from
 			tb_notice a
 			, tb_user_info b
@@ -110,6 +114,8 @@
 			, reply_yn
 			, reg_user_no
 			, reg_date
+			, reservation_yn
+			, reservation_date
 		) values (
 			#{notice_type}
 			, #{notice_parent_no}
@@ -120,8 +126,15 @@
 			, #{reply_yn}
 			, #{reg_user_no}
 			, now()
-		)
+			, #{reservationYn}
 	]]>
+		<if test="reservationYn eq 'Y'.toString()">
+			, str_to_date(#{reservationDate}, '%Y-%m-%d %H:%i')
+		</if>
+		<if test="reservationYn eq 'N'.toString()">
+			, null
+		</if>
+		)
 	<selectKey keyProperty="idx" resultType="long">
 		select last_insert_id()
 	</selectKey>
@@ -146,6 +159,13 @@
 			</if>
 			<if test="@hakwonband.util.StringUtil@isNotNull( reply_yn )">
 				, reply_yn = #{reply_yn}
+			</if>
+				, reservation_yn = #{reservation_yn}
+			<if test="reservationYn eq 'Y'.toString()">
+				, reservation_date = str_to_date(#{reservationDate}, '%Y-%m-%d %H:%i')
+			</if>
+			<if test="reservationYn eq 'N'.toString()">
+				, reservation_date = null
 			</if>
 	<![CDATA[
 		where
