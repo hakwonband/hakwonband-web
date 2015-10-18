@@ -32,7 +32,14 @@
 						<strong class="badge badge-danger" ng-if="isNewItem(item.reg_date) && item.read_status == 0">N</strong>
 					</a>
 				</td>
-				<td><span>{{ item.reg_date }} / {{ item.reg_user_name }}</span></td>
+				<td>
+					<span ng-if="item.reservation_yn == 'Y' && !item.reservation_send_date">
+						예약 : {{ item.reservation_date }} / {{ item.reg_user_name }}
+					</span>
+					<span ng-if="item.reservation_yn == 'N' || item.reservation_send_date">
+						{{ item.reg_date }} / {{ item.reg_user_name }}
+					</span>
+				</td>
 			</tr>
 			</tbody>
 		</table>

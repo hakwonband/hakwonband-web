@@ -101,6 +101,10 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 			try {
 				var colData = data.colData;
 				if( colData.result == CommonConstant.Flag.success ) {
+					if( colData.noticeDetail.reservation_date_2 ) {
+						colData.noticeDetail.reservation_date_2 = new Date(colData.noticeDetail.reservation_date);
+					}
+
 					$scope.noticeDetail			= colData.noticeDetail;
 					$scope.replyList			= colData.replyList;
 					$scope.fileList				= colData.fileList;

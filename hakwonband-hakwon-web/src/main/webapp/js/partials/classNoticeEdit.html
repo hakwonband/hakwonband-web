@@ -33,10 +33,10 @@
 			<div class="form-group" data-target-type="class">
 				<label class="col-sm-1 control-label">예약 발송</label>
 				<div class="col-md-2">
-					<input type="text" class="form-control" name="reservationDate" placeholder="날짜" readOnly>
+					<input type="text" class="form-control" name="reservationDate" ng-model="noticeDetail.reservation_date_1" placeholder="날짜" readOnly>
 				</div>
 				<div class="col-md-2">
-					<input type="time" class="form-control" name="reservationTime" placeholder="시간">
+					<input type="time" class="form-control" name="reservationTime" ng-model="noticeDetail.reservation_date_2" placeholder="시간">
 				</div>
 				<div class="col-md-2">
 					<span class="input-group-btn"> <button type="button" data-act="reservationCancel" class="btn btn-primary">예약 취소</button> </span>

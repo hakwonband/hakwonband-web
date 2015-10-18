@@ -22,7 +22,8 @@
 			, (select count(1) from tb_content_read where content_type = '001' and content_parent_no = a.notice_no and user_no = #{user_no}) as read_status
 			, (select count(1) from tb_content_reply where content_type = '001' and content_parent_no = a.notice_no) as reply_count
 			, a.reservation_yn
-			, a.reservation_date
+			, date_format(a.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
+			, a.reservation_send_date
 		from
 			tb_notice a,
 			tb_user_info b
@@ -39,7 +40,7 @@
 		</if>
 	<![CDATA[
 		order by
-			a.notice_no desc
+			a.reg_date desc
 		limit
 			#{start_no}, #{page_scale}
 	]]>
@@ -85,7 +86,10 @@
 			, a.udp_user_no
 			, date_format(a.udp_date, '%Y.%m.%d') as udp_date
 			, a.reservation_yn
-			, a.reservation_date
+			, date_format(a.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
+			, date_format(a.reservation_date, '%Y-%m-%d') as reservation_date_1
+			, date_format(a.reservation_date, '%H:%i') as reservation_date_2
+			, a.reservation_send_date
 		from
 			tb_notice a
 			, tb_user_info b
@@ -160,7 +164,7 @@
 			<if test="@hakwonband.util.StringUtil@isNotNull( reply_yn )">
 				, reply_yn = #{reply_yn}
 			</if>
-				, reservation_yn = #{reservation_yn}
+				, reservation_yn = #{reservationYn}
 			<if test="reservationYn eq 'Y'.toString()">
 				, reservation_date = str_to_date(#{reservationDate}, '%Y-%m-%d %H:%i')
 			</if>

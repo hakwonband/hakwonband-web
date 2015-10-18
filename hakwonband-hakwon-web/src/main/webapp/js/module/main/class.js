@@ -1351,7 +1351,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 		});
 
 		/*	파일 객체 초기화 및 데이터 호출		*/
-		$scope.$$postDigest(function(){
+		$scope.$$postDigest(function() {
 			console.log('noticeEditController $$postDigest');
 
 			/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
@@ -1371,6 +1371,10 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 					autoclose: true,
 					format: "yyyy-mm-dd"
 				});
+
+				if( isMobile.any() && $(window).width()< 1024 ) {
+					$(document).scrollTop($('input[data-view=title]').offset().top);
+				}
 			},50);
 
 			/*	파일 업로드 객체 생성		*/
@@ -1418,10 +1422,6 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 				});
 			} else {
 				$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE));
-			}
-
-			if( isMobile.any() && $(window).width()< 1024 ) {
-				setTimeout(function(){ $(document).scrollTop($('input[data-view=title]').offset().top); }, 50);
 			}
 		});
 
@@ -1474,6 +1474,9 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 					}
 					var colData = data.colData;
 					if( colData.result == CommonConstant.Flag.success ) {
+						if( colData.noticeDetail.reservation_date_2 ) {
+							colData.noticeDetail.reservation_date_2 = new Date(colData.noticeDetail.reservation_date);
+						}
 						$scope.noticeDetail			= colData.noticeDetail;
 						$scope.replyList			= colData.replyList;
 						$scope.fileList				= colData.fileList;
@@ -1840,7 +1843,6 @@ hakwonMainApp.controller('classStudentListController', function($scope, $locatio
  */
 hakwonMainApp.controller('classParentListController', function($scope, $location, $window, $routeParams, classService, classFactory, CommUtil) {
 	console.log('hakwonMainApp classParentListController call');
-	//console.log('hakwonMainApp classParentListController call', $scope, $location, $window, $routeParams, classService, classFactory, CommUtil);
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -1974,7 +1976,6 @@ hakwonMainApp.controller('classParentListController', function($scope, $location
  */
 hakwonMainApp.controller('classTeacherListController', function($scope, $location, $window, $routeParams, classService, classFactory, CommUtil) {
 	console.log('hakwonMainApp classTeacherListController call');
-	//console.log('hakwonMainApp classTeacherListController call', $scope, $location, $window, $routeParams, classService, classFactory, CommUtil);
 
 	try {
 		/*	페이지 초기화 호출	*/
