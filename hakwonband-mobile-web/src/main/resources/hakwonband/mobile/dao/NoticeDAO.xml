@@ -42,7 +42,7 @@
 			and b.class_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
-			notice_no desc
+			reg_date desc
 		limit 3
 	]]>
 	</select>
@@ -89,7 +89,7 @@
 			and b.class_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
-			notice_no desc
+			reg_date desc
 		limit 3
 	]]>
 	</select>
@@ -120,7 +120,7 @@
 			and a.notice_type = #{notice_type}
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
-			a.notice_no desc
+			a.reg_date desc
 		limit
 			#{start_no}, #{page_scale}
 	]]>
