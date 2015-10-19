@@ -32,7 +32,7 @@
 			, tb_user_info b
 		where
 			a.reservation_yn = 'Y'
-			and a.notice_type in ('003', '004')
+			and a.notice_type in ('002', '003')
 			and a.reservation_date <= now()
 			and a.reservation_send_date is null
 			and a.content_status = '001'
