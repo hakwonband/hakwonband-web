@@ -175,12 +175,12 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .code_view{border:3px solid #e7eaec; border-right:0; border-left:0; padding:10px; margin:40px 0 30px 0; vertical-align:middle; font-size:18px; font-weight:bold;}
 .code_view .btn-danger{display:inline-block; padding:10px 15px; margin-right:10px; border-radius:5px;}
 .widget-head-color-box{position:relative;}
-.widget-head-color-box .btn_edit, .input_file_icon{position:absolute; top:70%; left:50%; margin-left:100px;}
+.widget-head-color-box .input_file_icon{position:absolute; top:50%; left:50%; margin-left:-160px; margin-top:-160px;}
+.widget-head-color-box .btn_edit{position:absolute; top:50%; left:50%; margin-top:100px; margin-left:100px;}
 .widget-head-color-box .img-responsive{margin:15px auto;}
 .widget-text-box ul{margin-top:10px; padding:0 0 0 15px;}
 .widget-text-box ul li{padding:5px 0;}
-.input_file_icon{opacity:0; width:40px; height:35px; cursor:pointer;}
-.my_info_box .input_file_icon{top:80%;}
+.input_file_icon{opacity:0; width:320px; height:320px; cursor:pointer; z-index:5;}
 .ad_size_sample{border:1px solid #e5e6e7; height:148px; line-height:148px; text-align:center; background:#f0f0f0; z-index:5;}
 
 .nav-header .btn_nav_edit{position:absolute; top:10px; right:10px;}
@@ -461,6 +461,8 @@ fieldset[disabled] .select_join_type .ui-button.active {
 	.comment_list .comment_box .media-body{padding:5px;}
 	.attendance_popup{width:450px; margin:0 auto;}
 	.attendance_popup .btn_num{width:60px; height:47px; line-height:40px;}
+	.input_file_icon{width:240px; height:240px; left:-70px}
+	.widget-head-color-box .input_file_icon{width:320px; height:320px;}
 }
 
 @media (max-width: 420px) {
@@ -481,4 +483,8 @@ fieldset[disabled] .select_join_type .ui-button.active {
 	.attendance_popup .btn_num:nth-child(3n){margin-right:10px;}
 	.attendance_popup .btn_num:nth-child(5n){margin-right:10px !important;}
 	.attendance_popup .btn_num:nth-child(4n){margin-right:0px;}
+}
+
+@media (max-width: 320px) {
+	.widget-head-color-box .input_file_icon{width:240px; height:240px; margin-left:-120px; margin-top:-120px;}
 }
