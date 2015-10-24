@@ -26,7 +26,7 @@ var hakwonInfo = {
  */
 var DefaultInfo = {
 	/*	사용자 기본 이미지	*/
-	photoUrl		: contextPath+'/assets/img/profile_default.gif'
+	photoUrl		: contextPath+'/inspinia/img/profile_default.gif'
 
 	/*	기본 학원 로고 패스	*/
 	, hakwonLogoPath	: contextPath+'/images/logo/144x144.png'
@@ -355,7 +355,7 @@ var HakwonCommon = function() {
 						/**
 						 * 기본 이미지 필요
 						 */
-						colData.authUserInfo.profile_path = '/assets/img/p3.jpg';
+						colData.authUserInfo.profile_path = '/inspinia/img/p3.jpg';
 					}
 					userAuth.profilePath = colData.authUserInfo.profile_path;
 

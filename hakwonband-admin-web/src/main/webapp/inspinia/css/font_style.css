@@ -4,29 +4,29 @@
   font-family: 'Nanum Gothic';
   font-style: normal;
   font-weight: 400;
-  src: url(/assets/fonts/NanumGothic-Regular.eot);
-  src: url(/assets/fonts/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
-       url(/assets/fonts/NanumGothic-Regular.woff2) format('woff2'),
-       url(/assets/fonts/NanumGothic-Regular.woff) format('woff'),
-       url(/assets/fonts/NanumGothic-Regular.ttf) format('truetype');
+  src: url(/inspinia/fonts/NanumGothic-Regular.eot);
+  src: url(/inspinia/fonts/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       url(/inspinia/fonts/NanumGothic-Regular.woff2) format('woff2'),
+       url(/inspinia/fonts/NanumGothic-Regular.woff) format('woff'),
+       url(/inspinia/fonts/NanumGothic-Regular.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Nanum Gothic';
   font-style: normal;
   font-weight: 700;
-  src: url(/assets/fonts/NanumGothic-Bold.eot);
-  src: url(/assets/fonts/NanumGothic-Bold.eot?#iefix) format('embedded-opentype'),
-       url(/assets/fonts/NanumGothic-Bold.woff2) format('woff2'),
-       url(/assets/fonts/NanumGothic-Bold.woff) format('woff'),
-       url(/assets/fonts/NanumGothic-Bold.ttf) format('truetype');
+  src: url(/inspinia/fonts/NanumGothic-Bold.eot);
+  src: url(/inspinia/fonts/NanumGothic-Bold.eot?#iefix) format('embedded-opentype'),
+       url(/inspinia/fonts/NanumGothic-Bold.woff2) format('woff2'),
+       url(/inspinia/fonts/NanumGothic-Bold.woff) format('woff'),
+       url(/inspinia/fonts/NanumGothic-Bold.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Nanum Gothic';
   font-style: normal;
   font-weight: 800;
-  src: url(/assets/fonts/NanumGothic-ExtraBold.eot);
-  src: url(/assets/fonts/NanumGothic-ExtraBold.eot?#iefix) format('embedded-opentype'),
-       url(/assets/fonts/NanumGothic-ExtraBold.woff2) format('woff2'),
-       url(/assets/fonts/NanumGothic-ExtraBold.woff) format('woff'),
-       url(/assets/fonts/NanumGothic-ExtraBold.ttf) format('truetype');
+  src: url(/inspinia/fonts/NanumGothic-ExtraBold.eot);
+  src: url(/inspinia/fonts/NanumGothic-ExtraBold.eot?#iefix) format('embedded-opentype'),
+       url(/inspinia/fonts/NanumGothic-ExtraBold.woff2) format('woff2'),
+       url(/inspinia/fonts/NanumGothic-ExtraBold.woff) format('woff'),
+       url(/inspinia/fonts/NanumGothic-ExtraBold.ttf) format('truetype');
 }

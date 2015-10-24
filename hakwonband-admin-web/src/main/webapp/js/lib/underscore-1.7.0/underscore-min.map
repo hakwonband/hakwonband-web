@@ -46,8 +46,8 @@
     <meta content="authenticity_token" name="csrf-param" />
 <meta content="7x2GGdGo1F7ZucE1LZM4uMhfB4IFUmGybAbTmIKwY28CjQqUm9LLsr0TImhI5+2NQiJOihSoYo7yC2uv6/0rrw==" name="csrf-token" />
 
-    <link href="https://assets-cdn.github.com/assets/github-7d0b75f377b5ab1efbdbea93dbf1f343b1a2c33191ab798621c2896974b7e793.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="https://assets-cdn.github.com/assets/github2-8a73399be40174e96003fcfa4384a976716cbeab22a9b77f3960218903e061b8.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://assets-cdn.github.com/inspinia/github-7d0b75f377b5ab1efbdbea93dbf1f343b1a2c33191ab798621c2896974b7e793.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://assets-cdn.github.com/inspinia/github2-8a73399be40174e96003fcfa4384a976716cbeab22a9b77f3960218903e061b8.css" media="all" rel="stylesheet" type="text/css" />
     
     
 
@@ -1270,8 +1270,8 @@ Email verification helps our support team verify ownership if you lose account a
     </div>
 
 
-      <script crossorigin="anonymous" src="https://assets-cdn.github.com/assets/frameworks-2d727fed4d969b14b28165c75ad12d7dddd56c0198fa70cedc3fdad7ac395b2c.js" type="text/javascript"></script>
-      <script async="async" crossorigin="anonymous" src="https://assets-cdn.github.com/assets/github-f82405eac9208116886d504ad90a85513ea8de114d676a6cf7f35aaa497cb974.js" type="text/javascript"></script>
+      <script crossorigin="anonymous" src="https://assets-cdn.github.com/inspinia/frameworks-2d727fed4d969b14b28165c75ad12d7dddd56c0198fa70cedc3fdad7ac395b2c.js" type="text/javascript"></script>
+      <script async="async" crossorigin="anonymous" src="https://assets-cdn.github.com/inspinia/github-f82405eac9208116886d504ad90a85513ea8de114d676a6cf7f35aaa497cb974.js" type="text/javascript"></script>
       
       
   </body>

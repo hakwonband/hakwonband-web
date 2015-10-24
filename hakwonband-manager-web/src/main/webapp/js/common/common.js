@@ -223,7 +223,7 @@ var HakwonCommon = function() {
 						/**
 						 * 기본 이미지 필요
 						 */
-						colData.authUserInfo.profile_path = '/assets/img/p3.jpg';
+						colData.authUserInfo.profile_path = '/inspinia/img/p3.jpg';
 					}
 					userAuth.profilePath = colData.authUserInfo.profile_path;
 
@@ -328,7 +328,7 @@ var HakwonCommon = function() {
 		if( isNull(imgSrc) ) {
 			return DefaultInfo.photoUrl;
 		} else {
-			if( '/assets/img/p3.jpg' == imgSrc ) {
+			if( '/inspinia/img/p3.jpg' == imgSrc ) {
 				return imgSrc;
 			} else {
 				return HakwonConstant.FileServer.ATTATCH_DOMAIN+imgSrc+"_thumb";
