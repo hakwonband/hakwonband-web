@@ -44,13 +44,13 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon/64x64.png">
 
-	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
-	<link href="/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
-	<link href="/assets/css/animate.css" rel="stylesheet">
-	<link href="/assets/css/style.css" rel="stylesheet">
-	<link href="/assets/css/font_style.css" rel="stylesheet">
-	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
+	<link href="/inspinia/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+	<link href="/inspinia/css/animate.css" rel="stylesheet">
+	<link href="/inspinia/css/style.css" rel="stylesheet">
+	<link href="/inspinia/css/font_style.css" rel="stylesheet">
+	<link href="/inspinia/css/hakwon_style.css" rel="stylesheet">
 
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/js/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
@@ -59,11 +59,11 @@
 	<script type="text/javascript" src="./js/lib/underscore-1.7.0/underscore-min.js"></script>
 
 	<!-- Mainly scripts -->
-	<script src="/assets/js/bootstrap.min.js"></script>
-	<script src="/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="/inspinia/js/bootstrap.min.js"></script>
+	<script src="/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
 	<!-- Custom and plugin javascript -->
-	<script src="/assets/js/inspinia.js"></script>
+	<script src="/inspinia/js/inspinia.js"></script>
 </head>
 
 <body class="gray-bg">
@@ -79,12 +79,12 @@
 </div>
 
 <!-- iCheck -->
-<script src="/assets/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/inspinia/js/plugins/iCheck/icheck.min.js"></script>
 
 <!-- angular js -->
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular.js"></script>
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular-route.js"></script>
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular-touch.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-route.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-touch.min.js"></script>
 
 <!-- 공통 js -->
 <script type="text/javascript" src="/js/constants/constant.jsp"></script>

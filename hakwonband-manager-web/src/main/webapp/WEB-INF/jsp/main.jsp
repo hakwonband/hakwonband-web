@@ -50,14 +50,14 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon/64x64.png">
 
-	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
-	<link href="/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
-	<link href="/assets/css/animate.css" rel="stylesheet">
-	<link href="/assets/css/style.css" rel="stylesheet">
-	<link href="/assets/css/font_style.css" rel="stylesheet">
-	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
-	<link href="/assets/css/plugins/switchery/switchery.css" rel="stylesheet">
+	<link href="/inspinia/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+	<link href="/inspinia/css/animate.css" rel="stylesheet">
+	<link href="/inspinia/css/style.css" rel="stylesheet">
+	<link href="/inspinia/css/font_style.css" rel="stylesheet">
+	<link href="/inspinia/css/hakwon_style.css" rel="stylesheet">
+	<link href="/inspinia/css/plugins/switchery/switchery.css" rel="stylesheet">
 
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/js/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
@@ -68,7 +68,7 @@
 	<script type="text/javascript" src="/js/lib/underscore-1.7.0/underscore-min.js"></script>
 
 	<!-- Mainly scripts -->
-	<script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/inspinia/js/bootstrap.min.js"></script>
 </head>
 <body class="gray-bg skin-1">
 
@@ -169,10 +169,12 @@
 
 
 <!-- angular js -->
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular.js"></script>
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular-route.js"></script>
-<script type="text/javascript" src="/js/lib/angular-1.3.3/angular-touch.min.js"></script>
-<script type="text/javascript" src="/js/lib/angular-1.3.3/ui-bootstrap-0.12.0.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-route.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-touch.min.js"></script>
+<!--
+<script type="text/javascript" src="/js/lib/angular-1.4.7/ui-bootstrap-0.12.0.js"></script>
+-->
 
 <!-- angularJS hakwonApp 모듈선언 -->
 <script type="text/javascript" src="/js/module/main/hakwonMainApp.js"></script>
@@ -195,11 +197,11 @@
 
 
 <!-- Custom and plugin javascript -->
-<script src="/assets/js/inspinia.js"></script>
-<script src="/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="/assets/js/plugins/iCheck/icheck.min.js"></script><!-- iCheck -->
-<script src="/assets/js/plugins/datapicker/bootstrap-datepicker.js"></script><!-- Data picker -->
-<script src="/assets/js/plugins/switchery/switchery.js"></script><!-- Switchery -->
+<script src="/inspinia/js/inspinia.js"></script>
+<script src="/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/inspinia/js/plugins/iCheck/icheck.min.js"></script><!-- iCheck -->
+<script src="/inspinia/js/plugins/datapicker/bootstrap-datepicker.js"></script><!-- Data picker -->
+<script src="/inspinia/js/plugins/switchery/switchery.js"></script><!-- Switchery -->
 
 
 <script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
