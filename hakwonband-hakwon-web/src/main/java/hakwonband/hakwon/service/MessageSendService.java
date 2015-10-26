@@ -487,6 +487,13 @@ public class MessageSendService {
 		messageMap.put("hakwon_no",		param.getString("hakwon_no"));
 		messageMap.put("group_yn",		"N");
 
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			messageMap.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			messageMap.put("reservationYn",		"Y");
+		} else {
+			messageMap.put("reservationYn",		"N");
+		}
+
 		messageSendDAO.messageInsert(messageMap);
 		long messageNo = messageMap.getLong("idx");
 		param.put("messageNo", messageNo);

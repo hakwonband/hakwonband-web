@@ -489,6 +489,14 @@ public class MasterService {
 		messageMap.put("hakwon_no",		"-1");	//	학원에서 탈퇴되기 때문에 -1로 셋팅
 		messageMap.put("messageType", "single");
 
+		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
+			messageMap.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
+			messageMap.put("reservationYn",		"Y");
+		} else {
+			messageMap.put("reservationYn",		"N");
+		}
+
+
 		messageSendDAO.messageInsert(messageMap);
 		long messageNo = messageMap.getLong("idx");
 
