@@ -57,13 +57,13 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 
 /* mn area 학생-학부모 */
 #mypage {position:absolute; z-index:9999; left:0px; top:0; width:250px; height:100%; background:#31353b; border-right:solid 1px #000; overflow:auto; overflow-x:hidden}
-#mypage.student > .tit {height:36px; padding:0 10px; border-bottom:solid 1px #0094a2;  background:#14b0bf; overflow:hidden}
-#mypage.parent > .tit {height:36px; padding:0 10px; border-bottom:solid 1px #749804;  background:#95bf14; overflow:hidden}
+#mypage.student > .tit {height:44px; padding:0 10px; border-bottom:solid 1px #0094a2;  background:#14b0bf; overflow:hidden}
+#mypage.parent > .tit {height:44px; padding:0 10px; border-bottom:solid 1px #749804;  background:#95bf14; overflow:hidden}
 #mypage > .tit span {float:left; font-size:15px; font-weight:bold; color:#fff; line-height:36px}
 #mypage > .tit .btn_close{float:right; margin-top:10px; width:15px; height:15px; font-size:0; text-indent:-10000px;  background:url('../images/icon_bg.png') no-repeat -193px -22px; background-size:500px;}
 #mypage .my_info {}
 #mypage .my_info .about {padding:10px; border-bottom:solid 1px #272729; background:#31353b; overflow:hidden}
-#mypage .my_info .about .img {float:left; margin-right:10px}
+#mypage .my_info .about .img {float:left; margin-right:10px;}
 #mypage .my_info .about .info {float:left}
 #mypage .my_info .about .info li {width:130px; overflow:hidden; word-wrap:normal;white-space:nowrap; text-overflow:ellipsis}
 #mypage.student .my_info .about .info li.name {color:#1ec7d7; font-size:14px;font-weight:bold; margin-bottom:8px}
@@ -78,8 +78,8 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 #mypage .my_info .parent .img{ margin-right:10px}
 #mypage .my_info .parent .name{color:#fff; line-height:25px; font-size:12px; font-weight:normal;}
 #mypage .my_academy {}
-#mypage.student .my_academy .join_info {height:14px; color:#1ec7d7; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:16px 0 10px 10px; background:#31353b}
-#mypage.parent .my_academy .join_info {height:14px; color:#8ab504; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:16px 0 10px 10px; background:#31353b}
+#mypage.student .my_academy .join_info {height:14px; color:#1ec7d7; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:25px 0 10px 10px; background:#31353b}
+#mypage.parent .my_academy .join_info {height:14px; color:#8ab504; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:25px 0 10px 10px; background:#31353b}
 #mypage .my_academy > .mn_list li a{background:none !important; padding-left:2px !important}
 .profile_edit{display:block; width:30px; height:30px; background:url('../images/icon_bg.png') no-repeat 3px -392px; background-size:500px; overflow:hidden; text-indent:-800px; position:absolute; top:40px; right:0;}
 .my_info_list li{text-align:center; line-height:2em;}
@@ -88,19 +88,19 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 
 #mypage ul.mn_list {}
 #mypage ul.mn_list li {display:block; padding-left:8px; border-bottom:solid 1px #000; background:#1e2024 url('../images/icon_bg.png') no-repeat right -637px; background-size:500px;}
-#mypage.student ul.mn_list li a {display:block; height:36px; line-height:36px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_01.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
-#mypage.parent ul.mn_list li a {display:block; height:36px; line-height:36px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_02.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
+#mypage.student ul.mn_list li a {display:block; height:44px; line-height:44px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_01.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
+#mypage.parent ul.mn_list li a {display:block; height:44px; line-height:44px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_02.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
 /*#mypage.student ul.mn_list li:hover {background:#004c53 url('../images/mn_bu_on.png') no-repeat right center / 17px}
 #mypage.parent ul.mn_list li:hover {background:#475b08 url('../images/mn_bu_on.png') no-repeat right center / 17px}*/
 #mypage ul.mn_list li:hover {background:#060607 url('../images/icon_bg.png') no-repeat right -722px; background-size:500px;}
-#mypage ul.mn_list li a.mn_01 {background-position:0px 6px}
-#mypage ul.mn_list li a.mn_02 {background-position:0px -44px}
-#mypage ul.mn_list li a.mn_03 {background-position:0px -94px}
-#mypage ul.mn_list li a.mn_04 {background-position:0px -144px}
-#mypage ul.mn_list li a.mn_05 {background-position:0px -194px}
-#mypage ul.mn_list li a.mn_06 {background-position:0px -244px}
-#mypage ul.mn_list li a.mn_07 {background-position:0px -294px}
-#mypage ul.mn_list li a.mn_08 {background-position:0px -344px}
+#mypage ul.mn_list li a.mn_01 {background-position:0px 10px}
+#mypage ul.mn_list li a.mn_02 {background-position:0px -40px}
+#mypage ul.mn_list li a.mn_03 {background-position:0px -90px}
+#mypage ul.mn_list li a.mn_04 {background-position:0px -140px}
+#mypage ul.mn_list li a.mn_05 {background-position:0px -190px}
+#mypage ul.mn_list li a.mn_06 {background-position:0px -240px}
+#mypage ul.mn_list li a.mn_07 {background-position:0px -290px}
+#mypage ul.mn_list li a.mn_08 {background-position:0px -340px}
 
 /* mn area 학원정보  2014-12-18 수정*/
 #mypage_academy {position:absolute; z-index:9999; right:0; top:0; width:250px; height:100%; background:#31353b; border-left:solid 1px #000; overflow:auto; overflow-x:hidden}
@@ -122,19 +122,19 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 #mypage_academy .my_info .parent .img{ margin-right:10px}
 #mypage_academy .my_info .parent .name{color:#fff; line-height:25px; font-weight:normal;}
 #mypage_academy .my_academy {}
-#mypage_academy .my_academy .join_info {height:14px; color:#1691d8; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:16px 0 5px 10px; background:#31353b}
+#mypage_academy .my_academy .join_info {height:14px; color:#1691d8; font-weight:bold; border-bottom:solid 1px #000;  font-size:14px; padding:25px 0 5px 10px; background:#31353b}
 #mypage_academy .my_academy > .mn_list li a{background:none !important; padding-left:2px !important}
 
 #mypage_academy ul.mn_list {}
 #mypage_academy ul.mn_list li {display:block; padding-left:8px; border-bottom:solid 1px #000; background:#1e2024 url('../images/icon_bg.png') no-repeat right -637px; background-size:500px;}
-#mypage_academy ul.mn_list li a {display:block; height:36px; line-height:36px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_03.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
+#mypage_academy ul.mn_list li a {display:block; height:44px; line-height:44px; color:#afafb0;font-weight:bold; font-size:14px; padding-left:32px; background:url('../images/bg_icon_03.png') no-repeat 0px 0; background-size:25px; overflow:hidden}
 /*#mypage_academy ul.mn_list li:hover {background:#02466d url('../images/mn_bu_on.png') no-repeat right center / 17px}*/
 #mypage_academy ul.mn_list li:hover {background:#060607 url('../images/icon_bg.png') no-repeat right -722px; background-size:500px;}
-#mypage_academy ul.mn_list li a.mn_01 {background-position:0px 6px}
-#mypage_academy ul.mn_list li a.mn_02 {background-position:0px -44px}
-#mypage_academy ul.mn_list li a.mn_03 {background-position:0px -94px}
-#mypage_academy ul.mn_list li a.mn_04 {background-position:0px -144px}
-#mypage_academy ul.mn_list li a.mn_05 {background-position:0px -194px}
+#mypage_academy ul.mn_list li a.mn_01 {background-position:0px 10px}
+#mypage_academy ul.mn_list li a.mn_02 {background-position:0px -40px}
+#mypage_academy ul.mn_list li a.mn_03 {background-position:0px -90px}
+#mypage_academy ul.mn_list li a.mn_04 {background-position:0px -140px}
+#mypage_academy ul.mn_list li a.mn_05 {background-position:0px -190px}
 
 /* 동영상 팝업 */
 #ucc {display:none; position:relative; width:274px;  margin:0 auto}
