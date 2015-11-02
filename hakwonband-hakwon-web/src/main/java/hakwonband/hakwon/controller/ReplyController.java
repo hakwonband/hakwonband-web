@@ -136,8 +136,9 @@ public class ReplyController extends BaseAction {
 		String reply_no	= request.getParameter("reply_no");
 
 		DataMap param = new DataMap();
-		param.put("reply_no", reply_no);
-		param.put("user_no", authUserInfo.getString("user_no"));
+		param.put("reply_no",	reply_no);
+		param.put("user_no",	authUserInfo.getString("user_no"));
+		param.put("user_type",	authUserInfo.getString("user_type"));
 
 		/* 댓글 삭제 */
 		DataMap colData = replyService.deleteReply(param);

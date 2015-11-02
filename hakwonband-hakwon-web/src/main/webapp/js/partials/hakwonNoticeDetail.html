@@ -62,7 +62,7 @@
 				<small class="pull-right"><span class="text-muted">{{ item.reg_date_long }}</span></small>
 				<p><span class="badge .badge-plain">{{ item.user_type_name }}</span> <strong>{{ item.reg_user_name }}</strong> {{ item.reg_user_id }} / {{ getUserGender(item.user_gender) }} / {{ !item.reg_user_age||item.reg_user_age==0?"생일 미입력":item.reg_user_age }}</p>
 				<p class="message_body_text" ng-bind-html="item.reply_content | rawHtml"></p>
-				<button class="btn btn-default btn-circle btn_x" ng-show="userAuth.userNo == item.reg_user_no" type="button" ng-click="replyDelete({{item.reply_no}})"><i class="fa fa-times"></i></button>
+				<button class="btn btn-default btn-circle btn_x" ng-if="userAuth.userNo == item.reg_user_no || userAuth.userType == '003'" type="button" ng-click="replyDelete({{item.reply_no}})"><i class="fa fa-times"></i></button>
 			</div>
 		</div>
 		<!-- 댓글 단위 끝 -->

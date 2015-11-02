@@ -92,11 +92,43 @@
 	]]>
 	</insert>
 
+	<select id="replyInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ReplyDAO.replyInfo	*/
+		select
+			a.reply_no
+			, a.content_type
+			, a.content_parent_no
+			, b.notice_type
+			, b.notice_parent_no
+			, a.reg_user_no
+			, case when b.notice_type = '002'	-- 학원
+				then (select x.master_user_no from tb_hakwon x where x.hakwon_no = b.notice_parent_no)
+				when b.notice_type = '003'	-- 반
+				then (select y.master_user_no from tb_hakwon_class x, tb_hakwon y where x.class_no = b.notice_parent_no and x.hakwon_no = y.hakwon_no )
+				else '' end master_user_no
+		from
+			tb_content_reply a
+			, tb_notice b
+		where
+			a.reply_no = #{reply_no}
+			and a.content_type = '001'
+			and a.content_parent_no = b.notice_no
+	]]>
+	</select>
+
 	<!-- 댓글 삭제 -->
 	<delete id="replyDelete" parameterType="dataMap">
 	<![CDATA[
 	/*	ReplyDAO.replyDelete	*/
-		delete from tb_content_reply where reg_user_no = #{user_no} and reply_no = #{reply_no}
+		delete from tb_content_reply
+		where
+			reply_no = #{reply_no}
+			and (
+				reg_user_no = #{user_no}
+				or
+				'true' = #{master_del}
+			)
 	]]>
 	</delete>
 

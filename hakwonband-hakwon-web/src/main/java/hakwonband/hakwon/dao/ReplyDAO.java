@@ -38,4 +38,11 @@ public interface ReplyDAO {
 	 * @return
 	 */
 	public int replyDelete(DataMap param);
+
+	/**
+	 * 리플 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap replyInfo(DataMap param);
 }

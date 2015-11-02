@@ -763,23 +763,25 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 	 * 리플 삭제
 	 */
 	classService.replyDelete = function(reply_no, $scope) {
-		CommUtil.ajax({url:contextPath+"/hakwon/reply/removeReply.do", param:{reply_no:reply_no}, successFun:function(data) {
-			try {
-				if( data.error ) {
-					alert('리플 삭제를 실패 했습니다.');
-					return false;
-				}
+		if( window.confirm('리플을 삭제 하시겠습니까?') ) {
+			CommUtil.ajax({url:contextPath+"/hakwon/reply/removeReply.do", param:{reply_no:reply_no}, successFun:function(data) {
+				try {
+					if( data.error ) {
+						alert('리플 삭제를 실패 했습니다.');
+						return false;
+					}
 
-				var colData = data.colData;
-				if( colData.result == CommonConstant.Flag.success ) {
-					$scope.replyList = _.reject($scope.replyList, {reply_no : reply_no});
-				} else {
-					alert('리플 삭제를 실패 했습니다.');
+					var colData = data.colData;
+					if( colData.result == CommonConstant.Flag.success ) {
+						$scope.replyList = _.reject($scope.replyList, {reply_no : reply_no});
+					} else {
+						alert('리플 삭제를 실패 했습니다.');
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
 				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
+			}});
+		}
 	};
 
 	/*	반의 알림발송 조회	*/
