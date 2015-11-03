@@ -9,8 +9,6 @@
 		cacheManifest = "cache.manifest";
 		isLive = true;
 	}
-	cacheManifest = "cache.manifest";
-	isLive = true;
 %>
 <!--
 ############################################################
