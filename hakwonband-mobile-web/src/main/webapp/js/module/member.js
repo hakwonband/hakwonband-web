@@ -630,22 +630,21 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		$scope.userInfo = userAuth;
 
 		/*	사용자 정보 수정	*/
-		$('#wrap_cont').on(clickEvent, 'button[data-act=modify]', function() {
+		$scope.modify = function() {
 			window.location.href = MENUS.sharpUrls.memberModify;
-		});
+		};
 
 		/*	로그 아웃	*/
-		$('#wrap_cont').on(clickEvent, 'button[data-act=logout]', function() {
+		$scope.logout = function() {
 			window.location = '/logout.do';
-		});
+		};
 
-		/*	회원 탈퇴	*/
-		$('#wrap_cont').on(clickEvent, 'a[data-act=memberOut]', function() {
+		/*	탈퇴	*/
+		$scope.memberOut = function() {
 			if( window.confirm('탈퇴 하시면 학원밴드 서비스를 더이상 이용할 수 없습니다.\n정말 회원 탈퇴를 하시겠습니까?') ) {
 				memberService.memberOut();
 			}
-			return false;
-		});
+		};
 
 		$scope.debugOn = function() {
 			alert('디버그 모드를 활성화 합니다.');

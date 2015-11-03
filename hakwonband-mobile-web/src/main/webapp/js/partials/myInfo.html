@@ -30,9 +30,9 @@
 	</div>
 
 	<!--버튼 영역-->
-	<button type="button" class="btn btn_style_submit btn_block btn_bold mb_10" data-act="modify">프로필 정보 수정</button>
-	<button type="button" class="btn btn_style_cancel btn_block btn_bold" data-act="logout">로그아웃</button>
-	<p class="bye_link"><a href="#" data-act="memberOut">학원밴드 탈퇴하기</a></p>
+	<button type="button" class="btn btn_style_submit btn_block btn_bold mb_10" ng-click="modify()">프로필 정보 수정</button>
+	<button type="button" class="btn btn_style_cancel btn_block btn_bold" ng-click="logout()">로그아웃</button>
+	<p class="bye_link"><a href="#" onclick="return false;" ng-click="memberOut()">학원밴드 탈퇴하기</a></p>
 	<!--//버튼 영역-->
 	<br /><br /><br /><br />
 	<span style="opacity:0;" ng-click="debugOn()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
