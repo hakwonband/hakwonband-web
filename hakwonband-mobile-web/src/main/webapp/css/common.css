@@ -352,14 +352,14 @@ button.btn_letter {position:absolute; right:10px; top:17px; display:inline-block
 .notice_cont .cont.img {float:left;margin-bottom:0px}
 .notice_cont .cont.img + .date {margin-top:38px}
 
-.imgfile_view {height:40px;overflow:hidden}
+.imgfile_view:after{display:block; content:''; clear:both; float:none;}
 .imgfile_view button {width:20px; height:40px; font-size:0; text-indent:-10000px; background:url('../images/icon_bg.png') no-repeat 0 0; background-size:500px}
 .imgfile_view button.prev{float:left; background-position:-150px -75px; filter: Alpha(Opacity=50); opacity: .5}
 .imgfile_view button.next{float:right; background-position:-193px -75px; filter: Alpha(Opacity=50); opacity: .5}
 .imgfile_view .prev:hover,
 .imgfile_view .next:hover{filter: Alpha(Opacity=100); opacity: 1.0}
-.imgfile_view .view{float:left; overflow:hidden}
-.imgfile_view .view img {float:left; margin:0 3px}
+.imgfile_view .view{float:left; overflow:hidden;}
+.imgfile_view .view img {float:left; margin:3px}
 
 .alarm_tit {display:inline-block; width:100%; margin-bottom:5px; overflow:hidden}
 .alarm_tit.event {margin-bottom:0; margin-top:7px}

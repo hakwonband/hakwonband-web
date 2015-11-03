@@ -344,7 +344,7 @@ var HakwonCommon = function() {
 		//$wrapCont.find("input.search").css("width",docWidth-72); // 검색 input
 		//$wrapCont.find("div.list_cont.view").css("width",docWidth-115); //list영역 가로값 ...처리
 		//$wrapCont.find("div.input_chk input").css("width",docWidth-100); //input float button float..
-		$wrapCont.find("div.imgfile_view .view").css("width",docWidth-100); //첨부파일 이미지 영역
+		//$wrapCont.find("div.imgfile_view .view").css("width",docWidth-100); //첨부파일 이미지 영역
 		//$wrapCont.find("div.sec_input textarea").css("width",docWidth-42); //form영역의 textarea
 
 		//loading img
