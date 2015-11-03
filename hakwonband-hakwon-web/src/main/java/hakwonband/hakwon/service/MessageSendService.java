@@ -17,6 +17,7 @@ import hakwonband.hakwon.model.DevicePushData;
 import hakwonband.push.PushMessage;
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
+import hakwonband.util.HTMLCleaner;
 import hakwonband.util.StringUtil;
 
 /**
@@ -60,18 +61,21 @@ public class MessageSendService {
 		/**
 		 * 메세지 등록
 		 */
-		String preview_content = "";
+		/**
+		 * 메세지 등록
+		 */
+		String previewContent = HTMLCleaner.clean(messageContent);
 		String title = "";
-		if( messageContent.length() > 20 ) {
-			preview_content = messageContent.substring(0, 20);
-			title = preview_content;
+		if( previewContent.length() > 20 ) {
+			previewContent = previewContent.substring(0, 20);
+			title = previewContent;
 		} else {
-			preview_content = messageContent;
-			title = preview_content;
+			title = previewContent;
 		}
+
 		DataMap messageMap = new DataMap();
 		messageMap.put("title", title);
-		messageMap.put("preview_content", preview_content);
+		messageMap.put("preview_content", previewContent);
 		messageMap.put("content", messageContent.replaceAll(CommonConstant.LINE_SEPARATOR, "<br/>"));
 		messageMap.put("send_user_no", param.getString("user_no"));
 		if( "search".equals(classTarget) ) {
@@ -250,18 +254,17 @@ public class MessageSendService {
 		/**
 		 * 메세지 등록
 		 */
-		String preview_content = "";
+		String previewContent = HTMLCleaner.clean(messageContent);
 		String title = "";
-		if( messageContent.length() > 20 ) {
-			preview_content = messageContent.substring(0, 20);
-			title = preview_content;
+		if( previewContent.length() > 20 ) {
+			previewContent = previewContent.substring(0, 20);
+			title = previewContent;
 		} else {
-			preview_content = messageContent;
-			title = preview_content;
+			title = previewContent;
 		}
 		DataMap messageMap = new DataMap();
 		messageMap.put("title", title);
-		messageMap.put("preview_content", preview_content);
+		messageMap.put("preview_content", previewContent);
 		messageMap.put("content", messageContent.replaceAll(CommonConstant.LINE_SEPARATOR, "<br/>"));
 		messageMap.put("send_user_no", param.getString("user_no"));
 		if( "search".equals(targetType) ) {

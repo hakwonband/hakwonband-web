@@ -161,7 +161,9 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 		var reservationDate	= $('input[name=reservationDate]').val();
 		var reservationTime	= $('input[name=reservationTime]').val();
 
-		var messageContent = $('textarea[name=messageContent]').val();
+		//var messageContent = $('textarea[name=messageContent]').val();
+		var messageContent = tinymce.activeEditor.getContent();
+		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
 		var classTarget = $('select[name=classTarget]').val();
 		var targetType = $('select[name=targetType]').val();
 
@@ -286,7 +288,9 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 		var reservationDate	= $('input[name=reservationDate]').val();
 		var reservationTime	= $('input[name=reservationTime]').val();
 
-		var messageContent = $('textarea[name=messageContent]').val();
+//		var messageContent = $('textarea[name=messageContent]').val();
+		var messageContent = tinymce.activeEditor.getContent();
+		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
 		var targetType = $('select[name=targetType]').val();
 
 		var targetClass = [];
@@ -607,6 +611,33 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 					$('#mainNgView select[name=targetType]').val('search').trigger('change');
 					messageSendSerivce.targetUserSearch(msg_user_no_array);
 				}
+
+
+				/*	에디터 초기화 완료 후 value 셋팅	*/
+				var editOptions = comm.getEditorOptions();
+				editOptions.menubar = false;
+				editOptions.statusbar = false;
+				editOptions.toolbar1 = '';
+				editOptions.setup = function(ed) {
+					ed.on('init', function(e) {
+						$('div.mce-toolbar-grp.mce-panel').hide();
+					}).on('KeyDown', function(e) {
+						var thisEditor = this;
+						var keyCode = undefined;
+						if (e.keyCode) keyCode = e.keyCode;
+						else if (e.which) keyCode = e.which;
+
+						if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
+							if (e.shiftKey) {
+								thisEditor.execCommand('Outdent');
+							} else {
+								thisEditor.execCommand('Indent');
+							}
+							return tinymce.dom.Event.cancel(e);
+						}
+					});
+				};
+				tinymce.init(editOptions);
 			});
 		});
 	} catch(ex) {
@@ -853,6 +884,32 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 					$('#mainNgView select[name=classTarget]').val('search').trigger('change');
 					messageSendSerivce.targetUserSearch(msg_user_no_array);
 				}
+
+				/*	에디터 초기화 완료 후 value 셋팅	*/
+				var editOptions = comm.getEditorOptions();
+				editOptions.menubar = false;
+				editOptions.statusbar = false;
+				editOptions.toolbar1 = '';
+				editOptions.setup = function(ed) {
+					ed.on('init', function(e) {
+						$('div.mce-toolbar-grp.mce-panel').hide();
+					}).on('KeyDown', function(e) {
+						var thisEditor = this;
+						var keyCode = undefined;
+						if (e.keyCode) keyCode = e.keyCode;
+						else if (e.which) keyCode = e.which;
+
+						if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
+							if (e.shiftKey) {
+								thisEditor.execCommand('Outdent');
+							} else {
+								thisEditor.execCommand('Indent');
+							}
+							return tinymce.dom.Event.cancel(e);
+						}
+					});
+				};
+				tinymce.init(editOptions);
 			});
 		});
 	} catch(ex) {
