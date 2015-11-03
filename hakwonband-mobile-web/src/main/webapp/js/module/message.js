@@ -634,15 +634,6 @@ hakwonApp.controller('messageWriteController', function($scope, $location, $wind
 			}});
 		};
 
-		/*	첨부파일 10개 제한 처리	*/
-		$scope.checkMaxFileCnt = function(e) {
-			if ($scope.fileList.length >= 10) {
-				alert('첨부파일은 10개까지만 등록이 가능합니다.');
-				e.preventDefault();
-				return false;
-			}
-		};
-
 		/*	첨부 파일 이미지 썸네일 처리	*/
 		$scope.getFileFullPath = CommUtil.createFileFullPath;
 
