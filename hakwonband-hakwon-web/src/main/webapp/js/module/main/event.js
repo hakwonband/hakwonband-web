@@ -54,7 +54,10 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 					var colData = data.colData;
 					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.event.viewData, colData));
 
-					comm.videoTagReplace();
+					setTimeout(function(){
+						comm.videoTagReplace();
+						comm.contentImageReset();
+					}, 50);
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}

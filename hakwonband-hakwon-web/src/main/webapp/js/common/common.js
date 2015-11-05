@@ -772,6 +772,17 @@ var HakwonCommon = function() {
 	};
 
 	/**
+	 * 컨텐츠 이미지 가운데 정렬 수정
+	 */
+	this.contentImageReset = function() {
+		$('#content_view_div img').each(function(idx, obj) {
+			if( $(obj).parent().css('text-align') == 'center' ) {
+				$(obj).css('margin', '10px auto');
+			}
+		});
+	}
+
+	/**
 	 * sns 공유 초기화
 	 */
 	this.snsShareInit = function(callBackFun) {

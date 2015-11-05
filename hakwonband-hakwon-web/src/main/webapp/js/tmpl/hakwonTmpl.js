@@ -550,7 +550,7 @@ hakwonTmpl.event = {
 		, '		<h2>{{= eventInfo.event_title}} <small>등록일 : {{= eventInfo.reg_date}} / 등록자 : {{= eventInfo.reg_user_name}}</small></h2>'
 		, '	</div>'
 		, '	<div class="ibox-content">이벤트 기간 : {{= eventInfo.begin_date}} ~ {{= eventInfo.end_date}}</div>'
-		, '	<div class="ibox-content" id="event_view_div">{{html eventInfo.event_content}}</div>'
+		, '	<div class="ibox-content" id="content_view_div">{{html eventInfo.event_content}}</div>'
 		, '	<div class="ibox-content text-right">'
 		, '	{{if userAuth.userNo == eventInfo.reg_user_no }}'
 		, '		<button type="button" data-act="eventDel" class="btn btn-default" ng-if="checkAuthType()">삭제하기</button>'
