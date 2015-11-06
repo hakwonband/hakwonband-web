@@ -345,6 +345,10 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 					$scope.replyList			= colData.replyList;
 					$scope.fileList				= colData.fileList;
 					$scope.classNoticeReaderList= colData.classNoticeReaderList;
+
+					setTimeout(function(){
+						comm.contentImageReset();
+					}, 50);
 				} else {
 					commProto.logger({hakwonDetailError:data});
 				}

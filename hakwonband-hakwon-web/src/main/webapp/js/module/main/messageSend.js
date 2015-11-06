@@ -620,7 +620,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 				editOptions.toolbar1 = '';
 				editOptions.setup = function(ed) {
 					ed.on('init', function(e) {
-						$('div.mce-toolbar-grp.mce-panel').hide();
+						//$('div.mce-toolbar-grp.mce-panel').hide();
 					}).on('KeyDown', function(e) {
 						var thisEditor = this;
 						var keyCode = undefined;
@@ -892,7 +892,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 				editOptions.toolbar1 = '';
 				editOptions.setup = function(ed) {
 					ed.on('init', function(e) {
-						$('div.mce-toolbar-grp.mce-panel').hide();
+						//$('div.mce-toolbar-grp.mce-panel').hide();
 					}).on('KeyDown', function(e) {
 						var thisEditor = this;
 						var keyCode = undefined;

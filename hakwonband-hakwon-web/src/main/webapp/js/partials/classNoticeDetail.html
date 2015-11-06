@@ -10,7 +10,7 @@
 				<small ng-if="noticeDetail.reservation_yn == 'N' || noticeDetail.reservation_send_date">{{ noticeDetail.reg_date }} / {{ noticeDetail.reg_user_name }}</small>
 			</h2>
 		</div>
-		<div class="ibox-content" ng-bind-html="noticeDetail.content | rawHtml"></div>
+		<div class="ibox-content" id="content_view_div" ng-bind-html="noticeDetail.content | rawHtml"></div>
 		<div class="ibox-content">
 			<p>
 				<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span> -

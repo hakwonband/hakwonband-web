@@ -372,6 +372,10 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 						$scope.noticeDetail			= colData.noticeDetail;
 						$scope.replyList			= colData.replyList;
 						$scope.fileList				= colData.fileList;
+
+						setTimeout(function(){
+							comm.contentImageReset();
+						}, 50);
 					} else {
 						commProto.logger({noticeDetailError:data});
 					}
