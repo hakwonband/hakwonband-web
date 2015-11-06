@@ -29,3 +29,9 @@ alter table tb_notice add reservation_send_date		datetime				comment '예약 발
 
 
 update tb_notice set reservation_yn = 'N';
+
+
+==========================================================
+2015-11-06
+==========================================================
+create index tb_hakwon_master_user_no_idx on tb_hakwon (master_user_no);

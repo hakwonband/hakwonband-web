@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%
 	boolean isLive = false;
 	String cacheManifest = "";
@@ -15,12 +16,17 @@
 		isMobile = true;
 	}
 %>
+
+
 <!--
 ############################################################
 # 2015-11-03 01
 ############################################################
 ############################################################
 # 2015-11-05 01
+############################################################
+############################################################
+# 2015-11-06 01
 ############################################################
 -->
 <!DOCTYPE html>
@@ -74,7 +80,6 @@
 	<link href="/assets/css/plugins/switchery/switchery.css" rel="stylesheet">
 	<link href="/assets/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 	<link href="/assets/css/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print">
-
 
 	<!-- 공통 js -->
 	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
