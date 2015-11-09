@@ -1239,7 +1239,7 @@ hakwonTmpl.message = {
 		, '		<div class="form-group">'
 		, '			<label class="col-sm-1 control-label">내용</label>'
 		, '			<div class="col-sm-11">'
-		, '				<textarea cols="140" rows="10" name="messageContent" class="form-control"></textarea>'
+		, '				<textarea cols="140" rows="10" name="messageContent" class="form-control" data-lib="editor"></textarea>'
 		, '			</div>'
 		, '		</div>'
 		, '		<div class="form-group">'
@@ -1268,7 +1268,7 @@ hakwonTmpl.message = {
 	].join('')
 	/*	첨부 파일	*/
 	, attchFile : [
-		'	<div class="file-box" data-file-no="{{= fileInfo.fileNo}}">'
+		'	<div class="file-box" data-file-no="{{= fileInfo.fileNo}}" data-file-type="{{= fileInfo.extType}}" data-file-url="{{= HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath}}">'
 		, '		<div class="file">'
 		, '	{{if fileInfo.imageYn == "Y" }}'
 		, '			<div class="image">'
