@@ -76,7 +76,7 @@ public class MessageSendService {
 		DataMap messageMap = new DataMap();
 		messageMap.put("title", title);
 		messageMap.put("preview_content", previewContent);
-		messageMap.put("content", messageContent.replaceAll(CommonConstant.LINE_SEPARATOR, "<br/>"));
+		messageMap.put("content", messageContent);
 		messageMap.put("send_user_no", param.getString("user_no"));
 		if( "search".equals(classTarget) ) {
 			messageMap.put("group_yn", "N");
@@ -265,7 +265,7 @@ public class MessageSendService {
 		DataMap messageMap = new DataMap();
 		messageMap.put("title", title);
 		messageMap.put("preview_content", previewContent);
-		messageMap.put("content", messageContent.replaceAll(CommonConstant.LINE_SEPARATOR, "<br/>"));
+		messageMap.put("content", messageContent);
 		messageMap.put("send_user_no", param.getString("user_no"));
 		if( "search".equals(targetType) ) {
 			messageMap.put("group_yn", "N");
@@ -460,72 +460,6 @@ public class MessageSendService {
 		}
 
 		return devicePushData;
-	}
-
-	/**
-	 * 단건 메세지 보내기
-	 * @param param
-	 */
-	public void registSingleMessage(DataMap param) {
-		String messageContent	= param.getString("messageContent");
-		String fileListStr		= param.getString("fileListStr");
-
-		/**
-		 * 메세지 등록
-		 */
-		String preview_content = "";
-		String title = "";
-		if( messageContent.length() > 20 ) {
-			preview_content = messageContent.substring(0, 20);
-			title = preview_content;
-		} else {
-			preview_content = messageContent;
-			title = preview_content;
-		}
-		DataMap messageMap = new DataMap();
-		messageMap.put("title", title);
-		messageMap.put("preview_content", preview_content);
-		messageMap.put("content",		messageContent.replaceAll(CommonConstant.LINE_SEPARATOR, "<br/>"));
-		messageMap.put("send_user_no",	param.getString("user_no"));
-		messageMap.put("hakwon_no",		param.getString("hakwon_no"));
-		messageMap.put("group_yn",		"N");
-
-		if( param.isNotNull("reservationDate") && param.isNotNull("reservationTime") ) {
-			messageMap.put("reservationDate",	param.getString("reservationDate") + " " + param.getString("reservationTime"));
-			messageMap.put("reservationYn",		"Y");
-		} else {
-			messageMap.put("reservationYn",		"N");
-		}
-
-		messageSendDAO.messageInsert(messageMap);
-		long messageNo = messageMap.getLong("idx");
-		param.put("messageNo", messageNo);
-
-		/**
-		 * 파일 등록 처리
-		 */
-		if( StringUtil.isNotBlank(fileListStr) ) {
-			DataMap fileParam = new DataMap();
-			fileParam.put("file_parent_no",		messageNo);
-			fileParam.put("file_parent_type",	CommonConstant.File.TYPE_MESSAGE);
-			fileParam.put("reg_user_no",		param.getString("user_no"));
-
-			fileParam.put("file_no_list",		param.getString("fileListStr"));
-			int updateFiles = fileDAO.usingUpdate(fileParam);
-			if( fileListStr.split(",").length != updateFiles ) {
-				throw new HKBandException("File Update Fail");
-			}
-		}
-
-		/*	받는 사용자 등록	*/
-		param.put("messageNo",	messageNo);
-		messageSendDAO.messageReceiverSingleInsert(param);
-
-		/*	메세지 받은 사용자 카운트 업데이트	*/
-		int checkCount = messageSendDAO.updateMessageReceiverCount(param);
-		if( checkCount != 1 ) {
-			throw new HKBandException("updateMessageReceiverCount fail["+checkCount+"]");
-		}
 	}
 
 	/**
