@@ -163,7 +163,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 
 		//var messageContent = $('textarea[name=messageContent]').val();
 		var messageContent = tinymce.activeEditor.getContent();
-		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
+//		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
 		var classTarget = $('select[name=classTarget]').val();
 		var targetType = $('select[name=targetType]').val();
 
@@ -291,7 +291,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 
 //		var messageContent = $('textarea[name=messageContent]').val();
 		var messageContent = tinymce.activeEditor.getContent();
-		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
+//		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
 		var targetType = $('select[name=targetType]').val();
 
 		var targetClass = [];
