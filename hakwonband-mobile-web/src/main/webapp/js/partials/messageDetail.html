@@ -21,7 +21,7 @@
 		<div class="view_img_list" ng-if="imageFileArray.length > 0">
 			<h5 class="tit">첨부된 이미지</h5>
 			<a href="{{ getFileFullPath(imageFile.file_path, 'down') }}" target="_blank" ng-repeat="imageFile in imageFileArray">
-				<img ng-src="{{ getFileFullPath(imageFile.thumb_file_path) }}" class="img_view_block"/>
+				<img ng-src="{{ getFileFullPath(imageFile.thumb_file_path) }}" width="40" class="img_view_block"/>
 			</a>
 <!--
 			<h5 class="tit">첨부된 이미지</h5>
