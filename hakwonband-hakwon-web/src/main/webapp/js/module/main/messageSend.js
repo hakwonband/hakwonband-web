@@ -656,7 +656,9 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 						}
 					});
 				};
-				tinymce.init(editOptions);
+				setTimeout(function(){
+					tinymce.init(editOptions);
+				}, 500);
 			});
 		});
 	} catch(ex) {
@@ -944,7 +946,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 						}
 					});
 				};
-				tinymce.init(editOptions);
+				setTimeout(function(){
+					tinymce.init(editOptions);
+				}, 500);
 			});
 		});
 	} catch(ex) {
