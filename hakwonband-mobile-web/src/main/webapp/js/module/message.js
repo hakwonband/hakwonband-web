@@ -94,7 +94,9 @@ hakwonApp.service('messageService', function($window, CommUtil) {
 				console.log(data, status);
 				var colData = data.colData;
 				if( colData ) {
-					//colData.messageDetail.content = commProto.replaceURLWithHTMLLinks(colData.messageDetail.content);
+					if( colData.messageDetail.content.indexOf('<!DOCTYPE html>') < 0 ) {
+						colData.messageDetail.content = commProto.replaceURLWithHTMLLinks(colData.messageDetail.content);
+					}
 					$scope.messageDetail		= colData.messageDetail;
 					$scope.messageDetail.send_user_info = comm.userInfoParse(colData.messageDetail.send_user_info);
 					$scope.messageDetail.receive_user_info = comm.userInfoParse(colData.messageDetail.receive_user_info);
