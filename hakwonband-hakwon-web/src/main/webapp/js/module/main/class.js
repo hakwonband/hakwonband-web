@@ -1356,6 +1356,10 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			tinymce.activeEditor.insertContent(youtubeHtml);
 		});
 
+		if( tinymce.activeEditor ) tinymce.activeEditor.destroy();
+
+		if( tinymce.activeEditor ) tinymce.activeEditor.destroy();
+
 		/*	파일 객체 초기화 및 데이터 호출		*/
 		$scope.$$postDigest(function() {
 			console.log('noticeEditController $$postDigest');

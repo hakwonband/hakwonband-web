@@ -512,6 +512,11 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 
 		$("#wrapper").show();
+
+		if( tinymce.activeEditor ) {
+			tinymce.activeEditor.destroy();
+		}
+
 		/*	초기화	*/
 		$scope.$$postDigest(function(){
 			console.log('messageTeacherSendController $$postDigest');
@@ -656,9 +661,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 						}
 					});
 				};
-				setTimeout(function(){
-					tinymce.init(editOptions);
-				}, 500);
+				tinymce.init(editOptions);
 			});
 		});
 	} catch(ex) {
@@ -806,6 +809,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 
 		$("#wrapper").show();
 		/*	초기화	*/
+
+		if( tinymce.activeEditor ) tinymce.activeEditor.destroy();
+
 		$scope.$$postDigest(function(){
 			console.log('messageTeacherSendController $$postDigest');
 
@@ -946,9 +952,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 						}
 					});
 				};
-				setTimeout(function(){
-					tinymce.init(editOptions);
-				}, 500);
+				tinymce.init(editOptions);
 			});
 		});
 	} catch(ex) {
