@@ -228,7 +228,6 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 						return ;
 					}
 					alert('메세지 전송을 성공 했습니다.');
-					tinymce.activeEditor.destroy();
 					window.location.href = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&'+new Date().toString();
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
@@ -359,7 +358,6 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 					}
 
 					alert('메세지 전송을 성공 했습니다.');
-					tinymce.activeEditor.destroy();
 					window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&'+new Date().toString();
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
@@ -512,10 +510,6 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 
 		$("#wrapper").show();
-
-		if( tinymce.activeEditor ) {
-			tinymce.activeEditor.destroy();
-		}
 
 		/*	초기화	*/
 		$scope.$$postDigest(function(){
@@ -809,8 +803,6 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 
 		$("#wrapper").show();
 		/*	초기화	*/
-
-		if( tinymce.activeEditor ) tinymce.activeEditor.destroy();
 
 		$scope.$$postDigest(function(){
 			console.log('messageTeacherSendController $$postDigest');

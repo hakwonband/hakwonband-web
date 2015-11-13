@@ -38,6 +38,12 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 			return originalLocationUrl.apply($location, [url]);
 		}
 
+		$rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+			if( tinymce && tinymce.activeEditor ) {
+				tinymce.activeEditor.destroy();
+			}
+		});
+
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}
