@@ -42,7 +42,8 @@ tinymceConst.initOptios = {
 	, extended_valid_elements : tinymceConst.extended_valid_elements
 	, apply_source_formatting : true
 	, forced_root_block : false
-	, force_p_newlines : true
+	, force_p_newlines : false
+	, force_br_newlines : true
 	, mode : "textareas"
 	, language : "ko_KR"
 	, menubar: false
@@ -57,4 +58,6 @@ tinymceConst.initOptios = {
 	, init_instance_callback : function(inst) {
 		console.log('init_instance_callback');
 	}
+	, convert_urls : 0
+	, remove_script_host : 0
 };
