@@ -27,7 +27,7 @@ var tinymceConst = {
 	plugins : [
 		'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker'
 		, 'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking'
-		, 'table contextmenu directionality emoticons template textcolor paste fullpage textcolor'
+		, 'table directionality emoticons template textcolor paste fullpage textcolor'
 	]
 	, toolbar1 : 'fontselect fontsizeselect | bold italic underline strikethrough forecolor backcolor '
 		+'| alignleft aligncenter alignright alignjustify | styleselect | bullist numlist | link charmap emoticons | fullscreen | code '
