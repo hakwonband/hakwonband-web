@@ -175,8 +175,8 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .code_view{border:3px solid #e7eaec; border-right:0; border-left:0; padding:10px; margin:40px 0 30px 0; vertical-align:middle; font-size:18px; font-weight:bold;}
 .code_view .btn-danger{display:inline-block; padding:10px 15px; margin-right:10px; border-radius:5px;}
 .widget-head-color-box{position:relative;}
-.widget-head-color-box .input_file_icon{position:absolute; top:50%; left:50%; margin-left:-160px; margin-top:-160px;}
-.widget-head-color-box .btn_edit{position:absolute; top:50%; left:50%; margin-top:100px; margin-left:100px;}
+.widget-head-color-box .input_file_icon, .my_info_profile_img .input_file_icon{position:absolute; top:50%; left:50%; margin-left:-160px; margin-top:-160px;}
+.widget-head-color-box .btn_edit, .my_info_profile_img .btn_edit{position:absolute; top:50%; left:50%; margin-top:100px; margin-left:100px;}
 .widget-head-color-box .img-responsive{margin:15px auto;}
 .widget-text-box ul{margin-top:10px; padding:0 0 0 15px;}
 .widget-text-box ul li{padding:5px 0;}
@@ -192,7 +192,6 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .info_list_box label{display:none;}
 .info_list_box li{list-style:none;}
 .my_info_box .my_info_profile_img{margin:30px 0; position:relative;}
-.my_info_box .my_info_profile_img .btn_edit{position:absolute; bottom:10%; right:15%;}
 .wrapper-content .middle-box{height:auto; position:relative; margin-top:50px;}
 .profile-content ul{padding-left:20px; margin-top:20px;}
 .profile-content ul li{line-height:1.5em;}
