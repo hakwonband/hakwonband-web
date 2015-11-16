@@ -118,7 +118,6 @@ var merge		= require('merge-stream'),
  			, './inspinia/css/animate.css'
  			, './inspinia/css/style.min.css'
  		]
-		, css_markup: './css/**/*'
 		, partials: [
 			'./js/partials/**/*'
 		]
@@ -193,11 +192,6 @@ gulp.task('index_lib_css_development', function() {
 		.pipe(gulp.dest('./assets/css'));
 });
 
-gulp.task('css_markup', function() {
-	return gulp.src(paths.css_markup)
-		.pipe(gulp.dest('./assets/css'));
-});
-
 // common_libraries
 gulp.task('common_lib_js', function() {
 	return gulp.src(paths.common_lib_js)
@@ -263,7 +257,6 @@ gulp.task('watch', function() {
 	gulp.watch(paths.common_lib_js, ['common_lib_js']);
 	gulp.watch(paths.attendance_lib_js, ['attendance_lib_js']);
 	gulp.watch(paths.main_lib_js, ['main_lib_js']);
-	gulp.watch(paths.css_markup, ['css_markup']);
 	gulp.watch(paths.main_lib_css, ['main_lib_css_development']);
 	gulp.watch(paths.main_module, ['main_module_development']);
 });
@@ -276,9 +269,9 @@ gulp.task('default', ['clean', 'build:development'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'css_markup', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
+	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
 });
 
 gulp.task('build:development', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'css_markup', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
+	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
 });
