@@ -865,6 +865,7 @@ hakwonTmpl.hakwon = {
 		, '				<button class="btn btn-default btn_message" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button>'
 		, '			</div>'
 		, '		</div>'
+		, '	{{if managerInfo }}'
 		, '		<div class="ibox-content class_teacher_list">'
 		, '			<h4>매니저</h4>'
 		, '			<div class="ceo_info">'
@@ -874,6 +875,7 @@ hakwonTmpl.hakwon = {
 		, '				</a>'
 		, '			</div>'
 		, '		</div>'
+		, '	{{/if}}'
 		, '	</div>'
 	].join('')
 	/*	학원상세 소개	*/
