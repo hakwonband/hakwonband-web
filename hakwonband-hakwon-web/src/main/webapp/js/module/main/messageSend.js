@@ -460,14 +460,16 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		/**
 		 * 파일 삭제
 		 */
-		$('#mainNgView').on(clickEvent, 'button.btn_file_del', function() {
+		$('#mainNgView').on(clickEvent, 'button.btn_file_del', function(e) {
 			$(this).parents('div.file-box').remove();
 		});
 
 		/**
 		 * 파일 클릭
 		 */
-		$('#mainNgView').on(clickEvent, 'div.file-box', function() {
+		$('#mainNgView').on(clickEvent, 'div.file-box', function(e) {
+			if( e.target.className.indexOf('btn_file_del') >= 0 ) return ;
+
 			var fileType	= $(this).attr('data-file-type');
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
@@ -753,7 +755,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 		/**
 		 * 파일 클릭
 		 */
-		$('#mainNgView').on(clickEvent, 'div.file-box', function() {
+		$('#mainNgView').on(clickEvent, 'div.file-box', function(e) {
+			if( e.target.className.indexOf('btn_file_del') >= 0 ) return ;
+
 			var fileType	= $(this).attr('data-file-type');
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
@@ -779,8 +783,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 		/**
 		 * 파일 삭제
 		 */
-		$('#mainNgView').on(clickEvent, 'button.btn_file_del', function() {
+		$('#mainNgView').on(clickEvent, 'button.btn_file_del', function(e) {
 			$(this).parents('div.file-box').remove();
+			e.preventDefault();
 		});
 
 		/**
