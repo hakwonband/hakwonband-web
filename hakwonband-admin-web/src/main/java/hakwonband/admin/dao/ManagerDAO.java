@@ -44,4 +44,11 @@ public interface ManagerDAO {
 	 * @return
 	 */
 	public int approvedUserInfoUpdate(DataMap param);
+
+	/**
+	 * 학원 매니저 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap hakwonManagerInfo(DataMap param);
 }

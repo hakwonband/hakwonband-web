@@ -1,24 +1,24 @@
 package hakwonband.admin.service;
 
-import hakwonband.admin.dao.CommonDAO;
-import hakwonband.admin.dao.FileDAO;
-import hakwonband.admin.dao.HakwonCateDAO;
-import hakwonband.admin.dao.HakwonDAO;
-import hakwonband.admin.dao.MessageSendDAO;
-import hakwonband.admin.model.DevicePushData;
-import hakwonband.api.PushSend;
-import hakwonband.common.constant.CommonConstant;
-import hakwonband.common.exception.HKBandException;
-import hakwonband.push.PushMessage;
-import hakwonband.push.UserDevice;
-import hakwonband.util.DataMap;
-
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import hakwonband.admin.dao.CommonDAO;
+import hakwonband.admin.dao.FileDAO;
+import hakwonband.admin.dao.HakwonCateDAO;
+import hakwonband.admin.dao.HakwonDAO;
+import hakwonband.admin.dao.ManagerDAO;
+import hakwonband.admin.dao.MessageSendDAO;
+import hakwonband.admin.model.DevicePushData;
+import hakwonband.common.constant.CommonConstant;
+import hakwonband.common.exception.HKBandException;
+import hakwonband.push.PushMessage;
+import hakwonband.push.UserDevice;
+import hakwonband.util.DataMap;
 
 /**
  * 학원 서비스
@@ -44,6 +44,9 @@ public class HakwonService {
 
 	@Autowired
 	private CommonDAO commonDAO;
+
+	@Autowired
+	private ManagerDAO managerDAO;
 
 	/**
 	 * 학원 리스트
@@ -177,6 +180,12 @@ public class HakwonService {
 		 */
 		DataMap hakwonInfo = hakwonDAO.hakwonInfo(param);
 		colData.put("hakwonInfo", hakwonInfo);
+
+		/**
+		 * 매니저 정보
+		 */
+		DataMap managerInfo = managerDAO.hakwonManagerInfo(param);
+		colData.put("managerInfo", managerInfo);
 
 		return colData;
 	}

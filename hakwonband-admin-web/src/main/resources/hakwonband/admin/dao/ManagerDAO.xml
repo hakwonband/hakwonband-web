@@ -110,14 +110,35 @@
 			, d.old_gugun
 			, (select cate_name from tb_hakwon_cate where cate_code = b.hakwon_cate) as hakwon_cate_name
 		from
-			tb_hakwon b
+			tb_manager a
+			, tb_hakwon b
 			, tb_hakwon_info c
 			, tb_hakwon_address d
 		where
-			b.manager_no = #{manager_no}
+			a.user_no = #{user_no}
+			and a.manager_no = b.manager_no
 			and b.hakwon_no = c.hakwon_no
 			and b.hakwon_no = d.hakwon_no
 	]]>
 	</select>
 
+	<!-- 학원 매니저 정보 -->
+	<select id="hakwonManagerInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.hakwonManagerInfo	*/
+		select
+			c.user_no
+			, c.user_id
+			, c.user_name
+			, get_file_path(c.photo_file_no) as photo_file_no
+		from
+			tb_hakwon a
+			, tb_manager b
+			, tb_user_info c
+		where
+			hakwon_no = #{hakwonNo}
+			and a.manager_no = b.manager_no
+			and b.user_no = c.user_no
+	]]>
+	</select>
 </mapper>

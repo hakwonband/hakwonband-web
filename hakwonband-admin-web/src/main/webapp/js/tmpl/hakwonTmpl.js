@@ -865,6 +865,15 @@ hakwonTmpl.hakwon = {
 		, '				<button class="btn btn-default btn_message" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button>'
 		, '			</div>'
 		, '		</div>'
+		, '		<div class="ibox-content class_teacher_list">'
+		, '			<h4>매니저</h4>'
+		, '			<div class="ceo_info">'
+		, '				<a href="{{= PageUrl.manager.view+"?managerUserNo="+managerInfo.user_no}}">'
+		, '					<img class="img-circle" src="{{= hakwonCommon.createFilePullPath(managerInfo.photo_file_no, "photo", true)}}" alt="{{= managerInfo.user_name}}" width="30" height="30">'
+		, '					<strong class="name">{{= managerInfo.user_name}}</strong>'
+		, '				</a>'
+		, '			</div>'
+		, '		</div>'
 		, '	</div>'
 	].join('')
 	/*	학원상세 소개	*/
