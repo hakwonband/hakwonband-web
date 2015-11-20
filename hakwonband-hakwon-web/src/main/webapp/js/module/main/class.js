@@ -1647,7 +1647,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 		/*	오디오 삽입	*/
 		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
 			var fileUrl = $(this).attr('data-file-url');
-			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true">지원하지 않는 포멧 입니다.</audio></p>';
+			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p>';
 			tinymce.activeEditor.insertContent(audioHtml);
 		});
 

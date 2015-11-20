@@ -477,7 +477,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 				var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive">';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
-				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true">지원하지 않는 포멧 입니다.</audio></p>';
+				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
 				tinymce.activeEditor.insertContent(audioHtml);
 			} else if( fileType == 'video' ) {
 				var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
@@ -765,7 +765,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 				var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive">';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
-				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true">지원하지 않는 포멧 입니다.</audio></p>';
+				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
 				tinymce.activeEditor.insertContent(audioHtml);
 			} else if( fileType == 'video' ) {
 				var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
