@@ -627,6 +627,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 
 		/*	수납 검색	*/
 		$scope.receiptSearch = function() {
+			$scope.dateTerm = '';
 			receiptService.getReceiptList($scope, $location);
 		}
 
@@ -647,6 +648,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 				alert("검색 할 내용이 없습니다.");
 				return;
 			}
+			$scope.dateTerm = '';
 			receiptService.getReceiptList($scope, $location);
 		};
 
