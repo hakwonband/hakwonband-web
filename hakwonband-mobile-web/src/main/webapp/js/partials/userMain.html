@@ -81,7 +81,7 @@
 			<li ng-repeat="item in messageList">
 				<div class="alarm_cont main">
 					<a href="{{siteUrls.messageDetail}}?receive_no={{item.receive_no}}&type=receive">
-						{{item.title}}
+						{{item.title?item.title:'제목 없음'}}
 						<img src="/images/ico_new.gif" alt="새메세지" width="15" ng-if=" item.receive_date == null "/>
 						<span class="date">{{item.send_date}}</span>
 					</a>
