@@ -79,12 +79,8 @@
 
 <!--contents area-->
 <div id="wrap_cont" ng-view>
-	<div class="sk-spinner sk-spinner-wave">
-		<div class="sk-rect1"></div>
-		<div class="sk-rect2"></div>
-		<div class="sk-rect3"></div>
-		<div class="sk-rect4"></div>
-		<div class="sk-rect5"></div>
+	<div style='position:absolute; left:50%; top:50%;'>
+		<img id="loadingImg" src='/assets/images/new/loading.gif'/>
 	</div>
 </div>
 <!--//contents area-->
@@ -144,6 +140,16 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <script type="text/javascript">
+
+var logoSet = function() {
+	console.log('logoSet call~~');
+	$('#loadingImg').one("load", function() {
+		console.log('load call~~');
+		$(this).css('margin-left', -($(this).width()/2));
+		$(this).css('margin-top', -($(this).height()/2));
+	});
+};
+logoSet();
 
 $(window).load(function() {
 	console.log('window load');
