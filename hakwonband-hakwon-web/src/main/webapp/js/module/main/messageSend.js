@@ -474,7 +474,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive">';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
 				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
@@ -762,7 +762,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive">';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
 				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
