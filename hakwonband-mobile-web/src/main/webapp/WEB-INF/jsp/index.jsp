@@ -84,7 +84,7 @@
 <!--contents area-->
 <div id="wrap_cont" ng-view>
 	<div style="auto;">
-		<img id="loadingImg" src='/assets/images/new/loading.gif'/>
+		<img id="loadingImg" src='/assets/images/new/loading.gif' width="40%"/>
 	</div>
 </div>
 <!--//contents area-->
