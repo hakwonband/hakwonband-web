@@ -112,7 +112,6 @@
 
 <!-- 공통 모듈 -->
 <script src="/assets/js/common.lib.min.js"></script>
-
 <%
 	if( isLive ) {
 %>
@@ -145,20 +144,14 @@
 
 <script type="text/javascript">
 
-var logoSet = function() {
-	console.log('logoSet call~~');
-	$('#loadingImg').one("load", function() {
-		var screenHeight = $( document ).height();
-		var screenWidth = $( document ).width();
+var screenHeight = $( document ).height();
+var screenWidth = $( document ).width();
 
-		var imgHeight = ((screenHeight-42)/2)-$(this).height()/2;
-		var imgWidth = (screenWidth/2)-$(this).width()/2;
+var imgHeight = ((screenHeight-42)/2)-$(this).height()/2;
+var imgWidth = (screenWidth/2)-$(this).width()/2;
 
-		$(this).css('margin-left',	imgWidth);
-		$(this).css('margin-top',	imgHeight);
-	});
-};
-logoSet();
+$(this).css('margin-left',	imgWidth);
+$(this).css('margin-top',	imgHeight);
 
 $(window).load(function() {
 	console.log('window load');
