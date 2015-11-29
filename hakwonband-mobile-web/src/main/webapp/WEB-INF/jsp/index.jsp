@@ -79,7 +79,7 @@
 
 <!--contents area-->
 <div id="wrap_cont" ng-view>
-	<div style='position:absolute; left:50%; top:50%;'>
+	<div style="auto;">
 		<img id="loadingImg" src='/assets/images/new/loading.gif'/>
 	</div>
 </div>
@@ -144,9 +144,14 @@
 var logoSet = function() {
 	console.log('logoSet call~~');
 	$('#loadingImg').one("load", function() {
-		console.log('load call~~');
-		$(this).css('margin-left', -($(this).width()/2));
-		$(this).css('margin-top', -($(this).height()/2));
+		var screenHeight = $( document ).height();
+		var screenWidth = $( document ).width();
+
+		var imgHeight = ((screenHeight-42)/2)-$(this).height()/2;
+		var imgWidth = (screenWidth/2)-$(this).width()/2;
+
+		$(this).css('margin-left',	imgWidth);
+		$(this).css('margin-top',	imgHeight);
 	});
 };
 logoSet();
