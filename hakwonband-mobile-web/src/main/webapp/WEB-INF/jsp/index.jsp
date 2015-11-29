@@ -84,7 +84,7 @@
 <!--contents area-->
 <div id="wrap_cont" ng-view>
 	<div style="auto;">
-		<img id="loadingImg" src='/assets/images/new/loading.gif' width="40%"/>
+		<img id="loadingImg" src='/assets/images/new/loading.gif' style="display: none" width="40%"/>
 	</div>
 </div>
 <!--//contents area-->
@@ -144,14 +144,15 @@
 
 <script type="text/javascript">
 
+var loadingImg = $('#loadingImg');
 var screenHeight = $( document ).height();
 var screenWidth = $( document ).width();
+var imgHeight = ((screenHeight-42)/2)-loadingImg.height()/2;
+var imgWidth = (screenWidth/2)-loadingImg.width()/2;
 
-var imgHeight = ((screenHeight-42)/2)-$(this).height()/2;
-var imgWidth = (screenWidth/2)-$(this).width()/2;
-
-$(this).css('margin-left',	imgWidth);
-$(this).css('margin-top',	imgHeight);
+loadingImg.css('margin-left',	imgWidth);
+loadingImg.css('margin-top',	imgHeight);
+loadingImg.show();
 
 $(window).load(function() {
 	console.log('window load');
