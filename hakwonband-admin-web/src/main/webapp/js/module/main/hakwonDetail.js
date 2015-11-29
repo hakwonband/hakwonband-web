@@ -692,7 +692,7 @@ hakwonMainApp.controller('hakwonDetailIntroUpdateController', function($scope, $
 		/*	첨부 이미지 추가	*/
 		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div.image', function() {
 			var imgSrc = $(this).find('img').attr('src');
-			tinymce.activeEditor.insertContent('<img src="'+imgSrc+'" class="img-responsive">');
+			tinymce.activeEditor.insertContent('<img src="'+imgSrc+'" target="_blank" class="img-responsive">');
 		});
 
 

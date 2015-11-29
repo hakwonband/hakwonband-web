@@ -480,7 +480,7 @@ hakwonMainApp.controller('registQuestionController', function($scope, $location,
 		/*	이미지 클릭시 에디터에 이미지 첨부	*/
 		$scope.insertImageToEditor = function(filePath, fileNo) {
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
-			var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive">';
+			var strImage = '<img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive">';
 			tinymce.activeEditor.insertContent(strImage);
 		};
 
