@@ -52,6 +52,12 @@
 # 2015-11-29 01
 ############################################################
 ############################################################
+
+############################################################
+############################################################
+# 2015-12-01 01
+############################################################
+############################################################
 -->
 <!DOCTYPE html>
 <html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonCommonApp">
@@ -102,14 +108,9 @@
 
 <body class="gray-bg">
 
+<!-- ng-view -->
 <div id="wrapper" ng-view>
-	<div class="sk-spinner sk-spinner-wave">
-		<div class="sk-rect1"></div>
-		<div class="sk-rect2"></div>
-		<div class="sk-rect3"></div>
-		<div class="sk-rect4"></div>
-		<div class="sk-rect5"></div>
-	</div>
+	<img id="loadingImg" src='/assets/img/new/loading.gif' style="display: none"/>
 </div>
 <div class="modal inmodal" id="ieModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
@@ -128,6 +129,25 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+$('#wrapper').css('height', $( document ).height());
+var loadingImg = $('#loadingImg');
+loadingImg.load(function() {
+	loadingImg.css('width', '200px');
+	
+	var screenHeight = $( document ).height();
+	var screenWidth = $( document ).width();
+	console.log('screenHeight : ' +screenHeight);
+	console.log('screenWidth : ' +screenWidth);
+	var imgHeight = ((screenHeight-42)/2)-loadingImg.height()/2;
+	var imgWidth = (screenWidth/2)-loadingImg.width()/2;
+
+	loadingImg.css('margin-left',	imgWidth);
+	loadingImg.css('margin-top',	imgHeight);
+	loadingImg.show();	
+});
+
+</script>
 <%
 	if( isLive ) {
 %>
