@@ -12,23 +12,9 @@
 %>
 <!--
 ############################################################
-# 2015-11-11 01
 ############################################################
-
+# 2015-12-05 01
 ############################################################
-# 2015-11-11 02
-############################################################
-
-############################################################
-# 2015-11-12 01
-############################################################
-
-############################################################
-# 2015-11-17 01
-############################################################
-
-############################################################
-# 2015-11-29 01
 ############################################################
 -->
 <!DOCTYPE html>
@@ -139,9 +125,6 @@
 %>
 
 
-<!-- 외부 모듈 -->
-<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-
 <script type="text/javascript">
 
 var loadingImg = $('#loadingImg');
@@ -216,46 +199,20 @@ window.addEventListener('load', function(e) {
 	},false);
 },false);
 
-/**
- * 위치 정보 콜백
- */
-/*
-function locationCallBack(gpsStr) {
-	console.log('gpsStr['+gpsStr+']');
-	if( gpsStr && gpsStr.indexOf(',') > 0 ) {
-		var gpsStrArray = gpsStr.split(',');
-
-		var latlng = new google.maps.LatLng(gpsStrArray[0], gpsStrArray[1]);
-		var geocoder = new google.maps.Geocoder();
-		geocoder.geocode({'latLng' : latlng}, function(results, status) {
-			if( results && results.length > 0 ) {
-				var geoObj = results[0];
-				comm.setAddress(geoObj.formatted_address);
-
-				if( window.location.hash == '#/hakwon/search' ) {
-					//	학원 검색 페이지면 새로 고침
-					window.location.href = MENUS.sharpUrls.hakwonSearch+'?';
-				}
-			}
-		});
-	}
-}
-*/
-
 comm.moveSite();
 
 try {
 	$.getScript("https://developers.kakao.com/sdk/js/kakao.min.js", function(data, textStatus, jqxhr) {
+		console.info('[loaded] https://developers.kakao.com/sdk/js/kakao.min.js');
 		Kakao.init(HakwonConstant.Sns.KAKAO);
+	});
+
+	$.getScript("https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true", function(data, textStatus, jqxhr) {
+		console.info('[loaded] https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true');
+		comm.initAddress();
 	});
 } catch(ex) {
 }
-</script>
-<!-- 외부 lib js -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-<script type="text/javascript">
-/*	주소 초기화	*/
-comm.initAddress();
 </script>
 </body>
 </html>
