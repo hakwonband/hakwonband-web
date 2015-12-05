@@ -32,7 +32,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	<title><%= isMobile%>학원밴드 - 학원관리자</title>
+	<title>학원밴드 - 학원관리자</title>
 
 	<meta name="author" content="hakwonband">
 	<meta name="title" content="소셜 학원네트워크 학원밴드" />
