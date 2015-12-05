@@ -12,50 +12,14 @@
 
 	boolean isMobile = false;
 	String userAgent = request.getHeader("User-Agent");
-	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
+	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
 		isMobile = true;
 	}
 %>
 <!--
 ############################################################
 ############################################################
-# 2015-11-19 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-20 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-23 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-28 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-28 02
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-29 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-12-01 01
+# 2015-12-05 01
 ############################################################
 ############################################################
 -->
@@ -67,7 +31,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	<title>학원밴드 - 학원관리자</title>
+	<title><%= isMobile%>학원밴드 - 학원관리자</title>
 
 	<meta name="author" content="hakwonband">
 	<meta name="title" content="소셜 학원네트워크 학원밴드" />
@@ -87,8 +51,8 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon/64x64.png">
 	<link href="/assets/css/index.lib.min.css" rel="stylesheet">
-	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
+	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 <%
 	if( isMobile == false ) {
@@ -134,7 +98,7 @@ $('#wrapper').css('height', $( document ).height());
 var loadingImg = $('#loadingImg');
 loadingImg.load(function() {
 	loadingImg.css('width', '200px');
-	
+
 	var screenHeight = $( document ).height();
 	var screenWidth = $( document ).width();
 	console.log('screenHeight : ' +screenHeight);
@@ -144,7 +108,7 @@ loadingImg.load(function() {
 
 	loadingImg.css('margin-left',	imgWidth);
 	loadingImg.css('margin-top',	imgHeight);
-	loadingImg.show();	
+	loadingImg.show();
 });
 
 </script>

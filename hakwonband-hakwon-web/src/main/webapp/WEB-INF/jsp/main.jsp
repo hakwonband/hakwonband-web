@@ -12,7 +12,7 @@
 	}
 	boolean isMobile = false;
 	String userAgent = request.getHeader("User-Agent");
-	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
+	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
 		isMobile = true;
 	}
 %>
@@ -21,43 +21,7 @@
 <!--
 ############################################################
 ############################################################
-# 2015-11-19 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-20 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-23 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-28 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-28 02
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-11-29 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2015-12-01 01
+# 2015-12-05 01
 ############################################################
 ############################################################
 -->
@@ -68,7 +32,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	<title>학원밴드 - 학원관리자</title>
+	<title><%= isMobile%>학원밴드 - 학원관리자</title>
 
 	<meta name="author" content="hakwonband">
 	<meta name="title" content="소셜 학원네트워크 학원밴드" />
@@ -89,23 +53,19 @@
 
 	<!--
 	<link href="/assets/css/main.lib.min.css" rel="stylesheet">
-	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	-->
+	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <%
 	if( isMobile == false ) {
 %>
-	<!--
 	<link href="/assets/css/font_style.css" rel="stylesheet">
-	-->
 <%
 	}
 %>
 	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
 	<link href="/assets/css/animate.css" rel="stylesheet">
 	<link href="/assets/css/style.css" rel="stylesheet">
-	<link href="/assets/css/font_style.css" rel="stylesheet">
 	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
 	<link href="/assets/css/plugins/switchery/switchery.css" rel="stylesheet">
 	<link href="/assets/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
@@ -234,7 +194,9 @@
 <%
 	}
 %>
+<!--
 	<script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
+-->
 <script>
 
 $(document).ready(function () {
@@ -249,6 +211,9 @@ $(document).ready(function () {
 	try {
 		$.getScript("https://developers.kakao.com/sdk/js/kakao.min.js", function(data, textStatus, jqxhr) {
 			Kakao.init(HakwonConstant.Sns.KAKAO);
+		});
+		$.getScript("/js/lib/tinymce-4.1.7/tinymce.min.js", function(data, textStatus, jqxhr) {
+			console.info('[Load] /js/lib/tinymce-4.1.7/tinymce.min.js');
 		});
 	} catch(ex) {
 	}

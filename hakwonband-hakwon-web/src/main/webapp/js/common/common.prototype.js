@@ -639,11 +639,11 @@ function isIE() {
 	var ua = window.navigator.userAgent;
 	var msie = ua.indexOf("MSIE ");
 
-	if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-		//alert(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))));
+	if( ua.indexOf('Windows Phone') >= 0 || ua.indexOf('Mobile') >= 0 ) {
+		return false;
+	} else if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
 		return true;
 	} else {
-		//alert('otherbrowser');
 		return false;
 	}
 }

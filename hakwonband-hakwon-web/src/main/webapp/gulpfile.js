@@ -29,7 +29,6 @@ var merge		= require('merge-stream'),
 			, './inspinia/js/inspinia.js'
 			, './inspinia/js/plugins/fullcalendar/fullcalendar.min.js'
 			, './inspinia/js/plugins/fullcalendar/moment.min.js'
-			, './inspinia/js/plugins/fullcalendar/fullcalendar.min.js'
 			, './inspinia/js/plugins/slimscroll/jquery.slimscroll.js'
 			, './inspinia/js/plugins/metisMenu/jquery.metisMenu.js'
 			, './inspinia/js/plugins/iCheck/icheck.min.js'
