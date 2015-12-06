@@ -24,6 +24,11 @@
 # 2015-12-05 01
 ############################################################
 ############################################################
+############################################################
+############################################################
+# 2015-12-06 02
+############################################################
+############################################################
 -->
 <!DOCTYPE html>
 <html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonMainApp" ng-controller="baseController">
@@ -194,9 +199,9 @@
 <%
 	}
 %>
-<!--
+
 	<script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
--->
+
 <script>
 
 $(document).ready(function () {
@@ -212,9 +217,11 @@ $(document).ready(function () {
 		$.getScript("https://developers.kakao.com/sdk/js/kakao.min.js", function(data, textStatus, jqxhr) {
 			Kakao.init(HakwonConstant.Sns.KAKAO);
 		});
+/*
 		$.getScript("/js/lib/tinymce-4.1.7/tinymce.min.js", function(data, textStatus, jqxhr) {
 			console.info('[Load] /js/lib/tinymce-4.1.7/tinymce.min.js');
 		});
+*/
 	} catch(ex) {
 	}
 });
