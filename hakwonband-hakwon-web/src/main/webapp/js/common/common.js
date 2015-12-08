@@ -200,8 +200,7 @@ var HakwonCommon = function() {
 	this.onload = function() {
 		console.log('HakwonCommon onload');
 
-		console.log(isIE());
-		if( isIE() == true ) {
+		if( isSupport() == false ) {
 			$('#ieModal').modal('show');
 		}
 

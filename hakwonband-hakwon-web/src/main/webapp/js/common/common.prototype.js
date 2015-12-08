@@ -637,7 +637,9 @@ function setPushNotiKey(key, deviceType, isProduction, callback) {
  */
 function isIE() {
 	var ua = window.navigator.userAgent;
+	console.debug('ua : ' + ua);
 	var msie = ua.indexOf("MSIE ");
+	console.debug('msie : ' + msie);
 
 	if( ua.indexOf('Windows Phone') >= 0 || ua.indexOf('Mobile') >= 0 ) {
 		return false;
@@ -645,6 +647,23 @@ function isIE() {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+function isSupport() {
+	var ua = window.navigator.userAgent;
+	var msie = ua.indexOf("MSIE ");
+
+	if( ua.indexOf('Windows Phone') >= 0 || ua.indexOf('Mobile') >= 0 ) {
+		return true;
+	} else if (msie > 0 ) {
+		if( ua.indexOf('MSIE 10') >= 0 || ua.indexOf('MSIE 11') >= 0 ) {
+			return true;
+		} else {
+			return false;			
+		}
+	} else {
+		return true;
 	}
 }
 
