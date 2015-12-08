@@ -35,3 +35,9 @@ update tb_notice set reservation_yn = 'N';
 2015-11-06
 ==========================================================
 create index tb_hakwon_master_user_no_idx on tb_hakwon (master_user_no);
+
+
+==========================================================
+2015-12-09
+==========================================================
+create index tb_file_parent_idx on tb_file (file_parent_type, file_parent_no);
