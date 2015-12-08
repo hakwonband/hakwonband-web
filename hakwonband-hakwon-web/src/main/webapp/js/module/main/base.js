@@ -39,7 +39,7 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 		}
 
 		$rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
-			if( tinymce && tinymce.activeEditor ) {
+			if( typeof tinymce != 'undefined' && tinymce.activeEditor ) {
 				tinymce.activeEditor.destroy();
 			}
 		});
