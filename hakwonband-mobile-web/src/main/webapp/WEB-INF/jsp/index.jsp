@@ -16,6 +16,12 @@
 # 2015-12-05 01
 ############################################################
 ############################################################
+
+############################################################
+############################################################
+# 2015-12-09 01
+############################################################
+############################################################
 -->
 <!DOCTYPE html>
 <html manifest="<%=cacheManifest%>" ng-app="hakwonApp">
@@ -136,6 +142,20 @@ var imgWidth = (screenWidth/2)-loadingImg.width()/2;
 loadingImg.css('margin-left',	imgWidth);
 loadingImg.css('margin-top',	imgHeight);
 loadingImg.show();
+
+
+<%
+	if( isLive == true ) {
+%>
+$('body').on("selectstart", function(event){ return false; });
+$('body').on("dragstart", function(event){ return false; });
+
+document.oncontextmenu = function (e) {
+	return false;
+}
+<%
+	}
+%>
 
 $(window).load(function() {
 	console.log('window load');
