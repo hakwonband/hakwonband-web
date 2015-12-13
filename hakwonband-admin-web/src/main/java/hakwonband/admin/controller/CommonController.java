@@ -318,4 +318,50 @@ public class CommonController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
+
+	/**
+	 * 앱 푸시키 저장
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/setPushNotiKeyApp")
+	public void setPushNotiKeyApp(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증 정보 */
+		String authKey		= request.getHeader(CommonConstant.Cookie.hkBandAuthKey);
+		String key			= request.getParameter("key");
+		String deviceType	= request.getParameter("deviceType");
+		String isProduction	= request.getParameter("isProduction");
+
+		if( "true".equalsIgnoreCase(isProduction) ) {
+			isProduction = "Y";
+		} else {
+			isProduction = "N";
+		}
+		if( "ios".equals(deviceType) ) {
+			/*	임시	*/
+			isProduction = "Y";
+		}
+		if( "(null)".equals(deviceType) ) {
+			deviceType = "";
+		}
+
+		if( CommonConstant.DeviceType.android.equalsIgnoreCase(deviceType) ) {
+			deviceType = CommonConstant.DeviceType.android;
+		} else if( CommonConstant.DeviceType.ios.equalsIgnoreCase(deviceType) ) {
+			deviceType = CommonConstant.DeviceType.ios;
+		} else {
+			sendFlag("invalidDeviceType", request, response);
+			return ;
+		}
+
+		DataMap param = new DataMap();
+		param.put("auth_key",		authKey);
+		param.put("device_token",	key);
+		param.put("device_type",	deviceType);
+		param.put("is_production",	isProduction);
+
+		commonService.updateDevicePushKey(param);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
 }

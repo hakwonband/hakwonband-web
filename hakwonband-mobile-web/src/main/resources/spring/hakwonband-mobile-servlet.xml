@@ -82,7 +82,7 @@
 			<mvc:exclude-mapping path="/mobile/event/hakwonEventDetail.do"/><!-- 이벤트 상세 -->
 
 			<mvc:exclude-mapping path="/hakwonInfo.do"/>
-
+			<mvc:exclude-mapping path="/setPushNotiKeyApp.do"/>
 			<bean class="hakwonband.mobile.common.interceptor.LoginCheckInterceptor" />
 		</mvc:interceptor>
 

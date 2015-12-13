@@ -58,6 +58,7 @@
 			<mvc:mapping path="/**/*.do" />
 			<mvc:exclude-mapping path="/logging.log"/>
 			<mvc:exclude-mapping path="/deleteApp.log"/>
+			<mvc:exclude-mapping path="/setPushNotiKeyApp.do"/>
 			<bean class="hakwonband.hakwon.common.interceptor.AuthCheckInterceptor" />
 		</mvc:interceptor>
 

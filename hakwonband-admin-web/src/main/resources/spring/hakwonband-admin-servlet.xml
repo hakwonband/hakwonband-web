@@ -60,6 +60,7 @@
 			<mvc:exclude-mapping path="/main.do"/>
 			<mvc:exclude-mapping path="/admin/address/sidoList.do"/>
 			<mvc:exclude-mapping path="/admin/address/gugunList.do"/>
+			<mvc:exclude-mapping path="/setPushNotiKeyApp.do"/>
 			<bean class="hakwonband.admin.common.interceptor.AuthCheckInterceptor" />
 		</mvc:interceptor>
 
