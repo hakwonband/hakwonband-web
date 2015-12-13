@@ -56,6 +56,12 @@ hakwonApp.service('loginService', function() {
 				var colData = data.colData;
 				if( colData && colData.flag == CommonConstant.Flag.success ) {
 
+					if( window.PLATFORM ) {
+						if( 1328 <= comm.getAppVersion() ) {
+							window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
+						}
+					}
+
 					if( colData.authUserInfo.user_type == '001' ) {
 						/*	관리자로 이동	*/
 						alert('관리자 싸이트로 이동 합니다.');

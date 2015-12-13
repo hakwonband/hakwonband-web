@@ -55,12 +55,25 @@ hakwonCommonApp.service('loginService', function() {
 					userAuth.userId = colData.authUserInfo.user_id;
 					userAuth.userNo = colData.authUserInfo.user_no;
 
-					/*	디바이스 인증 정보	*/
-					if( param.deviceToken && param.deviceType ) {
-						userAuth.deviceAuth = {
-							deviceToken : param.deviceToken
-							, deviceType : param.deviceType
-						};
+					if( window.PLATFORM ) {
+						if( 1328 <= comm.getAppVersion() ) {
+							window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
+						} else {
+							if( param.deviceToken && param.deviceType ) {
+								userAuth.deviceAuth = {
+									deviceToken : param.deviceToken
+									, deviceType : param.deviceType
+								};
+							}
+						}
+					} else {
+						/*	디바이스 인증 정보	*/
+						if( param.deviceToken && param.deviceType ) {
+							userAuth.deviceAuth = {
+								deviceToken : param.deviceToken
+								, deviceType : param.deviceType
+							};
+						}
 					}
 
 					//window.location = "/main.do";
