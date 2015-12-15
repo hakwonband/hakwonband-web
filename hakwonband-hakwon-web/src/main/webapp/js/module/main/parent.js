@@ -93,6 +93,7 @@ hakwonMainApp.controller('parentListController', function($scope, $location, $ro
 					return false;
 				}
 				var colData = data.colData;
+				var pageNo = data._param.pageNo;
 
 				$scope.dataList = colData.dataList;
 				if( colData.dataCount == 0 ) {

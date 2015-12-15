@@ -21,7 +21,7 @@
 		<ul class="academy_info">
 			<li ng-repeat="loopStudent in childList">
 				<a href="#/student/view?hakwon_no={{hakwonInfo.hakwon_no}}&studentUserNo={{loopStudent.student_user_no}}">
-					<img class="img-circle" ng-src="hakwonCommon.createFilePullPath(loopStudent.photo_file_path, 'photo')" alt="{{loopStudent.user_name}}" width="30" height="30">
+					<img class="img-circle" ng-src="{{hakwonCommon.createFilePullPath(loopStudent.photo_file_path, 'photo')}}" alt="{{loopStudent.user_name}}" width="30" height="30">
 					<strong class="name">{{loopStudent.user_name}}</strong> <span class="info_text">{{loopStudent.user_gender=="M"?"남":"여"}} / {{!loopStudent.user_age||loopStudent.user_age==0?"생일 미입력":loopStudent.user_age+"세"}}</span>
 				</a>
 			</li>

@@ -78,11 +78,13 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 					console.debug('response', response);
 					$rootScope.ajaxReq = _.without($rootScope.ajaxReq, reqObj.url);
 					if( reqObj.callback ) {
+						response.data._param = reqObj.param;
 						reqObj.callback(response.data);
 					}
 				}, function(response) {
 					$rootScope.ajaxReq = _.without($rootScope.ajaxReq, reqObj.url);
 					if( reqObj.callback ) {
+						response.data._param = reqObj.param;
 						reqObj.callback(response.data);
 					}
 				});
