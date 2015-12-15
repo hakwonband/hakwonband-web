@@ -16,6 +16,9 @@
 ############################################################
 # 2015-08-31 04
 ############################################################
+############################################################
+# 2015-12-15 01
+############################################################
 -->
 <!DOCTYPE html>
 <html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonCommonApp">
@@ -102,6 +105,7 @@
 <script type="text/javascript" src="/js/module/index/login.js"></script>
 <script type="text/javascript" src="/js/module/index/signUp.js"></script>
 <script type="text/javascript" src="/js/module/index/findInfo.js"></script>
+<!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -112,5 +116,6 @@
   ga('send', 'pageview');
 
 </script>
+-->
 </body>
 </html>

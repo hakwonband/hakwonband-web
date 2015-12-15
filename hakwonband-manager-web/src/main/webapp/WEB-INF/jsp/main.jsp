@@ -21,6 +21,9 @@
 ############################################################
 # 2015-08-31 04
 ############################################################
+############################################################
+# 2015-12-15 01
+############################################################
 -->
 
 <!DOCTYPE html>
@@ -168,13 +171,16 @@
 <script type="text/javascript" src="/js/lib/chartjs/Chart.min.js"></script>
 
 
+
+
 <!-- angular js -->
 <script type="text/javascript" src="/js/lib/angular-1.4.7/angular.min.js"></script>
 <script type="text/javascript" src="/js/lib/angular-1.4.7/angular-route.min.js"></script>
 <script type="text/javascript" src="/js/lib/angular-1.4.7/angular-touch.min.js"></script>
-<!--
-<script type="text/javascript" src="/js/lib/angular-1.4.7/ui-bootstrap-0.12.0.js"></script>
--->
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-resource.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-animate.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-1.4.7/ui-bootstrap.min.js"></script>
 
 <!-- angularJS hakwonApp 모듈선언 -->
 <script type="text/javascript" src="/js/module/main/hakwonMainApp.js"></script>
@@ -219,6 +225,7 @@ $(document).ready(function () {
 });
 
 </script>
+<!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -229,5 +236,6 @@ $(document).ready(function () {
   ga('send', 'pageview');
 
 </script>
+-->
 </body>
 </html>
