@@ -132,7 +132,7 @@ var HakwonCommon = function() {
 			if( window.location.pathname == '/main.do' ) {
 				console.log('main');
 			} else {
-				window.location.href = '/main.do';
+				window.location.href = '/main.do?'+new Date().getTime();
 				return ;
 			}
 		}
