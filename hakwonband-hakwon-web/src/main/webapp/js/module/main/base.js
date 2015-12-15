@@ -9,8 +9,8 @@ hakwonMainApp.service('baseService', function() {
 /**
  * 기본 컨트롤러
  */
-hakwonMainApp.controller('baseController', function($rootScope, $scope, $location, baseService) {
-	console.log('hakwonMainApp baseController call', $rootScope, $scope, $location, baseService);
+hakwonMainApp.controller('baseController', function($rootScope, $scope, $location, baseService, $http) {
+	console.log('hakwonMainApp baseController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -43,6 +43,51 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 				tinymce.activeEditor.destroy();
 			}
 		});
+
+		/**
+		 * 통신
+		 */
+		$rootScope.ajaxReq = [];
+		$rootScope.colHttp = function(reqObj) {
+			if( reqObj.double_req_msg === null ) {
+				/*	토스트 안보여줌	*/
+			} else if( isNull(reqObj.double_req_msg) ) {
+				reqObj.double_req_msg = '요청 중 입니다.';
+			}
+			if( isNull(reqObj.method) ) {
+				reqObj.method = 'post';
+			}
+
+			if( _.contains($rootScope.ajaxReq, reqObj.url) ) {
+				if( reqObj.double_req_msg !== null ) {
+					alert(reqObj.double_req_msg);
+				}
+			} else {
+				$rootScope.ajaxReq.push(reqObj.url);
+
+				var queryData = undefined;
+				if( reqObj.param ) {
+					queryData = $.param(reqObj.param, true);
+				}
+				$http({
+					method		: reqObj.method
+					, url		: reqObj.url
+					, headers	: reqObj.header
+					, data		: queryData
+				}).then(function(response) {
+					console.debug('response', response);
+					$rootScope.ajaxReq = _.without($rootScope.ajaxReq, reqObj.url);
+					if( reqObj.callback ) {
+						reqObj.callback(response.data);
+					}
+				}, function(response) {
+					$rootScope.ajaxReq = _.without($rootScope.ajaxReq, reqObj.url);
+					if( reqObj.callback ) {
+						reqObj.callback(response.data);
+					}
+				});
+			}
+		}
 
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

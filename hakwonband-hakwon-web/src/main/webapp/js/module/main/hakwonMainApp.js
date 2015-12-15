@@ -1,6 +1,9 @@
 var hakwonMainApp = angular.module('hakwonMainApp', ['ngRoute', 'ui.bootstrap', 'ngTouch']);
-hakwonMainApp.config(['$routeProvider', function($routeProvider) {
+
+hakwonMainApp.config(function($httpProvider, $routeProvider) {
 	console.log('hakwonMainApp.config');
+
+	$httpProvider.defaults.headers.post  = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
 
 	$routeProvider
 		.when('/index', {
@@ -254,11 +257,11 @@ hakwonMainApp.config(['$routeProvider', function($routeProvider) {
 		/*	학부모	##############################################	*/
 		/*	학부모 리스트	*/
 		.when('/parent/list', {
-			template: hakwonTmpl.parent.listForm
+			templateUrl: '/js/partials/parent_list.html'
 			, controller: 'parentListController'
 		})
 		.when('/parent/view', {
-			template: hakwonTmpl.parent.viewForm
+			templateUrl: '/js/partials/parent_view.html'
 			, controller: 'parentViewController'
 		})
 
@@ -372,7 +375,7 @@ hakwonMainApp.config(['$routeProvider', function($routeProvider) {
 		.otherwise({
 			redirectTo: '/index'
 		});
-}]);
+});
 
 
 /*

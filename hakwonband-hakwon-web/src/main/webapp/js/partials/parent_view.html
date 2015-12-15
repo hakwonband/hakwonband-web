@@ -1,0 +1,33 @@
+<div class="col-md-8 col-md-offset-2" data-view="data-view">
+	<div class="widget-head-color-box red-bg p-lg text-center">'
+		<h2 class="font-bold">{{parentInfo.user_name?parentInfo.user_name:parentInfo.user_id}}</h2>
+		<img ng-src="hakwonCommon.createFilePullPath(parentInfo.photo_file_path, 'photo')" class="circle-border m-md img-responsive" alt="{{parentInfo.user_name}}" width="300" height="300">
+		<p>{{parentInfo.user_gender_name}} / {{!parentInfo.user_age||parentInfo.user_age==0?"생일 미입력":parentInfo.user_age+"세"}}</p>
+	</div>
+	<div class="widget-text-box">
+		<h3 class="media-heading">연락정보</h3>
+		<div class="row">
+			<div class="col-md-10">
+				<ul>
+					<li>이메일 : <a href="mailto:{{parentInfo.user_email}}">{{parentInfo.user_email}}</a></li>
+					<li>전화번호 : <a href="tel:{{parentInfo.tel1_no}}">{{parentInfo.tel1_no}}</a></li>
+				</ul>
+			</div>
+			<div class="col-md-2 text-right"><button class="btn btn-default btn_message" ng-click="userMessage(parentInfo.user_no)" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button></div>
+		</div>
+	</div>
+	<div class="widget-text-box" ng-if="childList.length>0">
+		<h3 class="media-heading">학생 정보</h3>
+		<ul class="academy_info">
+			<li ng-repeat="loopStudent in childList">
+				<a href="#/student/view?hakwon_no={{hakwonInfo.hakwon_no}}&studentUserNo={{loopStudent.student_user_no}}">
+					<img class="img-circle" ng-src="hakwonCommon.createFilePullPath(loopStudent.photo_file_path, 'photo')" alt="{{loopStudent.user_name}}" width="30" height="30">
+					<strong class="name">{{loopStudent.user_name}}</strong> <span class="info_text">{{loopStudent.user_gender=="M"?"남":"여"}} / {{!loopStudent.user_age||loopStudent.user_age==0?"생일 미입력":loopStudent.user_age+"세"}}</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="text-right m-t">
+		<button class="btn btn-default" ng-click="list()" type="button">목록으로</button>
+	</div>
+</div>
