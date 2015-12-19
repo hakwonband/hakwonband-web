@@ -7,6 +7,31 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	var studentService = {};
 
 	/**
+	 * 학생 정보
+	 */
+	studentService.studentInfo = function(studentUserNo, callback) {
+		var param = {studentUserNo:studentUserNo, hakwonNo : hakwonInfo.hakwon_no};
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/view.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
+		});
+	}
+
+	/**
+	 * 학생 정보 수정
+	 */
+	studentService.studentUpdate = function(studentInfo, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/update.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: studentInfo
+			, callback	: callback
+		});
+	}
+
+	/**
 	 * 학생 리스트
 	 */
 	studentService.studentList = function(pageNo) {
@@ -88,7 +113,7 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 						return false;
 					}
 					var colData = data.colData;
-					$('#mainNgView > div[data-view=data-view]').html($.tmpl(hakwonTmpl.student.viewData, colData));
+					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.student.viewData, colData));
 					if( callback ) {
 						callback();
 					}
@@ -347,6 +372,13 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			}
 		});
 
+		/**
+		 * 수정
+		 */
+		$('#mainNgView').on(clickEvent, 'button[data-act=modify]', function() {
+			window.location = '#/student/modify?studentUserNo='+studentUserNo;
+		});
+
 		/*	메세지 보내기	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=user_message]', function() {
 			var user_no = $(this).attr('data-user-no');
@@ -443,6 +475,70 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			$('li[name=registDate] button[name=update_ready]').css('display', '');
 		});
 
+	} catch(ex) {
+		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
+	}
+});
+
+
+/**
+ * 학생 수정
+ */
+hakwonMainApp.controller('studentModifyController', function($scope, $location, $routeParams, studentService, CommUtil) {
+	console.log('hakwonMainApp studentModifyController call');
+
+	try {
+		/*	페이지 초기화 호출	*/
+		hakwonCommon.pageInit();
+
+		/*	헤더 셋팅	*/
+		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no, title:'학생 리스트'}, {url:'#', title:'수정'}]);
+
+		/*	공통 유틸	*/
+		$scope.CommUtil = CommUtil;
+
+		/**
+		 * 학생 번호
+		 */
+		var studentUserNo = $routeParams.studentUserNo;
+		if( !studentUserNo ) {
+			alert('학생을 선택해 주세요.');
+			return ;
+		}
+
+		/**
+		 * 학생 정보 조회
+		 */
+		studentService.studentInfo(studentUserNo, function(data) {
+			console.log('studentModifyController', data);
+			$scope.user_info = data.colData.userInfo;
+			$scope.school_info = data.colData.schoolInfo;
+		});
+
+		/**
+		 * 저장
+		 */
+		$scope.save = function() {
+			alert('저장 한다~');
+//			studentService.studentUpdate({}, function(data) {
+//
+//			});
+		}
+
+		/**
+		 * 취소
+		 */
+		$scope.cancel = function() {
+			if (history.length > 1) {
+				window.history.back();
+			} else {
+				$location.path('/student/list');
+			}
+		}
+
+		$scope.$$postDigest(function(){
+			console.log('$$postDigest');
+		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}

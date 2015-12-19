@@ -253,6 +253,10 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			template: hakwonTmpl.student.viewForm
 			, controller: 'studentViewController'
 		})
+		.when('/student/modify', {
+			templateUrl: '/js/partials/main/studentModify.html'
+			, controller: 'studentModifyController'
+		})
 
 		/*	학부모	##############################################	*/
 		/*	학부모 리스트	*/
@@ -614,13 +618,12 @@ var HakwonCommon = function() {
 	 * hakwonCommon.pageInit();
 	 */
 	this.pageInit = function(opts) {
-		console.log('opts1', opts);
+		console.log('hakwonCommon.pageInit', opts);
 		if( !opts ) {
 			opts = {
 				isScrollTop:true
 			};
 		}
-		console.log('opts2', opts);
 
 		/*	스크롤 탑	*/
 		if( opts.isScrollTop == true ) {
@@ -696,6 +699,8 @@ var HakwonCommon = function() {
 		if("bumwonjang" == userTmpTestAlba || "icheoneduk" == userTmpTestAlba || "eggrok" == userTmpTestAlba || location.href.indexOf("teamoboki") > 0) {
 			$("li.eggrok_li").show();
 		}
+
+		$("#wrapper").show();
 	}
 
 	/**

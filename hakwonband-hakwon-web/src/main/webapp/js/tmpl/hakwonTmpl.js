@@ -1015,7 +1015,7 @@ hakwonTmpl.student = {
 		, '	<td class="text-center" style="padding:200px 0 !important;">검색된 학생이 없습니다.</td>'
 		, '</tr>'
 	].join('')
-	, viewForm : ['<div class="col-md-8 col-md-offset-2" data-view="data-view">'+hakwonTmpl.common.init+'</div>'].join('')
+	, viewForm : ['<div class="ibox m m-t-xl"><div class="ibox-content"><div class="col-md-8 col-md-offset-2" data-view="data-view">'+hakwonTmpl.common.init+'</div></div></div>'].join('')
 	, viewData : [
 		'	<div class="widget-head-color-box blue-bg p-lg text-center">'
 		, '		<h2 class="font-bold">{{= userInfo.user_name}}</h2>'
@@ -1074,6 +1074,7 @@ hakwonTmpl.student = {
 		, '		</div>'
 		, '</div>'
 		, '	<div class="text-right m-t">'
+		//, '		<button class="btn btn-default" data-act="modify" type="button">수정</button>'
 		, '		<button class="btn btn-default" data-act="list" type="button">목록으로</button>'
 		, '	</div>'
 	].join('')

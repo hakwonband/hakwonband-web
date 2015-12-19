@@ -86,8 +86,7 @@ hakwonMainApp.factory('CommUtil', function($http, $window, $log) {
 			url: httpObj.url,
 			headers: angularHeaders,
 			data: httpObj.queryString
-		}).
-			success(httpObj.successFun).error(httpObj.errorFun);
+		}).success(httpObj.successFun).error(httpObj.errorFun);
 	};
 
 	/**
@@ -286,6 +285,53 @@ hakwonMainApp.factory('CommUtil', function($http, $window, $log) {
 		delete data.nil;
 		return data;
 	};
+
+	/**
+	 * 통신
+	 */
+	CommUtil.ajaxReq = [];
+	CommUtil.colHttp = function(reqObj) {
+		if( reqObj.double_req_msg === null ) {
+			/*	토스트 안보여줌	*/
+		} else if( isNull(reqObj.double_req_msg) ) {
+			reqObj.double_req_msg = '요청 중 입니다.';
+		}
+		if( isNull(reqObj.method) ) {
+			reqObj.method = 'post';
+		}
+
+		if( _.contains(CommUtil.ajaxReq, reqObj.url) ) {
+			if( reqObj.double_req_msg !== null ) {
+				alert(reqObj.double_req_msg);
+			}
+		} else {
+			CommUtil.ajaxReq.push(reqObj.url);
+
+			var queryData = undefined;
+			if( reqObj.param ) {
+				queryData = $.param(reqObj.param, true);
+			}
+			$http({
+				method		: reqObj.method
+				, url		: reqObj.url
+				, headers	: reqObj.header
+				, data		: queryData
+			}).then(function(response) {
+				console.debug('response', response);
+				CommUtil.ajaxReq = _.without(CommUtil.ajaxReq, reqObj.url);
+				if( reqObj.callback ) {
+					response.data._param = reqObj.param;
+					reqObj.callback(response.data);
+				}
+			}, function(response) {
+				CommUtil.ajaxReq = _.without(CommUtil.ajaxReq, reqObj.url);
+				if( reqObj.callback ) {
+					response.data._param = reqObj.param;
+					reqObj.callback(response.data);
+				}
+			});
+		}
+	}
 
 	return CommUtil;
 

@@ -213,6 +213,8 @@
 			, get_code_name('001', a.user_type) as user_type_name
 			, calc_age(b.user_birthday) as user_age
 			, b.attendance_code
+			, b.user_birthday
+			, b.user_gender
 		]]>
 		<if test=" hakwon_no != null and hakwon_no != '' ">
 			, c.receipt_date
@@ -242,7 +244,8 @@
 		/*	UserDAO.userSchoolInfo	*/
 		select
 			a.school_name
-			, get_code_name('008', a.school_level)
+			, get_code_name('008', a.school_level) as school_level_name
+			, a.school_level
 			, a.level
 		from
 			tb_student_school a

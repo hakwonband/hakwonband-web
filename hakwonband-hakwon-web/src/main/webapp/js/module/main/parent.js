@@ -18,7 +18,7 @@ hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
 			, searchText : searchText
 			, hakwonNo : hakwonInfo.hakwon_no
 		};
-		$rootScope.colHttp({
+		CommUtil.colHttp({
 			url			: contextPath+"/hakwon/parent/list.do"
 			, header	: hakwonInfo.getHeader()
 			, param		: param
@@ -31,7 +31,7 @@ hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
 	 * 학부모 상세
 	 */
 	parentService.parentView = function(parentUserNo, callback) {
-		$rootScope.colHttp({
+		CommUtil.colHttp({
 			url			: contextPath+"/hakwon/parent/view.do"
 			, header	: hakwonInfo.getHeader()
 			, param		: {

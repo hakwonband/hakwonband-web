@@ -61,6 +61,14 @@ public class StudentService {
 	}
 
 	/**
+	 * 학생 수정
+	 * @return
+	 */
+	public void updateStudent(DataMap param) {
+
+	}
+
+	/**
 	 * 학생 정보
 	 * @return
 	 */

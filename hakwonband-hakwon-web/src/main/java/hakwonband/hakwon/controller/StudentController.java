@@ -102,6 +102,30 @@ public class StudentController extends BaseAction {
 	}
 
 	/**
+	 * 학생 수정
+	 * @return
+	 */
+	@RequestMapping("/update")
+	public void studentUpdate(HttpServletRequest request, HttpServletResponse response) {
+
+		String studentUserNo	= request.getParameter("studentUserNo");
+		String hakwonNo			= request.getParameter("hakwonNo");
+
+		/* 인증정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap param = new DataMap();
+		param.put("student_user_no",	studentUserNo);
+		param.put("user_no",			studentUserNo);
+		param.put("hakwon_no",			hakwonNo);
+		param.put("user_no",			authUserInfo.getString("user_no"));
+
+		DataMap colData = studentService.studentView(param);
+
+		sendColData(colData, request, response);
+	}
+
+	/**
 	 * 반 소속 학생 리스트
 	 * @return
 	 */
