@@ -497,20 +497,40 @@ hakwonMainApp.controller('studentModifyController', function($scope, $location, 
 		/*	공통 유틸	*/
 		$scope.CommUtil = CommUtil;
 
+		$scope.school_info = {};
+		$scope.school_info.level = '';
+
 		/**
 		 * 학생 번호
 		 */
 		var studentUserNo = $routeParams.studentUserNo;
 		if( !studentUserNo ) {
 			alert('학생을 선택해 주세요.');
+			if (history.length > 1) {
+				window.history.back();
+			} else {
+				$location.path('/student/list');
+			}
 			return ;
 		}
+
+		/**
+		 * 학년 리스트
+		 */
+		$scope.school_level_array = [];
+		$scope.school_level_array.push({level:1, level_title:'1 학년'});
+		$scope.school_level_array.push({level:2, level_title:'2 학년'});
+		$scope.school_level_array.push({level:3, level_title:'3 학년'});
+		$scope.school_level_array.push({level:4, level_title:'4 학년'});
+		$scope.school_level_array.push({level:5, level_title:'5 학년'});
+		$scope.school_level_array.push({level:6, level_title:'6 학년'});
+
 
 		/**
 		 * 학생 정보 조회
 		 */
 		studentService.studentInfo(studentUserNo, function(data) {
-			console.log('studentModifyController', data);
+			data.colData.userInfo.user_birthday = new Date(data.colData.userInfo.user_birthday);
 			$scope.user_info = data.colData.userInfo;
 			$scope.school_info = data.colData.schoolInfo;
 		});
@@ -519,10 +539,31 @@ hakwonMainApp.controller('studentModifyController', function($scope, $location, 
 		 * 저장
 		 */
 		$scope.save = function() {
-			alert('저장 한다~');
-//			studentService.studentUpdate({}, function(data) {
-//
-//			});
+			var param = {
+				user_name				: $scope.user_info.user_name
+				, user_email			: $scope.user_info.user_email
+				, user_pwd				: $scope.user_info.user_pwd
+				, user_birthday			: moment($scope.user_info.user_birthday).format('YYYY-MM-DD')
+				, user_gender			: $scope.user_info.user_gender
+				, tel1_no				: $scope.user_info.tel1_no
+				, school_name			: $scope.school_info.school_name
+				, school_level			: $scope.school_info.school_level
+				, school_level_level	: $scope.school_info.level
+				, hakwonNo				: hakwonInfo.hakwon_no
+				, studentUserNo			: studentUserNo
+			};
+
+			studentService.studentUpdate(param, function(data) {
+				if( data && data.colData && data.colData.flag == 'success' ) {
+					if (history.length > 1) {
+						window.history.back();
+					} else {
+						$location.path('/student/list');
+					}
+				} else {
+					alert('수정을 실패 했습니다.');
+				}
+			});
 		}
 
 		/**

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.dao.HakwonDAO;
 import hakwonband.hakwon.dao.StudentDAO;
@@ -65,7 +66,48 @@ public class StudentService {
 	 * @return
 	 */
 	public void updateStudent(DataMap param) {
+		DataMap authUserInfo = (DataMap)param.get("authUserInfo");
 
+		DataMap checkParam = new DataMap();
+		checkParam.put("user_no",	authUserInfo.getString("user_no"));
+		checkParam.put("user_type",	authUserInfo.getString("user_type"));
+		checkParam.put("hakwon_no",	param.getString("hakwon_no"));
+		checkParam.put("student_user_no",	param.getString("student_user_no"));
+
+		/*	학생 권한 체크	*/
+		DataMap checkMap = studentDAO.studentRoleCheck(checkParam);
+		if( checkMap.getInt("cnt") == 1 && checkMap.getInt("role_cnt") == 1 ) {
+		} else {
+			System.out.println("checkMap : " + checkMap);
+			throw new HKBandException("권한 실패~");
+		}
+
+
+		/*	사용자 정보 업데이트	*/
+		DataMap userInfoParam = new DataMap();
+		userInfoParam.put("user_no",		param.getString("student_user_no"));
+		userInfoParam.put("user_name",		param.getString("user_name"));
+		userInfoParam.put("user_gender",	param.getString("user_gender"));
+		userInfoParam.put("user_birthday",	param.getString("user_birthday"));
+		userInfoParam.put("tel1_no",		param.getString("tel1_no"));
+		userDAO.updateUserInfo(userInfoParam);
+
+		/*	이메일 및 패스워드 업데이트	*/
+		DataMap userParam = new DataMap();
+		userParam.put("user_password",	param.getString("user_pwd"));
+		userParam.put("user_email",		param.getString("user_email"));
+		userParam.put("user_no",		param.getString("student_user_no"));
+		userDAO.updateUser(userParam);
+
+		/**
+		 * 학교 정보 수정
+		 */
+		DataMap schoolParam = new DataMap();
+		schoolParam.put("school_name",	param.getString("school_name"));
+		schoolParam.put("school_level",	param.getString("school_level"));
+		schoolParam.put("level",		param.getString("school_level_level"));
+		schoolParam.put("user_no",		param.getString("student_user_no"));
+		studentDAO.updateSchool(schoolParam);
 	}
 
 	/**

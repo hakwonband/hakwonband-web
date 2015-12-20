@@ -12,11 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import hakwonband.common.BaseAction;
+import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.constant.CommonConstant.Flag;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.service.StudentService;
 import hakwonband.util.DataMap;
+import hakwonband.util.SecuUtil;
 import hakwonband.util.StringUtil;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * 학생 컨트롤러
@@ -108,21 +111,47 @@ public class StudentController extends BaseAction {
 	@RequestMapping("/update")
 	public void studentUpdate(HttpServletRequest request, HttpServletResponse response) {
 
-		String studentUserNo	= request.getParameter("studentUserNo");
-		String hakwonNo			= request.getParameter("hakwonNo");
+		String studentUserNo		= request.getParameter("studentUserNo");
+		String hakwonNo				= request.getParameter("hakwonNo");
+		String user_name			= request.getParameter("user_name");
+		String user_email			= request.getParameter("user_email");
+		String user_pwd				= request.getParameter("user_pwd");
+
+		if( StringUtils.isNotBlank(user_pwd) ) {
+			user_pwd = SecuUtil.sha256(user_pwd);
+		}
+
+		String user_birthday		= request.getParameter("user_birthday");
+		String user_gender			= request.getParameter("user_gender");
+		String tel1_no				= request.getParameter("tel1_no");
+		String school_name			= request.getParameter("school_name");
+		String school_level			= request.getParameter("school_level");
+		String school_level_level	= request.getParameter("school_level_level");
 
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
 		DataMap param = new DataMap();
 		param.put("student_user_no",	studentUserNo);
+		param.put("user_name",			user_name);
+		param.put("user_email",			user_email);
+		param.put("user_pwd",			user_pwd);
+		param.put("user_birthday",		user_birthday);
+		param.put("user_gender",		user_gender);
+		param.put("tel1_no",			tel1_no);
+		param.put("school_name",		school_name);
+		param.put("school_level",		school_level);
+		param.put("school_level_level",	school_level_level);
 		param.put("user_no",			studentUserNo);
 		param.put("hakwon_no",			hakwonNo);
-		param.put("user_no",			authUserInfo.getString("user_no"));
+		param.put("authUserInfo",		authUserInfo);
 
-		DataMap colData = studentService.studentView(param);
+		/**
+		 * 업데이트
+		 */
+		studentService.updateStudent(param);
 
-		sendColData(colData, request, response);
+		sendFlag(CommonConstant.Flag.success, request, response);
 	}
 
 	/**

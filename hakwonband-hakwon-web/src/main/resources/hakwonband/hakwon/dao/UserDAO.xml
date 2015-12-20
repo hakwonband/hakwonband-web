@@ -100,10 +100,10 @@
 	]]>
 		<set>
 			<if test="@hakwonband.util.StringUtil@isNotBlank( user_email )">
-				user_email = #{user_email},
+				user_email = #{user_email}
 			</if>
 			<if test="@hakwonband.util.StringUtil@isNotBlank( user_password )">
-				user_password = #{user_password}
+				, user_password = #{user_password}
 			</if>
 		</set>
 	<![CDATA[
@@ -142,7 +142,7 @@
 	<!-- 사용자 프로필 사진 수정 -->
 	<update id="updateUserPhoto" parameterType="dataMap">
 	<![CDATA[
-		/* UserDAO.updateUserInfo */
+		/* UserDAO.updateUserPhoto */
 		update tb_user_info set photo_file_no = #{photo_file_no} where user_no = #{user_no}
 	]]>
 	</update>

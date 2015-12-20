@@ -17,3 +17,8 @@ port : 미정
 database : hakwonband_live_db
 user : hakwonband
 pass : 미정
+
+
+mysqldump -uhakwonband -p DBwjqthr90() > /bumworld/backup/2015-12-20-hakwonband-db
+
+mysqldump -uhakwonband -p -A > /bumworld/backup/2015-12-20-hakwonband-db

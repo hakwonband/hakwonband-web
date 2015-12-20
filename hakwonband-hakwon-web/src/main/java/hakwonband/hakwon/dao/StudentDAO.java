@@ -41,4 +41,16 @@ public interface StudentDAO {
 	 */
 	public int classStudentCount(DataMap param);
 
+	/**
+	 * 학교 정보 수정
+	 * @param param
+	 * @return
+	 */
+	public int updateSchool(DataMap param);
+
+	/**
+	 * 학생 권한 체크
+	 * @return
+	 */
+	public DataMap studentRoleCheck(DataMap param);
 }

@@ -101,7 +101,7 @@
 			d.hakwon_no = #{hakwon_no}
 			and d.user_type= '006'
 			and d.user_no = b.user_no
-		]]>
+	]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
 			and (
 				b.user_name like concat('%', #{search_text}, '%')
@@ -109,6 +109,26 @@
 				b.user_id like concat('%', #{search_text}, '%')
 			)
 		</if>
+	</select>
+
+	<!-- 학생 권한 체크 -->
+	<select id="studentRoleCheck" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	StudentDAO.studentRoleCheck	*/
+		select
+			count(1) as cnt
+			, case when #{user_type} = '003' then (select count(1) from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{user_no})
+				when #{user_type} = '004' then (select count(1) from tb_hakwon_teacher where hakwon_no = #{hakwon_no} and user_no = #{user_no} and approved_yn = 'Y')
+				else 0 end as role_cnt
+		from
+			tb_hakwon_member d
+			, tb_user_info b
+		where
+			d.hakwon_no = #{hakwon_no}
+			and d.user_no = #{student_user_no}
+			and d.user_type = '006'
+			and d.user_no = b.user_no
+	]]>
 	</select>
 
 	<!-- 반 소속 학생 리스트 -->
@@ -189,5 +209,18 @@
 			)
 		</if>
 	</select>
+
+	<!-- 사용자 비밀번호 및 이메일 정보 수정 -->
+	<update id="updateSchool" parameterType="dataMap">
+	<![CDATA[
+		/* StudentDAO.updateSchool */
+		update tb_student_school set
+			school_name		= #{school_name}
+			, school_level	= #{school_level}
+			, level			= #{level}
+		where
+			user_no			= #{user_no}
+	]]>
+	</update>
 
 </mapper>
