@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.NoticeShareDAO">
+
+	<!-- 공지 공유 등록 -->
+	<insert id="shareInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.shareInsert	*/
+		insert into hakwonband_dev_db.tb_notice_share (
+			share_no, send_hakwon_no, reg_user_no, notice_type, parent_no, receive_hakwon_no, start_date, end_date, reg_date, udp_date
+		) values(
+			0, 0, 0, '', 0, 0, '', '', '', ''
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+</mapper>

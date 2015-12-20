@@ -861,3 +861,26 @@ comment='년월 테이블'
 collate='utf8_general_ci'
 engine=innodb
 ;
+
+
+drop table if exists tb_notice_share;
+create table tb_notice_share (
+	share_no			integer	auto_increment		not null	comment '공유 번호'
+	, send_hakwon_no	integer						not null	comment '학원 번호'
+	, reg_user_no		integer						not null	comment '공유 등록자 번호'
+	, notice_type		char(3)						not null	comment '공지 타입'
+	, parent_no			integer						not null	comment '학원번호 or 반 번호'
+	, receive_hakwon_no	integer						not null	comment '받은 학원 번호'
+	, start_date		date						not null	comment '시작일'
+	, end_date			date						not null	comment '종료일'
+	, reg_date			datetime					not null	comment '등록일'
+	, udp_date			datetime								comment '수정일'
+	, primary key (share_no)
+	, unique key(send_hakwon_no, notice_type, parent_no, receive_hakwon_no)
+)
+engine = innodb
+character set utf8
+comment = '입금 리스트'
+;
+create index tb_notice_share_send_hakwon_idx on tb_notice_share (send_hakwon_no);
+create index tb_notice_share_receive_hakwon_idx on tb_notice_share (receive_hakwon_no);
