@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.dao.HakwonDAO;
 import hakwonband.hakwon.dao.ParentDAO;
@@ -95,5 +96,44 @@ public class ParentService {
 		colData.put("dataCount",	dataCount);
 
 		return colData;
+	}
+
+	/**
+	 * 학생 수정
+	 * @return
+	 */
+	public void updateParent(DataMap param) {
+		DataMap authUserInfo = (DataMap)param.get("authUserInfo");
+
+		DataMap checkParam = new DataMap();
+		checkParam.put("user_no",		authUserInfo.getString("user_no"));
+		checkParam.put("user_type",		authUserInfo.getString("user_type"));
+		checkParam.put("hakwon_no",		param.getString("hakwon_no"));
+		checkParam.put("parent_user_no",param.getString("parent_user_no"));
+
+		/*	학생 권한 체크	*/
+		DataMap checkMap = parentDAO.parentRoleCheck(checkParam);
+		if( checkMap.getInt("cnt") == 1 && checkMap.getInt("role_cnt") == 1 ) {
+		} else {
+			System.out.println("checkMap : " + checkMap);
+			throw new HKBandException("권한 실패~");
+		}
+
+
+		/*	사용자 정보 업데이트	*/
+		DataMap userInfoParam = new DataMap();
+		userInfoParam.put("user_no",		param.getString("parent_user_no"));
+		userInfoParam.put("user_name",		param.getString("user_name"));
+		userInfoParam.put("user_gender",	param.getString("user_gender"));
+		userInfoParam.put("user_birthday",	param.getString("user_birthday"));
+		userInfoParam.put("tel1_no",		param.getString("tel1_no"));
+		userDAO.updateUserInfo(userInfoParam);
+
+		/*	이메일 및 패스워드 업데이트	*/
+		DataMap userParam = new DataMap();
+		userParam.put("user_password",	param.getString("user_pwd"));
+		userParam.put("user_email",		param.getString("user_email"));
+		userParam.put("user_no",		param.getString("parent_user_no"));
+		userDAO.updateUser(userParam);
 	}
 }

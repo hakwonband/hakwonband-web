@@ -142,7 +142,6 @@ public class StudentController extends BaseAction {
 		param.put("school_name",		school_name);
 		param.put("school_level",		school_level);
 		param.put("school_level_level",	school_level_level);
-		param.put("user_no",			studentUserNo);
 		param.put("hakwon_no",			hakwonNo);
 		param.put("authUserInfo",		authUserInfo);
 

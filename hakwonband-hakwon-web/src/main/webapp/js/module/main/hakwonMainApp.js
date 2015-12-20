@@ -268,6 +268,10 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			templateUrl: '/js/partials/parent_view.html'
 			, controller: 'parentViewController'
 		})
+		.when('/parent/modify', {
+			templateUrl: '/js/partials/main/parentModify.html'
+			, controller: 'parentModifyController'
+		})
 
 
 		/*	관리자에게 문의하기	##############################################	*/

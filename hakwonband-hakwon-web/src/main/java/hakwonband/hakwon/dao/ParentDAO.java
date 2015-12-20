@@ -23,16 +23,24 @@ public interface ParentDAO {
 	 * @return
 	 */
 	public int parentCount(DataMap param);
-	
+
 	/**
 	 * 반소속 학부모 리스트
 	 * @return
 	 */
 	public List<DataMap> classParentList(DataMap param);
-	
+
 	/**
 	 * 반소속 학부모 카운트
 	 * @return
 	 */
 	public int classParentCount(DataMap param);
+
+
+	/**
+	 * 학부모 권한 체크
+	 * @param param
+	 * @return
+	 */
+	public DataMap parentRoleCheck(DataMap param);
 }

@@ -125,4 +125,24 @@
 	]]>
 	</select>
 
+	<!-- 학부모 권한 체크 -->
+	<select id="parentRoleCheck" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	ParentDAO.parentRoleCheck	*/
+		select
+			count(1) as cnt
+			, case when #{user_type} = '003' then (select count(1) from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{user_no})
+				when #{user_type} = '004' then (select count(1) from tb_hakwon_teacher where hakwon_no = #{hakwon_no} and user_no = #{user_no} and approved_yn = 'Y')
+				else 0 end as role_cnt
+		from
+			tb_hakwon_member d
+			, tb_user_info b
+		where
+			d.hakwon_no = #{hakwon_no}
+			and d.user_no = #{parent_user_no}
+			and d.user_type = '005'
+			and d.user_no = b.user_no
+	]]>
+	</select>
+
 </mapper>

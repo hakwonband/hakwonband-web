@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import hakwonband.common.BaseAction;
+import hakwonband.common.constant.CommonConstant;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.service.ParentService;
 import hakwonband.util.DataMap;
+import hakwonband.util.SecuUtil;
 import hakwonband.util.StringUtil;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * 학부모 컨트롤러
@@ -99,5 +102,49 @@ public class ParentController extends BaseAction {
 		colData.put("pageScale",	pageScale);
 
 		sendColData(colData, request, response);
+	}
+
+	/**
+	 * 학생 수정
+	 * @return
+	 */
+	@RequestMapping("/update")
+	public void parentUpdate(HttpServletRequest request, HttpServletResponse response) {
+
+		String parentUserNo		= request.getParameter("parentUserNo");
+		String hakwonNo				= request.getParameter("hakwonNo");
+		String user_name			= request.getParameter("user_name");
+		String user_email			= request.getParameter("user_email");
+		String user_pwd				= request.getParameter("user_pwd");
+
+		if( StringUtils.isNotBlank(user_pwd) ) {
+			user_pwd = SecuUtil.sha256(user_pwd);
+		}
+
+		String user_birthday		= request.getParameter("user_birthday");
+		String user_gender			= request.getParameter("user_gender");
+		String tel1_no				= request.getParameter("tel1_no");
+
+		/* 인증정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap param = new DataMap();
+		param.put("parent_user_no",		parentUserNo);
+		param.put("user_name",			user_name);
+		param.put("user_email",			user_email);
+		param.put("user_pwd",			user_pwd);
+		param.put("user_birthday",		user_birthday);
+		param.put("user_gender",		user_gender);
+		param.put("tel1_no",			tel1_no);
+		param.put("user_no",			parentUserNo);
+		param.put("hakwon_no",			hakwonNo);
+		param.put("authUserInfo",		authUserInfo);
+
+		/**
+		 * 업데이트
+		 */
+		parentService.updateParent(param);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
 	}
 }

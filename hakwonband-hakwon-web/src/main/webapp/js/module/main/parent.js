@@ -7,6 +7,31 @@ hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
 	var parentService = {};
 
 	/**
+	 * 학부모 정보
+	 */
+	parentService.parentInfo = function(parentUserNo, callback) {
+		var param = {parentUserNo:parentUserNo, hakwonNo : hakwonInfo.hakwon_no};
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/parent/view.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
+		});
+	}
+
+	/**
+	 * 학부모 정보 수정
+	 */
+	parentService.parentUpdate = function(parentInfo, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/parent/update.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: parentInfo
+			, callback	: callback
+		});
+	}
+
+	/**
 	 * 학부모 리스트
 	 */
 	parentService.parentList = function(pageNo, callback) {
@@ -168,6 +193,12 @@ hakwonMainApp.controller('parentViewController', function($scope, $location, $ro
 				$location.path('/parent/list');
 			}
 		}
+
+		/*	수정으로	*/
+		$scope.modify = function() {
+			$location.path('/parent/modify');
+		}
+
 		$scope.userMessage = function(user_no) {
 			window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&msg_user_no_array='+user_no;
 		}
@@ -191,6 +222,92 @@ hakwonMainApp.controller('parentViewController', function($scope, $location, $ro
 			} catch(ex) {
 				commProto.errorDump({errorObj:ex});
 			}
+		});
+	} catch(ex) {
+		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
+	}
+});
+
+/**
+ * 학부모 수정
+ */
+hakwonMainApp.controller('parentModifyController', function($scope, $location, $routeParams, parentService, CommUtil) {
+	console.log('hakwonMainApp parentModifyController call');
+
+	try {
+		/*	페이지 초기화 호출	*/
+		hakwonCommon.pageInit();
+
+		/*	헤더 셋팅	*/
+		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:PageUrl.common.parentList+'?hakwon_no='+hakwonInfo.hakwon_no, title:'학부모 리스트'}, {url:'#', title:'수정'}]);
+
+		/*	공통 유틸	*/
+		$scope.CommUtil = CommUtil;
+
+		/**
+		 * 학부모 번호
+		 */
+		var parentUserNo = $routeParams.parentUserNo;
+		if( !parentUserNo ) {
+			alert('학부모를 선택해 주세요.');
+			if (history.length > 1) {
+				window.history.back();
+			} else {
+				$location.path('/parent/list');
+			}
+			return ;
+		}
+
+
+		/**
+		 * 학부모 정보 조회
+		 */
+		parentService.parentInfo(parentUserNo, function(data) {
+			data.colData.userInfo.user_birthday = new Date(data.colData.userInfo.user_birthday);
+			$scope.user_info = data.colData.userInfo;
+		});
+
+		/**
+		 * 저장
+		 */
+		$scope.save = function() {
+			var param = {
+				user_name				: $scope.user_info.user_name
+				, user_email			: $scope.user_info.user_email
+				, user_pwd				: $scope.user_info.user_pwd
+				, user_birthday			: moment($scope.user_info.user_birthday).format('YYYY-MM-DD')
+				, user_gender			: $scope.user_info.user_gender
+				, tel1_no				: $scope.user_info.tel1_no
+				, hakwonNo				: hakwonInfo.hakwon_no
+				, parentUserNo			: parentUserNo
+			};
+
+			parentService.parentUpdate(param, function(data) {
+				if( data && data.colData && data.colData.flag == 'success' ) {
+					if (history.length > 1) {
+						window.history.back();
+					} else {
+						$location.path('/parent/list');
+					}
+				} else {
+					alert('수정을 실패 했습니다.');
+				}
+			});
+		}
+
+		/**
+		 * 취소
+		 */
+		$scope.cancel = function() {
+			if (history.length > 1) {
+				window.history.back();
+			} else {
+				$location.path('/parent/list');
+			}
+		}
+
+		$scope.$$postDigest(function(){
+			console.log('$$postDigest');
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
