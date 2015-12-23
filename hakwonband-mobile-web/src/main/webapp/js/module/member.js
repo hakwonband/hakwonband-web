@@ -646,6 +646,12 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 			}
 		};
 
+		$scope.is_app = false;
+		var current_browser = getBrowser();
+		if( current_browser.indexOf('App') > 0 ) {
+			$scope.is_app = true;
+		}
+
 		$scope.debugOn = function() {
 			alert('디버그 모드를 활성화 합니다.');
 			isDebug = true;

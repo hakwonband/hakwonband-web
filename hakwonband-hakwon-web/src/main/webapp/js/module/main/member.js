@@ -218,6 +218,12 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 		$scope.urlParams 	= $routeParams;
 		$scope.memberObj 	= {};
 
+		$scope.is_app = false;
+		var current_browser = getBrowser();
+		if( current_browser.indexOf('App') > 0 ) {
+			$scope.is_app = true;
+		}
+
 		$scope.getFileFullPath = function() {
 			return CommUtil.createFileFullPath($scope.memberObj.photo_file_path, 'photo');
 		};
