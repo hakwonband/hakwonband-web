@@ -89,20 +89,6 @@ public interface HakwonDAO {
 	public int classTeacherListTotCount(DataMap param);
 
 	/**
-	 * 반 이름 검색
-	 * @param param
-	 * @return
-	 */
-	public List<DataMap> searchClassName(DataMap param);
-
-	/**
-	 * 반 이름 검색 카운트
-	 * @param param
-	 * @return
-	 */
-	public int searchClassNameTotCount(DataMap param);
-
-	/**
 	 * 반에 학생 등록
 	 * @param param
 	 * @return

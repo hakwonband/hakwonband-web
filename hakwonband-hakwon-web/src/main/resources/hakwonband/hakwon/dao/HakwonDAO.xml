@@ -150,7 +150,9 @@
 			and a.class_no = b.class_no
 			and b.teacher_user_no = #{user_no}
 	</if>
-
+		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
+			and a.class_title like concat('%', #{search_text}, '%')
+		</if>
 	<![CDATA[
 		order by
 			a.class_order asc
@@ -168,19 +170,20 @@
 		from
 			tb_hakwon_class a
 	]]>
-
-	<if test="@hakwonband.util.StringUtil@isNotNull( user_type ) and user_type != 004">
+		<if test="@hakwonband.util.StringUtil@isNotNull( user_type ) and user_type != 004">
 		where
 			a.hakwon_no = #{hakwon_no}
-	</if>
-
-	<if test="@hakwonband.util.StringUtil@isNotNull( user_type ) and user_type == 004">
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( user_type ) and user_type == 004">
 			, tb_hakwon_class_teacher b
 		where
 			a.hakwon_no = #{hakwon_no}
 			and a.class_no = b.class_no
 			and b.teacher_user_no = #{user_no}
-	</if>
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( search_text )">
+			and a.class_title like concat('%', #{search_text}, '%')
+		</if>
 	</select>
 
 	<!-- 반 상세 조회 -->
@@ -252,50 +255,6 @@
 			and b.approved_yn = 'Y'
 			and a.teacher_user_no = c.user_no
 	]]>
-	</select>
-
-	<!-- 학원 반 검색 -->
-	<select id="searchClassName" parameterType="dataMap" resultType="dataMap">
-	<![CDATA[
-		/* HakwonDAO.searchClassName*/
-		select
-			a.class_no
-			, a.class_order
-			, a.class_title
-			, a.class_intro
-			, a.logo_file_no
-			, get_file_path(a.logo_file_no) as logo_file_path
-			, date_format(a.reg_date, '%Y%m%d') as reg_date
-		from
-			tb_hakwon_class a
-		where
-			a.hakwon_no = #{hakwon_no}
-		]]>
-		<if test="@hakwonband.util.StringUtil@isNotNull( class_title )">
-			and a.class_title like concat('%', #{class_title}, '%')
-		</if>
-		<![CDATA[
-		order by
-			a.class_order asc
-		limit
-			#{start_no}, #{page_scale}
-		]]>
-	</select>
-
-	<!-- 학원 반 검색 COUNT-->
-	<select id="searchClassNameTotCount" parameterType="dataMap" resultType="int">
-	<![CDATA[
-		/* HakwonDAO.searchClassNameTotCount*/
-		select
-			count(1)
-		from
-			tb_hakwon_class a
-		where
-			a.hakwon_no = #{hakwon_no}
-		]]>
-		<if test="@hakwonband.util.StringUtil@isNotNull( class_title )">
-			and a.class_title like concat('%', #{class_title}, '%')
-		</if>
 	</select>
 
 	<!-- 학원 반 정보(학생) 등록 -->

@@ -108,22 +108,21 @@ public class HakwonService {
 	 * @param param
 	 * @return
 	 */
-	public List<DataMap> hakwonClassList(DataMap param) {
+	public DataMap hakwonClassList(DataMap param) {
 		logger.debug("hakwonClassList param["+param+"]");
 
-		return hakwonDAO.hakwonClassList(param);
+		List<DataMap> classList = hakwonDAO.hakwonClassList(param);
+
+		int classListTotCount = hakwonDAO.hakwonClassListTotCount(param);
+
+		DataMap resultObj = new DataMap();
+		resultObj.put("result", 			CommonConstant.Flag.success);
+		resultObj.put("classList",			classList);
+		resultObj.put("classListTotCount",	classListTotCount);
+
+		return resultObj;
 	}
 
-	/**
-	 * 학원내 반 리스트 카운트
-	 * @param param
-	 * @return
-	 */
-	public int hakwonClassListTotCount(DataMap param) {
-		logger.debug("hakwonClassListTotCount param["+param+"]");
-
-		return hakwonDAO.hakwonClassListTotCount(param);
-	}
 
 	/**
 	 * 반 소속 선생님 리스트
@@ -166,28 +165,6 @@ public class HakwonService {
 		resultObj.put("classDetail",				classDetail);
 		resultObj.put("classTeacherList",			classTeacherList);
 		resultObj.put("classTeacherListTotCount",	classTeacherListTotCount);
-
-		return resultObj;
-	}
-
-	/**
-	 * 반 이름 검색 리스트
-	 * @param param
-	 * @return
-	 */
-	public DataMap searchClassName(DataMap param) {
-		logger.debug("searchClassName param["+param+"]");
-
-		/*	반 이름 검색 리스트	*/
-		List<DataMap> classList = hakwonDAO.searchClassName(param);
-
-		/*	반 이름 검색 리스트 카운트		*/
-		int classListTotCount = hakwonDAO.searchClassNameTotCount(param);
-
-		DataMap resultObj = new DataMap();
-		resultObj.put("result", 			CommonConstant.Flag.success);
-		resultObj.put("classList",			classList);
-		resultObj.put("classListTotCount",	classListTotCount);
 
 		return resultObj;
 	}

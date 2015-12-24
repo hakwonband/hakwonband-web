@@ -112,27 +112,22 @@ public class HakwonController extends BaseAction {
 		/*	인증정보	*/
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		String hakwon_no = request.getParameter("hakwon_no");
-		int page_no		= StringUtil.parseInt(request.getParameter("page_no"), 1);
-		int page_scale	= HakwonConstant.PageScale.CLASS_REQ;
+		String hakwon_no	= request.getParameter("hakwon_no");
+		int page_no			= StringUtil.parseInt(request.getParameter("page_no"), 1);
+		int page_scale		= HakwonConstant.PageScale.CLASS_REQ;
+		String search_text	= request.getParameter("search_text");
 
 		DataMap param = new DataMap();
-		param.put("hakwon_no",	hakwon_no);
-		param.put("start_no",	(page_no-1)*page_scale);
-		param.put("page_scale",	page_scale);
-		param.put("user_no",	authUserInfo.get("user_no"));
-		param.put("user_type",	authUserInfo.get("user_type"));
+		param.put("hakwon_no",		hakwon_no);
+		param.put("start_no",		(page_no-1)*page_scale);
+		param.put("page_scale",		page_scale);
+		param.put("search_text",	search_text);
+		param.put("user_no",		authUserInfo.get("user_no"));
+		param.put("user_type",		authUserInfo.get("user_type"));
 
 		/* 반 리스트 조회 */
-		List<DataMap> hakwonClassList = hakwonService.hakwonClassList(param);
-
-		/* 반 리스트 카운트 */
-		int hakwonClassListTotCount = hakwonService.hakwonClassListTotCount(param);
-
-		DataMap colData = new DataMap();
-		colData.put("pageScale",				page_scale);
-		colData.put("hakwonClassList",			hakwonClassList);
-		colData.put("hakwonClassListTotCount",	hakwonClassListTotCount);
+		DataMap colData = hakwonService.hakwonClassList(param);
+		colData.put("pageScale", page_scale);
 
 		sendColData(colData, request, response);
 	}
@@ -173,31 +168,6 @@ public class HakwonController extends BaseAction {
 
 		/* 반 상세정보 조회 */
 		sendColData(hakwonService.hakwonClassDetail(param), request, response);
-	}
-
-	/**
-	 * 반 이름으로 반 리스트 조회
-	 * @param request
-	 * @param response
-	 */
-	@RequestMapping("/searchClass")
-	public void searchClass(HttpServletRequest request, HttpServletResponse response) {
-		String hakwon_no	= request.getParameter("hakwon_no");
-		String class_title	= request.getParameter("class_title");
-		int page_no		= StringUtil.parseInt(request.getParameter("page_no"), 1);
-		int page_scale	= HakwonConstant.PageScale.CLASS_REQ;
-
-		DataMap param = new DataMap();
-		param.put("hakwon_no",		hakwon_no);
-		param.put("class_title",	class_title);
-		param.put("start_no",		(page_no-1)*page_scale);
-		param.put("page_scale",		page_scale);
-
-		/* 반 이름 검색 조회 리스트 */
-		DataMap colData = hakwonService.searchClassName(param);
-		colData.put("pageScale", page_scale);
-
-		sendColData(colData, request, response);
 	}
 
 	/**

@@ -125,65 +125,10 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 	};
 
 	/* 반 리스트 조회 서비스 */
-	classService.hakwonClassList = function(pageNo, $scope) {
-		if (isNull($scope.hakwonNo)) {
-			alert('학원정보가 올바르지 않습니다.');
-			return;
-		}
-		var params = {hakwon_no: $scope.hakwonNo, page_no: !isNull(pageNo) ? pageNo : 1};
-		CommUtil.ajax({url: contextPath + "/hakwon/hakwonClassList.do", param: params, successFun: function (data) {
-			try {
-				if( data.error ) {
-					alert('반 리스트 조회를 실패 했습니다.');
-					return ;
-				}
-
-				var colData = data.colData;
-				if (colData) {
-					$scope.classList = colData.hakwonClassList;
-					$scope.classListTotCount = colData.hakwonClassListTotCount;
-					$scope.pageInfo = CommUtil.getPagenationInfo(colData.hakwonClassListTotCount, colData.pageScale, DefaultInfo.pageScale, $scope.page);
-				} else {
-					commProto.logger({hakwonClassListError: data});
-				}
-			} catch (ex) {
-				commProto.errorDump({errorObj: ex});
-			}
-		}});
+	classService.hakwonClassList = function(params, callback) {
+		CommUtil.ajax({url: contextPath + "/hakwon/hakwonClassList.do", param: params, successFun: callback});
 	};
 
-	/**
-	 * 반 리스트에서 반 검색 기능
-	 * @param params
-	 * @param $scope
-	 */
-	classService.searchHakwonClass = function(params, $scope) {
-		console.log(params);
-		if (isNull(params.hakwon_no)) {
-			alert('학원정보가 올바르지 않습니다.');
-			return ;
-		}
-		//var params = {hakwon_no:$routeParams.hakwon_no, class_title: $scope.searchOptions.class_title, page_no: !isNull(pageNo) ? pageNo : 1};
-		CommUtil.ajax({url:contextPath+"/hakwon/searchClass.do", param:params, successFun:function(data) {
-			try {
-				if( data.error ) {
-					alert('반 조회를 실패 했습니다.');
-					return ;
-				}
-
-				var colData = data.colData;
-				if( colData.result == CommonConstant.Flag.success ) {
-					$scope.classList			= colData.classList;
-					$scope.classListTotCount	= colData.classListTotCount;
-					$scope.pageInfo = CommUtil.getPagenationInfo(colData.classListTotCount, colData.pageScale, DefaultInfo.pageScale, $scope.page);
-				} else {
-					commProto.logger({searchClassError:data});
-				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
-	};
 
 	/*	반 등록 서비스	*/
 	classService.masterHakwonClassInsert = function($scope) {
@@ -217,7 +162,7 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 					$scope.regClassInfo.class_title = '';
 					$scope.regClassInfo.class_intro = '';
 					$scope.regClassInfo.class_order = '';
-					$scope.getClassList();
+					$scope.getClassList(1);
 				} else {
 					commProto.logger({masterHakwonClassInsertError: data});
 				}
@@ -1015,8 +960,8 @@ hakwonMainApp.controller('classInfoDetailController', function($scope, $window, 
 /**
  * 반 리스트 컨트롤러
  */
-hakwonMainApp.controller('classInfoListController', function($rootScope, $scope, $location, $routeParams, classService, CommUtil) {
-	console.log('hakwonMainApp classInfoListController call', $rootScope, $scope, $location, $routeParams, classService, CommUtil);
+hakwonMainApp.controller('classInfoListController', function($rootScope, $scope, $location, $routeParams, classService, CommUtil, $timeout) {
+	console.log('hakwonMainApp classInfoListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -1043,32 +988,42 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 		$scope.regClassInfo = {class_title:'', class_intro:'', class_order:''};
 
 		/*	반 이름 검색 데이터	*/
-		$scope.searchOptions = {class_title: ''};
+		$scope.search_text = '';
 
 		/*	반 리스트 조회	*/
 		$scope.getClassList = function(pageNo) {
-			classService.hakwonClassList(pageNo, $scope);
-		};
-
-		var search = function(className, pageNo) {
-			var params = {hakwon_no:$routeParams.hakwon_no, class_title: className, page_no: pageNo};
-			$scope.prevParams = params;
-			$scope.searchClass(params);
-		};
-
-		/*	반 검색 키처리	*/
-		$scope.searchClassEnter = function(e) {
-			if (e && e.type === 'keydown' && e.keyCode !== 13) {
-				return;
+			if( !pageNo ) {
+				pageNo = 1;
 			}
-			var className = ($scope.searchOptions.class_title||'').trim();
-			$scope.page = 1;
-			search(className, $scope.page);
-		};
+			$scope.page = pageNo;
+			var params = {
+				hakwon_no		: $routeParams.hakwon_no
+				, search_text	: $scope.search_text
+				, page_no		: pageNo
+			};
+			classService.hakwonClassList(params, function(data) {
+				try {
+					if( data.error ) {
+						alert('반 리스트 조회를 실패 했습니다.');
+						return ;
+					}
 
-		/*	반 검색	*/
-		$scope.searchClass = function(params) {
-			classService.searchHakwonClass(params, $scope);
+					var colData = data.colData;
+					if (colData) {
+						$scope.classList = colData.classList;
+						$scope.classListTotCount = colData.classListTotCount;
+						$scope.pageInfo = CommUtil.getPagenationInfo(colData.classListTotCount, colData.pageScale, DefaultInfo.pageScale, pageNo);
+					} else {
+						commProto.logger({hakwonClassListError: data});
+					}
+
+					$timeout(function() {
+						$(document).scrollTop($('input[ng-model=search_text]').offset().top);
+					},50);
+				} catch (ex) {
+					commProto.errorDump({errorObj: ex});
+				}
+			});
 		};
 
 		/*	페이지네이션 페이지 이동	*/
@@ -1076,8 +1031,7 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 			if ($scope.page === page) {
 				return;
 			}
-			$scope.page = page;
-			$scope.getClassList($scope.page);
+			$scope.getClassList(page);
 		};
 
 		/*	반 등록	*/
