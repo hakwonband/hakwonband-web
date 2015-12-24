@@ -169,6 +169,10 @@ var PageUrl = {
 		, detail : '#/counsel/detail'
 		, update : '#/counsel/update'
 	}
+	, notice_share : {
+		send : '#/notice/share/send'
+		, receive : '#/notice/share/receive'
+	}
 };
 
 /**

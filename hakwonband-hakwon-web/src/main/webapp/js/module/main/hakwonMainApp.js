@@ -168,6 +168,18 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			, controller: 'noticeEditController'
 		})
 
+		/*	공지 공유	*/
+		.when('/notice/share/send', {
+			templateUrl: '/js/partials/main/noticeShareSend.html'
+			, controller: 'noticeShareSendController'
+		})
+		/*	받은 공지	*/
+		.when('/notice/share/receive', {
+			templateUrl: '/js/partials/main/noticeShareReceive.html'
+			, controller: 'noticeShareReceiveController'
+		})
+
+
 
 		/*	광고 ############################################################		*/
 		/*	베너 광고 컨트롤러	*/
@@ -520,52 +532,50 @@ var HakwonCommon = function() {
 			} else if( dataAct == 'guideYoutube' ) {
 				/*	가이드 유튜브	*/
 				window.location.href = PageUrl.guide.youtube+'?hakwon_no='+hakwonInfo.hakwon_no;
-
-			/*	출결 코드 생성	*/
 			} else if( dataAct == 'attendanceMake' ) {
+				/*	출결 코드 생성	*/
 				window.location.href = PageUrl.attendance.make + '?hakwonNo=' + hakwonInfo.hakwon_no;
-			/*	주간 출결 리스트	*/
 			} else if( dataAct == 'attendanceWeekList' ) {
+				/*	주간 출결 리스트	*/
 				window.location.href = PageUrl.attendance.weekList + '?hakwonNo=' + hakwonInfo.hakwon_no;
-			/*	등원	*/
 			} else if( dataAct == 'attendanceStart' ) {
+				/*	등원	*/
 				window.location.href = PageUrl.attendance.start + '?hakwonNo=' + hakwonInfo.hakwon_no;
-
-			/*	등원,하원 팝업	*/
 			} else if( dataAct == 'attendancePop' ) {
+				/*	등원,하원 팝업	*/
 				window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
-
-			/*	승차,하차 팝업	*/
 			} else if( dataAct == 'attendanceBusPop' ) {
+				/*	승차,하차 팝업	*/
 				window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
-
-			/*	하원	*/
 			} else if( dataAct == 'attendanceEnd' ) {
+				/*	하원	*/
 				window.location.href = PageUrl.attendance.end + '?hakwonNo=' + hakwonInfo.hakwon_no;
-
-			/*	수납 등록	*/
 			} else if( dataAct == 'receiptInsert' ) {
+				/*	수납 등록	*/
 				window.location.href = PageUrl.receipt.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
-			/*	기간별 수납 리스트	*/
 			} else if( dataAct == 'receiptList' ) {
+				/*	기간별 수납 리스트	*/
 				window.location.href = PageUrl.receipt.list + '?hakwonNo=' + hakwonInfo.hakwon_no;
-			/*	학생별 수납 리스트	*/
 			} else if( dataAct == 'receiptYearList' ) {
+				/*	학생별 수납 리스트	*/
 				window.location.href = PageUrl.receipt.listYear + '?hakwonNo=' + hakwonInfo.hakwon_no;
-
-			/*	상담 등록	*/
 			} else if( dataAct == 'counselInsert' ) {
+				/*	상담 등록	*/
 				window.location.href = PageUrl.counsel.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
-
-			/*	학생 상담 리스트	*/
 			} else if( dataAct == 'counselListSt' ) {
+				/*	학생 상담 리스트	*/
 				window.location.href = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=006';
-
-			/*	학부모 상담 리스트	*/
 			} else if( dataAct == 'counselListPa' ) {
+				/*	학부모 상담 리스트	*/
 				window.location.href = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=005';
-			}
 
+			} else if( dataAct == 'send_notice_share' ) {
+				/*	공지 공유	*/
+				window.location.href = PageUrl.notice_share.send + '?hakwonNo=' + hakwonInfo.hakwon_no;
+			} else if( dataAct == 'receive_notice_share' ) {
+				/*	받은 공유 공지	*/
+				window.location.href = PageUrl.notice_share.receive + '?hakwonNo=' + hakwonInfo.hakwon_no;
+			}
 
 
 
@@ -697,11 +707,8 @@ var HakwonCommon = function() {
 		}
 
 		var userTmpTestAlba = userAuth.userId;
-		if("eggrok" == userTmpTestAlba) {
+		if("bumwonjang" == userTmpTestAlba || location.href.indexOf("teamoboki") > 0) {
 			$("#test_li").css("display","");
-		}
-		if("bumwonjang" == userTmpTestAlba || "icheoneduk" == userTmpTestAlba || "eggrok" == userTmpTestAlba || location.href.indexOf("teamoboki") > 0) {
-			$("li.eggrok_li").show();
 		}
 
 		$("#wrapper").show();
