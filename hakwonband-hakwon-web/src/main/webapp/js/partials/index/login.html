@@ -1,0 +1,19 @@
+<div class="middle-box text-center loginscreen animated fadeInDown">
+	<h1 class="logo-name"><small>HAKWONBAND</small><br>LOGIN</h1>
+	<h3>Welcome to HAKWONBAND</h3>
+	<form class="m-t" role="form" action="">
+		<div class="form-group">
+			<input type="text" name="user_id" ng-model="user_id" ng-enter="login()" value="" class="form-control m-b-xs" placeholder="아이디">
+			<input type="password" name="user_pass" ng-model="user_pass" ng-enter="login()" value="" class="form-control" placeholder="비밀번호">
+			<div class="checkbox i-checks">
+				<label for="login_auto"> <input type="checkbox" name="login_save" ng-model="login_save" value="Y" id="login_auto"> 자동로그인</label>
+				<label for="login_rememberid"> <input type="checkbox" name="id_save" ng-model="id_save" value="Y" id="login_rememberid"> 아이디 기억</label>
+			</div>
+		</div>
+		<button type="button" ng-click="login()" ng-disabled="is_login_ing" class="btn btn-primary btn-lg block full-width m-b">로그인</button>
+		<button type="button" ng-click="signUp()" class="btn btn-info block full-width m-b">학원밴드 가입하기</button>
+
+		<a href="+PageUrl.findInfo+"><small>아이디나 비밀번호가 생각나지 않는다면?</small></a>
+	</form>
+	<p class="m-t"> <small>HAKWONBAND &copy; 2015</small> </p>
+</div>

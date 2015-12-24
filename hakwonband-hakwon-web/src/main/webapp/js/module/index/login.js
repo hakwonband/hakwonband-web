@@ -1,31 +1,33 @@
 /**
  * 로그인 서비스
  */
-hakwonCommonApp.service('loginService', function() {
+hakwonCommonApp.service('loginService', function($rootScope, $location) {
 	console.log('loginService call');
 
-	this.login = function ($location, $loginSec) {
-		$('button[data-act=login]').attr('disabled', true);
+	var loginService = {};
 
-		var userId		= $loginSec.find('input[name=userId]').val();
-		var userPass	= $loginSec.find('input[name=userPass]').val();
-		var loginSave	= $loginSec.find('input[name=loginSave]').val();
-		var idSave		= $loginSec.find('input[name=idSave]').val();
+	loginService.login = function ($scope) {
+		$scope.is_login_ing = true;
 
-		if( isNull(userId) ) {
+		var user_id		= $scope.user_id;
+		var user_pass	= $scope.user_pass;
+		var login_save	= $scope.login_save;
+		var id_save		= $scope.id_save;
+
+		if( isNull(user_id) ) {
 			alert('아이디를 입력해 주세요.');
-			$('button[data-act=login]').attr('disabled',false);
-			$loginSec.find('input[name=userId]').focus();
+			$scope.is_login_ing = false;
+			//$loginSec.find('input[name=user_id]').focus();
 			return ;
 		}
-		if( isNull(userPass) ) {
+		if( isNull(user_pass) ) {
 			alert('비밀번호를 입력해 주세요.');
-			$('button[data-act=login]').attr('disabled',false);
-			$loginSec.find('input[name=userPass]').focus();
+			$scope.is_login_ing = false;
+			//$loginSec.find('input[name=userPass]').focus();
 			return ;
 		}
 
-		var param = {userId:userId, userPass:userPass, loginSave:loginSave, idSave:idSave};
+		var param = {userId:user_id, userPass:user_pass, loginSave:login_save, idSave:id_save};
 		if( window.PLATFORM ) {
 			param.deviceToken = window.PLATFORM.getGcmKey();
 			param.deviceType = CommonConstant.DeviceType.android;
@@ -42,7 +44,7 @@ hakwonCommonApp.service('loginService', function() {
 			url: contextPath+"/login.do",
 			type: "post",
 			async : false,
-			complete : function(){ $('button[data-act=login]').attr('disabled',false); },
+			complete : function(){ $scope.is_login_ing = false;},
 			data: $.param(param, true),
 			dataType: "json",
 			success: function(data) {
@@ -56,25 +58,13 @@ hakwonCommonApp.service('loginService', function() {
 					userAuth.userNo = colData.authUserInfo.user_no;
 
 					/*	디바이스 인증 정보	*/
-					if( window.PLATFORM ) {
-						if( 1328 <= comm.getAppVersion() ) {
-							window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
-						} else {
-							if( param.deviceToken && param.deviceType ) {
-								userAuth.deviceAuth = {
-									deviceToken : param.deviceToken
-									, deviceType : param.deviceType
-								};
-							}
-						}
-					} else {
-						if( param.deviceToken && param.deviceType ) {
-							userAuth.deviceAuth = {
-								deviceToken : param.deviceToken
-								, deviceType : param.deviceType
-							};
-						}
+					if( param.deviceToken && param.deviceType ) {
+						userAuth.deviceAuth = {
+							deviceToken : param.deviceToken
+							, deviceType : param.deviceType
+						};
 					}
+
 					window.location.replace("/main.do");
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
@@ -86,13 +76,15 @@ hakwonCommonApp.service('loginService', function() {
 				alert('로그인을 실패 했습니다.');
 			}
 		});
-	}
+	};
+
+	return loginService;
 });
 
 /**
  * 로그인 컨트롤러
  */
-hakwonCommonApp.controller('loginController', function($rootScope, $scope, $location, loginService) {
+hakwonCommonApp.controller('loginController', function($rootScope, $scope, $location, loginService, $timeout) {
 	console.log('loginController call', $rootScope, $scope, $location, loginService);
 
 	try {
@@ -106,40 +98,31 @@ hakwonCommonApp.controller('loginController', function($rootScope, $scope, $loca
 			return ;
 		}
 
-		var $loginSec = $('div.loginscreen');
+		/**
+		 * 로그인
+		 */
+		$scope.login = function() {
+			loginService.login($scope);
+		}
 
-		/*	로그인 시도	*/
-		$('#wrapper').on(clickEvent, 'button[data-act=login]', function() {
-			loginService.login($location, $loginSec);
-		});
-		$('#wrapper').on('keypress', 'input[name=userId]', function( event ) {
-			if ( event.which == 13 ) {
-				loginService.login($location, $loginSec);
-				event.preventDefault();
-			}
-		});
-		$('#wrapper').on('keypress', 'input[name=userPass]', function( event ) {
-			if ( event.which == 13 ) {
-				loginService.login($location, $loginSec);
-				event.preventDefault();
-			}
-		});
-
-		/*	회원 가입으로 이동	*/
-		$('#wrapper').on(clickEvent, 'button[data-act=signUp]', function() {
+		/**
+		 * 로그인
+		 */
+		$scope.signUp = function() {
 			window.location.href = PageUrl.signUp;
-		});
+		}
 
-		/*	아이디 비밀번호 찾기로 이동	*/
-		$('#wrapper').on(clickEvent, 'button[data-act=findInfo]', function() {
-			window.location.href = PageUrl.findInfo;
-		});
+		$scope.$$postDigest(function() {
+			console.debug('$$postDigest');
 
+			$timeout(function() {
+				$('.i-checks').iCheck({
+					checkboxClass: 'icheckbox_square-green'
+				});
+			},50);
+		});
 		$scope.$on('$viewContentLoaded', function() {
-			$loginSec.find('input[name=userId]').focus();
-			$('.i-checks').iCheck({
-				checkboxClass: 'icheckbox_square-green'
-			});
+			console.debug('$viewContentLoaded');
 		});
 
 	} catch(ex) {
