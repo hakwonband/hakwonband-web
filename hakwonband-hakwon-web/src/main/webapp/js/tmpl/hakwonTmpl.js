@@ -198,7 +198,8 @@ hakwonTmpl.leftMenu = {
 		, '		<a href="#"><i class="fa fa-cog"></i> <span class="nav-label">공지 공유</span> <span class="fa arrow"></span></a>'
 		, '		<ul class="nav nav-second-level">'
 		, '			<li><a href="#" data-type="leftMenu" data-act="send_notice_share">공유 하기</a></li>'
-		, '			<li><a href="#" data-type="leftMenu" data-act="receive_notice_share">받은 공유</a></li>'
+		, '			<li><a href="#" data-type="leftMenu" data-act="send_notice_share_list">공유 리스트</a></li>'
+		, '			<li><a href="#" data-type="leftMenu" data-act="receive_notice_share_list">받은 공유 리스트</a></li>'
 		, '		</ul>'
 		, '	</li>'
 	].join('')

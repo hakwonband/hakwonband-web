@@ -168,15 +168,22 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			, controller: 'noticeEditController'
 		})
 
+		/*	공지 공유 리스트	*/
+		.when('/notice/share/sendList', {
+			templateUrl: '/js/partials/main/noticeShareSendList.html'
+			, controller: 'noticeShareSendListController'
+		})
+
 		/*	공지 공유	*/
 		.when('/notice/share/send', {
 			templateUrl: '/js/partials/main/noticeShareSend.html'
 			, controller: 'noticeShareSendController'
 		})
-		/*	받은 공지	*/
-		.when('/notice/share/receive', {
-			templateUrl: '/js/partials/main/noticeShareReceive.html'
-			, controller: 'noticeShareReceiveController'
+
+		/*	받은 공지 리스트	*/
+		.when('/notice/share/receiveList', {
+			templateUrl: '/js/partials/main/noticeShareReceiveList.html'
+			, controller: 'noticeShareReceiveListController'
 		})
 
 
@@ -569,12 +576,15 @@ var HakwonCommon = function() {
 				/*	학부모 상담 리스트	*/
 				window.location.href = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=005';
 
+			} else if( dataAct == 'send_notice_share_list' ) {
+				/*	공지 공유 리스트	*/
+				window.location.href = PageUrl.notice_share.sendList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+			} else if( dataAct == 'receive_notice_share_list' ) {
+				/*	받은 공유 공지 리스트	*/
+				window.location.href = PageUrl.notice_share.receiveList + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'send_notice_share' ) {
 				/*	공지 공유	*/
 				window.location.href = PageUrl.notice_share.send + '?hakwonNo=' + hakwonInfo.hakwon_no;
-			} else if( dataAct == 'receive_notice_share' ) {
-				/*	받은 공유 공지	*/
-				window.location.href = PageUrl.notice_share.receive + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			}
 
 

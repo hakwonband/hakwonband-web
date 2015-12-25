@@ -170,8 +170,9 @@ var PageUrl = {
 		, update : '#/counsel/update'
 	}
 	, notice_share : {
-		send : '#/notice/share/send'
-		, receive : '#/notice/share/receive'
+		sendList : '#/notice/share/sendList'
+		, receiveList : '#/notice/share/receiveList'
+		, send : '#/notice/share/send'
 	}
 };
 
