@@ -84,6 +84,7 @@ public class HakwonConstant {
 		public static final int EVENT_REQ			= 10;	// 이벤트 요청
 		public static final int PARENT_LIST			= 10;	// 학부모 리스트
 		public static final int STUDENT_LIST		= 10;	// 학생 리스트
+		public static final int SHARE_LIST			= 10;	// 공유 리스트
 	}
 
 	/**
@@ -248,6 +249,20 @@ public class HakwonConstant {
 			common.put("SELECT_SCALE", Common.SELECT_SCALE);
 
 			dataMap.put("Common", common);
+
+
+			DataMap pageScale = new DataMap();
+			pageScale.put("ADVERTISE_REQ",	PageScale.ADVERTISE_REQ);
+			pageScale.put("USER_REQ",		PageScale.USER_REQ);
+			pageScale.put("TEACHER_REQ",	PageScale.TEACHER_REQ);
+			pageScale.put("CLASS_REQ",		PageScale.CLASS_REQ);
+			pageScale.put("MESSAGE_REQ",	PageScale.MESSAGE_REQ);
+			pageScale.put("NOTICE_REQ",		PageScale.NOTICE_REQ);
+			pageScale.put("EVENT_REQ",		PageScale.EVENT_REQ);
+			pageScale.put("PARENT_LIST",	PageScale.PARENT_LIST);
+			pageScale.put("STUDENT_LIST",	PageScale.STUDENT_LIST);
+			pageScale.put("SHARE_LIST",		PageScale.SHARE_LIST);
+			dataMap.put("PageScale", pageScale);
 
 			String jsonObjStr = (new ObjectMapper()).writeValueAsString(dataMap);
 			return jsonObjStr;

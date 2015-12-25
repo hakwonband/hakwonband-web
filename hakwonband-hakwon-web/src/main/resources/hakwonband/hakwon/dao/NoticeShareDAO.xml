@@ -7,15 +7,118 @@
 	<insert id="shareInsert" parameterType="dataMap">
 	<![CDATA[
 		/*	NoticeShareDAO.shareInsert	*/
-		insert into hakwonband_dev_db.tb_notice_share (
-			share_no, send_hakwon_no, reg_user_no, notice_type, parent_no, receive_hakwon_no, start_date, end_date, reg_date, udp_date
-		) values(
-			0, 0, 0, '', 0, 0, '', '', '', ''
+		insert into tb_notice_share (
+			send_hakwon_no, reg_user_no, notice_type, parent_no, receive_hakwon_no, start_date, end_date, reg_date, udp_date
+		) values (
+			#{send_hakwon_no}, #{reg_user_no}, #{notice_type}, #{parent_no}, #{receive_hakwon_no}, #{start_date}, #{end_date }, now(), now()
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
 		select last_insert_id()
 	</selectKey>
 	</insert>
+
+	<!-- 공유한 리스트 -->
+	<select id="sendList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.sendList	*/
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, a.start_date
+			, a.end_date
+			, a.reg_date
+			, a.udp_date
+		from
+			tb_notice_share a
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 공유한 리스트 카운트 -->
+	<select id="sendListTotCount" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.sendListTotCount	*/
+		select
+			count(1)
+		from
+			tb_notice_share a
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 공유 받은 리스트 -->
+	<select id="receiveList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.receiveList	*/
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, a.start_date
+			, a.end_date
+			, a.reg_date
+			, a.udp_date
+		from
+			tb_notice_share a
+		where
+			a.receive_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 공유 받은 리스트 카운트 -->
+	<select id="receiveListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	NoticeShareDAO.receiveListTotCount	*/
+		select
+			count(1)
+		from
+			tb_notice_share a
+		where
+			a.receive_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 공유 수정 -->
+	<update id="updateShare" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.updateShare	*/
+		update tb_notice_share set
+			start_date = #{start_date}
+			, end_date = #{end_date}
+			, udp_date = now()
+		where
+			share_no = #{share_no}
+			and reg_user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 공유 삭제 -->
+	<delete id="deleteShare" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.updateShare	*/
+		delete from tb_notice_share
+		where
+			share_no = #{share_no}
+			and reg_user_no = #{user_no}
+	]]>
+	</delete>
 
 </mapper>
