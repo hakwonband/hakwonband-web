@@ -281,4 +281,22 @@ public class HakwonService {
 			throw new HKBandException();
 		}
 	}
+
+	/**
+	 * 학원 반 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> hakwonClassListAll(DataMap param) {
+		return hakwonDAO.hakwonClassListAll(param);
+	}
+
+	/**
+	 * 학원 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> hakwonSearchList(DataMap param) {
+		return hakwonDAO.hakwonSearchList(param);
+	}
 }

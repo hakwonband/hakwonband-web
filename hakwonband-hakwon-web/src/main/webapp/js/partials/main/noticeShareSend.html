@@ -1,7 +1,60 @@
 <div class="ibox m m-t-xl">
-	<div class="ibox-content">
-		noticeShareSend.html
-		공유한 리스트 보여준다.
-		공유 버튼 클릭시
+	<div class="ibox-content form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">반(class)</label>
+			<div class="col-sm-10">
+				<select
+					ng-model="share_class" class="form-control m-b"
+					ng-options="item.class_no as item.class_title for item in class_list track by item.class_no">
+					<option value="">--선택해 주세요.--</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">학원 검색</label>
+			<div class="col-sm-10">
+				<div class="input-group">
+					<input type="text" class="form-control ng-pristine ng-valid ng-touched" ng-enter="hakwonSearch()" ng-model="search_text" placeholder="학원명 검색">
+					<span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="hakwonSearch()">검색하기</button></span>
+				</div>
+				<div class="input-group" ng-if="hakwon_list.length > 0">
+					<br/>
+					<ul ng-repeat="hakwon in hakwon_list">
+						<li style="cursor:pointer; cursor:hand;" ng-click="targetHakwon(hakwon)">{{hakwon.hakwon_name}}</li>
+					</ul>
+				</div>
+				<div class="input-group" ng-if="hakwon_list.length == 0">
+					검색된 학원이 없습니다.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">대상 학원</label>
+			<div class="col-sm-10">
+				<div class="input-group" ng-if="target_hakwon_list.length > 0">
+					<ul ng-repeat="hakwon in target_hakwon_list">
+						<li>{{hakwon.hakwon_name}} <button ng-click="targetRemove(hakwon)" type="button">X</button></li>
+					</ul>
+				</div>
+				<div class="input-group" ng-if="target_hakwon_list.length == 0">
+					공유 하고 싶은 학원을 선택해 주세요.
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">공유 기간</label>
+			<div class="col-sm-10">
+				<input type="date" name="start_date" min="2016-01-01" max="2050-12-31"> ~ <input type="date" name="end_date" min="2016-01-01" max="2030-12-31">
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content text-right">
+		<button type="button" class="btn btn-primary" ng-click="shareSend()">공유하기</button>
 	</div>
 </div>

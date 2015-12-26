@@ -1,7 +1,40 @@
-<div class="ibox m m-t-xl">
-	<div class="ibox-content">
-		noticeShareSendList.html
-		공유한 리스트 보여준다.
-		공유 버튼 클릭시
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>공유한 학원 리스트</h5>
+			</div>
+			<div class="ibox-content">
+
+				<div class="dataTables_wrapper form-inline">
+					<table class="table table-bordered table-hover dataTable dtr-inline">
+						<thead>
+							<tr role="row">
+								<th style="width: 165px;">공유받은 학원</th>
+								<th style="width: 224px;">공유된 반 공지</th>
+								<th style="width: 209px;">일정</th>
+								<th style="width: 144px;">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr role="row" ng-repeat="item in share_list">
+								<td class="sorting_1">{{item.hakwon_name}}</td>
+								<td>{{item.class_title}}</td>
+								<td>{{item.start_date}} ~ {{item.end_date}}</td>
+								<td>
+									<button class="btn btn-white" type="button" ng-click="deleteShare(item)">삭제</button>
+									<button class="btn btn-primary" type="button" ng-click="updateShare(item)">수정</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="text-center m-b-xl m-t-xl" ng-if="page_info">
+					<button type="button" class="btn btn-white" ng-if="page_info.prevPage" ng-click="movePage(page_info.prevPage)"><i class="fa fa-chevron-left"></i></button>
+					<button ng-repeat="page in page_info.pages"class="btn btn-white"  ng-class="{active: page == page_info.curPage}" ng-click="movePage(page)">{{page}}</button>
+					<button type="button" class="btn btn-white" ng-if="page_info.nextPage" ng-click="movePage(page_info.nextPage)"><i class="fa fa-chevron-right"></i></button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

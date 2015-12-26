@@ -142,4 +142,18 @@ public interface HakwonDAO {
 	 * @param param
 	 */
 	public void insertPreviewIntro(DataMap param);
+
+	/**
+	 * 학원 반 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> hakwonClassListAll(DataMap param);
+
+	/**
+	 * 학원 검색
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> hakwonSearchList(DataMap param);
 }

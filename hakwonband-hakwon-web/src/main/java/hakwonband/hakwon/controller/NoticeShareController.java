@@ -45,17 +45,12 @@ public class NoticeShareController extends BaseAction {
 		int page_no			= StringUtil.parseInt(request.getParameter("page_no"), 1);
 		int page_scale		= HakwonConstant.PageScale.SHARE_LIST;
 		String hakwon_no	= request.getParameter("hakwon_no");
-		String start_date	= request.getParameter("start_date");
-		String end_date		= request.getParameter("end_date");
 
 		DataMap param = new DataMap();
 		param.put("user_no", 			authUserInfo.get("user_no"));	// 현재 사용자의 공지사항 읽은상태 체크용
 		param.put("start_no",			(page_no-1)*page_scale);
 		param.put("page_scale",			page_scale);
 		param.put("hakwon_no",			hakwon_no);
-		param.put("start_date",			start_date);
-		param.put("end_date",			end_date);
-
 
 		DataMap colData = noticeShareService.sendList(param);
 		colData.put("page_scale",	page_scale);
@@ -104,15 +99,21 @@ public class NoticeShareController extends BaseAction {
 	public void send(HttpServletRequest request, HttpServletResponse response) {
 		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		String hakwon_no	= request.getParameter("hakwon_no");
-		String start_date	= request.getParameter("start_date");
-		String end_date		= request.getParameter("end_date");
+		String hakwon_no		= request.getParameter("hakwon_no");
+		String start_date		= request.getParameter("start_date");
+		String end_date			= request.getParameter("end_date");
+		String share_class		= request.getParameter("share_class");
+		String share_hakwon		= request.getParameter("share_hakwon");
+		String [] target_hakwon	= request.getParameterValues("target_hakwon");
 
 		DataMap param = new DataMap();
-		param.put("user_no",	authUserInfo.getString("user_no"));
-		param.put("start_date",	start_date);
-		param.put("end_date",	end_date);
-		param.put("hakwon_no",	hakwon_no);
+		param.put("user_no",		authUserInfo.getString("user_no"));
+		param.put("start_date",		start_date);
+		param.put("end_date",		end_date);
+		param.put("hakwon_no",		hakwon_no);
+		param.put("share_class",	share_class);
+		param.put("share_hakwon",	share_hakwon);
+		param.put("target_hakwon",	target_hakwon);
 
 		/**
 		 * 공유 등록
@@ -159,11 +160,21 @@ public class NoticeShareController extends BaseAction {
 
 		String share_no = request.getParameter("share_no");
 
-		DataMap param = new DataMap();
-		param.put("share_no",	share_no);
-		param.put("user_no",	authUserInfo.getString("user_no"));
 
-		noticeShareService.deleteShare(param);
+		String del_type = request.getParameter("del_type");
+
+		String receive_hakwon_no = request.getParameter("receive_hakwon_no");
+
+		DataMap param = new DataMap();
+		param.put("share_no",			share_no);
+		param.put("receive_hakwon_no",	receive_hakwon_no);
+		param.put("user_no",			authUserInfo.getString("user_no"));
+
+		if( "receive".equals(del_type) ) {
+			noticeShareService.deleteReceiveShare(param);
+		} else if( "send".equals(del_type) ) {
+			noticeShareService.deleteSendShare(param);
+		}
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}

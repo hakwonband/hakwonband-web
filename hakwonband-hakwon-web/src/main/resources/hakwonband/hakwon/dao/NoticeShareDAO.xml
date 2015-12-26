@@ -10,7 +10,7 @@
 		insert into tb_notice_share (
 			send_hakwon_no, reg_user_no, notice_type, parent_no, receive_hakwon_no, start_date, end_date, reg_date, udp_date
 		) values (
-			#{send_hakwon_no}, #{reg_user_no}, #{notice_type}, #{parent_no}, #{receive_hakwon_no}, #{start_date}, #{end_date }, now(), now()
+			#{send_hakwon_no}, #{user_no}, #{notice_type}, #{parent_no}, #{receive_hakwon_no}, str_to_date(#{start_date}, '%Y-%m-%d'), str_to_date(#{end_date}, '%Y-%m-%d'), now(), now()
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
@@ -29,31 +29,39 @@
 			, a.notice_type
 			, a.parent_no
 			, a.receive_hakwon_no
-			, a.start_date
-			, a.end_date
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
 			, a.reg_date
 			, a.udp_date
+			, b.hakwon_name
+			, case when a.notice_type = '002' then '학원공지'
+				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
+				else '' end class_title
 		from
 			tb_notice_share a
+			, tb_hakwon b
 		where
 			a.send_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.receive_hakwon_no = b.hakwon_no
 		limit
 			#{start_no}, #{page_scale}
 	]]>
 	</select>
 
 	<!-- 공유한 리스트 카운트 -->
-	<select id="sendListTotCount" parameterType="dataMap" resultType="dataMap">
+	<select id="sendListTotCount" parameterType="dataMap" resultType="int">
 	<![CDATA[
 		/*	NoticeShareDAO.sendListTotCount	*/
 		select
 			count(1)
 		from
 			tb_notice_share a
+			, tb_hakwon b
 		where
 			a.send_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.receive_hakwon_no = b.hakwon_no
 	]]>
 	</select>
 
@@ -68,15 +76,21 @@
 			, a.notice_type
 			, a.parent_no
 			, a.receive_hakwon_no
-			, a.start_date
-			, a.end_date
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
 			, a.reg_date
 			, a.udp_date
+			, b.hakwon_name
+			, case when a.notice_type = '002' then '학원공지'
+				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
+				else '' end class_title
 		from
 			tb_notice_share a
+			, tb_hakwon b
 		where
 			a.receive_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.send_hakwon_no = b.hakwon_no
 		limit
 			#{start_no}, #{page_scale}
 	]]>
@@ -90,19 +104,55 @@
 			count(1)
 		from
 			tb_notice_share a
+			, tb_hakwon b
 		where
 			a.receive_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.send_hakwon_no = b.hakwon_no
 	]]>
 	</select>
 
-	<!-- 공유 수정 -->
+
+	<!-- 학원 공유 체크 -->
+	<select id="checkShareCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	NoticeShareDAO.checkShareCount	*/
+		select
+			count(1)
+		from
+			tb_notice_share a
+		where
+			send_hakwon_no = #{send_hakwon_no}
+			and notice_type = #{notice_type}
+			and parent_no = #{parent_no}
+			and receive_hakwon_no = #{receive_hakwon_no}
+			and reg_user_no = #{user_no}
+	]]>
+	</select>
+
 	<update id="updateShare" parameterType="dataMap">
 	<![CDATA[
 		/*	NoticeShareDAO.updateShare	*/
 		update tb_notice_share set
-			start_date = #{start_date}
-			, end_date = #{end_date}
+			start_date = str_to_date(#{start_date}, '%Y-%m-%d')
+			, end_date = str_to_date(#{end_date}, '%Y-%m-%d')
+			, udp_date = now()
+		where
+			send_hakwon_no = #{send_hakwon_no}
+			and notice_type = #{notice_type}
+			and parent_no = #{parent_no}
+			and receive_hakwon_no = #{receive_hakwon_no}
+			and reg_user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 공유 수정 -->
+	<update id="updateShareDate" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.updateShareDate	*/
+		update tb_notice_share set
+			start_date = str_to_date(#{start_date}, '%Y-%m-%d')
+			, end_date = str_to_date(#{end_date}, '%Y-%m-%d')
 			, udp_date = now()
 		where
 			share_no = #{share_no}
@@ -111,9 +161,20 @@
 	</update>
 
 	<!-- 공유 삭제 -->
-	<delete id="deleteShare" parameterType="dataMap">
+	<delete id="deleteReceiveShare" parameterType="dataMap">
 	<![CDATA[
-		/*	NoticeShareDAO.updateShare	*/
+		/*	NoticeShareDAO.deleteReceiveShare	*/
+		delete from tb_notice_share
+		where
+			share_no = #{share_no}
+			and receive_hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{receive_hakwon_no} and master_user_no = #{user_no})
+	]]>
+	</delete>
+
+	<!-- 공유 삭제 -->
+	<delete id="deleteSendShare" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.deleteSendShare	*/
 		delete from tb_notice_share
 		where
 			share_no = #{share_no}

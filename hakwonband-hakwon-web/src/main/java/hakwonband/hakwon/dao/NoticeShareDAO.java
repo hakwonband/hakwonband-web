@@ -52,9 +52,27 @@ public interface NoticeShareDAO {
 	public int updateShare(DataMap param);
 
 	/**
-	 * 공유 삭제
+	 * 공유 날짜 수정
 	 * @param param
 	 */
-	public int deleteShare(DataMap param);
+	public int updateShareDate(DataMap param);
 
+	/**
+	 * 공유 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkShareCount(DataMap param);
+
+	/**
+	 * 받은 공유 삭제
+	 * @param param
+	 */
+	public int deleteReceiveShare(DataMap param);
+
+	/**
+	 * 보낸 공유 삭제
+	 * @param param
+	 */
+	public int deleteSendShare(DataMap param);
 }

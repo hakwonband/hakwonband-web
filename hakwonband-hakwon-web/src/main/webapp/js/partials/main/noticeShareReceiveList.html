@@ -1,5 +1,45 @@
-<div class="ibox m m-t-xl">
-	<div class="ibox-content">
-		noticeShareReceiveList.html
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>공유 받은 리스트</h5>
+			</div>
+			<div class="ibox-content">
+
+				<div class="dataTables_wrapper form-inline" ng-if="share_list.length > 0">
+					<table class="table table-bordered table-hover dataTable dtr-inline">
+						<thead>
+							<tr role="row">
+								<th style="width: 165px;">공유해준 학원</th>
+								<th style="width: 224px;">공유된 반 공지</th>
+								<th style="width: 209px;">일정</th>
+								<th style="width: 144px;">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr role="row" ng-repeat="item in share_list">
+								<td class="sorting_1">{{item.hakwon_name}}</td>
+								<td>{{item.class_title}}</td>
+								<td>{{item.start_date}} ~ {{item.end_date}}</td>
+								<td>
+									<button class="btn btn-white" type="button" ng-click="deleteShare(item)">취소</button>
+									<button class="btn btn-primary" type="button" ng-click="">공지사항에 넣기</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="dataTables_wrapper form-inline" ng-if="share_list.length == 0">
+					공유받은 공지사항이 없습니다.
+				</div>
+
+				<div class="text-center m-b-xl m-t-xl" ng-if="page_info">
+					<button type="button" class="btn btn-white" ng-if="page_info.prevPage" ng-click="movePage(page_info.prevPage)"><i class="fa fa-chevron-left"></i></button>
+					<button ng-repeat="page in page_info.pages"class="btn btn-white"  ng-class="{active: page == page_info.curPage}" ng-click="movePage(page)">{{page}}</button>
+					<button type="button" class="btn btn-white" ng-if="page_info.nextPage" ng-click="movePage(page_info.nextPage)"><i class="fa fa-chevron-right"></i></button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

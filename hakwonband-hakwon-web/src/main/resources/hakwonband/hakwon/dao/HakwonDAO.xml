@@ -385,4 +385,49 @@
 		select last_insert_id()
 	</selectKey>
 	</insert>
+
+
+	<!-- 학원 반리스트	-->
+	<select id="hakwonClassListAll" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonClassListAll  */
+		select
+			b.class_no
+			, b.class_order
+			, b.class_title
+			, b.logo_file_no
+			, get_file_path(b.logo_file_no) as logo_file_path
+		from
+			tb_hakwon a
+			, tb_hakwon_class b
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.master_user_no = #{user_no}
+			and b.hakwon_no = a.hakwon_no
+		order by
+			b.class_title asc
+	]]>
+	</select>
+
+	<!-- 학원 검색	-->
+	<select id="hakwonSearchList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonSearchList  */
+		select
+			a.hakwon_no
+			, a.hakwon_name
+			, get_file_path(b.logo_file_no) as logo_file_path
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.hakwon_name like concat('%', #{search_text}, '%')
+			and a.hakwon_no <> #{hakwon_no}
+			and a.hakwon_status = '001'
+			and a.hakwon_no = b.hakwon_no
+		order by
+			a.hakwon_name asc
+		limit 50
+	]]>
+	</select>
 </mapper>

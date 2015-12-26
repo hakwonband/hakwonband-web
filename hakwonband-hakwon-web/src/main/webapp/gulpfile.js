@@ -84,6 +84,7 @@ var merge		= require('merge-stream'),
 			, './js/module/main/attendance.js'
 			, './js/module/main/receipt.js'
 			, './js/module/main/counsel.js'
+			, './js/module/main/noticeShare.js'
 		]
 		, index_module : [
  			'./js/common/common.prototype.js'

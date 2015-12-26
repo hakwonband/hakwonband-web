@@ -324,4 +324,48 @@ public class HakwonController extends BaseAction {
 
 		sendColData(hakwonService.getNoticeCateList(param), request, response);
 	}
+
+	/**
+	 * 학원 반 리스트 전체
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/classListAll")
+	public void hakwonClassListAll(HttpServletRequest request, HttpServletResponse response) {
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		String hakwon_no = request.getParameter("hakwon_no");
+
+		DataMap param = new DataMap();
+		param.put("hakwon_no",	hakwon_no);
+		param.put("user_no", 	authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+
+		/*	학원 반 리스트	*/
+		List<DataMap> classList = hakwonService.hakwonClassListAll(param);
+
+		sendList(classList, request, response);
+	}
+
+	/**
+	 * 학원 반 리스트 전체
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/search")
+	public void search(HttpServletRequest request, HttpServletResponse response) {
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		String search_text	= request.getParameter("search_text");
+		String hakwon_no	= request.getParameter("hakwon_no");
+
+		DataMap param = new DataMap();
+		param.put("search_text",	search_text);
+		param.put("hakwon_no",		hakwon_no);
+		param.put("user_no", 		authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+
+		/*	학원 리스트	*/
+		List<DataMap> hakwonList = hakwonService.hakwonSearchList(param);
+
+		sendList(hakwonList, request, response);
+	}
 }
