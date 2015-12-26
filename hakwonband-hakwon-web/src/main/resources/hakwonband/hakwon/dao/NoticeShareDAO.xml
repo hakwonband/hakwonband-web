@@ -37,6 +37,8 @@
 			, case when a.notice_type = '002' then '학원공지'
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
 				else '' end class_title
+			, case when now() between a.start_date and a.end_date then 'Y'
+				else 'N' end as use_yn
 		from
 			tb_notice_share a
 			, tb_hakwon b
@@ -84,6 +86,8 @@
 			, case when a.notice_type = '002' then '학원공지'
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
 				else '' end class_title
+			, case when now() between a.start_date and a.end_date then 'Y'
+				else 'N' end as use_yn
 		from
 			tb_notice_share a
 			, tb_hakwon b
@@ -182,4 +186,53 @@
 	]]>
 	</delete>
 
+	<!-- 공유 정보 -->
+	<select id="sendInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.sendInfo	*/
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
+			, case when now() between a.start_date and a.end_date then 'Y'
+				else 'N' end as use_yn
+			, a.reg_date
+			, a.udp_date
+		from
+			tb_notice_share a
+		where
+			a.share_no = #{share_no}
+			and a.receive_hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{receive_hakwon_no} and master_user_no = #{user_no})
+	]]>
+	</select>
+
+
+	<!-- 공유 받은 공지 리스트 -->
+	<select id="shareNoticeList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.shareNoticeList	*/
+		select
+			b.notice_no
+			, (
+				select count(1)
+				from tb_notice
+				where
+					notice_type = b.notice_type
+					and notice_parent_no = #{target_class}
+					and rel_notice_no = b.notice_no
+			) as update_check
+		from
+			tb_notice_share a
+			, tb_notice b
+		where
+			a.share_no = #{share_no}
+			and a.notice_type = b.notice_type
+			and a.parent_no = b.notice_parent_no
+	]]>
+	</select>
 </mapper>

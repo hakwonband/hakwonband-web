@@ -445,6 +445,8 @@ create table tb_notice (
 	, reg_date				datetime						not null	comment '생성 일자'
 	, udp_user_no			integer										comment '수정자 번호'
 	, udp_date				datetime									comment '수정자 일자'
+	, rel_notice_no			integer										comment '연결 공지 번호'
+	, share_no				integer										comment '공유 번호'
 	, primary key (notice_no)
 )
 engine = innodb
@@ -884,3 +886,10 @@ comment = '입금 리스트'
 ;
 create index tb_notice_share_send_hakwon_idx on tb_notice_share (send_hakwon_no);
 create index tb_notice_share_receive_hakwon_idx on tb_notice_share (receive_hakwon_no);
+
+
+alter table tb_notice add rel_notice_no			integer				comment '연결 공지번호' after udp_date;
+alter table tb_notice add share_no				integer				comment '공유번호' after rel_notice_no;
+
+create index tb_notice_rel_notice_no_idx on tb_notice (rel_notice_no);
+create index tb_notice_share_no_idx on tb_notice (share_no);

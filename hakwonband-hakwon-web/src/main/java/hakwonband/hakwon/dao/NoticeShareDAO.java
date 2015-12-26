@@ -75,4 +75,18 @@ public interface NoticeShareDAO {
 	 * @param param
 	 */
 	public int deleteSendShare(DataMap param);
+
+	/**
+	 * 공유 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap sendInfo(DataMap param);
+
+	/**
+	 * 공유 받은 공지 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> shareNoticeList(DataMap param);
 }

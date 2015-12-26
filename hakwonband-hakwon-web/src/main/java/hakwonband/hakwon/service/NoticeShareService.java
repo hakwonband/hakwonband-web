@@ -36,11 +36,12 @@ public class NoticeShareService {
 			if( param.equals("share_class", "-1") ) {
 				/*	학원공지	*/
 				shareParam.put("notice_type", "002");
+				shareParam.put("parent_no",			param.getString("hakwon_no"));
 			} else {
 				/*	반공공지	*/
 				shareParam.put("notice_type", "003");
+				shareParam.put("parent_no",			param.getString("share_class"));
 			}
-			shareParam.put("parent_no",			param.getString("share_class"));
 			shareParam.put("receive_hakwon_no",	target_hakwon[i]);
 			shareParam.put("user_no",			param.getString("user_no"));
 			shareParam.put("start_date",		param.getString("start_date"));
@@ -136,5 +137,35 @@ public class NoticeShareService {
 		if( checkCnt != 1 ) {
 			throw new HKBandException();
 		}
+	}
+
+	/**
+	 * 공유 받은 공지 적용
+	 * @param param
+	 */
+	public void executeNoticeApply(DataMap param) {
+
+
+		/**
+		 * 대상 공지 리스트 조회
+		 */
+		DataMap shareInfo = noticeShareDAO.sendInfo(param);
+		if( shareInfo == null || shareInfo.equals("use_yn", "N") ) {
+			throw new HKBandException();
+		}
+
+		/**
+		 * 조회 및 등록
+		 */
+		List<DataMap> noticeList = noticeShareDAO.shareNoticeList(param);
+		for(int i=0; i<noticeList.size(); i++) {
+			DataMap notice = noticeList.get(i);
+			if( notice.getInt("update_check") == 1 ) {
+				/*	업데이트	*/
+			} else {
+				/*	등록	*/
+			}
+		}
+
 	}
 }

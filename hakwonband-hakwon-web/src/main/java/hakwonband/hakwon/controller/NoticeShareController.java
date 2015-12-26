@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
+import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.service.NoticeShareService;
 import hakwonband.util.DataMap;
 import hakwonband.util.StringUtil;
-
-@RequestMapping("/hakwon/noticeShare")
 
 /**
  * 공지 공유 컨트롤러
  * @author bumworld
  *
  */
+@RequestMapping("/hakwon/noticeShare")
 @Controller
 public class NoticeShareController extends BaseAction {
 
@@ -106,6 +106,13 @@ public class NoticeShareController extends BaseAction {
 		String share_hakwon		= request.getParameter("share_hakwon");
 		String [] target_hakwon	= request.getParameterValues("target_hakwon");
 
+		int startDate = Integer.parseInt(start_date.replaceAll("-", ""));
+		int endDate = Integer.parseInt(end_date.replaceAll("-", ""));
+
+		if( startDate > endDate ) {
+			throw new HKBandException();
+		}
+
 		DataMap param = new DataMap();
 		param.put("user_no",		authUserInfo.getString("user_no"));
 		param.put("start_date",		start_date);
@@ -136,6 +143,13 @@ public class NoticeShareController extends BaseAction {
 		String share_no		= request.getParameter("share_no");
 		String start_date	= request.getParameter("start_date");
 		String end_date		= request.getParameter("end_date");
+
+		int startDate = Integer.parseInt(start_date.replaceAll("-", ""));
+		int endDate = Integer.parseInt(end_date.replaceAll("-", ""));
+
+		if( startDate > endDate ) {
+			throw new HKBandException();
+		}
 
 		DataMap param = new DataMap();
 		param.put("share_no",	share_no);
@@ -175,6 +189,36 @@ public class NoticeShareController extends BaseAction {
 		} else if( "send".equals(del_type) ) {
 			noticeShareService.deleteSendShare(param);
 		}
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
+	 * 공유받은 공지 적용
+	 *
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value = "/apply", method = RequestMethod.POST)
+	public void noticeApply(HttpServletRequest request, HttpServletResponse response) {
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		/*	공유 번호	*/
+		String share_no = request.getParameter("share_no");
+
+		/*	학원 번호	*/
+		String hakwon_no = request.getParameter("hakwon_no");
+
+		/*	적용할 반 번호	*/
+		String target_class = request.getParameter("target_class");
+
+		DataMap param = new DataMap();
+		param.put("share_no",		share_no);
+		param.put("hakwon_no",		hakwon_no);
+		param.put("target_class",	target_class);
+		param.put("user_no",		authUserInfo.getString("user_no"));
+
+		noticeShareService.executeNoticeApply(param);
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
