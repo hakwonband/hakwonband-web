@@ -277,7 +277,7 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 		/*	수정	*/
 		$scope.updateShare = function(shareInfo) {
 			console.log(shareInfo);
-			alert('수정한다.');
+			alert('준비 중 입니다.');
 		};
 
 		/*	삭제	*/

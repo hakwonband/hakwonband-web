@@ -93,7 +93,6 @@
 			, tb_hakwon b
 		where
 			a.receive_hakwon_no = #{hakwon_no}
-			and a.reg_user_no = #{user_no}
 			and a.send_hakwon_no = b.hakwon_no
 		limit
 			#{start_no}, #{page_scale}
@@ -111,7 +110,6 @@
 			, tb_hakwon b
 		where
 			a.receive_hakwon_no = #{hakwon_no}
-			and a.reg_user_no = #{user_no}
 			and a.send_hakwon_no = b.hakwon_no
 	]]>
 	</select>
