@@ -150,8 +150,8 @@ public class NoticeShareService {
 		 * 대상 공지 리스트 조회
 		 */
 		DataMap shareInfo = noticeShareDAO.sendInfo(param);
-		System.out.println("shareInfo : " + shareInfo);
 		if( shareInfo == null || shareInfo.equals("use_yn", "N") || shareInfo.getInt("class_check_count") != 1 ) {
+			logger.error("shareInfo : " + shareInfo);
 			throw new HKBandException();
 		}
 
