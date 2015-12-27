@@ -4,8 +4,21 @@
 			<div class="ibox-title">
 				<h5>공유 받은 리스트</h5>
 			</div>
-			<div class="ibox-content">
 
+			<div class="ibox-content form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">공유 반 선택</label>
+					<div class="col-sm-10">
+						<select
+							ng-model="select_class" class="form-control m-b"
+							ng-options="item.class_no as item.class_title for item in class_list track by item.class_no">
+							<option value="">--선택해 주세요.--</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="ibox-content">
 				<div class="dataTables_wrapper form-inline" ng-if="share_list.length > 0">
 					<table class="table table-bordered table-hover dataTable dtr-inline">
 						<thead>
@@ -23,7 +36,7 @@
 								<td>{{item.start_date}} ~ {{item.end_date}}</td>
 								<td>
 									<button class="btn btn-white" type="button" ng-click="deleteShare(item)">취소</button>
-									<button class="btn btn-primary" type="button" ng-click="">공지사항에 넣기</button>
+									<button class="btn btn-primary" type="button" ng-click="applyNotice(item)">공지사항에 넣기</button>
 								</td>
 							</tr>
 						</tbody>
@@ -40,6 +53,7 @@
 					<button type="button" class="btn btn-white" ng-if="page_info.nextPage" ng-click="movePage(page_info.nextPage)"><i class="fa fa-chevron-right"></i></button>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </div>

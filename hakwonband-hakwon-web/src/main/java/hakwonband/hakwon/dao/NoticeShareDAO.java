@@ -89,4 +89,16 @@ public interface NoticeShareDAO {
 	 * @return
 	 */
 	public List<DataMap> shareNoticeList(DataMap param);
+
+	/**
+	 * 공지 등록
+	 * @param param
+	 */
+	public void noticeInsert(DataMap param);
+
+	/**
+	 * 공지 수정
+	 * @param param
+	 */
+	public int noticeUpdate(DataMap param);
 }

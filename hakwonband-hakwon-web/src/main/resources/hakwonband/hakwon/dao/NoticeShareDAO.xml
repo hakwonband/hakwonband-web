@@ -203,11 +203,14 @@
 				else 'N' end as use_yn
 			, a.reg_date
 			, a.udp_date
+			, case when notice_type = '002' then (select count(1) from tb_hakwon where hakwon_no = #{target_class} and master_user_no = #{user_no})
+				when notice_type = '003' then (select count(1) from tb_hakwon x, tb_hakwon_class y where x.hakwon_no = #{hakwon_no} and x.master_user_no = #{user_no} and x.hakwon_no = y.hakwon_no and y.class_no = #{target_class})
+				else -1 end as class_check_count
 		from
 			tb_notice_share a
 		where
 			a.share_no = #{share_no}
-			and a.receive_hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{receive_hakwon_no} and master_user_no = #{user_no})
+			and a.receive_hakwon_no = (select hakwon_no from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{user_no})
 	]]>
 	</select>
 
@@ -226,6 +229,9 @@
 					and notice_parent_no = #{target_class}
 					and rel_notice_no = b.notice_no
 			) as update_check
+			, b.title
+			, b.preview_content
+			, b.content
 		from
 			tb_notice_share a
 			, tb_notice b
@@ -233,6 +239,62 @@
 			a.share_no = #{share_no}
 			and a.notice_type = b.notice_type
 			and a.parent_no = b.notice_parent_no
+			and b.reservation_yn = 'N'
+			and b.content_status = '001'
+		order by
+			b.reg_date asc
 	]]>
 	</select>
+
+	<!-- 학원 공지사항 등록 -->
+	<insert id="noticeInsert" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.noticeInsert	*/
+		insert into tb_notice (
+			notice_type
+			, notice_parent_no
+			, title
+			, preview_content
+			, content
+			, content_status
+			, reply_yn
+			, reg_user_no
+			, reg_date
+			, reservation_yn
+			, reservation_date
+			, rel_notice_no
+			, share_no
+		) values (
+			#{notice_type}
+			, #{notice_parent_no}
+			, #{title}
+			, #{preview_content}
+			, #{content}
+			, '001'
+			, 'Y'
+			, #{reg_user_no}
+			, now()
+			, 'N'
+			, null
+			, #{rel_notice_no}
+			, #{share_no}
+		)
+	]]>
+	</insert>
+
+	<!-- 공지사항 내용 수정 -->
+	<update id="noticeUpdate" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.noticeUpdate	*/
+		update tb_notice set
+			udp_user_no = #{udp_user_no}
+			, udp_date	= now()
+			, title = #{title}
+			, preview_content = #{preview_content}
+			, content = #{content}
+		where
+			rel_notice_no = #{rel_notice_no}
+			and share_no = #{share_no}
+	]]>
+	</update>
 </mapper>

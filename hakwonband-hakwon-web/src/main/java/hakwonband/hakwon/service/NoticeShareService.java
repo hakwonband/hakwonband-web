@@ -150,7 +150,8 @@ public class NoticeShareService {
 		 * 대상 공지 리스트 조회
 		 */
 		DataMap shareInfo = noticeShareDAO.sendInfo(param);
-		if( shareInfo == null || shareInfo.equals("use_yn", "N") ) {
+		System.out.println("shareInfo : " + shareInfo);
+		if( shareInfo == null || shareInfo.equals("use_yn", "N") || shareInfo.getInt("class_check_count") != 1 ) {
 			throw new HKBandException();
 		}
 
@@ -162,8 +163,28 @@ public class NoticeShareService {
 			DataMap notice = noticeList.get(i);
 			if( notice.getInt("update_check") == 1 ) {
 				/*	업데이트	*/
+				DataMap updateParam = new DataMap();
+				updateParam.put("udp_user_no",		param.getString("user_no"));
+				updateParam.put("title",			notice.getString("title"));
+				updateParam.put("preview_content",	notice.getString("preview_content"));
+				updateParam.put("content",			notice.getString("content"));
+				updateParam.put("rel_notice_no",	notice.getString("notice_no"));
+				updateParam.put("share_no",			param.getString("share_no"));
+
+				noticeShareDAO.noticeUpdate(updateParam);
 			} else {
 				/*	등록	*/
+				DataMap insertParam = new DataMap();
+				insertParam.put("notice_type",		shareInfo.getString("notice_type"));
+				insertParam.put("notice_parent_no",	param.getString("target_class"));
+				insertParam.put("title",			notice.getString("title"));
+				insertParam.put("preview_content",	notice.getString("preview_content"));
+				insertParam.put("content",			notice.getString("content"));
+				insertParam.put("reg_user_no",		param.getString("user_no"));
+				insertParam.put("rel_notice_no",	notice.getString("notice_no"));
+				insertParam.put("share_no",			param.getString("share_no"));
+
+				noticeShareDAO.noticeInsert(insertParam);
 			}
 		}
 

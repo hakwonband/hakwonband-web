@@ -41,6 +41,7 @@
 	<![CDATA[
 		order by
 			a.reg_date desc
+			, a.notice_no desc
 		limit
 			#{start_no}, #{page_scale}
 	]]>
