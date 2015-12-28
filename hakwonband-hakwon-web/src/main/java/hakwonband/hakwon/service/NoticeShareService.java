@@ -126,6 +126,10 @@ public class NoticeShareService {
 		if( checkCnt != 1 ) {
 			throw new HKBandException();
 		}
+
+		/*	공유된 공지 삭제	*/
+		int delCnt = noticeShareDAO.deleteShareNotice(param);
+		logger.info("delCnt : " + delCnt);
 	}
 
 	/**
@@ -137,6 +141,9 @@ public class NoticeShareService {
 		if( checkCnt != 1 ) {
 			throw new HKBandException();
 		}
+		/*	공유된 공지 삭제	*/
+		int delCnt = noticeShareDAO.deleteShareNotice(param);
+		logger.info("delCnt : " + delCnt);
 	}
 
 	/**

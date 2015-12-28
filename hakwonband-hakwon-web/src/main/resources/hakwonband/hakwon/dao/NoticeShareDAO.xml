@@ -184,6 +184,16 @@
 	]]>
 	</delete>
 
+	<!-- 공유된 공지 삭제 -->
+	<delete id="deleteShareNotice" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.deleteShareNotice	*/
+		delete from tb_notice
+		where
+			share_no = #{share_no}
+	]]>
+	</delete>
+
 	<!-- 공유 정보 -->
 	<select id="sendInfo" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[
@@ -239,6 +249,7 @@
 			and a.parent_no = b.notice_parent_no
 			and b.reservation_yn = 'N'
 			and b.content_status = '001'
+			and b.share_no is null
 		order by
 			b.reg_date asc
 	]]>
