@@ -991,7 +991,15 @@ var HakwonCommon = function() {
 					var geocoder = new google.maps.Geocoder();
 					geocoder.geocode({'latLng' : latlng}, function(results, status) {
 						if( results && results.length > 0 ) {
-							var geoObj = results[0];
+							var geoObj = undefined;
+							for(var i=0; i<results.length; i++) {
+								if( results[i].types[0] == 'sublocality_level_1' ) {
+									var geoObj = results[i];
+								}
+							}
+							if( !geoObj ) {
+								geoObj = results[0];
+							}
 							self.setAddress(geoObj.formatted_address);
 						}
 					});

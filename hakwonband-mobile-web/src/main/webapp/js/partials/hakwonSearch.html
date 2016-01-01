@@ -13,7 +13,7 @@
 	<div class="sec_half">
 		<select name="gugun" title="구/군 선택"
 				ng-model="gugun"
-				ng-options="gugun for gugun in guguns">
+				ng-options="gugun for gugun in guguns track by gugun">
 			<option value="">구/군 선택</option>
 		</select>
 	</div>

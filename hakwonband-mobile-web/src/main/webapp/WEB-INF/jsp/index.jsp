@@ -233,10 +233,13 @@ try {
 		Kakao.init(HakwonConstant.Sns.KAKAO);
 	});
 
-	$.getScript("https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true", function(data, textStatus, jqxhr) {
-		console.info('[loaded] https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true');
-		comm.initAddress();
-	});
+	/*	app 에서만 실행	*/
+	if( getBrowser().indexOf('App') > 0 ) {
+		$.getScript("https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true", function(data, textStatus, jqxhr) {
+			console.info('[loaded] https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true');
+			comm.initAddress();
+		});
+	}
 } catch(ex) {
 }
 </script>
