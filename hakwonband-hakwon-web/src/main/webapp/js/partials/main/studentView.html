@@ -1,0 +1,68 @@
+<div class="ibox m m-t-xl">
+	<div class="ibox-content">
+		<div class="col-md-8 col-md-offset-2" data-view="data-view">
+			<div class="widget-head-color-box blue-bg p-lg text-center">
+				<h2 class="font-bold">{{userInfo.user_name}}</h2>
+				<img ng-src="CommUtil.createFileFullPath(userInfo.photo_file_path, 'photo')" class="circle-border m-md img-responsive" alt="{{userInfo.user_name}}" width="300" height="300">
+				<p>{{userInfo.user_gender_name}} / {{!userInfo.user_age||userInfo.user_age==0?"생일 미입력":userInfo.user_age+"세"}} / {{schoolInfo.school_name}} {{schoolInfo.level}}학년</p>
+			</div>
+			<div class="widget-text-box">
+				<h3 class="media-heading">연락정보</h3>
+				<div class="row">
+					<div class="col-md-10">
+						<ul>
+							<li>이메일 : <a href="mailto:{{userInfo.user_email}}">{{userInfo.user_email}}</a></li>
+							<li>전화번호 : <a href="tel:{{userInfo.tel1_no}}">{{userInfo.tel1_no}}</a></li>
+							<li>출결코드 : {{userInfo.attendance_code}}</li>
+							<li name="registDate">
+								등록일 : <input type="text" name="registDate" value="{{userInfo.receipt_date}}" readonly="readonly"> &nbsp;
+								<button name="update" ng-click="updateAct()" style="display : none; ">확인</button>
+								<button name="update_ready" ng-click="updateReady()">수정</button>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-2 text-right"><button class="btn btn-default btn_message" ng-click="userMessage(userInfo.user_no)" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button></div>
+				</div>
+			</div>
+
+			<!-- 반 정보 -->
+			<div class="widget-text-box" ng-if="hakwonClassList.length > 0">
+				<h3 class="media-heading">반정보</h3>
+				<ul class="academy_info">
+					<li ng-repeat="loopClass in hakwonClassList">
+						<a href="#/class/noticeList?hakwon_no={{hakwonInfo.hakwon_no}}&class_no={{loopClass.class_no}}">
+							<img class="img-circle" ng-src="CommUtil.createFileFullPath(loopClass.logo_file_path, 'hakwon')" alt="{{loopClass.class_title}}" width="30" height="30">
+							<strong class="name">{{loopClass.class_title}}</strong>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- 학부모 정보 -->
+			<div class="widget-text-box" ng-if="parentList.length > 0">
+				<h3 class="media-heading">학부모 정보</h3>
+				<ul class="academy_info">
+					<li ng-repeat="loopParent in parentList">
+						<a href="{{PageUrl.common.parentView}}?hakwon_no={{hakwonInfo.hakwon_no}}&parentUserNo={{loopParent.parent_user_no}}">
+							<img class="img-circle" ng-src="CommUtil.createFileFullPath(loopParent.photo_file_path, 'photo')" alt="{{loopParent.user_name}}" width="30" height="30">
+							<strong class="name">{{loopParent.user_name}}</strong> <span class="info_text">{{loopParent.user_gender=="M"?"남":"여"}} / {{!loopParent.user_age||loopParent.user_age==0?"생일 미입력":loopParent.user_age + "세"}}</span>
+							<span class="badge badge-plain">{{loopParent.user_gender=="M"?"부":"모"}}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="widget-text-box">
+				<h3 class="media-heading">출결관리</h3>
+				<div id="attendanceCalendar"></div>
+			</div>
+			<div class="text-right m-t">
+				<button class="btn btn-default" ng-if="userAuth.userType == '003'" ng-click="without()" type="button">탈퇴</button>
+				<button class="btn btn-default" ng-click="modify()" type="button">수정</button>
+				<button class="btn btn-default" ng-click="goList()" type="button">목록으로</button>
+			</div>
+
+
+		</div>
+	</div>
+</div>

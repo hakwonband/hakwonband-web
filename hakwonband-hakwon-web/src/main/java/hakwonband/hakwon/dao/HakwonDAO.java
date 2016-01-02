@@ -156,4 +156,18 @@ public interface HakwonDAO {
 	 * @return
 	 */
 	public List<DataMap> hakwonSearchList(DataMap param);
+
+	/**
+	 * 학원 멤버 삭제(학생/학부모)
+	 * @param param
+	 * @return
+	 */
+	public int hakwonMemberDelete(DataMap param);
+
+	/**
+	 * 학원 학생 삭제
+	 * @param param
+	 * @return
+	 */
+	public int hakwonStudentDelete(DataMap param);
 }

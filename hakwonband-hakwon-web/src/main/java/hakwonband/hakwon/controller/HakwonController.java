@@ -368,4 +368,28 @@ public class HakwonController extends BaseAction {
 
 		sendList(hakwonList, request, response);
 	}
+
+	/**
+	 * 학생 및 학부모 탈퇴
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/without")
+	public void without(HttpServletRequest request, HttpServletResponse response) {
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		String user_no		= request.getParameter("user_no");
+		String hakwon_no	= request.getParameter("hakwon_no");
+
+		DataMap param = new DataMap();
+		param.put("user_no",			user_no);
+		param.put("hakwon_no",			hakwon_no);
+		param.put("master_user_no", 	authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+
+		/*	멤버 삭제	*/
+		hakwonService.deleteHakwonMember(param);
+
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
 }

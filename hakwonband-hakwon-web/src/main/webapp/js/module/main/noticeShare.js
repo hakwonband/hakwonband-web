@@ -116,6 +116,8 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 		/*	페이지 초기화 호출	*/
 		hakwonCommon.pageInit();
 
+		$scope.CommUtil = CommUtil;
+
 		$("#wrapper").show();
 
 		/*	헤더 셋팅	*/

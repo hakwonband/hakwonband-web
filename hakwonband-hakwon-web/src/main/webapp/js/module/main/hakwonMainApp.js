@@ -269,7 +269,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			, controller: 'studentListController'
 		})
 		.when('/student/view', {
-			template: hakwonTmpl.student.viewForm
+			templateUrl: '/js/partials/main/studentView.html'
 			, controller: 'studentViewController'
 		})
 		.when('/student/modify', {

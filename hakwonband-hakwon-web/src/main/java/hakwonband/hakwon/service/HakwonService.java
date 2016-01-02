@@ -299,4 +299,24 @@ public class HakwonService {
 	public List<DataMap> hakwonSearchList(DataMap param) {
 		return hakwonDAO.hakwonSearchList(param);
 	}
+
+	/**
+	 * 멤버 삭제
+	 * @param param
+	 */
+	public void deleteHakwonMember(DataMap param) {
+
+		/**
+		 * 학원 멤버 삭제
+		 */
+		int delCnt = hakwonDAO.hakwonMemberDelete(param);
+		if( delCnt != 1 ) {
+			throw new HKBandException("delCnt : " + delCnt);
+		}
+
+		/**
+		 * 학생 삭제
+		 */
+		hakwonDAO.hakwonStudentDelete(param);
+	}
 }

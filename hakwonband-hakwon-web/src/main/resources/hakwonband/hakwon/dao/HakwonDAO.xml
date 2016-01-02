@@ -417,6 +417,8 @@
 			a.hakwon_no
 			, a.hakwon_name
 			, get_file_path(b.logo_file_no) as logo_file_path
+			, a.hakwon_code
+			, get_user_name(a.master_user_no) as master_user_name
 		from
 			tb_hakwon a
 			, tb_hakwon_info b
@@ -430,4 +432,28 @@
 		limit 50
 	]]>
 	</select>
+
+	<!-- 학원 멤버 삭제 -->
+	<delete id="hakwonMemberDelete" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonMemberDelete  */
+		delete from tb_hakwon_member
+		where
+			hakwon_no = #{hakwon_no}
+			and user_no = #{user_no}
+			and user_type in ('005', '006')
+			and 1 = (select count(1) from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{master_user_no})
+	]]>
+	</delete>
+
+	<!-- 학원 학생 삭제 -->
+	<delete id="hakwonStudentDelete" parameterType="dataMap">
+	<![CDATA[
+		/* HakwonDAO.hakwonStudentDelete  */
+		delete from tb_hakwon_class_student
+		where
+		hakwon_no = #{hakwon_no} and student_user_no = #{user_no}
+	]]>
+	</delete>
+
 </mapper>

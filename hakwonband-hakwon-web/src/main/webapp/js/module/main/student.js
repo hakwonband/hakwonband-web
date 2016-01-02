@@ -32,6 +32,18 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	}
 
 	/**
+	 * 탈퇴
+	 */
+	studentService.without = function(delUserInfo, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/without.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: delUserInfo
+			, callback	: callback
+		});
+	}
+
+	/**
 	 * 학생 리스트
 	 */
 	studentService.studentList = function(pageNo) {
@@ -98,6 +110,7 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	/**
 	 * 학생 상세
 	 */
+/*
 	studentService.studentView = function(studentUserNo, callback) {
 		var param = {studentUserNo:studentUserNo, hakwonNo : hakwonInfo.hakwon_no};
 		$.ajax({
@@ -125,6 +138,17 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 			error: function(xhr, textStatus, errorThrown) {
 				alert('통신을 실패 했습니다.');
 			}
+		});
+	};
+*/
+
+	studentService.studentView = function(studentUserNo, callback) {
+		var param = {studentUserNo:studentUserNo, hakwonNo : hakwonInfo.hakwon_no};
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/view.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
 		});
 	};
 
@@ -335,8 +359,8 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 /**
  * 학생 상세
  */
-hakwonMainApp.controller('studentViewController', function($scope, $location, $routeParams, studentService, CommUtil) {
-	console.log('hakwonMainApp studentViewController call', $scope, $location, $routeParams, studentService, CommUtil);
+hakwonMainApp.controller('studentViewController', function($scope, $location, $routeParams, studentService, CommUtil, $timeout) {
+	console.log('hakwonMainApp studentViewController call');
 
 	try {
 		/*	출결용 변수	*/
@@ -352,7 +376,9 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no, title:'학생 리스트'}, {url:'#', title:'상세'}]);
 
 		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+		$scope.CommUtil	= CommUtil;
+		$scope.PageUrl	= PageUrl;
+		$scope.userAuth	= userAuth;
 
 		/**
 		 * 학생 번호
@@ -363,43 +389,72 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			return ;
 		}
 
+		$("#wrapper").show();
+
 		/*	목록으로	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=list]', function() {
+		$scope.goList = function() {
 			if (history.length > 1) {
 				window.history.back();
 			} else {
 				$location.path('/student/list');
 			}
-		});
+		}
 
 		/**
 		 * 수정
 		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=modify]', function() {
+		$scope.modify = function() {
 			window.location = '#/student/modify?studentUserNo='+studentUserNo;
-		});
+		}
+
+		/**
+		 * 탈퇴
+		 */
+		$scope.without = function() {
+			if( window.confirm('회원님을 탈퇴 시키겠습니까?') ) {
+				studentService.without({user_no:studentUserNo, hakwon_no:hakwonInfo.hakwon_no}, function(data) {
+					if( data.colData && data.colData.flag == 'success' ) {
+						window.history.back();
+					} else {
+						alert('탈퇴를 실패 했습니다.');
+					}
+				});
+			}
+		}
 
 		/*	메세지 보내기	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=user_message]', function() {
-			var user_no = $(this).attr('data-user-no');
+		$scope.userMessage = function(user_no) {
 			window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&msg_user_no_array='+user_no;
-		});
+		}
 
+		/*	등록날짜 수정준비 버튼	*/
+		$scope.updateReady = function() {
+			$('li[name=registDate] input[name=registDate]').prop('readonly', false);
+			$('li[name=registDate] button[name=update]').css('display', '');
+			$('li[name=registDate] button[name=update_ready]').css('display', 'none');
+		}
 
+		/*	등록일 수정	*/
+		$scope.updateAct = function() {
+			var receiptDate = $('li[name=registDate] input[name=registDate]').val();
+			if(isNull(receiptDate)) {
+				alert("등록일을 입력해주세요.");
+				$('li[name=registDate] input[name=registDate]').focus();
+				return;
+			}
 
-		$("#wrapper").show();
+			if(isNaN(receiptDate) || !(receiptDate >= 1 && receiptDate <= 31 )) {
+				alert("1~31까지의 숫자만 입력 가능합니다.");
+				$('li[name=registDate] input[name=registDate]').focus();
+				return;
+			}
 
-		$scope.$on('$viewContentLoaded', function() {
-			studentService.studentView(studentUserNo, function() {
+			studentService.updateReceiptDate(studentUserNo, receiptDate);
 
-				var userTmpTestAlba = userAuth.userId;
-				studentService.getAttendance($scope, studentUserNo);		// 학생 상세 페이지 바인딩후 출결 달력 생성
-			});
-		});
-
-		$scope.$$postDigest(function(){
-			console.log('$$postDigest');
-		});
+			$('li[name=registDate] input[name=registDate]').prop('readonly', true);
+			$('li[name=registDate] button[name=update]').css('display', 'none');
+			$('li[name=registDate] button[name=update_ready]').css('display', '');
+		}
 
 		/*	이전달 출결 조회	*/
 		$('#mainNgView').on(clickEvent, 'button.fc-prev-button', function() {
@@ -446,33 +501,37 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 		});
 
 
-		/*	등록날짜 수정준비 버튼	*/
-		$('#mainNgView').on(clickEvent, 'li[name=registDate] button[name=update_ready]', function() {
-			$('li[name=registDate] input[name=registDate]').prop('readonly', false);
-			$('li[name=registDate] button[name=update]').css('display', '');
-			$('li[name=registDate] button[name=update_ready]').css('display', 'none');
+		$scope.$on('$viewContentLoaded', function() {
+			console.log('$viewContentLoaded');
 		});
 
-		/*	등록일 수정	*/
-		$('#mainNgView').on(clickEvent, 'li[name=registDate] button[name=update]', function() {
-			var receiptDate = $('li[name=registDate] input[name=registDate]').val();
-			if(isNull(receiptDate)) {
-				alert("등록일을 입력해주세요.");
-				$('li[name=registDate] input[name=registDate]').focus();
-				return;
+		$scope.$$postDigest(function(){
+			console.log('$$postDigest');
+		});
+
+		/**
+		 * 상세 조회
+		 */
+		studentService.studentView(studentUserNo, function(data) {
+
+			if( data.error ) {
+				alert('학생 조회를 실패 했습니다.');
+				window.history.back();
+				return false;
 			}
 
-			if(isNaN(receiptDate) || !(receiptDate >= 1 && receiptDate <= 31 )) {
-				alert("1~31까지의 숫자만 입력 가능합니다.");
-				$('li[name=registDate] input[name=registDate]').focus();
-				return;
-			}
+			var colData = data.colData;
 
-			studentService.updateReceiptDate(studentUserNo, receiptDate);
+			$scope.userInfo			= colData.userInfo;
+			$scope.schoolInfo		= colData.schoolInfo;
+			$scope.hakwonClassList	= colData.hakwonClassList;
+			$scope.parentList		= colData.parentList;
+			$scope.hakwonInfo		= hakwonInfo;
 
-			$('li[name=registDate] input[name=registDate]').prop('readonly', true);
-			$('li[name=registDate] button[name=update]').css('display', 'none');
-			$('li[name=registDate] button[name=update_ready]').css('display', '');
+			$timeout(function() {
+				console.log('studentView callback getAttendance~~');
+				studentService.getAttendance($scope, studentUserNo);		// 학생 상세 페이지 바인딩후 출결 달력 생성
+			},50);
 		});
 
 	} catch(ex) {
