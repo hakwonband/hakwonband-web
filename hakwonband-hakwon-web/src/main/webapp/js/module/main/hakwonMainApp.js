@@ -265,7 +265,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	학생	##############################################	*/
 		/*	학생 리스트	*/
 		.when('/student/list', {
-			template: hakwonTmpl.student.listForm
+			templateUrl:'/js/partials/main/studentList.html'
 			, controller: 'studentListController'
 		})
 		.when('/student/view', {

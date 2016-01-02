@@ -945,58 +945,6 @@ hakwonTmpl.master = {
 		, '{{/each}}'
 	].join('')
 }
-/*	학생	*/
-hakwonTmpl.student = {
-	listForm : [
-		'<div class="col-md-6 input-group col-md-offset-3">'
-		, '	<input type="text" name="searchText" class="form-control" placeholder="이름 및 아이디 검색">'
-		, '	<span class="input-group-btn"> <button type="button" data-act="search" class="btn btn-primary">검색</button> </span>'
-		, '</div>'
-		, '<div class="ibox m m-t-xl">'
-//		, '	<div class="ibox-content text-right">'
-//		, '		<button class="btn btn-primary" type="button" title="메세지 보내기">단체 메세지 보내기</button>'
-//		, '	</div>'
-		, '	<div class="ibox-content" data-view="data-div">'
-		, '		<table class="table table-hover table_link">'
-		, '			<thead>'
-		, '				<tr>'
-		, '					<th><input type="checkbox" class="i-checks" name="input"></th>'
-		, '					<th>이름</th>'
-		, '					<th>아이디</th>'
-		, '					<th>학원 가입일</th>'
-		, '					<th>기타</th>'
-		, '					<th>메세지</th>'
-		, '				</tr>'
-		, '			</thead>'
-		, '			<tbody></tbody>'
-		, '		</table>'
-		, '	</div>'
-//		, '	<div class="ibox-content text-right">'
-//		, '		<button class="btn btn-primary" type="button" title="메세지 보내기">단체 메세지 보내기</button>'
-//		, '	</div>'
-		, '	<div class="text-center m-b-xl m-t-xl" data-view="pagination"></div>'
-		, '</div>'
-	].join('')
-	, listRow : [
-		'{{each(i, loopData) dataList}}'
-		, '<tr>'
-		, '	<td><span><input type="checkbox" value="{{= loopData.user_no}}" class="i-checks" name="input"></span></td>'
-		, '	<td>'
-		, '		<a href="'+PageUrl.common.studentView+'?hakwon_no={{= hakwonInfo.hakwon_no}}&studentUserNo={{= loopData.user_no}}"><img class="img-circle" src="{{= comm.userProfileImg(loopData.user_photo_path)}}" alt="" width="30" height="30"> {{= loopData.user_name}}</a>'
-		, '	</td>'
-		, '	<td><span>{{= loopData.user_id}}</span></td>'
-		, '	<td><span>{{= loopData.reg_date}}</span></td>'
-		, '	<td><span>{{= loopData.user_gender=="M"?"남":"여"}}({{= !loopData.user_age||loopData.user_age==0?"생일 미입력":loopData.user_age+"세"}})</span></td>'
-		, '	<td><span><button class="btn btn-default btn_message" data-act="user_message" data-user-no="{{= loopData.user_no}}" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button></span></td>'
-		, '</tr>'
-		, '{{/each}}'
-	].join('')
-	, listNoData : [
-		'<tr>'
-		, '	<td class="text-center" style="padding:200px 0 !important;">검색된 학생이 없습니다.</td>'
-		, '</tr>'
-	].join('')
-};
 
 /*	메세지	*/
 hakwonTmpl.message = {

@@ -46,102 +46,18 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	/**
 	 * 학생 리스트
 	 */
-	studentService.studentList = function(pageNo) {
-		var searchText = $('#mainNgView input[name=searchText]').val();
-		if( !pageNo ) pageNo = 1;
-
-		var param = {
-			pageNo : pageNo
-			, searchText : searchText
-			, hakwonNo : hakwonInfo.hakwon_no
-		};
-
-		$.ajax({
-			url: contextPath+"/hakwon/student/list.do",
-			type: "post",
-			data: $.param(param, true),
-			headers : hakwonInfo.getHeader(),
-			dataType: "json",
-			success: function(data) {
-				try {
-					if( data.error ) {
-						alert('학생 조회를 실패 했습니다.');
-						return false;
-					}
-					var colData = data.colData;
-
-					var $dataDiv = $('#mainNgView div[data-view=data-div]');
-					var $dataTableBody = $dataDiv.find('table > tbody');
-
-					if( colData.dataCount == 0 ) {
-						$dataTableBody.html($.tmpl(hakwonTmpl.student.listNoData, colData));
-
-						$dataDiv.find('thead').hide();
-						$('#mainNgView div[data-view=pagination]').html('');
-					} else {
-						$dataTableBody.html($.tmpl(hakwonTmpl.student.listRow, colData));
-
-						$dataDiv.find('thead').show();
-						var totalPages = comm.pageCalc(colData.dataCount, colData.pageScale);
-						$('#mainNgView div[data-view=pagination]').bootpag({
-							total: totalPages,
-							page: pageNo,
-							maxVisible: DefaultInfo.pageScale,
-							leaps: true
-						}).unbind("page").bind("page", function(event, page){
-							studentService.studentList(page);
-						});
-					}
-
-					$dataDiv.find('.i-checks').iCheck({
-						checkboxClass: 'icheckbox_square-green'
-					});
-
-				} catch(ex) {
-					commProto.errorDump({errorObj:ex});
-				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				alert('통신을 실패 했습니다.');
-			}
+	studentService.studentList = function(param, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/list.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
 		});
-	}
+	};
 
 	/**
 	 * 학생 상세
 	 */
-/*
-	studentService.studentView = function(studentUserNo, callback) {
-		var param = {studentUserNo:studentUserNo, hakwonNo : hakwonInfo.hakwon_no};
-		$.ajax({
-			url: contextPath+"/hakwon/student/view.do",
-			type: "post",
-			data: $.param(param, true),
-			headers : hakwonInfo.getHeader(),
-			dataType: "json",
-			success: function(data) {
-				try {
-					if( data.error ) {
-						alert('학생 조회를 실패 했습니다.');
-						return false;
-					}
-					var colData = data.colData;
-					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.student.viewData, colData));
-					if( callback ) {
-						callback();
-					}
-
-				} catch(ex) {
-					commProto.errorDump({errorObj:ex});
-				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				alert('통신을 실패 했습니다.');
-			}
-		});
-	};
-*/
-
 	studentService.studentView = function(studentUserNo, callback) {
 		var param = {studentUserNo:studentUserNo, hakwonNo : hakwonInfo.hakwon_no};
 		CommUtil.colHttp({
@@ -306,8 +222,8 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 /**
  * 학생 리스트
  */
-hakwonMainApp.controller('studentListController', function($scope, $location, $routeParams, studentService, CommUtil) {
-	console.log('hakwonMainApp studentListController call', $scope, $location, $routeParams, studentService, CommUtil);
+hakwonMainApp.controller('studentListController', function($scope, $location, $routeParams, studentService, CommUtil, $timeout) {
+	console.log('hakwonMainApp studentListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -317,7 +233,9 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'학생 리스트'}]);
 
 		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+		$scope.CommUtil	= CommUtil;
+		$scope.PageUrl	= PageUrl;
+		$scope.userAuth	= userAuth;
 
 		/**
 		 * 페이지 번호
@@ -326,31 +244,59 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 		if( !pageNo ) {
 			pageNo = 1;
 		}
+		var searchTextParam = $routeParams.searchText;
+		if( !searchTextParam ) searchTextParam = '';
+		$scope.searchText = searchTextParam;
+
+		var $bootpag = undefined;
 
 		/*	검색	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=search]', studentService.studentList);
-		$('#mainNgView').on('keypress', 'input[name=searchText]', function( event ) {
-			if ( event.which == 13 ) {
-				studentService.studentList();
-				event.preventDefault();
-			}
-		});
+		$scope.search = function() {
+			window.location = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no+'&searchText='+$scope.searchText;
+		};
 
 		/*	메세지 보내기	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=user_message]', function() {
-			var user_no = $(this).attr('data-user-no');
+		$scope.userMessage = function(user_no) {
 			window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&msg_user_no_array='+user_no;
-		});
+		}
 
 		$("#wrapper").show();
 
+		/*	학생 리스트	*/
+		var searchCallback = function(data) {
+			if( data.error || !data.colData ) {
+				alert('학생 조회를 실패 했습니다.');
+				window.history.back();
+				return false;
+			}
+			var colData = data.colData;
+
+			$scope.studentList = colData.dataList;
+			$timeout(function() {
+				var totalPages = comm.pageCalc(colData.dataCount, colData.pageScale);
+				$bootpag.bootpag({
+					total	: totalPages
+					, page	: data._param.pageNo
+					, maxVisible: DefaultInfo.pageScale
+					, leaps	: true
+				});
+			},50);
+		}
+		studentService.studentList({pageNo : pageNo, searchText : $scope.searchText, hakwonNo : hakwonInfo.hakwon_no}, searchCallback);
+
+
 		$scope.$on('$viewContentLoaded', function() {
-			studentService.studentList(pageNo);
+			console.log('$viewContentLoaded');
 		});
 		$scope.$$postDigest(function(){
 			console.log('$$postDigest');
-		});
 
+			$timeout(function() {
+				$bootpag = $('#mainNgView div[data-view=pagination]').bootpag().bind("page", function(event, page){
+					window.location = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no+'&searchText='+$scope.searchText+'&pageNo='+page;
+				});
+			}, 50);
+		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}
