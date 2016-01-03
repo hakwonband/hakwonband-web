@@ -12,6 +12,7 @@
 <!-- 반이 있는 경우 -->
 <div ng-if="classList.length > 0">
 	<!-- 새로운 반은 class="new_class"를 붙여준다. -->
+<!--
 	<div class="contact-box class_box" ng-repeat="item in classList">
 		<a href="" ng-click="goClassNotice(item.class_no)">
 			<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.logo_file_path) }}" alt="">
@@ -22,6 +23,18 @@
 		</a>
 	</div>
 	<div class="clearfix"></div>
+-->
+	<ul class="class_list_pc">
+		<li ng-repeat="item in classList">
+			<a href="#">
+				<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.logo_file_path) }}" alt="">
+				<strong class="title_name">{{item.class_title}}</strong>
+				<p class="contact-box-info">
+					{{item.class_intro}}
+				</p>
+			</a>
+		</li>
+	</ul>
 </div>
 
 <!-- 신규 반 등록 -->
