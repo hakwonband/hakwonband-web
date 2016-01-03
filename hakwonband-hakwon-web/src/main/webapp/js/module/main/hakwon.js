@@ -36,7 +36,6 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert('첨부파일 업로드를 실패 했습니다.');
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -88,7 +87,6 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert('학원로고 업로드를 실패 했습니다.');
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -175,7 +173,6 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 					} else {
 						xmlData = xmlStr.returnXml;
 					}
-					console.log('xmlData', xmlData);
 					var errCode = $(xmlData).find("errorCode").text();
 					var errDesc = $(xmlData).find("errorMessage").text();
 					if(errCode != "0") {
@@ -188,7 +185,6 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 								htmlStr +=  '	<a href="#" onclick="return false;"><span>'+$(this).find('roadAddrPart1').text()+'</span> '+$(this).find('roadAddrPart2').text()+'</a>';
 								htmlStr +=  '</li>';
 							});
-							console.log('htmlStr : ' + htmlStr);
 							$('#mainNgView ul[data-view=streetAddrList]').html(htmlStr).show();
 						} else {
 							alert('검색 결과가 없습니다. 정확한 주소를 입력해 주세요.');
@@ -288,8 +284,6 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 	 */
 	hakwonService.hakwonEdit = function($scope) {
 		var hakwonInfo	= $scope.hakwonObj;
-		console.log(hakwonInfo);
-
 		if (isNull(hakwonInfo.hakwon_no)) {
 			alert('학원 번호가 올바르지 않습니다.');
 			return ;
@@ -370,7 +364,7 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
  * 학원소개 컨트롤러
  */
 hakwonMainApp.controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp hakwonIntroController call', $scope, $location, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp hakwonIntroController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -383,8 +377,6 @@ hakwonMainApp.controller('hakwonIntroController', function($scope, $location, $r
 
 		/*	파일 업로드 초기화	*/
 		$scope.$$postDigest(function(){
-			console.log('eventWriteController $$postDigest call');
-
 			$scope.checkAuthType = comm.checkAuthType;
 
 			/*	학원소개 정보조회	*/
@@ -436,7 +428,7 @@ hakwonMainApp.controller('hakwonIntroController', function($scope, $location, $r
  * 학원소개 작성-수정 컨트롤러
  */
 hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp hakwonIntroEditController call', $scope, $location, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp hakwonIntroEditController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -454,7 +446,6 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		$('#mainNgView').on(clickEvent, 'button[data-act=mapInsert]', function() {
 			var mapHtml = $('#mainNgView').find('input[name=mapHtml]').val();
 			var $mapHtml = $(mapHtml).css('margin', '10px auto').attr('data-type', 'frameMap');
-			console.log($mapHtml.prop('outerHTML'));
 			$('#mainNgView').find('input[name=mapHtml]').val('');
 			tinymce.activeEditor.insertContent($mapHtml.prop('outerHTML'));
 		});
@@ -595,7 +586,6 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 				introduction		: editContent,
 				file_no_list		: fileNoList.toString()
 			};
-			console.log(params);
 
 			CommUtil.ajax({url:contextPath+"/hakwon/master/editHakwonIntro.do", param:params, successFun:function(data) {
 				try {
@@ -651,8 +641,6 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 
 		/*	첨부 파일 삭제 처리	*/
 		$scope.removeAttachFile = function(fileNo) {
-			console.log($scope.fileList);
-
 			$scope.fileList = _.filter($scope.fileList, function(item) {
 				return item.file_no != fileNo;
 			});
@@ -668,7 +656,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
  * 학원정보 수정 컨트롤러
  */
 hakwonMainApp.controller('hakwonModifyController', function($scope, $location, $log, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp hakwonModifyController call', $scope, $location, $log, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp hakwonModifyController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -810,7 +798,7 @@ hakwonMainApp.controller('hakwonModifyController', function($scope, $location, $
  * 학원등록 컨트롤러
  */
 hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $log, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp hakwonCreateController call', $scope, $location, $log, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp hakwonCreateController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -953,7 +941,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
  * 학원 전체 리스트 컨트롤러
  */
 hakwonMainApp.controller('hakwonAllListController', function($scope, $location, $log, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp hakwonAllListController call', $scope, $location, $log, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp hakwonAllListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

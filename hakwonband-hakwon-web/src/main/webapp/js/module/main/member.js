@@ -146,7 +146,6 @@ hakwonMainApp.service('memberService', function() {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert('회원 프로필 사진 업로드를 실패 했습니다.');
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -203,7 +202,7 @@ hakwonMainApp.service('memberService', function() {
  * 회원 프로필 컨트롤러
  */
 hakwonMainApp.controller('memberProfileController', function($scope, $location, $routeParams, memberService, CommUtil) {
-	console.log('hakwonMainApp memberProfileController call', $scope, $location, $routeParams, memberService, CommUtil);
+	console.log('hakwonMainApp memberProfileController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

@@ -17,7 +17,6 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert('첨부파일 업로드를 실패 했습니다.');
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -217,7 +216,7 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
  * 학원 공지사항 리스트 컨트롤러
  */
 hakwonMainApp.controller('noticeListController', function($scope, $location, $window, $routeParams, noticeService, CommUtil) {
-	console.log('hakwonMainApp noticeListController call', $scope, $location, $window, $routeParams, noticeService, CommUtil);
+	console.log('hakwonMainApp noticeListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -312,7 +311,7 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
  * 학원 공지사항 상세정보 컨트롤러
  */
 hakwonMainApp.controller('noticeDetailController', function($scope, $location, $window, $routeParams, noticeService, CommUtil) {
-	console.log('hakwonMainApp noticeDetailController call', $scope, $location, $window, $routeParams, noticeService, CommUtil);
+	console.log('hakwonMainApp noticeDetailController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -589,8 +588,6 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 
 			params.reservationDate = reservationDate;
 			params.reservationTime = reservationTime;
-
-			console.log(apiUrl, params);
 
 			CommUtil.ajax({url:contextPath+apiUrl, param:params, successFun:function(data) {
 				try {

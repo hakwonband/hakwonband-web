@@ -26,7 +26,7 @@
 -->
 	<ul class="class_list_pc">
 		<li ng-repeat="item in classList">
-			<a href="#">
+			<a href="#" onclick="return false;" ng-click="goClassNotice(item.class_no)">
 				<img class="img-circle m-t-xs img-responsive" ng-src="{{ getFileFullPath(item.logo_file_path) }}" alt="">
 				<strong class="title_name">{{item.class_title}}</strong>
 				<p class="contact-box-info">

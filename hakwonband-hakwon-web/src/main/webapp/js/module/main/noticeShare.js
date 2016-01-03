@@ -137,8 +137,6 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 
 		/*	반 리스트 조회	*/
 		noticeShareService.classListAll({hakwon_no:$scope.hakwon_no}, function(data) {
-			console.log(data, hakwonInfo);
-
 			$scope.class_list = [];
 			$scope.class_list.push({class_no:-1, class_title:'학원공지'});
 			if( data.colData && data.colData.dataList && data.colData.dataList.length > 0 ) {
@@ -213,7 +211,6 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 
 			/*	공유	*/
 			noticeShareService.send(param, function(data) {
-				console.log(data);
 				if( data.colData && data.colData.flag == 'success' ) {
 					window.location = '#/notice/share/sendList?hakwonNo='+$scope.hakwon_no;
 				} else {
@@ -278,7 +275,6 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 
 		/*	수정	*/
 		$scope.updateShare = function(shareInfo) {
-			console.log(shareInfo);
 			alert('준비 중 입니다.');
 		};
 

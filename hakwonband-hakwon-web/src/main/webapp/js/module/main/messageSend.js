@@ -377,7 +377,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
  * 원장님 메세지 보내기
  */
 hakwonMainApp.controller('messageMasterSendController', function($scope, $location, $routeParams, messageSendSerivce, CommUtil) {
-	console.log('hakwonMainApp messageMasterSendController call', $scope, $location, $routeParams, messageSendSerivce, CommUtil);
+	console.log('hakwonMainApp messageMasterSendController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -410,8 +410,6 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		 * 대상 변경시
 		 */
 		$('#mainNgView').on('change', 'select[name=targetType]', function() {
-			console.log('this.value : ' + this.value);
-
 			$('div[data-target-form=Y]').hide();
 			$('div[data-target-type='+this.value+']').show();
 
@@ -611,7 +609,6 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 						if (this.errorFileArray.length + this.errorCount > 0) {
 							alert('메세지 파일 업로드를 실패 했습니다.');
 						} else {
-							console.log(this.uploadFileArray);
 							for (var i = 0; i < this.uploadFileArray.length; i++) {
 								var fileInfo = this.uploadFileArray[i];
 
@@ -671,7 +668,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
  * 선생님 메세지 보내기
  */
 hakwonMainApp.controller('messageTeacherSendController', function($scope, $location, $routeParams, messageSendSerivce, CommUtil) {
-	console.log('hakwonMainApp messageTeacherSendController call', $scope, $location, $routeParams, messageSendSerivce, CommUtil);
+	console.log('hakwonMainApp messageTeacherSendController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -905,7 +902,6 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 						if (this.errorFileArray.length + this.errorCount > 0) {
 							alert('메세지 파일 업로드를 실패 했습니다.');
 						} else {
-							console.log(this.uploadFileArray);
 							for (var i = 0; i < this.uploadFileArray.length; i++) {
 								var fileInfo = this.uploadFileArray[i];
 								fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);

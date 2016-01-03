@@ -2,7 +2,7 @@
  * 셋팅 서비스
  */
 hakwonMainApp.service('settingService', function($http, CommUtil) {
-	console.log('hakwonMainApp settingService call', CommUtil);
+	console.log('hakwonMainApp settingService call');
 
 	var settingService = {};
 
@@ -284,7 +284,7 @@ hakwonMainApp.service('settingService', function($http, CommUtil) {
  * 공지 카테고리 셋팅
  */
 hakwonMainApp.controller('settingNoticeCategoryController', function($scope, $location, $routeParams, settingService, CommUtil) {
-	console.log('hakwonMainApp settingNoticeCategoryController call', $scope, $location, $routeParams, settingService, CommUtil);
+	console.log('hakwonMainApp settingNoticeCategoryController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -351,7 +351,7 @@ hakwonMainApp.controller('settingNoticeCategoryController', function($scope, $lo
  * 매니저 셋팅
  */
 hakwonMainApp.controller('settingManagerController', function($scope, $location, $routeParams, settingService, CommUtil) {
-	console.log('hakwonMainApp settingManagerController call', $scope, $location, $routeParams, settingService, CommUtil);
+	console.log('hakwonMainApp settingManagerController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -372,7 +372,6 @@ hakwonMainApp.controller('settingManagerController', function($scope, $location,
 
 		$('#mainNgView').on(clickEvent, 'button[data-act=registManager]', function() {
 			var managerNo = $(this).attr('data-manager-no');
-			console.log('managerNo : ' + managerNo);
 			if( isNull(managerNo) ) {
 				return ;
 			}

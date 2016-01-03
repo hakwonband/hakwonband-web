@@ -26,7 +26,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 
 		/*	아이디 / 비번으로 user 확인	*/
 		call_ajax(params, '/hakwon/student/get.do', function(data){
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('조회에 실패했습니다.');
 				return false;
@@ -79,7 +78,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 
 		/*	코드로 학생 정보 조회	*/
 		call_ajax(params, '/hakwon/student/get/withCode.do', function(data){
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('실패했습니다.');
 				return false;
@@ -89,7 +87,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 					params = {hakwonNo:hakwonNo, userNo:data.colData.user_no, attendanceType:"start"};
 
 					call_ajax(params, '/hakwon/attendance/attendance.do', function(data){
-						console.log(JSON.stringify(data));
 						if( data.error ) {
 							alert('실패했습니다.');
 							return false;
@@ -127,7 +124,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 
 		/*	코드로 학생 정보 조회	*/
 		call_ajax(params, '/hakwon/attendance/get/withCode.do', function(data){
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('실패했습니다.');
 				return false;
@@ -137,7 +133,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 					params = {hakwonNo:hakwonNo, userNo:data.colData.user_no, attendanceType:"end"};
 
 					call_ajax(params, '/hakwon/attendance/attendance.do', function(data){
-						console.log(JSON.stringify(data));
 						if( data.error ) {
 							alert('실패했습니다.');
 							return false;
@@ -180,7 +175,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 
 		/*	코드로 학생 정보 조회	*/
 		call_ajax(params, '/hakwon/attendance/getAttendance.do', function(data){
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('출결 조회에 실패했습니다.');
 				return false;
@@ -207,7 +201,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 						calEvents.push(attEnd);
 					}
 				}
-				console.log("ca : " + JSON.stringify(calEvents));
 				attendanceService.calendar(calEvents);
 			}
 		});
@@ -271,8 +264,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 		var params = {hakwonNo:hakwonNo};
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/class/list.do", param: params, successFun:function(data) {
 			try {
-				console.log(JSON.stringify(data));
-				console.log(data);
 				var colData = data.colData;
 				if( colData ) {
 					$scope.classList = colData.classList;
@@ -328,7 +319,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 		};
 		CommUtil.ajax({url:contextPath+"/hakwon/attendance/attendanceWeek/list.do", param: params, successFun:function(data) {
 			try {
-				console.log(JSON.stringify(data));
 				var colData = data.colData;
 				if( colData ) {
 					$scope.studentList = colData.studentList;
@@ -367,7 +357,6 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
 	attendanceService.allAttendance = function($scope, params) {
 		/*	코드로 학생 정보 조회	*/
 		call_ajax(params, '/hakwon/attendance/allAttendance.do', function(data){
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('일괄 등/하원을 실패했습니다.');
 				return false;
@@ -408,14 +397,12 @@ hakwonMainApp.service('attendanceService', function(CommUtil) {
  * 출결 컨트롤러
  */
 hakwonMainApp.controller('attendanceMakeController', function($scope, $location, $routeParams, attendanceService, CommUtil) {
-	console.log('hakwonMainApp attendanceMakeController call', $scope, $location, $routeParams, attendanceService, CommUtil);
+	console.log('hakwonMainApp attendanceMakeController call');
 
 	try {
 		var currentDate = new Date();
 		$scope.currentYear = currentDate.getFullYear();
 		$scope.currentMonth = currentDate.getMonth() + 1;
-
-		console.log("current date : " + $scope.currentYear + "-" + $scope.currentMonth);
 
 		var calEvents = [];		// 출결 리스트
 
@@ -457,7 +444,6 @@ hakwonMainApp.controller('attendanceMakeController', function($scope, $location,
 			} else {
 				$scope.currentMonth--;
 			}
-			//console.log("date : " + currentYear + "-" + currentMonth);
 		});
 
 		/*	다음달 출결 조회	*/
@@ -469,7 +455,6 @@ hakwonMainApp.controller('attendanceMakeController', function($scope, $location,
 			} else {
 				$scope.currentMonth++;
 			}
-			//console.log("date : " + currentYear + "-" + currentMonth);
 		});
 
 	} catch(ex) {
@@ -482,7 +467,7 @@ hakwonMainApp.controller('attendanceMakeController', function($scope, $location,
  * 주간 출결 리스트 컨트롤러
  */
 hakwonMainApp.controller('attendanceWeekListController', function($scope, $location, $routeParams, $window, attendanceService, CommUtil) {
-	console.log('hakwonMainApp attendanceWeekListController call', $scope, $location, $routeParams, $window, attendanceService, CommUtil);
+	console.log('hakwonMainApp attendanceWeekListController call');
 
 	try {
 		$scope.classList 			= [];		// 반 리스트
@@ -582,7 +567,6 @@ hakwonMainApp.controller('attendanceWeekListController', function($scope, $locat
 
 		/*	기간 검색 버튼	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=attendanceSearchTerm]', function() {
-			console.log("기간 검색");
 			$scope.dateTerm = $(this).attr("data-value");
 			attendanceService.getAttendanceList($scope);
 		});
@@ -591,14 +575,12 @@ hakwonMainApp.controller('attendanceWeekListController', function($scope, $locat
 		/*	페이지 선택	*/
 		$("#eg-custom-paging").off("click", "button").on("click", "button", function(e) {
 			$scope.pageNo = $(this).attr("current-page");
-			console.log("페이지 선택 : " + $scope.pageNo);
 			attendanceService.getAttendanceList($scope);
 		});
 
 
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'tbody tr td a', function() {
-			console.log("학생 상세보기 : " + $(this).attr("student-no"));
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
 		});
 

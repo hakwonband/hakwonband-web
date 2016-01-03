@@ -2,7 +2,7 @@
  * 선생님 서비스
  */
 hakwonMainApp.service('teacherService', function($http, CommUtil) {
-	console.log('hakwonMainApp teacherService call', CommUtil);
+	console.log('hakwonMainApp teacherService call');
 
 	var teacherService = {};
 
@@ -133,7 +133,7 @@ hakwonMainApp.service('teacherService', function($http, CommUtil) {
  * 학원 추가 등록
  */
 hakwonMainApp.controller('teacherHakwonRegistController', function($scope, $location, $routeParams, teacherService, CommUtil) {
-	console.log('hakwonMainApp teacherHakwonRegistController call', $scope, $location, $routeParams, teacherService, CommUtil);
+	console.log('hakwonMainApp teacherHakwonRegistController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -175,7 +175,7 @@ hakwonMainApp.controller('teacherHakwonRegistController', function($scope, $loca
  * 학원 전체 리스트 컨트롤러
  */
 hakwonMainApp.controller('teacherHakwonAllListController', function($scope, $location, $log, $routeParams, hakwonService, CommUtil) {
-	console.log('hakwonMainApp teacherHakwonAllListController call', $scope, $location, $log, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonMainApp teacherHakwonAllListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

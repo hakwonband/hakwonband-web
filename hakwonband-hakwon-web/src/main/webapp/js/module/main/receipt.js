@@ -19,7 +19,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var params = {hakwonNo:hakwonNo, studentName:studentName, studentId:$scope.studentIdFromList};
 		$scope.studentList = [];
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/student/select.do", param:params, successFun:function(data) {
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('조회에 실패했습니다.');
 				return false;
@@ -99,7 +98,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		};
 
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/insert.do", param:params, successFun:function(data) {
-			console.log(JSON.stringify(data));
 			if( data.error ) {
 				alert('실패하였습니다.');
 				return false;
@@ -145,7 +143,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		};
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/list.do", param: params, successFun:function(data) {
 			try {
-				console.log(data);
 				var colData = data.colData;
 				if( colData ) {
 					if( colData.receiptList && colData.receiptList.length > 0 ) {
@@ -293,8 +290,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var params = {hakwonNo:hakwonNo};
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/class/list.do", param: params, successFun:function(data) {
 			try {
-				console.log(JSON.stringify(data));
-				console.log(data);
 				var colData = data.colData;
 				if( colData ) {
 					$scope.classList = colData.classList;
@@ -474,7 +469,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var params = {hakwonNo:hakwonNo, studentNo:$scope.st_no};
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/student/month/get.do", param: params, successFun:function(data) {
 			try {
-				console.log(data);
 				var dataList = data.colData.dataList;
 				if(dataList) {
 					var html = ' ';
@@ -487,7 +481,6 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 							html += '&nbsp; <span style="color:blue;">' + dataList[i].receipt_month + '</span> <input type="checkbox" checked="checked" disabled>';
 						}
 					}
-					console.log(html);
 
 					$("div.receipt-month").children().remove();
 					$("div.receipt-month").html('');
@@ -511,7 +504,7 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
  * 수납 등록 컨트롤러
  */
 hakwonMainApp.controller('receiptController', function($scope, $location, $routeParams, $filter, $window, receiptService, CommUtil) {
-	console.log('hakwonMainApp receiptController call', $scope, $location, $routeParams, $filter, $window, receiptService, CommUtil);
+	console.log('hakwonMainApp receiptController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -595,7 +588,7 @@ hakwonMainApp.controller('receiptController', function($scope, $location, $route
  * 수납 리스트 컨트롤러
  */
 hakwonMainApp.controller('receiptListController', function($scope, $location, $window, $routeParams, receiptService, CommUtil) {
-	console.log('hakwonMainApp receiptListController call', $scope, $location, $window, $routeParams, receiptService, CommUtil);
+	console.log('hakwonMainApp receiptListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -662,7 +655,6 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 		/*	페이지 선택	*/
 		$("#eg-custom-paging").off("click", "button").on("click", "button", function(e) {
 			$scope.pageNo = $(this).attr("current-page");
-			console.log("페이지 선택 : " + $scope.pageNo);
 			receiptService.getReceiptList($scope, $location);
 		});
 
@@ -698,7 +690,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
  * 학생별 일년간의 수납리스트 컨트롤러
  */
 hakwonMainApp.controller('receiptYearListController', function($scope, $location, $window, $routeParams, receiptService, CommUtil) {
-	console.log('hakwonMainApp receiptYearListController call', $scope, $location, $window, $routeParams, receiptService, CommUtil);
+	console.log('hakwonMainApp receiptYearListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -773,14 +765,12 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		/*	페이지 선택	*/
 		$("#eg-custom-paging").off("click", "button").on("click", "button", function(e) {
 			$scope.pageNo = $(this).attr("current-page");
-			console.log("페이지 선택 : " + $scope.pageNo);
 			receiptService.getReceiptYearList($scope, $location);
 		});
 
 
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'tbody tr td a', function() {
-			console.log("학생 상세보기 : " + $(this).attr("student-no"));
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
 		});
 
@@ -792,7 +782,7 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 
 /*	수납 상세보기	*/
 hakwonMainApp.controller('receiptDetailController', function($scope, $location, $window, $routeParams, receiptService, CommUtil) {
-	console.log('hakwonMainApp receiptDetailController call', $scope, $location, $window, $routeParams, receiptService, CommUtil);
+	console.log('hakwonMainApp receiptDetailController call');
 
 	try {
 
@@ -838,7 +828,6 @@ hakwonMainApp.controller('receiptDetailController', function($scope, $location, 
 
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'div[name=studentDetail] a', function() {
-			console.log("학생 상세보기 : " + $(this).attr("student-no"));
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
 		});
 

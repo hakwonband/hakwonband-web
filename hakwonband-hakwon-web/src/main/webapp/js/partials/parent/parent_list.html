@@ -12,7 +12,9 @@
 		<table class="table table-hover table_link">
 			<thead ng-if="dataList.length > 0">
 				<tr>
+<!--
 					<th><input type="checkbox" class="i-checks" name="input"></th>
+-->
 					<th>이름</th>
 					<th>아이디</th>
 					<th>학원 가입일</th>
@@ -22,7 +24,9 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="loopData in dataList">
+<!--
 					<td><span><input type="checkbox" value="{{loopData.user_no}}" class="i-checks" name="input"></span></td>
+-->
 					<td>
 						<a href="{{PageUrl.common.parentView}}?hakwon_no={{hakwonInfo.hakwon_no}}&parentUserNo={{loopData.user_no}}">
 							<img class="img-circle" ng-src="{{comm.userProfileImg(loopData.user_photo_path)}}" alt="" width="30" height="30"> {{loopData.user_name}}

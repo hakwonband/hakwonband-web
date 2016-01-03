@@ -1,6 +1,6 @@
 /*	index	*/
 hakwonMainApp.controller('indexController', function($scope, $location){
-	console.log('hakwonMainApp indexController call', $scope, $location);
+	console.log('hakwonMainApp indexController call');
 
 	$scope.$on("$routeChangeStart", function (event, current, previous, rejection) {
 		console.log('hakwonMainApp $routeChangeStart', event, current, previous, rejection);

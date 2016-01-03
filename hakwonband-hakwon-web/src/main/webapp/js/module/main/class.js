@@ -40,7 +40,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert(msg);
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -132,7 +131,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 
 	/*	반 등록 서비스	*/
 	classService.masterHakwonClassInsert = function($scope) {
-		console.log($scope.regClassInfo);
 		if (parseInt(userAuth.userNo) != parseInt(hakwonInfo.master_user_no)) {
 			alert('학원 원장님만 등록이 가능합니다');
 			return;
@@ -177,7 +175,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 	 * @param params
 	 */
 	classService.masterHakwonClassDelete = function(params) {
-		console.log(params);
 		if (isNull(params.hakwon_no) || isNull(params.class_no)) {
 			alert('반 정보가 올바르지 않습니다.');
 			return ;
@@ -217,7 +214,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 			alert('반 정보가 올바르지 않습니다.');
 			return ;
 		}
-		console.log(params);
 
 		CommUtil.ajax({url:contextPath+"/hakwon/master/classInfoUpdate.do", param:params, successFun:function(data) {
 			try {
@@ -455,7 +451,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 		params.class_no			= $scope.classNo;
 		params.student_user_no	= item.user_no;
 
-		console.log(item, params);
 		if (isNull(params.student_user_no) || isNull(params.hakwon_no) || isNull(params.class_no) ) {
 			alert('학생 정보가 올바르지 않습니다.');
 			return ;
@@ -493,7 +488,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 		params.class_no			= $scope.classNo;
 		params.student_user_no	= item.user_no;
 
-		console.log(item, params);
 		if (isNull(params.student_user_no) || isNull(params.hakwon_no) || isNull(params.class_no) ) {
 			alert('학생 정보가 올바르지 않습니다.');
 			return ;
@@ -549,7 +543,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 
 					/*	학생 리스트의 학부모 정보 문자열을 object array로 변환	*/
 					$scope.classStudentList = comm.initRelationList($scope.classStudentList);
-					console.log($scope.classStudentList);
 				} else {
 					commProto.logger({studentListError: data});
 				}
@@ -650,7 +643,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 
 	/*	학원내 선생님 검색 조회	*/
 	classService.searchHakwonTeacher = function(params, $scope) {
-		console.log(params);
 		if (isNull(params.hakwon_no)) {
 			alert('학원정보가 올바르지 않습니다.');
 			return ;
@@ -740,7 +732,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 
 		CommUtil.ajax({url:contextPath+"/hakwon/attendance/class/push/get.do", param: params, successFun:function(data) {
 			try {
-				console.log("useAttPush : " + JSON.stringify(data));
 				var colData = data.colData;
 				if( colData ) {
 
@@ -768,7 +759,6 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 
 		CommUtil.ajax({url:contextPath+"/hakwon/attendance/class/push/active.do", param: params, successFun:function(data) {
 			try {
-				console.log("pushChangeFun : " + JSON.stringify(data));
 				var colData = data.colData;
 				if( colData ) {
 					if(colData.flag != "success") {
@@ -791,7 +781,7 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
  * 반 상세정보 공통 컨트롤러
  */
 hakwonMainApp.controller('classInfoDetailController', function($scope, $window, $location, $routeParams, classService, classFactory, CommUtil) {
-	console.log('hakwonMainApp classInfoDetailController call', $scope, $window, $location, $routeParams, classService, classFactory, CommUtil);
+	console.log('hakwonMainApp classInfoDetailController call');
 
 	try {
 		$("#wrapper").show();
@@ -853,7 +843,6 @@ hakwonMainApp.controller('classInfoDetailController', function($scope, $window, 
 
 		/*	선생님에게 메세지 보내기	*/
 		$scope.sendMessageTeacher = function(item) {
-			console.log(item);
 			alert('준비중입니다.');
 		};
 
@@ -1062,7 +1051,7 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
  * 반 공지사항 리스트
  */
 hakwonMainApp.controller('classNoticeListController', function($scope, $location, $window, $routeParams, classService, classFactory, CommUtil) {
-	console.log('hakwonMainApp classNoticeListController call', $scope, $location, $window, $routeParams, classService, classFactory, CommUtil);
+	console.log('hakwonMainApp classNoticeListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -2004,7 +1993,6 @@ hakwonMainApp.controller('classTeacherListController', function($scope, $locatio
 			params.class_no			= $scope.classNo;
 			params.teacher_user_no	= item.user_no;
 
-			console.log(item, params);
 			if (isNull(params.teacher_user_no) || isNull(params.hakwon_no) || isNull(params.class_no) ) {
 				alert('선생님 정보가 올바르지 않습니다.');
 				return ;
@@ -2035,7 +2023,6 @@ hakwonMainApp.controller('classTeacherListController', function($scope, $locatio
 			params.class_no			= $scope.classNo;
 			params.teacher_user_no	= item.teacher_user_no;
 
-			console.log(item, params);
 			if (isNull(params.teacher_user_no) || isNull(params.hakwon_no) || isNull(params.class_no) ) {
 				alert('선생님 정보가 올바르지 않습니다.');
 				return ;
@@ -2061,7 +2048,6 @@ hakwonMainApp.controller('classTeacherListController', function($scope, $locatio
 
 		/*	선생님 담당과목 수정	*/
 		$scope.editSubject = function(item) {
-			console.log(item);
 			var params = {};
 			params.hakwon_no		= item.hakwon_no;
 			params.teacher_user_no	= item.teacher_user_no;
@@ -2110,8 +2096,6 @@ hakwonMainApp.controller('classTeacherListController', function($scope, $locatio
 				return item.isSelected == true;
 			});
 
-			console.log(selectedTeacherList);
-
 			if (selectedTeacherList.length <= 0) {
 				alert('선택된 선생님이 없습니다.');
 				return false;
@@ -2124,7 +2108,6 @@ hakwonMainApp.controller('classTeacherListController', function($scope, $locatio
 
 		// todo : 단건 메세지 발송
 		$scope.sendMessage = function(item) {
-			console.log(item);
 			alert('메세지 보내기 준비중');
 		};
 

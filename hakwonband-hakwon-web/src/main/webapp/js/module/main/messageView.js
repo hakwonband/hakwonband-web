@@ -460,7 +460,7 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
  * 보낸 싱글 메세지
  */
 hakwonMainApp.controller('messageSendSingleListController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp messageSendSingleListController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp messageSendSingleListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -497,7 +497,7 @@ hakwonMainApp.controller('messageSendSingleListController', function($scope, $lo
  * 보낸 그룹 메세지 리스트
  */
 hakwonMainApp.controller('messageSendGroupListController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp messageSendGroupListController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp messageSendGroupListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -534,7 +534,7 @@ hakwonMainApp.controller('messageSendGroupListController', function($scope, $loc
  * 보낸 그룹 메세지 상세
  */
 hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp messageGroupSendDetailController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp messageGroupSendDetailController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -572,7 +572,7 @@ hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $l
  * 보낸 싱글 메세지 상세
  */
 hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp messageSingleSendDetailController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp messageSingleSendDetailController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -599,7 +599,6 @@ hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $
 		/*	예약 메세지 상세	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
 			var messageNo = $(this).attr('data-message-no');
-			console.log('messageNo : ' + messageNo);
 			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageSingleList);
 		});
 
@@ -625,7 +624,7 @@ hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $
  * 받은 메시지 리스트
  */
 hakwonMainApp.controller('receiveMessageListController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp receiveMessageListController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp receiveMessageListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -662,7 +661,7 @@ hakwonMainApp.controller('receiveMessageListController', function($scope, $locat
  * 받은 메세지 상세
  */
 hakwonMainApp.controller('receiveMessageDetailController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
-	console.log('hakwonMainApp receiveMessageDetailController call', $scope, $location, $routeParams, messageViewService, CommUtil);
+	console.log('hakwonMainApp receiveMessageDetailController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

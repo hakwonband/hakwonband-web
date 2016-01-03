@@ -527,7 +527,6 @@ var HakwonCommon = function() {
 					}
 
 					headerHtml += '<li class="'+(isLast?'active':'')+'"><a href="'+loopHeader.url+'" '+(loopHeader.url=='#'?'onclick="return false;"':'')+'>'+loopHeader.title+'</a></li>';
-					console.log(headerHtml);
 					if( isLast ) {
 						viewTitle = '<h1>'+loopHeader.title+'</h1>';
 					}
@@ -547,7 +546,6 @@ var HakwonCommon = function() {
 	 * @returns {boolean}
 	 */
 	this.checkAuthType = function() {
-		//console.log(userAuth.userType, HakwonConstant.UserType.WONJANG);
 		return userAuth.userType == HakwonConstant.UserType.WONJANG;
 	};
 

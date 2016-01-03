@@ -2,7 +2,7 @@
  * 광고 서비스
  */
 hakwonMainApp.service('adBannerService', function($http, CommUtil) {
-	console.log('hakwonMainApp adBannerService call', CommUtil);
+	console.log('hakwonMainApp adBannerService call');
 
 	var adBannerService = {};
 
@@ -269,9 +269,7 @@ hakwonMainApp.service('adBannerService', function($http, CommUtil) {
 	 * 광고 요청 가격 계산
 	 */
 	adBannerService.advertisePriceCalc = function() {
-		console.log('adBannerService.monthBannerPrice', adBannerService.monthBannerPrice);
 		var bannerSize = $('select[name=banner_size]').val();
-		console.log('bannerSize : ' + bannerSize);
 
 		var adMonthArray = {};
 		$('input[type=checkbox][name=adMonthCheck]:checked').each(function(idx, thisObj) {
@@ -424,7 +422,7 @@ hakwonMainApp.service('adBannerService', function($http, CommUtil) {
  * 리스트
  */
 hakwonMainApp.controller('adBannerListController', function($scope, $location, $routeParams, adBannerService, CommUtil) {
-	console.log('hakwonMainApp adBannerListController call', $scope, $location, $routeParams, adBannerService, CommUtil);
+	console.log('hakwonMainApp adBannerListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -437,7 +435,6 @@ hakwonMainApp.controller('adBannerListController', function($scope, $location, $
 		 */
 		$scope.selectPageNo = function() {
 			var pageNo = $(this).attr('data-page-no');
-			console.log('pageNo['+pageNo+']');
 			$location.path('/edBanner/list?hakwon_no='+hakwonInfo.hakwon_no+'&pageNo='+pageNo);
 		};
 
@@ -445,7 +442,6 @@ hakwonMainApp.controller('adBannerListController', function($scope, $location, $
 		if( !pageNo ) {
 			pageNo = 1;
 		}
-		console.log('adBannerListController pageNo', pageNo);
 
 		$scope.$on('$viewContentLoaded', function() {
 			console.log('adBannerListController $viewContentLoaded');
@@ -473,7 +469,7 @@ hakwonMainApp.controller('adBannerListController', function($scope, $location, $
  * 뷰
  */
 hakwonMainApp.controller('adBannerViewController', function($scope, $location, $route, $routeParams, adBannerService, CommUtil) {
-	console.log('hakwonMainApp adBannerViewController call', $scope, $location, $route, $routeParams, adBannerService, CommUtil);
+	console.log('hakwonMainApp adBannerViewController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -486,7 +482,6 @@ hakwonMainApp.controller('adBannerViewController', function($scope, $location, $
 
 		/*	요청 번호	*/
 		var reqNo = $routeParams.reqNo;
-		console.log('adBannerViewController reqNo', reqNo);
 
 		/*	목록 이동	*/
 		$scope.goList = function () {
@@ -541,7 +536,7 @@ hakwonMainApp.controller('adBannerViewController', function($scope, $location, $
  * 작성
  */
 hakwonMainApp.controller('adBannerWriteController', function($scope, $location, adBannerService, CommUtil) {
-	console.log('hakwonMainApp adBannerWriteController call', $scope, $location, adBannerService, CommUtil);
+	console.log('hakwonMainApp adBannerWriteController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -615,11 +610,10 @@ hakwonMainApp.controller('adBannerWriteController', function($scope, $location, 
 		 * onload
 		 */
 		$scope.$on('$viewContentLoaded', function() {
-			console.log('adBannerWriteController $viewContentLoaded call', $('table[data-type=calendar_table]'));
+			console.log('adBannerWriteController $viewContentLoaded call');
 
 			/*	베너 싸이즈 변경시	*/
 			$('select[name=banner_size]').change(function() {
-				console.log('banner_size change', this.value);
 				if( this.value == 1 ) {
 					$('div[data-view=banner_sample_view]').html('<div class="ad_size_sample ad_size_01">148px x 148px</div>');
 				} else if( this.value == 2 ) {
@@ -682,7 +676,6 @@ hakwonMainApp.controller('adBannerWriteController', function($scope, $location, 
 					if (this.errorFileArray.length + this.errorCount > 0) {
 						alert('광고 베너 업로드를 실패 했습니다.');
 					} else {
-						console.log(this.uploadFileArray);
 						/********************
 						 * fileNo
 						 * filePath
@@ -716,7 +709,7 @@ hakwonMainApp.controller('adBannerWriteController', function($scope, $location, 
  * 수정
  */
 hakwonMainApp.controller('adBannerEditController', function($window, $scope, $location, $routeParams, adBannerService, CommUtil) {
-	console.log('hakwonMainApp adBannerEditController call', $scope, $location, adBannerService, CommUtil);
+	console.log('hakwonMainApp adBannerEditController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -840,7 +833,6 @@ hakwonMainApp.controller('adBannerEditController', function($window, $scope, $lo
 					if (this.errorFileArray.length + this.errorCount > 0) {
 						alert('광고 베너 업로드를 실패 했습니다.');
 					} else {
-						console.log(this.uploadFileArray);
 						/********************
 						 * fileNo
 						 * filePath

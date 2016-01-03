@@ -114,37 +114,37 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	반 관련 뷰 ############################################################		*/
 		/*	반 전체리스트	*/
 		.when('/class/classList', {
-			templateUrl: '/js/partials/classList.html'
+			templateUrl: '/js/partials/class/class_list.html'
 			, controller: 'classInfoListController'
 		})
 		/*	반 - 메인, 공지사항 리스트	*/
 		.when('/class/noticeList', {
-			templateUrl: '/js/partials/classNoticeList.html'
+			templateUrl: '/js/partials/class/class_notice_list.html'
 			, controller: 'classNoticeListController'
 		})
 		/*	반 - 공지사항 상세보기	*/
 		.when('/class/noticeDetail', {
-			templateUrl: '/js/partials/classNoticeDetail.html'
+			templateUrl: '/js/partials/class/class_notice_detail.html'
 			, controller: 'classNoticeDetailController'
 		})
 		/*	반 - 공지사항 작성	*/
 		.when('/class/noticeEdit', {
-			templateUrl: '/js/partials/classNoticeEdit.html'
+			templateUrl: '/js/partials/class/class_notice_edit.html'
 			, controller: 'classNoticeEditController'
 		})
 		/*	반 - 학생 리스트 	*/
 		.when('/class/studentList', {
-			templateUrl: '/js/partials/classStudentList.html'
+			templateUrl: '/js/partials/class/class_student_list.html'
 			, controller: 'classStudentListController'
 		})
 		/*	반 - 학부모 리스트	*/
 		.when('/class/parentList', {
-			templateUrl: '/js/partials/classParentList.html'
+			templateUrl: '/js/partials/class/class_parent_list.html'
 			, controller: 'classParentListController'
 		})
 		/*	반 - 선생님 리스트	*/
 		.when('/class/teacherList', {
-			templateUrl: '/js/partials/classTeacherList.html'
+			templateUrl: '/js/partials/class/class_teacher_list.html'
 			, controller: 'classTeacherListController'
 		})
 
@@ -170,19 +170,19 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 
 		/*	공지 공유 리스트	*/
 		.when('/notice/share/sendList', {
-			templateUrl: '/js/partials/main/noticeShareSendList.html'
+			templateUrl: '/js/partials/notice_share/noticeShareSendList.html'
 			, controller: 'noticeShareSendListController'
 		})
 
 		/*	공지 공유	*/
 		.when('/notice/share/send', {
-			templateUrl: '/js/partials/main/noticeShareSend.html'
+			templateUrl: '/js/partials/notice_share/noticeShareSend.html'
 			, controller: 'noticeShareSendController'
 		})
 
 		/*	받은 공지 리스트	*/
 		.when('/notice/share/receiveList', {
-			templateUrl: '/js/partials/main/noticeShareReceiveList.html'
+			templateUrl: '/js/partials/notice_share/noticeShareReceiveList.html'
 			, controller: 'noticeShareReceiveListController'
 		})
 
@@ -265,30 +265,30 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	학생	##############################################	*/
 		/*	학생 리스트	*/
 		.when('/student/list', {
-			templateUrl:'/js/partials/main/studentList.html'
+			templateUrl:'/js/partials/student/student_list.html'
 			, controller: 'studentListController'
 		})
 		.when('/student/view', {
-			templateUrl: '/js/partials/main/studentView.html'
+			templateUrl: '/js/partials/student/student_view.html'
 			, controller: 'studentViewController'
 		})
 		.when('/student/modify', {
-			templateUrl: '/js/partials/main/studentModify.html'
+			templateUrl: '/js/partials/student/student_modify.html'
 			, controller: 'studentModifyController'
 		})
 
 		/*	학부모	##############################################	*/
 		/*	학부모 리스트	*/
 		.when('/parent/list', {
-			templateUrl: '/js/partials/parent_list.html'
+			templateUrl: '/js/partials/parent/parent_list.html'
 			, controller: 'parentListController'
 		})
 		.when('/parent/view', {
-			templateUrl: '/js/partials/parent_view.html'
+			templateUrl: '/js/partials/parent/parent_view.html'
 			, controller: 'parentViewController'
 		})
 		.when('/parent/modify', {
-			templateUrl: '/js/partials/main/parentModify.html'
+			templateUrl: '/js/partials/parent/parent_modify.html'
 			, controller: 'parentModifyController'
 		})
 
@@ -305,7 +305,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	관리자에게 문의하기 등록	*/
 		.when('/adminQuestion/regist', {
-			templateUrl: '/js/partials/adminQuestionWrite.html'
+			templateUrl: '/js/partials/admin_question/admin_question_write.html'
 			, controller: 'registQuestionController'
 		})
 
@@ -323,6 +323,12 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 
 
+		/*	학생별 주간 출결 리스트	*/
+		.when('/attendance/attendanceWeekList', {
+			templateUrl: '/js/partials/attendanceWeekList.html'
+			, controller : 'attendanceWeekListController'
+		})
+
 		/*	가이드	##############################################	*/
 		/*	지도 가이드	*/
 		.when('/guide/map', {
@@ -336,66 +342,45 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			templateUrl: '/js/partials/guideYoutube.html'
 		})
 
-
-		/*	테스트 ##########################################	*/
-		/*	출결 코드 생성	*/
-		.when('/attendance/make', {
-			templateUrl: '/js/partials/test/attendanceMakeCode.html'
-			, controller : 'attendanceMakeController'
-		})
-		/*	학생별 주간 출결 리스트	*/
-		.when('/attendance/attendanceWeekList', {
-			templateUrl: '/js/partials/attendanceWeekList.html'
-			, controller : 'attendanceWeekListController'
-		})
-		/*	등원	*/
-		.when('/attendance/start', {
-			templateUrl: '/js/partials/test/attendanceStart.html'
-			, controller : 'attendanceMakeController'
-		})
-		/*	하원	*/
-		.when('/attendance/end', {
-			templateUrl: '/js/partials/test/attendanceEnd.html'
-			, controller : 'attendanceMakeController'
-		})
 		/*	수납 등록	*/
 		.when('/receipt/insert', {
-			templateUrl: '/js/partials/receiptInsert.html'
+			templateUrl: '/js/partials/receipt/receipt_insert.html'
 			, controller : 'receiptController'
 		})
 		/*	수납 리스트	*/
 		.when('/receipt/list', {
-			templateUrl: '/js/partials/receiptList.html'
+			templateUrl: '/js/partials/receipt/receipt_list.html'
 			, controller : 'receiptListController'
 		})
 		/*	수납 일년간 리스트	*/
 		.when('/receipt/listYear', {
-			templateUrl: '/js/partials/receiptYearList.html'
+			templateUrl: '/js/partials/receipt/receipt_year_list.html'
 			, controller : 'receiptYearListController'
 		})
 		/*	수납 상세	*/
 		.when('/receipt/detail', {
-			templateUrl: '/js/partials/receiptDetail.html'
+			templateUrl: '/js/partials/receipt/receipt_detail.html'
 			, controller : 'receiptDetailController'
 		})
+
 		/*	상담 등록 */
 		.when('/counsel/insert', {
-			templateUrl: '/js/partials/counselInsert.html'
+			templateUrl: '/js/partials/counsel/counsel_insert.html'
 			, controller : 'counselInsertController'
 		})
 		/*	상담 리스트 */
 		.when('/counsel/list', {
-			templateUrl: '/js/partials/counselList.html'
+			templateUrl: '/js/partials/counsel/counsel_list.html'
 			, controller : 'counselListController'
 		})
 		/*	상담 상세	*/
 		.when('/counsel/detail', {
-			templateUrl: '/js/partials/counselDetail.html'
+			templateUrl: '/js/partials/counsel/counsel_detail.html'
 			, controller : 'counselDetailController'
 		})
 		/*	상담 수정	*/
 		.when('/counsel/update', {
-			templateUrl: '/js/partials/counselUpdate.html'
+			templateUrl: '/js/partials/counsel/counsel_update.html'
 			, controller : 'counselUpdateController'
 		})
 
@@ -465,89 +450,91 @@ var HakwonCommon = function() {
 		/*	사이드 메뉴 클릭시 이동	*/
 		$('#side-menu').on('click', 'li a[data-type=leftMenu]', function() {
 			var dataAct = $(this).attr('data-act');
+			console.debug('leftMenu dataAct['+dataAct+']');
+
+			var moveLeftLocation = undefined;
 			if (dataAct == 'classList') {
 				/*	반 리스트	*/
-				window.location.href = PageUrl.common.classList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.classList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'noticeList' ) {
 				/*	공지 리스트	*/
-				window.location.href = PageUrl.common.noticeList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.noticeList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'edBannerList' ) {
 				/*	광고 리스트	*/
-				window.location.href = PageUrl.common.edBannerList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.edBannerList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'hakwonCreate' ) {
 				/*	학원 생성	*/
-				window.location.href = PageUrl.master.hakwonCreate;
+				moveLeftLocation = PageUrl.master.hakwonCreate;
 			} else if( dataAct == 'hakwonAllList' ) {
 				/*	학원 리스트	*/
-				window.location.href = PageUrl.master.hakwonAllList;
+				moveLeftLocation = PageUrl.master.hakwonAllList;
 			} else if( dataAct == 'teacherHakwonAllList' ) {
 				/*	선생님 학원 리스트	*/
-				window.location.href = PageUrl.teacher.teacherHakwonAllList;
+				moveLeftLocation = PageUrl.teacher.teacherHakwonAllList;
 			} else if( dataAct == 'studentList' ) {
 				/*	학생 리스트	*/
-				window.location.href = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'parentList' ) {
 				/*	학부모 리스트	*/
-				window.location.href = PageUrl.common.parentList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.parentList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'joinReqTeacherList' ) {
 				/*	가입 요청 선생님	*/
-				window.location.href = PageUrl.master.joinReqTeacherList;
+				moveLeftLocation = PageUrl.master.joinReqTeacherList;
 			} else if( dataAct == 'hakwonTeacherList' ) {
 				/*	가입 요청 선생님	*/
-				window.location.href = PageUrl.master.teacherList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.master.teacherList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'eventLsit' ) {
 				/*	이벤트 리스트	*/
-				window.location.href = PageUrl.common.eventList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.eventList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'sendMessageGroupList' ) {
 				/*	보낸 그룹 메세지	*/
-				window.location.href = PageUrl.message.sendMessageGroupList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.message.sendMessageGroupList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'sendMessageSingleList' ) {
 				/*	보낸 싱글 메세지	*/
-				window.location.href = PageUrl.message.sendMessageSingleList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.message.sendMessageSingleList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiveMessageList' ) {
 				/*	받은 메세지 리스트	*/
 				var receiveMessageListQuery = '';
 				if( hakwonInfo.hakwon_no ) {
 					receiveMessageListQuery = '?hakwon_no='+hakwonInfo.hakwon_no;
 				}
-				window.location.href = PageUrl.message.receiveMessageList+receiveMessageListQuery;
+				moveLeftLocation = PageUrl.message.receiveMessageList+receiveMessageListQuery;
 			} else if( dataAct == 'sendQuestion' ) {
 				/*	관리자에게 문의	*/
-				window.location.href = PageUrl.message.sendQuestion+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.message.sendQuestion+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherSendMessage' ) {
 				/*	선생님 메세지 보내기	*/
-				window.location.href = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'masterSendMessage' ) {
 				/*	원장님 메세지 보내기	*/
-				window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherHakwonRegist' ) {
 				/*	원장님 메세지 보내기	*/
-				window.location.href = PageUrl.teacher.hakwonRegist+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.teacher.hakwonRegist+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'settingNoticeCate' ) {
 				/*	원장님 셋팅 공지 카테고리	*/
-				window.location.href = PageUrl.setting.noticeCategory+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.setting.noticeCategory+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'settingManager' ) {
 				/*	원장님 셋팅 매니저	*/
-				window.location.href = PageUrl.setting.manager+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.setting.manager+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'adminQuestion' ) {
 				/*	관리자에게 문의 하기	*/
-				window.location.href = PageUrl.common.adminQuestionList+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.adminQuestionList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'guideMap' ) {
 				/*	가이드 지도	*/
-//				window.location.href = PageUrl.guide.map+'?hakwon_no='+hakwonInfo.hakwon_no;
-				window.location.href = PageUrl.guide.daumMap+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.guide.daumMap+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'guideYoutube' ) {
 				/*	가이드 유튜브	*/
-				window.location.href = PageUrl.guide.youtube+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.guide.youtube+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendanceMake' ) {
 				/*	출결 코드 생성	*/
-				window.location.href = PageUrl.attendance.make + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.attendance.make + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendanceWeekList' ) {
 				/*	주간 출결 리스트	*/
-				window.location.href = PageUrl.attendance.weekList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.attendance.weekList + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendanceStart' ) {
 				/*	등원	*/
-				window.location.href = PageUrl.attendance.start + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.attendance.start + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendancePop' ) {
 				/*	등원,하원 팝업	*/
 				window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
@@ -556,39 +543,41 @@ var HakwonCommon = function() {
 				window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
 			} else if( dataAct == 'attendanceEnd' ) {
 				/*	하원	*/
-				window.location.href = PageUrl.attendance.end + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.attendance.end + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptInsert' ) {
 				/*	수납 등록	*/
-				window.location.href = PageUrl.receipt.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptList' ) {
 				/*	기간별 수납 리스트	*/
-				window.location.href = PageUrl.receipt.list + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.list + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptYearList' ) {
 				/*	학생별 수납 리스트	*/
-				window.location.href = PageUrl.receipt.listYear + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.listYear + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'counselInsert' ) {
 				/*	상담 등록	*/
-				window.location.href = PageUrl.counsel.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.counsel.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'counselListSt' ) {
 				/*	학생 상담 리스트	*/
-				window.location.href = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=006';
+				moveLeftLocation = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=006';
 			} else if( dataAct == 'counselListPa' ) {
 				/*	학부모 상담 리스트	*/
-				window.location.href = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=005';
+				moveLeftLocation = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=005';
 
 			} else if( dataAct == 'send_notice_share_list' ) {
 				/*	공지 공유 리스트	*/
-				window.location.href = PageUrl.notice_share.sendList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.sendList + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receive_notice_share_list' ) {
 				/*	받은 공유 공지 리스트	*/
-				window.location.href = PageUrl.notice_share.receiveList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.receiveList + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'send_notice_share' ) {
 				/*	공지 공유	*/
-				window.location.href = PageUrl.notice_share.send + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.send + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			}
 
-
-
+			console.debug('left move moveLeftLocation : ' + moveLeftLocation);
+			if( moveLeftLocation ) {
+				window.location.href = moveLeftLocation;
+			}
 
 			if( dataAct && commProto.isResponsiveCheck() ) {
 				$('body').removeClass('mini-navbar');
@@ -616,8 +605,6 @@ var HakwonCommon = function() {
 			}
 			if( hakwonInfo.hakwonList.length > 1 ) {
 				/*	2개 이상일때	*/
-				console.log('hakwonInfo.hakwon_no', hakwonInfo.hakwon_no);
-
 				$('li[data-view=hakwon_list_li] > select').html($.tmpl(hakwonTmpl.leftMenu.hakwonList, hakwonInfo));
 				$('li[data-view=hakwon_list_li]').show();
 			}
@@ -656,7 +643,6 @@ var HakwonCommon = function() {
 		}
 
 		if( HakwonConstant.ServerType != 'live' ) {
-			//console.log("caller is " + arguments.callee.caller.toString());
 		}
 
 		if( userAuth.userType == HakwonConstant.UserType.WONJANG || userAuth.userType == HakwonConstant.UserType.TEACHER ) {

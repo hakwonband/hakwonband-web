@@ -2,7 +2,7 @@
  * 관리자에게 문의 서비스
  */
 hakwonMainApp.service('adminQuestionService', function($http, CommUtil) {
-	console.log('hakwonMainApp adminQuestionService call', CommUtil);
+	console.log('hakwonMainApp adminQuestionService call');
 
 	var adminQuestionService = {};
 
@@ -288,7 +288,7 @@ hakwonMainApp.service('adminQuestionService', function($http, CommUtil) {
  * 관리자 문의 리스트
  */
 hakwonMainApp.controller('adminQuestionListController', function($scope, $location, $routeParams, adminQuestionService, CommUtil) {
-	console.log('hakwonMainApp adminQuestionListController call', $scope, $location, $routeParams, adminQuestionService, CommUtil);
+	console.log('hakwonMainApp adminQuestionListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -323,7 +323,7 @@ hakwonMainApp.controller('adminQuestionListController', function($scope, $locati
  * 관리자에게 문의하기 보기
  */
 hakwonMainApp.controller('adminQuestionViewController', function($scope, $location, $routeParams, adminQuestionService, CommUtil) {
-	console.log('hakwonMainApp adminQuestionViewController call', $scope, $location, $routeParams, adminQuestionService, CommUtil);
+	console.log('hakwonMainApp adminQuestionViewController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -377,7 +377,7 @@ hakwonMainApp.controller('adminQuestionViewController', function($scope, $locati
  * 관리자에게 문의하기 등록
  */
 hakwonMainApp.controller('registQuestionController', function($scope, $location, $routeParams, adminQuestionService, CommUtil) {
-	console.log('hakwonMainApp registQuestionController call', $scope, $location, $routeParams, adminQuestionService, CommUtil);
+	console.log('hakwonMainApp registQuestionController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

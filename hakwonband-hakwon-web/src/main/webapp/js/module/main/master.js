@@ -44,8 +44,6 @@ hakwonMainApp.service('masterService', function(CommUtil) {
 		params.teacher_user_no	= item.user_no;
 		params.subject			= item.tempSubject;
 
-		console.log('params.subject : ' + params.subject);
-
 		if (isNull(params.hakwon_no) || isNull(params.teacher_user_no)) {
 			alert('선생님 정보가 올바르지 않습니다.');
 			return;
@@ -180,7 +178,7 @@ hakwonMainApp.service('masterService', function(CommUtil) {
  * 가입 요청 선생님 리스트
  */
 hakwonMainApp.controller('masterJoinReqTeacherController', function($scope, $location, $routeParams, masterService, CommUtil) {
-	console.log('hakwonMainApp masterJoinReqTeacherController call', $scope, $location, $routeParams, masterService, CommUtil);
+	console.log('hakwonMainApp masterJoinReqTeacherController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -217,7 +215,7 @@ hakwonMainApp.controller('masterJoinReqTeacherController', function($scope, $loc
  * 학원내 선생님 리스트 컨트롤러
  */
 hakwonMainApp.controller('masterTeacherListController', function($scope, $location, $routeParams, masterService, CommUtil) {
-	console.log('hakwonMainApp masterTeacherListController call', $scope, $location, $routeParams, masterService, CommUtil);
+	console.log('hakwonMainApp masterTeacherListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -268,8 +266,6 @@ hakwonMainApp.controller('masterTeacherListController', function($scope, $locati
 				return item.isSelected == true;
 			});
 
-			console.log(selectedTeacherList);
-
 			if (selectedTeacherList.length <= 0) {
 				alert('선택된 선생님이 없습니다.');
 				return false;
@@ -294,7 +290,6 @@ hakwonMainApp.controller('masterTeacherListController', function($scope, $locati
 
 		/*	선생님 탈퇴 레이어	*/
 		$scope.hakwonTeacherOut = function(teacher_user_no) {
-			console.log('teacher_user_no : ' + teacher_user_no);
 			$('#teacher_out_layer').modal('show');
 			$('button[data-act=teacherOutAct]').attr('teacher_user_no', teacher_user_no);
 		}

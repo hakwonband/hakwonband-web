@@ -27,7 +27,6 @@ hakwonMainApp.service('mainService', function() {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert('학원로고 업로드를 실패 했습니다.');
 			} else {
-				console.log(this.uploadFileArray);
 				/********************
 				 * fileNo
 				 * filePath
@@ -57,7 +56,7 @@ hakwonMainApp.service('mainService', function() {
  * 메인 컨트롤러
  */
 hakwonMainApp.controller('mainController', function($scope, $window, $location, $routeParams, mainService, CommUtil) {
-	console.log('hakwonMainApp mainController call', $scope, $window, $location, $routeParams, mainService, CommUtil);
+	console.log('hakwonMainApp mainController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

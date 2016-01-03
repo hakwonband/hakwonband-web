@@ -2,7 +2,7 @@
  * 학부모 서비스
  */
 hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
-	console.log('hakwonMainApp parentService call', CommUtil);
+	console.log('hakwonMainApp parentService call');
 
 	var parentService = {};
 
@@ -74,7 +74,7 @@ hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
  * 학부모 리스트
  */
 hakwonMainApp.controller('parentListController', function($scope, $location, $routeParams, parentService, CommUtil, $timeout) {
-	console.log('hakwonMainApp parentListController call', $scope, $location, $routeParams, parentService, CommUtil);
+	console.log('hakwonMainApp parentListController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -161,7 +161,7 @@ hakwonMainApp.controller('parentListController', function($scope, $location, $ro
  * 학부모 상세
  */
 hakwonMainApp.controller('parentViewController', function($scope, $location, $routeParams, parentService, CommUtil) {
-	console.log('hakwonMainApp parentViewController call', $scope, $location, $routeParams, parentService, CommUtil);
+	console.log('hakwonMainApp parentViewController call');
 
 	try {
 		/*	페이지 초기화 호출	*/

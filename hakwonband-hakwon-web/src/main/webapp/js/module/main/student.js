@@ -82,7 +82,6 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 
 		/*	출결 조회	*/
 		CommUtil.ajax({url:contextPath+"/hakwon/attendance/getAttendance.do", param:params, successFun:function(data) {
-			console.log("출결 : " + JSON.stringify(data));
 			if( data.error ) {
 				alert('출결 조회에 실패했습니다.');
 				return false;
@@ -131,18 +130,13 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	studentService.calendar = function($scope, calEvent) {
 
 		var cuMonth = $scope.currentMonth;
-		console.log("cu month : " + cuMonth);
 		if(cuMonth < 10) {
 			cuMonth = "0" + cuMonth;
 		}
 		var defaultDate = $scope.currentYear + "-" + cuMonth + "-01";
-		console.log("기본 날짜 : " + defaultDate);
-		//var calEvent = [];
 
 		if(calEvent == null || "undefined" == calEvent) {
 			calEvent = [];
-		} else {
-			console.log("달략에서 : " + JSON.stringify(calEvent));
 		}
 
 		$('#attendanceCalendar').fullCalendar({
@@ -313,7 +307,6 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 		var currentDate = new Date();
 		$scope.currentYear = currentDate.getFullYear();
 		$scope.currentMonth = currentDate.getMonth() + 1;
-		console.log("current date : " + $scope.currentYear + "-" + $scope.currentMonth);
 
 		/*	페이지 초기화 호출	*/
 		hakwonCommon.pageInit();
@@ -411,7 +404,6 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			} else {
 				$scope.currentMonth--;
 			}
-			console.log("prev date : " + $scope.currentYear + "-" + $scope.currentMonth);
 		});
 
 		/*	다음달 출결 조회	*/
@@ -423,7 +415,6 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			} else {
 				$scope.currentMonth++;
 			}
-			console.log("next date : " + $scope.currentYear + "-" + $scope.currentMonth);
 		});
 
 
@@ -443,7 +434,6 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 				alert("같은 연도 입니다.");
 				$sceop.currentMonth = currentMonth;
 			}
-			console.log("today date : " + $scope.currentYear + "-" + $scope.currentMonth);
 		});
 
 
@@ -475,7 +465,6 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			$scope.hakwonInfo		= hakwonInfo;
 
 			$timeout(function() {
-				console.log('studentView callback getAttendance~~');
 				studentService.getAttendance($scope, studentUserNo);		// 학생 상세 페이지 바인딩후 출결 달력 생성
 			},50);
 		});
