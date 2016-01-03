@@ -12,7 +12,6 @@ hakwonCommonApp.config(['$routeProvider', function($routeProvider) {
 			, controller: 'indexController'
 		})
 		.when('/login', {
-			//template: hakwonTmpl.common.login
 			templateUrl	: '/js/partials/index/login.html'
 			, controller: 'loginController'
 		})

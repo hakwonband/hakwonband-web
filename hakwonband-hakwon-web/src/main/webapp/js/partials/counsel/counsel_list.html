@@ -18,6 +18,13 @@
 						<option value="id">아이디</option>
 					</select>
 				</div>
+				<div class="col-md-1">
+					<select name="pageScale" class="form-control">
+						<option value="10">10</option>
+						<option value="100">100</option>
+						<option value="200">200</option>
+					</select>
+				</div>
 				<div class="col-md-2 input-group">
 					<input type="text" class="form-control" placeholder="검색어 입력" ng-keydown="searchCounselEnter($event)" name="searchText">
 					<span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="counselSearch">검색</button> </span>

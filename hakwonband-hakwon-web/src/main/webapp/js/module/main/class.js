@@ -513,7 +513,7 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 	};
 
 	/*	반 소속 학생 리스트 조회	*/
-	classService.classStudentList = function (pageNo, $scope, searchText) {
+	classService.classStudentList = function (pageNo, pageScale, $scope, searchText) {
 		if (isNull($scope.hakwonNo)) {
 			alert('학원 정보가 올바르지 않습니다.');
 			return;
@@ -527,6 +527,7 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 			, classNo: $scope.classNo
 			, pageNo: isNull(pageNo) ? 1 : pageNo
 			, searchText : searchText
+			, pageScale : pageScale
 		};
 		CommUtil.ajax({url: contextPath + "/hakwon/student/classStudentList.do", param: params, successFun: function (data) {
 			try {
@@ -1650,6 +1651,9 @@ hakwonMainApp.controller('classStudentListController', function($scope, $locatio
 		$scope.searchText				= '';
 		$scope.classSearchText			= '';
 
+		$scope.pageScale				= 10;
+		$scope.pageScaleArray			= [10, 100, 200];
+
 		if (!isNull($routeParams.hakwon_no)) {
 			$scope.hakwonNo = $routeParams.hakwon_no;
 		} else if (!isNull(hakwonInfo.hakwon_no)) {
@@ -1662,7 +1666,7 @@ hakwonMainApp.controller('classStudentListController', function($scope, $locatio
 
 		/*	반 소속 학생 리스트 조회		*/
 		$scope.getClassStudentList = function(pageNo, searchText) {
-			classService.classStudentList(pageNo, $scope, searchText);
+			classService.classStudentList(pageNo, $scope.pageScale, $scope, searchText);
 		};
 
 		/*	학원내 학생 검색처리	*/

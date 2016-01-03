@@ -15,6 +15,7 @@ import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.constant.CommonConstant.Flag;
 import hakwonband.hakwon.common.constant.HakwonConstant;
+import hakwonband.hakwon.common.constant.HakwonConstant.PageScale;
 import hakwonband.hakwon.service.StudentService;
 import hakwonband.util.DataMap;
 import hakwonband.util.SecuUtil;
@@ -161,7 +162,7 @@ public class StudentController extends BaseAction {
 	public void classStudentList(HttpServletRequest request, HttpServletResponse response) {
 
 		int pageNo		= StringUtil.parseInt(request.getParameter("pageNo"), 1);
-		int pageScale	= HakwonConstant.PageScale.STUDENT_LIST;
+		int pageScale	= StringUtil.parseInt(request.getParameter("pageScale"), PageScale.STUDENT_LIST);
 
 		String hakwonNo		= request.getParameter("hakwonNo");
 		String classNo		= request.getParameter("classNo");

@@ -160,8 +160,8 @@ public class CounselController extends BaseAction {
 		String searchText		= request.getParameter("searchText");
 		String dateTerm			= request.getParameter("dateTerm");			// 기간 타입 (001:오늘, 002:일주일, 003:1개월, 004:3개월, 005:6개월 , 006:12개월)
 		String pageNo			= hakwonband.util.StringUtil.replaceNull( request.getParameter("pageNo"), "1");		// 현재 페이지 번호
+		int pageScale			= StringUtil.parseInt(request.getParameter("pageScale"), PageScale.STUDENT_LIST);
 
-		int pageScale	= PageScale.STUDENT_LIST;
 		int startNo		= (Integer.parseInt(pageNo) -1) * pageScale;
 
 		String standardDate = DateUtil.getDate("yyyy-MM-dd");

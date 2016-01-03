@@ -32,6 +32,18 @@ hakwonMainApp.service('parentService', function($rootScope, CommUtil) {
 	}
 
 	/**
+	 * 탈퇴
+	 */
+	parentService.without = function(delUserInfo, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/without.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: delUserInfo
+			, callback	: callback
+		});
+	}
+
+	/**
 	 * 학부모 리스트
 	 */
 	parentService.parentList = function(pageNo, callback) {
@@ -223,6 +235,21 @@ hakwonMainApp.controller('parentViewController', function($scope, $location, $ro
 				commProto.errorDump({errorObj:ex});
 			}
 		});
+
+		/**
+		 * 탈퇴
+		 */
+		$scope.without = function() {
+			if( window.confirm('회원님을 탈퇴 시키겠습니까?') ) {
+				parentService.without({user_no:parentUserNo, hakwon_no:hakwonInfo.hakwon_no}, function(data) {
+					if( data.colData && data.colData.flag == 'success' ) {
+						window.history.back();
+					} else {
+						alert('탈퇴를 실패 했습니다.');
+					}
+				});
+			}
+		}
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}

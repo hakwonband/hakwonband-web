@@ -28,28 +28,6 @@ var hakwonTmpl = {
 			, '		<button type="button" data-act="right" class="btn btn-white"><i class="fa fa-chevron-right"></i> </button>'
 			, '{{/if}}'
 		].join('')
-		/*	로그인	*/
-		, login : [
-			'	<div class="middle-box text-center loginscreen animated fadeInDown">'
-			, '		<h1 class="logo-name"><small>HAKWONBAND</small><br>LOGIN</h1>'
-			, '		<h3>Welcome to HAKWONBAND</h3>'
-			, '		<form class="m-t" role="form" action="">'
-			, '			<div class="form-group">'
-			, '				<input type="text" name="userId" value="" class="form-control m-b-xs" placeholder="아이디">'
-			, '				<input type="password" name="userPass" value="" class="form-control" placeholder="비밀번호">'
-			, '				<div class="checkbox i-checks">'
-			, '					<label for="login_auto"> <input type="checkbox" name="loginSave" value="Y" id="login_auto"> 자동로그인</label>'
-			, '					<label for="login_rememberid"> <input type="checkbox" name="idSave" value="Y" id="login_rememberid"> 아이디 기억</label>'
-			, '				</div>'
-			, '			</div>'
-			, '			<button type="button" data-act="login" class="btn btn-primary btn-lg block full-width m-b">로그인</button>'
-			, '			<button type="button" data-act="signUp" class="btn btn-info block full-width m-b">학원밴드 가입하기</button>'
-
-			, '			<a href="'+PageUrl.findInfo+'"><small>아이디나 비밀번호가 생각나지 않는다면?</small></a>'
-			, '		</form>'
-			, '		<p class="m-t"> <small>HAKWONBAND &copy; 2015</small> </p>'
-			, '	</div>'
-		].join('')
 		, videoHtml : [
 			'<video width="320" height="240" controls>'
 			, '	<source src="{{=videoUrl}}" type="video/mp4">'

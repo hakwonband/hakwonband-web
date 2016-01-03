@@ -218,13 +218,14 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var startDate		= $receiptParam.find('input[name=startDate]').val();
 		var endDate			= $receiptParam.find('input[name=endDate]').val();
 		var registDay		= $receiptParam.find('select[name=registDay]').val();
+		var pageScale		= $receiptParam.find('select[name=pageScale]').val();
 		var dateTerm		= $scope.dateTerm;
 		var searchYear		= $scope.searchYear;
 
 		var params = {
 			hakwonNo:hakwonNo, pageNo:$scope.pageNo, searchType:searchType, searchText:searchText
 			, startDate:startDate, endDate:endDate, classNo:classNo, dateTerm:dateTerm, registDay:registDay
-			, searchYear:searchYear
+			, searchYear:searchYear, pageScale:pageScale
 		};
 		CommUtil.ajax({url:contextPath+"/hakwon/receipt/list/year.do", param: params, successFun:function(data) {
 			try {
@@ -696,6 +697,11 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		/*	페이지 초기화 호출	*/
 		hakwonCommon.pageInit();
 
+		/*	공통 유틸	*/
+		$scope.CommUtil	= CommUtil;
+		$scope.PageUrl	= PageUrl;
+		$scope.userAuth	= userAuth;
+
 		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:PageUrl.receipt.listYear+'?hakwon_no='+hakwonInfo.hakwon_no, title:'수납'}, {url:'#', title:'학생별 수납 리스트'}]);
 
 		$scope.classList 			= [];		// 반 리스트
@@ -709,6 +715,8 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 
 		$scope.searchYear = new Date().getFullYear();
 
+		$scope.yearList = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+
 
 		$scope.dayList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];		// 학생 등록일 리스트 (1 ~ 31 일까지)
 
@@ -717,10 +725,6 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 
 		/*	수납 리스트 조회	*/
 		receiptService.getReceiptYearList($scope);
-
-		$scope.getPhotoFileFullPath = function(photo_file_path) {
-			return CommUtil.createFileFullPath(photo_file_path, 'photo');
-		};
 
 		/*	수납 검색	*/
 		$scope.receiptSearch = function() {

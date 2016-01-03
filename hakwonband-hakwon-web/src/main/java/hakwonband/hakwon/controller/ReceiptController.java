@@ -154,9 +154,9 @@ public class ReceiptController extends BaseAction {
 		String searchText	= request.getParameter("searchText");
 		String registDay	= request.getParameter("registDay"); // 학생 등록일
 		String searchYear	= request.getParameter("searchYear");
+		int pageScale		= StringUtil.parseInt(request.getParameter("pageScale"), PageScale.STUDENT_LIST);
 
 		int pageNo = StringUtil.parseInt(request.getParameter("pageNo"), 1);
-		int pageScale = PageScale.STUDENT_LIST;
 
 		DataMap param = new DataMap();
 		param.put("hakwonNo",	hakwonNo);

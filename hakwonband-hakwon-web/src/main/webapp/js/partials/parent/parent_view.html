@@ -30,6 +30,7 @@
 				</ul>
 			</div>
 			<div class="text-right m-t">
+				<button class="btn btn-default" ng-if="userAuth.userType == '003'" ng-click="without()" type="button">탈퇴</button>
 				<button class="btn btn-default" ng-click="list()" type="button">목록으로</button>
 				<button class="btn btn-default" ng-click="modify()" type="button">수정</button>
 			</div>

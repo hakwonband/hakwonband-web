@@ -214,14 +214,15 @@ hakwonMainApp.service('counselService', function(CommUtil) {
 	/*	상담 리스트 조회	*/
 	counselService.getCounselList = function($scope) {
 
-		var $counselParam = $('div.counselList');
-		var hakwonNo = hakwonInfo.hakwon_no;
-		var classNo = $counselParam.find('select[name=classNo]').val();
-		var searchType = $counselParam.find('select[name=searchType]').val();
-		var searchText = $counselParam.find('input[name=searchText]').val();
-		var startDate = $counselParam.find('input[name=startDate]').val();
-		var endDate = $counselParam.find('input[name=endDate]').val();
-		var counseleeType = $scope.counselType;
+		var $counselParam	= $('div.counselList');
+		var hakwonNo		= hakwonInfo.hakwon_no;
+		var classNo			= $counselParam.find('select[name=classNo]').val();
+		var searchType		= $counselParam.find('select[name=searchType]').val();
+		var searchText		= $counselParam.find('input[name=searchText]').val();
+		var startDate		= $counselParam.find('input[name=startDate]').val();
+		var endDate			= $counselParam.find('input[name=endDate]').val();
+		var pageScale		= $counselParam.find('input[name=pageScale]').val();
+		var counseleeType	= $scope.counselType;
 
 		var dateTerm = $scope.dateTerm;
 
@@ -235,6 +236,7 @@ hakwonMainApp.service('counselService', function(CommUtil) {
 			, classNo		: classNo
 			, counseleeType	: counseleeType
 			, dateTerm		: dateTerm
+			, pageScale		: pageScale
 		};
 		CommUtil.ajax({url:contextPath+"/hakwon/counsel/list.do", param: params, successFun:function(data) {
 			try {
