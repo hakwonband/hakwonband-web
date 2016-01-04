@@ -115,7 +115,7 @@ hakwonMainApp.controller('parentListController', function($scope, $location, $ro
 
 		/*	검색	*/
 		$scope.search = function() {
-			parentService.parentList();
+			parentService.parentList(1, parentListCallback);
 		}
 
 		/*	메세지 보내기	*/
