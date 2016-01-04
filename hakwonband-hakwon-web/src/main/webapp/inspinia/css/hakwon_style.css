@@ -392,7 +392,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .attendance_search_result .profile_id{display:block;}
 
 .class_list_pc{padding:0;}
-.class_list_pc li{position:relative; background:#fff; border:1px solid #e7eaec; padding:15px; margin-bottom:10px; list-style:none; padding-left:70px; min-height:40px;}
+.class_list_pc li{position:relative; background:#fff; border:1px solid #e7eaec; padding:15px; margin-bottom:10px; list-style:none; padding-left:70px; min-height:50px;}
 .class_list_pc li img{width:50px; height:50px; position:absolute; top:10px; left:10px;}
 .class_list_pc li p, .class_list_pc li strong{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 
