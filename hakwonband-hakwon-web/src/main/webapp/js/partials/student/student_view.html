@@ -3,7 +3,7 @@
 		<div class="col-md-8 col-md-offset-2" data-view="data-view">
 			<div class="widget-head-color-box blue-bg p-lg text-center">
 				<h2 class="font-bold">{{userInfo.user_name}}</h2>
-				<img ng-src="CommUtil.createFileFullPath(userInfo.photo_file_path, 'photo')" class="circle-border m-md img-responsive" alt="{{userInfo.user_name}}" width="300" height="300">
+				<img ng-src="{{CommUtil.createFileFullPath(userInfo.photo_file_path, 'photo')}}" class="circle-border m-md img-responsive" alt="{{userInfo.user_name}}" width="300" height="300">
 				<p>{{userInfo.user_gender_name}} / {{!userInfo.user_age||userInfo.user_age==0?"생일 미입력":userInfo.user_age+"세"}} / {{schoolInfo.school_name}} {{schoolInfo.level}}학년</p>
 			</div>
 			<div class="widget-text-box">
@@ -31,7 +31,7 @@
 				<ul class="academy_info">
 					<li ng-repeat="loopClass in hakwonClassList">
 						<a href="#/class/noticeList?hakwon_no={{hakwonInfo.hakwon_no}}&class_no={{loopClass.class_no}}">
-							<img class="img-circle" ng-src="CommUtil.createFileFullPath(loopClass.logo_file_path, 'hakwon')" alt="{{loopClass.class_title}}" width="30" height="30">
+							<img class="img-circle" ng-src="{{CommUtil.createFileFullPath(loopClass.logo_file_path, 'hakwon')}}" alt="{{loopClass.class_title}}" width="30" height="30">
 							<strong class="name">{{loopClass.class_title}}</strong>
 						</a>
 					</li>
@@ -44,7 +44,7 @@
 				<ul class="academy_info">
 					<li ng-repeat="loopParent in parentList">
 						<a href="{{PageUrl.common.parentView}}?hakwon_no={{hakwonInfo.hakwon_no}}&parentUserNo={{loopParent.parent_user_no}}">
-							<img class="img-circle" ng-src="CommUtil.createFileFullPath(loopParent.photo_file_path, 'photo')" alt="{{loopParent.user_name}}" width="30" height="30">
+							<img class="img-circle" ng-src="{{CommUtil.createFileFullPath(loopParent.photo_file_path, 'photo')}}" alt="{{loopParent.user_name}}" width="30" height="30">
 							<strong class="name">{{loopParent.user_name}}</strong> <span class="info_text">{{loopParent.user_gender=="M"?"남":"여"}} / {{!loopParent.user_age||loopParent.user_age==0?"생일 미입력":loopParent.user_age + "세"}}</span>
 							<span class="badge badge-plain">{{loopParent.user_gender=="M"?"부":"모"}}</span>
 						</a>

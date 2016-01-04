@@ -29,7 +29,7 @@
 						<!--<td><span><input type="checkbox" value="{{= loopData.user_no}}" class="i-checks" name="input"></span></td>-->
 						<td>
 							<a href="{{PageUrl.common.studentView}}?hakwon_no={{hakwonInfo.hakwon_no}}&studentUserNo={{loopData.user_no}}">
-								<img class="img-circle" ng-src="CommUtil.createFileFullPath(loopData.user_photo_path, 'photo')" width="30" height="30"> {{loopData.user_name}}
+								<img class="img-circle" ng-src="{{CommUtil.createFileFullPath(loopData.user_photo_path, 'photo')}}" width="30" height="30"> {{loopData.user_name}}
 							</a>
 						</td>
 						<td><span>{{loopData.user_id}}</span></td>
