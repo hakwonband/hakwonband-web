@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.noticeShare.dao.NoticeShareDAO">
+
+
+	<!-- 종료 공유 메세지 -->
+	<select id="closeShareNoticeList" resultType="long">
+	<![CDATA[
+		/*	NoticeShareDAO.closeShareNoticeList	*/
+		select a.share_no
+		from tb_notice_share a
+		where date(a.end_date) < date(now())
+	]]>
+	</select>
+
+	<!-- 공유 공지 삭제 -->
+	<delete id="deleteShareNotice" parameterType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.deleteShareNotice	*/
+		delete from tb_notice
+		where share_no in (
+			select share_no
+			from tb_notice_share
+			where date(end_date) < date(now())
+		)
+	]]>
+	</delete>
+
+
+</mapper>
