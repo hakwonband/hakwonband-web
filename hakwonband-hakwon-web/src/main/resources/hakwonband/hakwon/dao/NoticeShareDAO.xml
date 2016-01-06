@@ -37,7 +37,7 @@
 			, case when a.notice_type = '002' then '학원공지'
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
 				else '' end class_title
-			, case when now() between a.start_date and a.end_date then 'Y'
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
 				else 'N' end as use_yn
 		from
 			tb_notice_share a
@@ -86,7 +86,7 @@
 			, case when a.notice_type = '002' then '학원공지'
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
 				else '' end class_title
-			, case when now() between a.start_date and a.end_date then 'Y'
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
 				else 'N' end as use_yn
 		from
 			tb_notice_share a
@@ -207,7 +207,7 @@
 			, a.receive_hakwon_no
 			, date_format(a.start_date,'%Y-%m-%d') as start_date
 			, date_format(a.end_date,'%Y-%m-%d') as end_date
-			, case when now() between a.start_date and a.end_date then 'Y'
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
 				else 'N' end as use_yn
 			, a.reg_date
 			, a.udp_date

@@ -26,7 +26,8 @@ public class NoticeShareService {
 	public void deleteNoticeShare() {
 		logger.info("deleteNoticeShare start");
 
-		noticeShareDAO.deleteShareNotice();
+		int delCount = noticeShareDAO.deleteShareNotice();
+		logger.info("delCount["+delCount+"]");
 
 		logger.info("deleteNoticeShare END");
 	}
