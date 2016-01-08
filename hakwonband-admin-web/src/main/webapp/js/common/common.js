@@ -582,6 +582,8 @@ var HakwonCommon = function() {
 	this.isAndroidUploader = function() {
 		if( window.PLATFORM ) {
 			/*	android 앱	*/
+			return true;
+/*
 			if( navigator.userAgent.indexOf('SHW-M440') > 0 || navigator.userAgent.indexOf('SHV-E210') > 0 ) {
 				return true;
 			} else if( '113' < comm.getAppVersion() ) {
@@ -595,6 +597,7 @@ var HakwonCommon = function() {
 			} else {
 				return false;
 			}
+*/
 		} else {
 			return false;
 		}
