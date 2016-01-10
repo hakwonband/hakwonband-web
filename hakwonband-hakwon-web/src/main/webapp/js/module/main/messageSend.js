@@ -590,7 +590,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 						};
 						var param = {
 							fileType : 'all'
-							, multipleYn : 'N'
+							, multipleYn : 'Y'
 							, callBack : 'uploadCallBack'
 							, upload : {
 								url : window.location.protocol+'//'+window.location.host+uploadUrl
@@ -883,7 +883,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 						};
 						var param = {
 							fileType : 'all'
-							, multipleYn : 'N'
+							, multipleYn : 'Y'
 							, callBack : 'uploadCallBack'
 							, upload : {
 								url : window.location.protocol+'//'+window.location.host+uploadUrl

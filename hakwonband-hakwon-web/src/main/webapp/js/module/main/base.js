@@ -25,6 +25,9 @@ hakwonMainApp.controller('baseController', function($rootScope, $scope, $locatio
 
 		$rootScope.HakwonConstant = HakwonConstant;
 
+		/*	안드로이드 업로드 여부	*/
+		$rootScope.isAndroidUploader = comm.isAndroidUploader();
+
 		var originalLocationUrl = $location.url;
 		$location.urlChange = function (url, reload) {
 			console.log('urlChange['+url+']');

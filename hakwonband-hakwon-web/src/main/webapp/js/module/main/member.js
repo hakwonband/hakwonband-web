@@ -252,47 +252,46 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 			return false;
 		};
 
+		$scope.androidUpload = function() {
+			delete window.uploadCallBack;
+			window.uploadCallBack = function(uploadJsonStr) {
+				try {
+					var resultObj = JSON.parse(uploadJsonStr);
+					if( resultObj.error ) {
+						alert('파일 업로드를 실패 했습니다.');
+					} else {
+						var fileInfo = resultObj.colData;
+						if (fileInfo.imageYn == 'Y') {
+							$scope.memberObj.photo_file_path = fileInfo.filePath;
+							$('div.profile-element > img').attr('src', HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+"_thumb");
+							$scope.$digest();
+						} else {
+							alert('이미지 파일이 아닙니다.');
+						}
+					}
+				} catch(e) {
+					alert('파일 업로드를 실패 했습니다.');
+				}
+			};
+			var param = {
+				fileType : 'img'
+				, multipleYn : 'N'
+				, callBack : 'uploadCallBack'
+				, upload : {
+					url : window.location.protocol+'//'+window.location.host+uploadUrl
+					, param : {uploadType:CommonConstant.File.TYPE_PROFILE}
+					, cookie : document.cookie
+				}
+			};
+			window.PLATFORM.fileChooser(JSON.stringify(param));
+		}
+
 		/* 초기화 함수 */
 		$scope.$$postDigest(function(){
 			console.log('memberProfileController $$postDigest');
 
 			/*	업로드 객체 생성	*/
 			if( comm.isAndroidUploader() ) {
-				angular.element("input[data-act=photo_upload]").click(function() {
-					delete window.uploadCallBack;
-					window.uploadCallBack = function(uploadJsonStr) {
-						try {
-							var resultObj = JSON.parse(uploadJsonStr);
-							if( resultObj.error ) {
-								alert('파일 업로드를 실패 했습니다.');
-							} else {
-								var fileInfo = resultObj.colData;
-								if (fileInfo.imageYn == 'Y') {
-									$scope.memberObj.photo_file_path = fileInfo.filePath;
-									$('div.profile-element > img').attr('src', HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+"_thumb");
-									$scope.$digest();
-								} else {
-									alert('이미지 파일이 아닙니다.');
-								}
-							}
-						} catch(e) {
-							alert('파일 업로드를 실패 했습니다.');
-						}
-					};
-					var param = {
-						fileType : 'img'
-						, multipleYn : 'N'
-						, callBack : 'uploadCallBack'
-						, upload : {
-							url : window.location.protocol+'//'+window.location.host+uploadUrl
-							, param : {uploadType:CommonConstant.File.TYPE_PROFILE}
-							, cookie : document.cookie
-						}
-					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
-
-					return false;
-				});
 			} else {
 				$scope.fileUploadObj = $("input[data-act=photo_upload]").html5_upload(memberService.getPhotoUploadOptions($scope));
 			}

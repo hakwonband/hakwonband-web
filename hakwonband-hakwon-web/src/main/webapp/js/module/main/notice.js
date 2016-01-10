@@ -770,7 +770,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 					};
 					var param = {
 						fileType : 'all'
-						, multipleYn : 'N'
+						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
 						, upload : {
 							url : window.location.protocol+'//'+window.location.host+uploadUrl

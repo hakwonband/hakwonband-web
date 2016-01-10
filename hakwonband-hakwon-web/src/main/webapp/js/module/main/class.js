@@ -913,7 +913,7 @@ hakwonMainApp.controller('classInfoDetailController', function($scope, $window, 
 					};
 					var param = {
 						fileType : 'img'
-						, multipleYn : 'N'
+						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
 						, upload : {
 							url : window.location.protocol+'//'+window.location.host+uploadUrl
@@ -1354,7 +1354,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 					};
 					var param = {
 						fileType : 'all'
-						, multipleYn : 'N'
+						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
 						, upload : {
 							url : window.location.protocol+'//'+window.location.host+uploadUrl

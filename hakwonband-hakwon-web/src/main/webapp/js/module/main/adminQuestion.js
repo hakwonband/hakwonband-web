@@ -420,7 +420,7 @@ hakwonMainApp.controller('registQuestionController', function($scope, $location,
 					};
 					var param = {
 						fileType : 'all'
-						, multipleYn : 'N'
+						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
 						, upload : {
 							url : window.location.protocol+'//'+window.location.host+uploadUrl
