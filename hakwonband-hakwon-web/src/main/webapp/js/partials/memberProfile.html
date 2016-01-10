@@ -2,11 +2,11 @@
 	<h2>{{memberObj.user_name}}<br><small>{{memberObj.user_id}} / {{memberObj.user_type}}</small></h2>
 	<div class="my_info_profile_img">
 		<img ng-src="{{ getFileFullPath() }}" alt="프로필 사진" class="img-circle" width="80%" data-view="photo_preview">
-		<div ng-if="isAndroidUploader == true">
+		<div ng-if="isAndroidUploader == false">
 			<span class="btn btn-danger btn-rounded btn_edit" title="프로필수정"><i class="fa fa-camera"></i> </span>
 			<input type="file" class="input_file_icon" data-act="photo_upload" accept="image/*">
 		</div>
-		<div ng-if="isAndroidUploader == false" ng-click="androidUpload()">
+		<div ng-if="isAndroidUploader == true" ng-click="androidUpload()">
 			<span class="btn btn-danger btn-rounded btn_edit" title="프로필수정"><i class="fa fa-camera"></i> </span>
 		</div>
 	</div>
