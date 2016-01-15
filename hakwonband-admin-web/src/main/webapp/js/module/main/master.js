@@ -10,7 +10,7 @@ hakwonMainApp.service('masterService', function() {
 	masterService.userStop = function(manager_no) {
 		var use_yn = $("button[data-act=stop]").attr('data-val');
 		if( use_yn == 'Y' ) {
-			use_yn = 'N';
+			use_yn = 'S';
 		} else {
 			use_yn = 'Y';
 		}

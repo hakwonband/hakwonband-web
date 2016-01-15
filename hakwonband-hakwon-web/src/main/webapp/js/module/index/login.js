@@ -66,6 +66,8 @@ hakwonCommonApp.service('loginService', function($rootScope, $location) {
 					}
 
 					window.location.replace("/main.do");
+				} else if( colData.flag == 'stop' ) {
+					alert('일시 정지된 사용자 입니다.');
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
 				} else {
@@ -89,6 +91,8 @@ hakwonCommonApp.controller('loginController', function($rootScope, $scope, $loca
 
 	try {
 		$(document.body).removeClass().addClass('gray-bg');
+
+		$scope.PageUrl = PageUrl;
 
 		/**
 		 * 앱일때 로그인은 모바일 로그인 페이지로 이동시킨다.

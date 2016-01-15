@@ -58,8 +58,9 @@ public class CommonService {
 	public DataMap executeLogin(DataMap param) {
 
 		DataMap userInfo = commonDAO.selectLoginInfo(param);
-
 		if( userInfo == null ) {
+			return userInfo;
+		} else if( userInfo.equals("use_yn", "S") ) {
 			return userInfo;
 		}
 

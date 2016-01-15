@@ -121,6 +121,11 @@ public class CommonController extends BaseAction {
 			if(authUserInfo != null ) {
 				logger.debug("auth user info : " + authUserInfo.toString());
 
+				if( authUserInfo.equals("use_yn", "S") ) {
+					sendFlag("stop", request, response);
+					return ;
+				}
+
 				/*	미승인 사용자는 	*/
 				if( authUserInfo.equals("approved_yn", "Y") == false ) {
 					sendFlag("approvedWait", request, response);

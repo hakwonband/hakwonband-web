@@ -6,7 +6,7 @@
 		/*	로컬은 캐시 적용 안한다.	*/
 		isLive = false;
 	} else {
-		cacheManifest = "index.cache.manifest";
+		cacheManifest = "index.cache.manifest?20160116-01";
 		isLive = true;
 	}
 

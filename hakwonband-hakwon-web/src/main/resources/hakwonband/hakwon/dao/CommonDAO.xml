@@ -74,6 +74,7 @@
 			, a.user_email
 			, a.approved_yn
 			, b.user_name
+			, a.use_yn
 		from
 			tb_user a
 			, tb_user_info b
@@ -81,7 +82,7 @@
 			a.user_id = #{userId}
 			and a.user_password = #{userPass}
 			and a.user_no = b.user_no
-			and a.use_yn = 'Y'
+			and a.use_yn in ('Y', 'S')
 			and a.user_type in ('003', '004')
 	]]>
 	</select>

@@ -41,11 +41,8 @@ public class AdminController extends BaseAction {
 
 		if( "Y".equalsIgnoreCase(use_yn) ) {
 			use_yn = "Y";
-		} else if( "N".equalsIgnoreCase(use_yn) ) {
-			use_yn = "N";
 		} else {
-			sendFlag(CommonConstant.Flag.param_error, request, response);
-			return ;
+			use_yn = "S";
 		}
 
 		DataMap param = new DataMap();
