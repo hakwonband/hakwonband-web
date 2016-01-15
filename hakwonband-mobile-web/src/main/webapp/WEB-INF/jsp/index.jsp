@@ -9,6 +9,12 @@
 		cacheManifest = "cache.manifest";
 		isLive = true;
 	}
+
+	boolean isMobile = false;
+	String userAgent = request.getHeader("User-Agent");
+	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
+		isMobile = true;
+	}
 %>
 <!--
 ############################################################
@@ -52,6 +58,15 @@
 
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/css/common.css" />
+<%
+	if( isMobile == false ) {
+%>
+	<style type="text/css">
+		.txt_cont img, .view_cont img{display:inline !important;}
+	</style>
+<%
+	}
+%>
 </head>
 
 <body>

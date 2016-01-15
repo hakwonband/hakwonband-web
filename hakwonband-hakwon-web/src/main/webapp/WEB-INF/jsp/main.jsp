@@ -90,6 +90,13 @@
 		max-width: 900px;
 		margin: 0 auto;
 	}
+<%
+	if( isMobile == false ) {
+%>
+	.view_cont img{display:inline !important;}
+<%
+	}
+%>
 </style>
 </head>
 <body class="gray-bg">
