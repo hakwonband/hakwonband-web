@@ -240,6 +240,7 @@
 			, b.title
 			, b.preview_content
 			, b.content
+			, b.reply_yn
 		from
 			tb_notice_share a
 			, tb_notice b
@@ -280,7 +281,7 @@
 			, #{preview_content}
 			, #{content}
 			, '001'
-			, 'Y'
+			, #{reply_yn}
 			, #{reg_user_no}
 			, now()
 			, 'N'

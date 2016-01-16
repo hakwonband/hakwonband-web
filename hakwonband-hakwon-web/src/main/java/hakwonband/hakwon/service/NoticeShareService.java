@@ -187,6 +187,7 @@ public class NoticeShareService {
 				insertParam.put("title",			notice.getString("title"));
 				insertParam.put("preview_content",	notice.getString("preview_content"));
 				insertParam.put("content",			notice.getString("content"));
+				insertParam.put("reply_yn",			notice.getString("reply_yn"));
 				insertParam.put("reg_user_no",		param.getString("user_no"));
 				insertParam.put("rel_notice_no",	notice.getString("notice_no"));
 				insertParam.put("share_no",			param.getString("share_no"));
