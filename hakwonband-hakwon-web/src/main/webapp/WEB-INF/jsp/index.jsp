@@ -6,7 +6,7 @@
 		/*	로컬은 캐시 적용 안한다.	*/
 		isLive = false;
 	} else {
-		cacheManifest = "index.cache.manifest?20160116-01";
+		cacheManifest = "index.cache.manifest?20160119-01";
 		isLive = true;
 	}
 
@@ -14,6 +14,9 @@
 	String userAgent = request.getHeader("User-Agent");
 	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
 		isMobile = true;
+	} else {
+		/*	pc웹에서는 캐싱하지 않는다.	*/
+		cacheManifest = "";
 	}
 %>
 <!--

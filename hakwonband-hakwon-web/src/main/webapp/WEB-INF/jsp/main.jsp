@@ -14,6 +14,9 @@
 	String userAgent = request.getHeader("User-Agent");
 	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
 		isMobile = true;
+	} else {
+		/*	pc웹에서는 캐싱하지 않는다.	*/
+		cacheManifest = "";
 	}
 %>
 
