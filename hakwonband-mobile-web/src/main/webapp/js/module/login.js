@@ -55,59 +55,51 @@ hakwonApp.service('loginService', function() {
 				}
 				var colData = data.colData;
 				if( colData && colData.flag == CommonConstant.Flag.success ) {
-
-					if( window.PLATFORM ) {
-						if( 1328 <= comm.getAppVersion() ) {
-							window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
-						}
+					if( window.PLATFORM || getBrowser() == 'iosApp' ) {
+						window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
 					}
 
-					if( colData.authUserInfo.user_type == '001' ) {
-						/*	관리자로 이동	*/
-						alert('관리자 싸이트로 이동 합니다.');
-						window.location = HakwonConstant.Site.ADMIN+'/main.do';
-					} else if( colData.authUserInfo.user_type == '002' ) {
-						alert('매니저 싸이트로 이동 합니다.');
-						window.location = HakwonConstant.Site.MANAGER;
-					} else if( colData.authUserInfo.user_type == '003' || colData.authUserInfo.user_type == '004' ) {
-						alert('학원 싸이트로 이동 합니다.');
-						window.location = HakwonConstant.Site.HAKWON+'/main.do';
-					} else if( colData.authUserInfo.user_type == '005' || colData.authUserInfo.user_type == '006' ) {
+					// 위에서 location을 설정한게 씹히는 경우가 있어서 딜래이를 둠
+					setTimeout(function() {
+						if( colData.authUserInfo.user_type == '001' ) {
+							/*	관리자로 이동	*/
+							alert('관리자 싸이트로 이동 합니다.');
+							window.location = HakwonConstant.Site.ADMIN+'/main.do';
+						} else if( colData.authUserInfo.user_type == '002' ) {
+							alert('매니저 싸이트로 이동 합니다.');
+							window.location = HakwonConstant.Site.MANAGER;
+						} else if( colData.authUserInfo.user_type == '003' || colData.authUserInfo.user_type == '004' ) {
+							alert('학원 싸이트로 이동 합니다.');
+							window.location = HakwonConstant.Site.HAKWON+'/main.do';
+						} else if( colData.authUserInfo.user_type == '005' || colData.authUserInfo.user_type == '006' ) {
 
-						userAuth.userName 	= colData.authUserInfo.user_name;
-						userAuth.userEmail 	= colData.authUserInfo.user_email;
-						userAuth.tel1No 	= colData.authUserInfo.tel1_no;
-						userAuth.userType 	= colData.authUserInfo.user_type;
-						userAuth.userId 	= colData.authUserInfo.user_id;
-						userAuth.userNo 	= colData.authUserInfo.user_no;
-						userAuth.userGender = colData.authUserInfo.user_gender;
-						userAuth.userAge 	= colData.authUserInfo.user_age;
-						userAuth.userPhotoPath 	= colData.authUserInfo.user_photo_path;
-						userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
+							userAuth.userName 	= colData.authUserInfo.user_name;
+							userAuth.userEmail 	= colData.authUserInfo.user_email;
+							userAuth.tel1No 	= colData.authUserInfo.tel1_no;
+							userAuth.userType 	= colData.authUserInfo.user_type;
+							userAuth.userId 	= colData.authUserInfo.user_id;
+							userAuth.userNo 	= colData.authUserInfo.user_no;
+							userAuth.userGender = colData.authUserInfo.user_gender;
+							userAuth.userAge 	= colData.authUserInfo.user_age;
+							userAuth.userPhotoPath 	= colData.authUserInfo.user_photo_path;
+							userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
 
-						userAuth.familyList		= colData.familyList;
-						userAuth.schoolInfo 	= colData.schoolInfo;
+							userAuth.familyList		= colData.familyList;
+							userAuth.schoolInfo 	= colData.schoolInfo;
 
-						/*	디바이스 인증 정보	*/
-						if( param.deviceToken && param.deviceType ) {
-							userAuth.deviceAuth = {
-								deviceToken : param.deviceToken
-								, deviceType : param.deviceType
-							};
+							/*	디바이스 인증 정보	*/
+							if( param.deviceToken && param.deviceType ) {
+								userAuth.deviceAuth = {
+									deviceToken : param.deviceToken
+									, deviceType : param.deviceType
+								};
+							}
+
+							window.location.href = MENUS.sharpUrls.userMain;
+						} else {
+							commProto.logger({loginError:colData});
 						}
-
-						/*
-						 * 없애 달라고 요청왔음.
-						var isFirst = '';
-						if( colData.authUserInfo.isFirst == 'true' ) {
-							isFirst = '?isFirst=true';
-						}
-						window.location.href = MENUS.sharpUrls.userMain+isFirst;
-						*/
-						window.location.href = MENUS.sharpUrls.userMain;
-					} else {
-						commProto.logger({loginError:colData});
-					}
+					}, 30);
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
 				} else {
