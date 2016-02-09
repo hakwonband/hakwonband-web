@@ -446,7 +446,7 @@ public class CommonController extends BaseAction {
 	public void testFun(HttpServletRequest request, HttpServletResponse response) {
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
-
+/*
 	@RequestMapping("/testMsg")
 	public void testMsg(HttpServletRequest request, HttpServletResponse response) {
 
@@ -469,6 +469,7 @@ public class CommonController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
+*/
 
 	/**
 	 * 앱 푸시키 저장
@@ -487,10 +488,6 @@ public class CommonController extends BaseAction {
 			isProduction = "Y";
 		} else {
 			isProduction = "N";
-		}
-		if( "ios".equals(deviceType) ) {
-			/*	임시	*/
-			isProduction = "Y";
 		}
 		if( "(null)".equals(deviceType) ) {
 			deviceType = "";

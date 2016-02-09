@@ -140,7 +140,6 @@
 			and x.user_no = b.user_no
 			and a.approved_yn = 'Y'
 			and a.use_yn = 'Y'
-			and a.user_type in ('003', '004')
 	]]>
 	</select>
 

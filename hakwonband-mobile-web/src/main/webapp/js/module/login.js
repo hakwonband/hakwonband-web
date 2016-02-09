@@ -40,7 +40,6 @@ hakwonApp.service('loginService', function() {
 			}
 		}
 
-		var queryString = $.param(param);
 		$.ajax({
 			url: contextPath+"/login.do",
 			type: "post",
@@ -55,7 +54,8 @@ hakwonApp.service('loginService', function() {
 				}
 				var colData = data.colData;
 				if( colData && colData.flag == CommonConstant.Flag.success ) {
-					if( window.PLATFORM || getBrowser() == 'iosApp' ) {
+					//if( window.PLATFORM || getBrowser() == 'iosApp' ) {
+					if( window.PLATFORM || (userId == 'bumstudent' || userId == 'bumwonjang' || userId == 'bumteacher') ) {
 						window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
 					}
 
