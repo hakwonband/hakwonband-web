@@ -73,7 +73,7 @@ hakwonCommonApp.service('loginService', function($rootScope, $location) {
 						window.location.replace("/main.do");
 					}, 30);
 				} else if( colData.flag == 'stop' ) {
-					alert('일시 정지돈 사용자입니다.\n학원밴드에 문의하세요.');
+					alert('일시 정지된 사용자입니다.\n학원밴드에 문의하세요.');
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
 				} else {
