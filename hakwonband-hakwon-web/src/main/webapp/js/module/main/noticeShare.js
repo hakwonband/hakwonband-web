@@ -212,7 +212,8 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 			/*	공유	*/
 			noticeShareService.send(param, function(data) {
 				if( data.colData && data.colData.flag == 'success' ) {
-					window.location = '#/notice/share/sendList?hakwonNo='+$scope.hakwon_no;
+					//window.location = '#/notice/share/sendList?hakwonNo='+$scope.hakwon_no;
+					alert('선택한 게시판을 공유 했습니다.');
 				} else {
 					alert('게시판 공유를 실패 했습니다.');
 				}
@@ -362,6 +363,18 @@ hakwonMainApp.controller('noticeShareReceiveListController', function($scope, $l
 		 * 공지 적용
 		 */
 		$scope.applyNotice = function(shareInfo) {
+			console.log('shareInfo', shareInfo);
+
+			var startDate 	= parseInt(moment(shareInfo.start_date).format('YYYYMMDD'));
+			var endDate 	= parseInt(moment(shareInfo.end_date).format('YYYYMMDD'));
+			var nowDate 	= parseInt(moment().format("YYYYMMDD"));
+			if( startDate <= nowDate && nowDate <= endDate ) {
+				console.log('기간');
+			} else {
+				alert('공유 기간이 종료 되었습니다.');
+				return ;
+			}
+
 			if( shareInfo.notice_type == '002' ) {
 				if( window.confirm('공유 받은 공지는 학원 전체 공지 입니다.\n공유 받은 공지를 학원 전체 공지에 추가하시겠습니까?') ) {
 					noticeShareService.noticeApply({share_no:shareInfo.share_no, hakwon_no:shareInfo.receive_hakwon_no, target_class:shareInfo.receive_hakwon_no}, function(data) {
