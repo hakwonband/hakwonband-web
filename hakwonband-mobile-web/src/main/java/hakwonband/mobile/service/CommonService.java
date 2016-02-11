@@ -118,6 +118,8 @@ public class CommonService {
 		/*	로그인 이력 등록	*/
 		commonDAO.insertLoginHis(loginHis);
 
+		logger.error("login\nloginAuthKey : " + loginAuthKey);
+
 		/*	인증키 저장(쿠키에 저장하기 위해서)	*/
 		userInfo.put("authKey", loginAuthKey);
 
