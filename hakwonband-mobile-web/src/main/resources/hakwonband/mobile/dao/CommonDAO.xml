@@ -80,6 +80,7 @@
 			, get_file_path(b.photo_file_no) as user_photo_path
 			, last_login_date
 			, b.attendance_code
+			, a.use_yn
 		from
 			tb_user a
 			, tb_user_info b
@@ -87,7 +88,6 @@
 			a.user_id = #{userId}
 			and a.user_password = #{userPass}
 			and a.user_no = b.user_no
-			and a.use_yn = 'Y'
 	]]>
 	</select>
 

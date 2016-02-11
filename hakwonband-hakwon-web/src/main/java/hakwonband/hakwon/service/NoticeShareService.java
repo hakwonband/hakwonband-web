@@ -35,12 +35,12 @@ public class NoticeShareService {
 			shareParam.put("send_hakwon_no", param.getString("share_hakwon"));
 			if( param.equals("share_class", "-1") ) {
 				/*	학원공지	*/
-				shareParam.put("notice_type", "002");
-				shareParam.put("parent_no",			param.getString("hakwon_no"));
+				shareParam.put("notice_type",	"002");
+				shareParam.put("parent_no",		param.getString("share_hakwon"));
 			} else {
 				/*	반공공지	*/
-				shareParam.put("notice_type", "003");
-				shareParam.put("parent_no",			param.getString("share_class"));
+				shareParam.put("notice_type",	"003");
+				shareParam.put("parent_no",		param.getString("share_class"));
 			}
 			shareParam.put("receive_hakwon_no",	target_hakwon[i]);
 			shareParam.put("user_no",			param.getString("user_no"));

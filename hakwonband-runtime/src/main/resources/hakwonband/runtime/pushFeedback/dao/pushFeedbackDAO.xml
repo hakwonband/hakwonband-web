@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.pushFeedback.dao.PushFeedbackDAO">
+
+	<delete id="deleteLoginHist" parameterType="dataMap">
+	<![CDATA[
+		/*	pushFeedback.deleteLoginHist	*/
+		delete from tb_login_hist
+		where
+			device_key in
+	]]>
+	<foreach collection="list" open="(" close=")" item="item" separator=",">
+		<![CDATA[#{item}]]>
+	</foreach>
+	<![CDATA[
+			and device_type="005";
+	]]>
+	</delete>
+
+</mapper>

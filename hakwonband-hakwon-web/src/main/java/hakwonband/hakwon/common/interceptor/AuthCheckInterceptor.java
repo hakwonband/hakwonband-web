@@ -50,12 +50,15 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter  {
 			DataMap param = new DataMap();
 			param.put("authKey",	authKey);
 			DataMap authUserInfo = commonService.authCheck(param);
+
 			if( authUserInfo == null ) {
 				commonService.executeLogout(param);
 				cookieUtils.delCookieAll();
 			} else {
-				request.setAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO, authUserInfo);
-				request.setAttribute(CommonConstant.Cookie.hkBandAuthKey, authKey);
+				if( authUserInfo.equals("user_type", "003") || authUserInfo.equals("user_type", "004") ) {
+					request.setAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO, authUserInfo);
+					request.setAttribute(CommonConstant.Cookie.hkBandAuthKey, authKey);
+				}
 			}
 		}
 

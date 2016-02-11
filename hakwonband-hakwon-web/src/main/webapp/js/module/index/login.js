@@ -51,23 +51,29 @@ hakwonCommonApp.service('loginService', function($rootScope, $location) {
 				var colData = data.colData;
 				if( colData && colData.flag == CommonConstant.Flag.success ) {
 
-					userAuth.userName = colData.authUserInfo.user_name;
-					userAuth.userEmail = colData.authUserInfo.user_email;
-					userAuth.userType = colData.authUserInfo.user_type;
-					userAuth.userId = colData.authUserInfo.user_id;
-					userAuth.userNo = colData.authUserInfo.user_no;
-
-					/*	디바이스 인증 정보	*/
-					if( param.deviceToken && param.deviceType ) {
-						userAuth.deviceAuth = {
-							deviceToken : param.deviceToken
-							, deviceType : param.deviceType
-						};
+					if( window.PLATFORM || (user_id == 'bumstudent' || user_id == 'bumwonjang' || user_id == 'bumteacher') ) {
+						window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
 					}
 
-					window.location.replace("/main.do");
+					setTimeout(function() {
+						userAuth.userName = colData.authUserInfo.user_name;
+						userAuth.userEmail = colData.authUserInfo.user_email;
+						userAuth.userType = colData.authUserInfo.user_type;
+						userAuth.userId = colData.authUserInfo.user_id;
+						userAuth.userNo = colData.authUserInfo.user_no;
+
+						/*	디바이스 인증 정보	*/
+						if( param.deviceToken && param.deviceType ) {
+							userAuth.deviceAuth = {
+								deviceToken : param.deviceToken
+								, deviceType : param.deviceType
+							};
+						}
+
+						window.location.replace("/main.do");
+					}, 30);
 				} else if( colData.flag == 'stop' ) {
-					alert('일시 정지돈 사용자입니다.\n학원밴드에 문의하세요.');
+					alert('일시 정지된 사용자입니다.\n학원밴드에 문의하세요.');
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
 				} else {

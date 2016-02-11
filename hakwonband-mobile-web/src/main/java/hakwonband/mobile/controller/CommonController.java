@@ -128,6 +128,12 @@ public class CommonController extends BaseAction {
 			if(authUserInfo != null ) {
 				logger.debug("auth user info : " + authUserInfo.toString());
 
+				/*	일시 정지된 사용자	*/
+				if( authUserInfo.equals("use_yn", "S") ) {
+					sendFlag("stop", request, response);
+					return ;
+				}
+
 				/*	미승인 사용자는 	*/
 				if( authUserInfo.equals("approved_yn", "Y") == false ) {
 					sendFlag("approvedWait", request, response);
@@ -446,7 +452,7 @@ public class CommonController extends BaseAction {
 	public void testFun(HttpServletRequest request, HttpServletResponse response) {
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
-
+/*
 	@RequestMapping("/testMsg")
 	public void testMsg(HttpServletRequest request, HttpServletResponse response) {
 
@@ -469,6 +475,7 @@ public class CommonController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
+*/
 
 	/**
 	 * 앱 푸시키 저장
@@ -487,10 +494,6 @@ public class CommonController extends BaseAction {
 			isProduction = "Y";
 		} else {
 			isProduction = "N";
-		}
-		if( "ios".equals(deviceType) ) {
-			/*	임시	*/
-			isProduction = "Y";
 		}
 		if( "(null)".equals(deviceType) ) {
 			deviceType = "";

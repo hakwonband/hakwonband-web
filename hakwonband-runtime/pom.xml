@@ -48,7 +48,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -60,6 +60,16 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.10-FINAL</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.github.fernandospr</groupId>
+		    <artifactId>javapns-jdk16</artifactId>
+		    <version>2.2.1</version>
+		</dependency>
+		<dependency>
+        	<groupId>com.notnoop.apns</groupId>
+        	<artifactId>apns</artifactId>
+        	<version>1.0.0.Beta6</version>
+        </dependency>
 	</dependencies>
 
 </project>

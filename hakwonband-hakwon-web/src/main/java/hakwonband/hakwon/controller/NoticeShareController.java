@@ -99,7 +99,6 @@ public class NoticeShareController extends BaseAction {
 	public void send(HttpServletRequest request, HttpServletResponse response) {
 		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		String hakwon_no		= request.getParameter("hakwon_no");
 		String start_date		= request.getParameter("start_date");
 		String end_date			= request.getParameter("end_date");
 		String share_class		= request.getParameter("share_class");
@@ -117,7 +116,6 @@ public class NoticeShareController extends BaseAction {
 		param.put("user_no",		authUserInfo.getString("user_no"));
 		param.put("start_date",		start_date);
 		param.put("end_date",		end_date);
-		param.put("hakwon_no",		hakwon_no);
 		param.put("share_class",	share_class);
 		param.put("share_hakwon",	share_hakwon);
 		param.put("target_hakwon",	target_hakwon);
