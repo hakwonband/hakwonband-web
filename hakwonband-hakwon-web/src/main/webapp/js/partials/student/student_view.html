@@ -53,6 +53,22 @@
 			</div>
 
 			<div class="widget-text-box">
+				<h3 class="media-heading">학부모 등록</h3>
+				<div class="academy_info">
+					학부모 검색 <input type="text" ng-model="search_parent" ng-enter="parentSearch()" placeholder="아이디/이름" value=""> &nbsp;
+					<button ng-click="parentSearch()">검색</button>
+					<ul>
+						<li ng-repeat="loopParent in search_parent_list">
+							<a href="#" onclick="return false;" ng-click="choiceParent(loopParent)">
+								<img class="img-circle" ng-src="{{CommUtil.createFileFullPath(loopParent.photo_file_path, 'photo')}}" alt="{{loopParent.user_name}}" width="30" height="30">
+								<strong class="name">{{loopParent.user_name}}</strong> <span class="info_text">{{loopParent.user_gender=="M"?"남":"여"}} / {{!loopParent.user_age||loopParent.user_age==0?"생일 미입력":loopParent.user_age + "세"}}</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="widget-text-box">
 				<h3 class="media-heading">출결관리</h3>
 				<div id="attendanceCalendar"></div>
 			</div>

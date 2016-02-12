@@ -68,6 +68,35 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 학무보 선택
+	 */
+	studentService.choiceParent = function(param, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/mappingParent.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
+		});
+	}
+
+	/**
+	 * 학부모 리스트
+	 */
+	studentService.parentList = function(search_text, callback) {
+		var param = {
+			pageNo : 1
+			, searchText : search_text
+			, hakwonNo : hakwonInfo.hakwon_no
+		};
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/parent/list.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
+		});
+	};
+
 	/*	출결 조회	*/
 	studentService.getAttendance = function($scope, studentUserNo) {
 		/*	풀캘린더를 새로 고침 하기위해서 돔을 삭제하고 다시 만든다.	*/
@@ -242,6 +271,8 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 		if( !searchTextParam ) searchTextParam = '';
 		$scope.searchText = searchTextParam;
 
+		$scope.hakwonInfo = hakwonInfo;
+
 		var $bootpag = undefined;
 
 		/*	검색	*/
@@ -344,6 +375,52 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 		 */
 		$scope.modify = function() {
 			window.location = '#/student/modify?studentUserNo='+studentUserNo;
+		}
+
+		/**
+		 * 학부모 검색
+		 */
+		$scope.parentSearch = function() {
+			if( isNull($scope.search_parent) == true ) {
+				alert('검색어를 입력해 주세요.');
+				return ;
+			}
+			studentService.parentList($scope.search_parent, function(data) {
+				if( data.error ) {
+					alert('학부모 조회를 실패 했습니다.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData.dataCount == 0 ) {
+					$scope.search_parent_list = [];
+					alert('검색된 학부모가 없습니다.');
+				} else {
+					$scope.search_parent_list = colData.dataList;
+				}
+
+			});
+		}
+
+		/**
+		 * 학부모 선택
+		 */
+		$scope.choiceParent = function(parent) {
+			if( window.confirm(parent.user_name+'님을 학부모로 선택하시겠습니까?') ) {
+				var param = {
+					student_user_no	: studentUserNo
+					, parent_user_no: parent.user_no
+				};
+				studentService.choiceParent(param, function(data) {
+					if( data.colData.flag == 'success' ) {
+						alert('학부모로 등록 되었습니다.');
+						location.reload();
+					} else if( data.colData.flag == 'not_member' ) {
+						alert('멤버가 아닌 학부모 입니다.');
+					} else {
+						alert('학부모 등록을 실패 했습니다.');
+					}
+				});
+			}
 		}
 
 		/**

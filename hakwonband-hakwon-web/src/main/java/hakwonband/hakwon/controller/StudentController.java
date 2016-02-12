@@ -212,4 +212,26 @@ public class StudentController extends BaseAction {
 		sendColData(map, request, response);
 	}
 
+	/**
+	 * 부모 맵핑
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/mappingParent")
+	public void mappingParent(HttpServletRequest request, HttpServletResponse response) {
+		String parent_user_no	= request.getParameter("parent_user_no");
+		String student_user_no	= request.getParameter("student_user_no");
+		String hakwon_no		= request.getHeader("hakwonNo");
+
+		logger.error("student_user_no : " + student_user_no);
+		logger.error("parent_user_no : " + parent_user_no);
+
+		DataMap param = new DataMap();
+		param.put("hakwon_no",			hakwon_no);
+		param.put("parent_user_no",		parent_user_no);
+		param.put("student_user_no",	student_user_no);
+
+		String flag = studentService.executeParentMapping(param);
+		sendFlag(flag, request, response);
+	}
 }

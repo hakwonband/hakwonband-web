@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.dao.HakwonDAO;
@@ -170,6 +171,24 @@ public class StudentService {
 	 */
 	public void updateReceiptDate(DataMap param) {
 		userDAO.updateReceiptDate(param);
+	}
+
+	/**
+	 * 학부모 맵핑
+	 * @param param
+	 */
+	public String executeParentMapping(DataMap param) {
+		String flag = "";
+
+		int checkCnt = studentDAO.parentMappingMemberCheck(param);
+		if( checkCnt != 2 ) {
+			flag = "not_member";
+		} else {
+			studentDAO.parentMapping(param);
+			flag = CommonConstant.Flag.success;
+		}
+
+		return flag;
 	}
 
 }

@@ -53,4 +53,17 @@ public interface StudentDAO {
 	 * @return
 	 */
 	public DataMap studentRoleCheck(DataMap param);
+
+	/**
+	 * 학부모 맵핑
+	 * @param param
+	 */
+	public void parentMapping(DataMap param);
+
+	/**
+	 * 학부모 맵핑 멤버 체크
+	 * @param param
+	 * @return
+	 */
+	public int parentMappingMemberCheck(DataMap param);
 }
