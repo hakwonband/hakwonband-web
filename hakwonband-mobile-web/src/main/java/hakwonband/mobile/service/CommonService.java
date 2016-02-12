@@ -79,8 +79,8 @@ public class CommonService {
 		 */
 		if( userInfo.equals("approved_yn", "Y") == false ) {
 			return userInfo;
-//		} else if( userInfo.equals("approved_yn", "S") == false ) {
-//			return userInfo;
+		} else if( userInfo.equals("use_yn", "S") ) {
+			return userInfo;
 		}
 
 		/**

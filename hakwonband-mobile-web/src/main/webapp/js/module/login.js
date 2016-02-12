@@ -100,10 +100,10 @@ hakwonApp.service('loginService', function() {
 							commProto.logger({loginError:colData});
 						}
 					}, 30);
-				} else if( colData.flag == 'stop' ) {
-					alert('일시 정지된 사용자입니다.\n학원밴드에 문의하세요.');
 				} else if( colData.flag == 'approvedWait' ) {
 					alert('승인 대기 중 입니다.');
+				} else if( colData.flag == 'stop' ) {
+					alert('일시 정지된 사용자입니다.\n학원밴드에 문의하세요.');
 				} else {
 					alert('계정 정보를 확인 해 주세요.');
 				}
