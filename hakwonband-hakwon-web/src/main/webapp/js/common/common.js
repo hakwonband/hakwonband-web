@@ -325,6 +325,10 @@ var HakwonCommon = function() {
 				var colData = data.colData;
 				console.log('colData', colData);
 				if( colData && colData.authUserInfo ) {
+					if( colData.authUserInfo.user_type == HakwonConstant.UserType.STUDENT || colData.authUserInfo.user_type == HakwonConstant.UserType.PARENT ) {
+						window.location = "https://m.hakwonband.com/index.do#/userMain";
+						return ;
+					}
 					userAuth.userName = colData.authUserInfo.user_name;
 					userAuth.userEmail = colData.authUserInfo.user_email;
 					userAuth.userType = colData.authUserInfo.user_type;

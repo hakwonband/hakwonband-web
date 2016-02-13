@@ -646,6 +646,9 @@ var HakwonCommon = function() {
 		}
 
 		if( userAuth.userType == HakwonConstant.UserType.WONJANG || userAuth.userType == HakwonConstant.UserType.TEACHER ) {
+		} else if( userAuth.userType == HakwonConstant.UserType.STUDENT || userAuth.userType == HakwonConstant.UserType.PARENT ) {
+			window.location = "https://m.hakwonband.com/index.do#/userMain";
+			return ;
 		} else {
 			/*	사용자 타입이 다르다	*/
 			console.error('Error UserType', userAuth);

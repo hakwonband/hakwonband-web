@@ -55,7 +55,7 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter  {
 				commonService.executeLogout(param);
 				cookieUtils.delCookieAll();
 			} else {
-				if( authUserInfo.equals("user_type", "003") || authUserInfo.equals("user_type", "004") ) {
+				if( authUserInfo.equals("user_type", "003") || authUserInfo.equals("user_type", "004") || authUserInfo.equals("user_type", "005") || authUserInfo.equals("user_type", "006")) {
 					request.setAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO, authUserInfo);
 					request.setAttribute(CommonConstant.Cookie.hkBandAuthKey, authKey);
 				}
