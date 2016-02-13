@@ -309,7 +309,10 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .address_search_result li{padding:5px 10px; border-bottom:1px dotted #e7eaec;}
 .academy_info li .name{font-size:18px; margin:0 5px;}
 .academy_info li .info_text{float:right; margin-top:5px;}
-.academy_info a{display:block; margin:0; padding:0; color:inherit;}
+.academy_info li a{display:block; margin:0; padding:5px 40px 5px 0; color:inherit;}
+.academy_info li{position:relative;}
+.academy_info li .btn_del_pa{position:absolute; top:5px; right:0;}
+
 .ad_open{background:#d3f859;}
 .box_nodata{text-align:center; padding:200px 0 !important;}
 .class_box{position:relative; min-height:110px;}

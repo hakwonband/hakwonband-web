@@ -244,4 +244,14 @@
 		) on duplicate key update approved_yn = 'Y', approved_date = now()
 	]]>
 	</insert>
+
+	<delete id="parentMappingDel" parameterType="dataMap">
+	<![CDATA[
+		/* StudentDAO.parentMappingDel */
+		delete from tb_student_parent
+		where
+			student_user_no = #{student_user_no}
+			and parent_user_no = #{parent_user_no}
+	]]>
+	</delete>
 </mapper>

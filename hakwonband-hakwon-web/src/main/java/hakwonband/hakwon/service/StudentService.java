@@ -191,4 +191,14 @@ public class StudentService {
 		return flag;
 	}
 
+	/**
+	 * 학부모 맵핑 삭제
+	 * @param param
+	 */
+	public void executeParentMappingDel(DataMap param) {
+		int checkCnt = studentDAO.parentMappingDel(param);
+		if( checkCnt != 1 ) {
+			throw new HKBandException();
+		}
+	}
 }

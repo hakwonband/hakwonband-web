@@ -45,9 +45,10 @@
 					<li ng-repeat="loopParent in parentList">
 						<a href="{{PageUrl.common.parentView}}?hakwon_no={{hakwonInfo.hakwon_no}}&parentUserNo={{loopParent.parent_user_no}}">
 							<img class="img-circle" ng-src="{{CommUtil.createFileFullPath(loopParent.photo_file_path, 'photo')}}" alt="{{loopParent.user_name}}" width="30" height="30">
-							<strong class="name">{{loopParent.user_name}}</strong> <span class="info_text">{{loopParent.user_gender=="M"?"남":"여"}} / {{!loopParent.user_age||loopParent.user_age==0?"생일 미입력":loopParent.user_age + "세"}}</span>
+							<strong class="name">{{loopParent.user_name}}</strong> <!--<span class="info_text">{{!loopParent.user_age||loopParent.user_age==0?"생일 미입력":loopParent.user_age + "세"}}</span>-->
 							<span class="badge badge-plain">{{loopParent.user_gender=="M"?"부":"모"}}</span>
 						</a>
+						<button type="button" class="btn_del_pa" ng-click="parentMappingDel(loopParent)">삭제</button>
 					</li>
 				</ul>
 			</div>

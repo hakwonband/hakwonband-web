@@ -81,6 +81,18 @@ hakwonMainApp.service('studentService', function($http, CommUtil) {
 	}
 
 	/**
+	 * 학부모 연결 삭제
+	 */
+	studentService.parentMappingDel = function(param, callback) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/student/mappingParentDel.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
+		});
+	}
+
+	/**
 	 * 학부모 리스트
 	 */
 	studentService.parentList = function(search_text, callback) {
@@ -418,6 +430,26 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 						alert('멤버가 아닌 학부모 입니다.');
 					} else {
 						alert('학부모 등록을 실패 했습니다.');
+					}
+				});
+			}
+		}
+
+		/**
+		 * 학부모 맵핑 삭제
+		 */
+		$scope.parentMappingDel = function(parent) {
+			if( window.confirm(parent.user_name+'님 학부모 연결을 삭제 하시겠습니까?') ) {
+				var param = {
+					student_user_no	: studentUserNo
+					, parent_user_no: parent.parent_user_no
+				};
+				studentService.parentMappingDel(param, function(data) {
+					if( data.colData.flag == 'success' ) {
+						alert('학부모 연결이 해제 되었습니다.');
+						location.reload();
+					} else {
+						alert('학부모 연결 삭제를 실패 했습니다.');
 					}
 				});
 			}

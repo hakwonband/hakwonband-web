@@ -66,4 +66,11 @@ public interface StudentDAO {
 	 * @return
 	 */
 	public int parentMappingMemberCheck(DataMap param);
+
+	/**
+	 * 학부모 연결 삭제
+	 * @param param
+	 * @return
+	 */
+	public int parentMappingDel(DataMap param);
 }

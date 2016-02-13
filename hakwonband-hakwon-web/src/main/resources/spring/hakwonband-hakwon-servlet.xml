@@ -89,20 +89,6 @@
 			<mvc:mapping path="/registTeacher.do" />
 			<bean class="hakwonband.hakwon.common.interceptor.NoLoginCheckInterceptor" />
 		</mvc:interceptor>
-
-		<!-- 출결, 수납, 상담 테스트 페이지 -->
-<!-- 		<mvc:interceptor>
-			<mvc:mapping path="/hakwon/receipt/**.do" />
-			<mvc:mapping path="/hakwon/counsel/**.do" />
-			<mvc:mapping path="/hakwon/student/**.do" />
-			<mvc:exclude-mapping path="/hakwon/student/list.do"/>
-			<mvc:exclude-mapping path="/hakwon/student/view.do"/>
-			<mvc:exclude-mapping path="/hakwon/student/classStudentList.do"/>
-			<mvc:exclude-mapping path="/hakwon/student/list.do"/>
-			<bean class="hakwonband.hakwon.common.interceptor.EggrokCheckInterceptor" />
-		</mvc:interceptor> -->
-
-
 	</mvc:interceptors>
 
 </beans>
