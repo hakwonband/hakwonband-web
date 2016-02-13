@@ -55,6 +55,13 @@ public class CommonController extends BaseAction {
 	 */
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		if( authUserInfo != null ) {
+			if( authUserInfo.equals("user_type", HakwonConstant.UserType.PARENT) || authUserInfo.equals("user_type", HakwonConstant.UserType.STUDENT) ) {
+				return new ModelAndView("redirect:https://m.hakwonband.com");
+			}
+		}
+
 		return new ModelAndView("/index");
 	}
 
@@ -67,6 +74,16 @@ public class CommonController extends BaseAction {
 	 */
 	@RequestMapping("/main")
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
+
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		if( authUserInfo == null ) {
+			return new ModelAndView("redirect:/index.do");
+		} else {
+			if( authUserInfo.equals("user_type", HakwonConstant.UserType.PARENT) || authUserInfo.equals("user_type", HakwonConstant.UserType.STUDENT) ) {
+				return new ModelAndView("redirect:https://m.hakwonband.com");
+			}
+		}
+
 		return new ModelAndView("/main");
 	}
 
