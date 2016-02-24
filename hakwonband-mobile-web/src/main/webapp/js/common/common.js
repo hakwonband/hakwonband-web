@@ -200,8 +200,8 @@ var HakwonCommon = function() {
 			async : false,
 			dataType: "json",
 			success: function(data) {
+				console.log('userHakwonList success');
 				var colData = data.colData;
-				console.log('colData', colData);
 				if( colData ) {
 					/*	학원 리스트	*/
 					hakwonInfo.hakwonList = colData.hakwonList;
@@ -232,6 +232,7 @@ var HakwonCommon = function() {
 				} else {
 					hakwonInfo.hakwonList = [];
 				}
+				console.log('userHakwonList callBack', callBack);
 				if( callBack ) {
 					callBack();
 				}
@@ -389,6 +390,7 @@ var HakwonCommon = function() {
 	 * 로그인 여부
 	 */
 	this.isLogin = function() {
+		console.log('isLogin call');
 		if( userAuth.userNo ) {
 			return true;
 		} else {
@@ -398,6 +400,7 @@ var HakwonCommon = function() {
 
 	/*	로그인 체크	*/
 	this.urlLoginCheck = function() {
+		console.log('urlLoginCheck call');
 		var currentUrlHash = window.location.hash;
 		if( self.isLogin() ) {
 			/*	로그인 상태	*/
