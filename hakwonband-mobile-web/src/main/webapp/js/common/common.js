@@ -745,19 +745,7 @@ var HakwonCommon = function() {
 								}
 							});
 						}
-					} else if( getBrowser() == 'iosApp' ) {
-						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
-							userAuth.deviceAuth = {
-								device_type : colData.authUserInfo.device_type
-								, device_token : colData.authUserInfo.device_token
-							};
-						} else {
-							/*	ios 푸시키 요청	*/
-							window.location = 'hakwonband://notification/getToken';
-						}
 					}
-
-
 				} else {
 					userAuth = {};
 				}
@@ -814,16 +802,6 @@ var HakwonCommon = function() {
 									};
 								}
 							});
-						}
-					} else if( getBrowser() == 'iosApp' ) {
-						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
-							userAuth.deviceAuth = {
-								device_type : colData.authUserInfo.device_type
-								, device_token : colData.authUserInfo.device_token
-							};
-						} else {
-							/*	ios 푸시키 요청	*/
-							window.location = 'hakwonband://notification/getToken';
 						}
 					}
 

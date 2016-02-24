@@ -257,7 +257,7 @@ hakwonApp.controller('userMainController', function($scope, $location, $window, 
 			});
 		} else if( getBrowser() == 'iosApp' && !userAuth.deviceAuth ) {
 			/*	ios 푸시키 요청	*/
-			window.location = 'hakwonband://notification/getToken';
+			//window.location = 'hakwonband://notification/getToken';
 		}
 
 	} catch(ex) {

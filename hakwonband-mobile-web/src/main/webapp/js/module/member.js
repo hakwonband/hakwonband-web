@@ -665,8 +665,8 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		$scope.getMobileAuthKey = function() {
 			var browserVal = getBrowser();
 			if( browserVal == 'iosApp' ) {
-				alert('아이폰 앱에서 푸시키를 다시 요청 합니다.');
-				window.location = 'hakwonband://notification/getToken';
+				alert('아이폰 앱에서 푸시키를 다시 요청 합니다.(작업중)');
+				//window.location = 'hakwonband://notification/getToken';
 			} else if( browserVal == 'androidApp' ) {
 				alert('안드로이드 앱에서 푸시키를 다시 요청 합니다.');
 				var newKey = window.PLATFORM.getGcmKey();
