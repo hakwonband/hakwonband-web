@@ -300,6 +300,7 @@ var HakwonHeader = function() {
 	 * @viewType user, hakwon, join
 	 */
 	this.setHeader = function(headerObj) {
+		console.log('setHeader');
 		var viewType = headerObj.viewType;
 		var headerTitle = headerObj.headerTitle;
 		if( !viewType ) {
