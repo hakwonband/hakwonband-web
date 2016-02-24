@@ -646,6 +646,22 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 			}
 		};
 
+		/**
+		 * 홈으로 이동
+		 */
+		$scope.goHome = function() {
+			console.log('goHome');
+			window.location = '#/userMain';
+		}
+
+		/**
+		 * 학원 검색
+		 */
+		$scope.goHakwonSearch = function() {
+			console.log('goHakwonSearch');
+			window.location = '#/hakwon/search';
+		}
+
 		$scope.is_app = false;
 		var current_browser = getBrowser();
 		if( current_browser.indexOf('App') > 0 ) {

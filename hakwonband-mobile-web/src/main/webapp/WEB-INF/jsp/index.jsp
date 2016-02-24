@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	String cacheTime = "20160225";
 	String cacheManifest = "";
 	boolean isLive = false;
 	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
 		/*	로컬은 캐시 적용 안한다.	*/
 		isLive = false;
 	} else {
-		cacheManifest = "cache.manifest";
+		cacheManifest = "cache.manifest?"+cacheTime;
 		isLive = true;
 	}
 
@@ -112,11 +113,11 @@
 <script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
 <!-- 공통 모듈 -->
-<script src="/assets/js/common.lib.min.js"></script>
+<script src="/assets/js/common.lib.min.js?<%=cacheTime%>"></script>
 <%
 	if( isLive ) {
 %>
-<script src="/assets/js/module.min.js"></script>
+<script src="/assets/js/module.min.js?<%=cacheTime%>"></script>
 <%
 	} else {
 %>
