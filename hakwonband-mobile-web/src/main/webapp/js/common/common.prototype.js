@@ -600,5 +600,17 @@ var getBrowser = function() {
 	}
 };
 
+var setCookie = function(cookieName, cookieValue, autoLogin) {
+	console.log('setCookie cookieName['+cookieName+'] cookieValue['+cookieValue+'] autoLogin['+autoLogin+']');
+	var cookieString = cookieName + '=' + encodeURIComponent(cookieValue) + ';domain=.'+HakwonConstant.CookieDomain+'; path=/;';
+
+	if(autoLogin) {
+		var nowDate = new Date();
+		nowDate.setTime(nowDate.getTime() + (90*24*60*60*1000));
+		cookieString += " expires="+nowDate.toUTCString()+';';
+	}
+	document.cookie = cookieString;
+};
+
 /*	디버그 모드	*/
 var isDebug = false;

@@ -274,6 +274,7 @@ var HakwonCommon = function() {
 	 * 인증 체크 필터
 	 */
 	this.authCheckFilter = function() {
+		console.log('authCheckFilter userAuth\n', JSON.stringify(userAuth));
 		if( !userAuth.userNo ) {
 			userAuth = {};//초기화 시킨다.
 			window.location.href = MENUS.sharpUrls.login;
@@ -713,6 +714,8 @@ var HakwonCommon = function() {
 			success: function(data) {
 				var colData = data.colData;
 				if( colData && colData.authUserInfo ) {
+					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
+
 					userAuth.userName	= colData.authUserInfo.user_name;
 					userAuth.userEmail	= colData.authUserInfo.user_email;
 					userAuth.userType	= colData.authUserInfo.user_type;
@@ -771,6 +774,8 @@ var HakwonCommon = function() {
 			success: function(data) {
 				var colData = data.colData;
 				if( colData && colData.authUserInfo ) {
+					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
+
 					userAuth.userName 	= colData.authUserInfo.user_name;
 					userAuth.userEmail 	= colData.authUserInfo.user_email;
 					userAuth.userType 	= colData.authUserInfo.user_type;

@@ -4,6 +4,7 @@
 	<message><![CDATA[개발 학원밴드 학원 입니다.]]></message>
 	<serviceDomain><![CDATA[http://hakwon.hakwon.teamoboki.com]]></serviceDomain>
 	<mobileHost><![CDATA[http://m.hakwon.teamoboki.com]]></mobileHost>
+	<cookieDomain>hakwon.teamoboki.com</cookieDomain>
 
 	<crossDomain>
 		<host><![CDATA[http://admin.hakwon.teamoboki.com]]></host>

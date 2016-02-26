@@ -5,6 +5,7 @@
 	<message><![CDATA[학원밴드 학원 입니다.]]></message>
 	<serviceDomain><![CDATA[http://hakwon.hakwonband.com]]></serviceDomain>
 	<mobileHost><![CDATA[https://m.hakwonband.com]]></mobileHost>
+	<cookieDomain>hakwonband.com</cookieDomain>
 
 	<fileServer>
 		<storage>

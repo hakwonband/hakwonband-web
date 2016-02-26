@@ -325,6 +325,8 @@ var HakwonCommon = function() {
 				var colData = data.colData;
 				console.log('colData', colData);
 				if( colData && colData.authUserInfo ) {
+					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
+
 					if( colData.authUserInfo.user_type == HakwonConstant.UserType.STUDENT || colData.authUserInfo.user_type == HakwonConstant.UserType.PARENT ) {
 						window.location = "https://m.hakwonband.com/index.do#/userMain";
 						return ;

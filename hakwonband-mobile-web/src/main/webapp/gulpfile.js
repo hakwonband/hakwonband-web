@@ -12,6 +12,7 @@ var merge		= require('merge-stream'),
 		, common_lib_js : [
    			'./js/lib/jquery-2.1.1/jquery-2.1.1.min.js'
    			, './js/lib/tmpl/jquery.tmpl.min.js'
+   			, './bower_components/jquery.cookie/jquery.cookie.js'
    			, './js/lib/ezmark-1.0/jquery.ezmark.min.js'
    			, './js/lib/merge.js'
    			, './js/lib/underscore-1.7.0/underscore-min.js'

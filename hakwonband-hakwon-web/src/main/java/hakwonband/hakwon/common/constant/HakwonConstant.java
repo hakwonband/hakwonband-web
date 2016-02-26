@@ -12,6 +12,11 @@ public class HakwonConstant {
 		public static final String AUTH_USER_INFO = "request_auth_user_info_";
 	}
 
+	/**
+	 * 쿠키 도메인
+	 */
+	public static final String COOKIE_DOMAIN	= CommonConfig.getString("cookieDomain");
+
 	public class Common {
 		/**
 		 * 한 페이지당 보여줄 리스트의 갯수.
@@ -175,6 +180,8 @@ public class HakwonConstant {
 
 			/*	서버 타입	*/
 			dataMap.put("ServerType", CommonConfig.getServerType());
+
+			dataMap.put("CookieDomain", COOKIE_DOMAIN);
 
 			/*	sns	*/
 			DataMap sns = new DataMap();
