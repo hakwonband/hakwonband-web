@@ -264,10 +264,6 @@ public class CommonController extends BaseAction {
 		} else {
 			isProduction = "N";
 		}
-		if( "ios".equals(deviceType) ) {
-			/*	임시	*/
-			isProduction = "Y";
-		}
 		if( "(null)".equals(deviceType) ) {
 			deviceType = "";
 		}
