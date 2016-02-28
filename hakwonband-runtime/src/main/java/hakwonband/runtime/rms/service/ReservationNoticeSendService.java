@@ -81,6 +81,14 @@ public class ReservationNoticeSendService {
 							deviceList.addAll(parentDeviceList);
 						}
 
+						/**
+						 * 선생님 리스트
+						 */
+						List<UserDevice> teacherDeviceList = reservationNoticeSendDAO.classTeacherDeviceList(tempMap);
+						if( teacherDeviceList != null && teacherDeviceList.size() > 0 ) {
+							deviceList.addAll(teacherDeviceList);
+						}
+
 						String title = hakwonName+" 학원"+ className +"반에 공지사항이 등록되었습니다.";
 
 						pushMessage.setTicker(title);

@@ -45,4 +45,11 @@ public interface ReservationNoticeSendDAO {
 	 * @return
 	 */
 	public List<UserDevice> classParentDeviceList(DataMap param);
+
+	/**
+	 * 반 선생님 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<UserDevice> classTeacherDeviceList(DataMap param);
 }

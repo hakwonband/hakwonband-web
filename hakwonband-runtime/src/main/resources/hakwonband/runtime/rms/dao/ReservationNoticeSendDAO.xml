@@ -89,6 +89,19 @@
 			a.hakwon_no = #{hakwon_no}
 			and a.user_no = x.user_no
 			and x.device_token is not null
+		union all
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_teacher a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.approved_yn = 'Y'
+			and a.user_no = x.user_no
+			and x.device_token is not null
 	]]>
 	</select>
 
@@ -132,6 +145,24 @@
 			) y
 		where
 			y.parent_user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<!-- 반 선생님의 디바이스 리스트 -->
+ 	<select id="classTeacherDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* ReservationNoticeSendDAO.classTeacherDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_class_teacher a
+		where
+			a.class_no = #{class_no}
+			and a.teacher_user_no = x.user_no
 			and x.device_token is not null
 	]]>
 	</select>
