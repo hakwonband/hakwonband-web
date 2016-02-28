@@ -104,6 +104,13 @@ public interface CommonDAO {
 	public List<UserDevice> hakwonMemberDeviceList(DataMap param);
 
 	/**
+	 * 반 선생님 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<UserDevice> classTeacherDeviceList(DataMap param);
+
+	/**
 	 * 앱 버전 조회
 	 * @param param
 	 * @return

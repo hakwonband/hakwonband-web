@@ -194,6 +194,14 @@ public class NoticeService {
 					if( parentDeviceList != null && parentDeviceList.size() > 0 ) {
 						deviceList.addAll(parentDeviceList);
 					}
+
+					/**
+					 * 선생님 리스트
+					 */
+					List<UserDevice> teacherDeviceList = commonDAO.classTeacherDeviceList(tempMap);
+					if( teacherDeviceList != null && teacherDeviceList.size() > 0 ) {
+						deviceList.addAll(teacherDeviceList);
+					}
 				}
 
 				DataMap classInfo = hakwonDAO.classSimpleDetail(tempMap);
