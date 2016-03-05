@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
-import hakwonband.common.exception.HKBandException;
 import hakwonband.common.model.ErrorObj;
 import hakwonband.mobile.common.constant.HakwonConstant;
 import hakwonband.mobile.service.AsyncService;
@@ -299,6 +298,56 @@ public class CommonController extends BaseAction {
 					}
 					logger.info("\n!!!!master&teacher hakwon_no["+hakwonNo+"]");
 					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&t="+System.currentTimeMillis());
+				}
+			} else if( HakwonConstant.UserType.ADMIN.equals(userType) ) {
+				return new ModelAndView("redirect:https://admin.hakwonband.com/");
+			} else if( HakwonConstant.UserType.MANAGER.equals(userType) ) {
+				return new ModelAndView("redirect:https://manager.hakwonband.com/");
+			} else {
+				return new ModelAndView("redirect:https://m.hakwonband.com/");
+			}
+		}
+	}
+
+	/**
+	 * 공지 알림
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/notice")
+	public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		if( authUserInfo == null ) {
+			return new ModelAndView("redirect:https://m.hakwonband.com/");
+		} else {
+			logger.debug("authUserInfo : " + authUserInfo);
+
+			String hakwonNo = request.getParameter("hakwon_no");
+			String classNo = request.getParameter("class_no");
+			String noticeNo = request.getParameter("notice_no");
+			String userType = authUserInfo.getString("user_type");
+			logger.info("\n!!!!!!!!!!!!message hakwonNo["+hakwonNo+"] userType["+userType+"]");
+
+			if( HakwonConstant.UserType.STUDENT.equals(userType) || HakwonConstant.UserType.PARENT.equals(userType) ) {
+				String redirectUrl = "/index.do#/hakwon/noticeDetail?hakwon_no="+hakwonNo+"&notice_no="+noticeNo;
+				if( StringUtils.isNotBlank(classNo) ) {
+					redirectUrl += "&class_no="+classNo;
+				}
+				return new ModelAndView("redirect:https://m.hakwonband.com"+redirectUrl);
+			} else if( HakwonConstant.UserType.WONJANG.equals(userType) || HakwonConstant.UserType.TEACHER.equals(userType) ) {
+				if( StringUtil.isBlank(hakwonNo) || StringUtil.isBlank(noticeNo) ) {
+					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do");
+				} else {
+					String redirectUrl = "/main.do#/notice/detail?hakwon_no="+hakwonNo+"&notice_no="+noticeNo;
+					if( StringUtils.isNotBlank(classNo) ) {
+						redirectUrl += "&class_no="+classNo;
+					}
+					logger.info("\n!!!!master&teacher hakwon_no["+hakwonNo+"]");
+					return new ModelAndView("redirect:https://hakwon.hakwonband.com"+redirectUrl);
 				}
 			} else if( HakwonConstant.UserType.ADMIN.equals(userType) ) {
 				return new ModelAndView("redirect:https://admin.hakwonband.com/");

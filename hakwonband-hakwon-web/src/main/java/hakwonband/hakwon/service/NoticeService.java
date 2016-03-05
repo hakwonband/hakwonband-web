@@ -178,7 +178,7 @@ public class NoticeService {
 				pushMessage.setTicker(title);
 				pushMessage.setTitle(title);
 				pushMessage.addCustomParam("hakwonNo", hakwonInfo.getString("hakwon_no"));
-				pushMessage.setLink_url("https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no="+hakwonInfo.getString("hakwon_no")+"&notice_no="+noticeNo);
+				pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonInfo.getString("hakwon_no")+"&notice_no="+noticeNo);
 			} else if( param.equals("notice_type", "003") ) {
 				String classNo	= param.getString("notice_parent_no");
 				DataMap tempMap = new DataMap();
@@ -211,7 +211,7 @@ public class NoticeService {
 				pushMessage.setTitle(title);
 				pushMessage.addCustomParam("hakwonNo", classInfo.getString("hakwon_no"));
 				pushMessage.addCustomParam("classNo", classInfo.getString("class_no"));
-				pushMessage.setLink_url("https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no="+classInfo.getString("hakwon_no")+"&class_no="+classInfo.getString("class_no")+"&notice_no="+noticeNo);
+				pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+classInfo.getString("hakwon_no")+"&class_no="+classInfo.getString("class_no")+"&notice_no="+noticeNo);
 			}
 
 			if( deviceList != null && deviceList.size() > 0 ) {
