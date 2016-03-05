@@ -66,7 +66,7 @@ public class ReservationNoticeSendService {
 						pushMessage.setTicker(title);
 						pushMessage.setTitle(title);
 						pushMessage.addCustomParam("hakwonNo", hakwonNo);
-						pushMessage.setLink_url("https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no="+hakwonNo+"&notice_no="+noticeNo);
+						pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonNo+"&notice_no="+noticeNo);
 					} else if( notice.equals("notice_type", "003") ) {
 						DataMap tempMap = new DataMap();
 						tempMap.put("class_no", classNo);
@@ -95,7 +95,7 @@ public class ReservationNoticeSendService {
 						pushMessage.setTitle(title);
 						pushMessage.addCustomParam("hakwonNo", hakwonNo);
 						pushMessage.addCustomParam("classNo", classNo);
-						pushMessage.setLink_url("https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no="+hakwonNo+"&class_no="+classNo+"&notice_no="+noticeNo);
+						pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonNo+"&class_no="+classNo+"&notice_no="+noticeNo);
 					}
 
 					if( deviceList != null && deviceList.size() > 0 ) {
