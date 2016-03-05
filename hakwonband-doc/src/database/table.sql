@@ -893,3 +893,16 @@ alter table tb_notice add share_no				integer				comment '공유번호' after re
 
 create index tb_notice_rel_notice_no_idx on tb_notice (rel_notice_no);
 create index tb_notice_share_no_idx on tb_notice (share_no);
+
+
+drop table if exists tb_error_log;
+create table tb_error_log (
+	log_no			integer	auto_increment			not null	comment '로그 번호'
+	, log			longtext									comment '로그'
+	, reg_date		datetime	default now()		not null	comment '등록일'
+	, primary key (log_no)
+)
+engine = innodb
+character set utf8
+comment = '에러 로그'
+;

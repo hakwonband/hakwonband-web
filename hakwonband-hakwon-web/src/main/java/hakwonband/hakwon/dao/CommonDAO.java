@@ -150,4 +150,10 @@ public interface CommonDAO {
 	 * @return
 	 */
 	public int loginUserDeviceTokenUpdate(DataMap param);
+
+	/**
+	 * 에러로그 등록
+	 * @param param
+	 */
+	public void insertErrorLog(String log);
 }

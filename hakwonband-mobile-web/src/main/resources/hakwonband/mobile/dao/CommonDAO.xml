@@ -3,14 +3,10 @@
 
 <mapper namespace="hakwonband.mobile.dao.CommonDAO">
 
-	<insert id="insertErrorLog" parameterType="dataMap">
+	<insert id="insertErrorLog" parameterType="string">
 	<![CDATA[
 		/*	CommonDAO.insertErrorLog	*/
-		insert into tb_error_log (
-			was_instance, was_ip, was_port, request_content, exception_trace, error_req_type, error_message, ajax_yn, req_ip, req_date, function_param
-		) values (
-			#{wasInstance}, #{wasIp}, #{wasPort}, #{requestContent}, #{exceptionTrace}, #{errorreqType}, #{errorMessage}, #{ajaxYN}, #{reqIp}, now(), #{functionParam}
-		)
+		insert into tb_error_log (log) values (#{log})
 	]]>
 	</insert>
 

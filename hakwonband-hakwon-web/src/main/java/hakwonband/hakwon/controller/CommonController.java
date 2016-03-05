@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
+import hakwonband.common.model.ErrorObj;
 import hakwonband.hakwon.common.constant.HakwonConstant;
+import hakwonband.hakwon.service.AsyncService;
 import hakwonband.hakwon.service.CommonService;
 import hakwonband.util.CookieUtils;
 import hakwonband.util.DataMap;
+import hakwonband.util.HKBandUtil;
 import hakwonband.util.SecuUtil;
 import hakwonband.util.StringUtil;
 import net.sf.uadetector.UserAgentStringParser;
@@ -45,6 +49,9 @@ public class CommonController extends BaseAction {
 
 	/*	쿠키 저장 시간	*/
 	private static final int cookieSaveTime = 1 * 90 * 24 * 60 * 60;
+
+	@Autowired
+	private AsyncService asyncService;
 
 	/**
 	 * index
@@ -305,6 +312,11 @@ public class CommonController extends BaseAction {
 		String deviceType	= request.getParameter("deviceType");
 		String isProduction	= request.getParameter("isProduction");
 
+		logger.debug("authKey : " + authKey);
+		logger.debug("key : " + key);
+		logger.debug("deviceType : " + deviceType);
+		logger.debug("isProduction : " + isProduction);
+
 		if( "true".equalsIgnoreCase(isProduction) ) {
 			isProduction = "Y";
 		} else {
@@ -318,12 +330,28 @@ public class CommonController extends BaseAction {
 			deviceType = "";
 		}
 
+		if( StringUtils.isBlank(authKey) || StringUtils.isBlank(key) || StringUtils.isBlank(deviceType) || StringUtils.isBlank(isProduction) ) {
+			ErrorObj errorObj = new ErrorObj();
+			errorObj.setErrorCode("setPushNotiKeyApp");
+			errorObj.setRequestInfo(HKBandUtil.requestInfo(request));
+			errorObj.putCustomParam("authKey",		authKey);
+			errorObj.putCustomParam("key",			key);
+			errorObj.putCustomParam("deviceType",	deviceType);
+			errorObj.putCustomParam("isProduction",	isProduction);
+			asyncService.insertErrorLog(errorObj);
+		}
+
 		if( CommonConstant.DeviceType.android.equalsIgnoreCase(deviceType) ) {
 			deviceType = CommonConstant.DeviceType.android;
 		} else if( CommonConstant.DeviceType.ios.equalsIgnoreCase(deviceType) ) {
 			deviceType = CommonConstant.DeviceType.ios;
 		} else {
 			sendFlag("invalidDeviceType", request, response);
+			return ;
+		}
+
+		if( StringUtils.isBlank(key) ) {
+			sendFlag("invalidDeviceKey", request, response);
 			return ;
 		}
 

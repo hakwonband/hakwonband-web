@@ -13,10 +13,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
 import hakwonband.api.PushSend;
 import hakwonband.common.exception.HKBandException;
+import hakwonband.common.model.ErrorObj;
+import hakwonband.mobile.dao.CommonDAO;
 import hakwonband.mobile.model.DevicePushData;
 import hakwonband.util.CommonConfig;
 import hakwonband.util.DataMap;
@@ -32,6 +35,9 @@ public class AsyncService {
 	public static final String smtpEmailId	= CommonConfig.getString("email/smtp/id");
 	public static final String smtpEmailPwd	= CommonConfig.getString("email/smtp/password");
 
+	@Autowired
+	private CommonDAO commonDAO;
+
 
 	/**
 	 * 모바일 푸시
@@ -46,6 +52,19 @@ public class AsyncService {
 			PushSend.send(devicePushData.getPushMessage());
 		} else {
 			PushSend.send(devicePushData.getDeviceList(), devicePushData.getPushMessage());
+		}
+	}
+
+	/**
+	 * 에러 로깅
+	 * @param errorObj
+	 */
+	@Async
+	public void insertErrorLog(ErrorObj errorObj) {
+		try {
+			commonDAO.insertErrorLog(errorObj.toString());
+		} catch(Exception e) {
+			logger.error("", e);
 		}
 	}
 

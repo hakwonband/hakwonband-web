@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +16,6 @@ import hakwonband.common.exception.HKBandException;
 import hakwonband.common.exception.LoginFailException;
 import hakwonband.common.exception.NoLoginFailException;
 import hakwonband.common.exception.RoleFailException;
-import hakwonband.hakwon.service.CommonService;
 import hakwonband.util.DataMap;
 import hakwonband.util.StringUtil;
 
