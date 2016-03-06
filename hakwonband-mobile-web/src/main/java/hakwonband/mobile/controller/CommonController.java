@@ -582,7 +582,18 @@ public class CommonController extends BaseAction {
 		param.put("device_type",	deviceType);
 		param.put("is_production",	isProduction);
 
-		commonService.updateDevicePushKey(param);
+		int updateCnt = commonService.updateDevicePushKey(param);
+		if( updateCnt != 1 ) {
+			ErrorObj errorObj = new ErrorObj();
+			errorObj.setErrorCode("setPushNotiKeyAppUpdateFail");
+			errorObj.setRequestInfo(HKBandUtil.requestInfo(request));
+			errorObj.putCustomParam("authKey",		authKey);
+			errorObj.putCustomParam("key",			key);
+			errorObj.putCustomParam("deviceType",	deviceType);
+			errorObj.putCustomParam("isProduction",	isProduction);
+			errorObj.putCustomParam("updateCnt",	String.valueOf(updateCnt));
+			asyncService.insertErrorLog(errorObj);
+		}
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}

@@ -166,8 +166,9 @@ public class CommonService {
 	 * 사용자 로그인 이력의 푸시키 업데이트
 	 * @param param
 	 */
-	public void updateDevicePushKey(DataMap param) {
+	public int updateDevicePushKey(DataMap param) {
 		int updateCnt = commonDAO.loginUserDeviceTokenUpdate(param);
 		logger.info("updateDevicePushKey["+updateCnt+"]");
+		return updateCnt;
 	}
 }
