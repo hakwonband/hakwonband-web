@@ -51,7 +51,8 @@ hakwonCommonApp.service('loginService', function($rootScope, $location) {
 				var colData = data.colData;
 				if( colData && colData.flag == CommonConstant.Flag.success ) {
 
-					if( window.PLATFORM || (user_id == 'bumstudent' || user_id == 'bumwonjang' || user_id == 'bumteacher') ) {
+					if( window.PLATFORM || getBrowser() == 'iosApp' ) {
+					//if( window.PLATFORM || (user_id == 'bumstudent' || user_id == 'bumwonjang' || user_id == 'bumteacher') ) {
 						window.location = 'hakwonband://auth/login/'+colData.authUserInfo.authKey;
 					}
 
