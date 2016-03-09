@@ -538,7 +538,6 @@ hakwonApp.controller('memberModifyController', function($scope, $window, $locati
 			// 파일 업로드 객체 생성
 			if( comm.isAndroidUploader() ) {
 				angular.element("input[data-act=photo_upload]").click(function(event) {
-					event.preventDefault();
 					delete window.uploadCallBack;
 					window.uploadCallBack = function(uploadJsonStr) {
 						try {
