@@ -521,7 +521,7 @@ public class MasterService {
 		logger.info("executeHakwonStatus deviceList["+deviceList+"]");
 		if( deviceList != null && deviceList.size() > 0 ) {
 			PushMessage pushMessage = new PushMessage();
-			pushMessage.setTicker("학원밴드 입니다.");
+			pushMessage.setTicker("학원밴드");
 			pushMessage.setTitle(title);
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", "-1");

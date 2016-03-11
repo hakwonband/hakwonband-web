@@ -180,8 +180,8 @@ public class EventService {
 			List<UserDevice> deviceList = commonDAO.hakwonMemberDeviceList(param);
 			if( deviceList != null && deviceList.size() > 0 ) {
 				PushMessage pushMessage = new PushMessage();
-				pushMessage.setTicker("학원밴드 입니다.");
-				pushMessage.setTitle(hakwonInfo.getString("hakwon_name")+" 입니다.");
+				pushMessage.setTicker("학원밴드");
+				pushMessage.setTitle(hakwonInfo.getString("hakwon_name")+" [이벤트] " + param.getString("event_title"));
 				pushMessage.setContent("["+param.getString("event_title")+ "] 이벤트를 시작 했습니다.");
 				pushMessage.setLink_url("https://m.hakwonband.com/index.do#/hakwon/eventDetail?hakwon_no="+hakwon_no+"&event_no="+eventNo+"&prev_page=list");
 

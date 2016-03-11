@@ -194,7 +194,7 @@ public class AttendanceService {
 					}
 				}
 
-				pushMessage.setTicker(title);
+				pushMessage.setTicker("학원밴드");
 				pushMessage.setTitle(title);
 				pushMessage.setContent(title);
 				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+hakwonInfo.getString("user_no")+"&attendance_no="+attendance_no+"&attendance_type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
@@ -405,7 +405,7 @@ public class AttendanceService {
 				}
 			}
 
-			pushMessage.setTicker(title);
+			pushMessage.setTicker("학원밴드");
 			pushMessage.setTitle(title);
 			pushMessage.setContent(title);
 			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+studentInfo.getString("user_no")+"&attendance_no="+attendanceNo+"&attendance_type="+param.getString("attType")+"&t="+System.currentTimeMillis());

@@ -61,9 +61,9 @@ public class ReservationNoticeSendService {
 
 						deviceList = reservationNoticeSendDAO.hakwonMemberDeviceList(tempMap);
 
-						String title = hakwonName+" 학원 공지사항이 등록되었습니다.";
+						String title = hakwonName+" [전체공지] " + notice.getString("title");
 
-						pushMessage.setTicker(title);
+						pushMessage.setTicker("학원밴드");
 						pushMessage.setTitle(title);
 						pushMessage.addCustomParam("hakwonNo", hakwonNo);
 						pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonNo+"&notice_no="+noticeNo);
@@ -89,7 +89,7 @@ public class ReservationNoticeSendService {
 							deviceList.addAll(teacherDeviceList);
 						}
 
-						String title = hakwonName+" 학원"+ className +"반에 공지사항이 등록되었습니다.";
+						String title = hakwonName+" [반공지] " + notice.getString("title");
 
 						pushMessage.setTicker(title);
 						pushMessage.setTitle(title);

@@ -52,8 +52,8 @@ public class ReservationMessageSendService {
 					messageNos += messageNo;
 
 					PushMessage pushMessage = new PushMessage();
-					pushMessage.setTicker("학원밴드 입니다.");
-					pushMessage.setTitle(message.getString("send_user_name")+"님께서 메세지를 보냈습니다.");
+					pushMessage.setTicker("학원밴드");
+					pushMessage.setTitle("[메세지] " + message.getString("send_user_name")+"님께서 메세지를 보냈습니다.");
 					pushMessage.setContent(message.getString("title"));
 					pushMessage.addCustomParam("hakwonNo", hakwonNo);
 					pushMessage.setImage_url("");

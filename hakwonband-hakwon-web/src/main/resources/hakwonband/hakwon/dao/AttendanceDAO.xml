@@ -193,7 +193,8 @@
 		from
 			tb_login_hist a
 		where
-			(a.user_no in (select a.parent_user_no from tb_student_parent a where a.student_user_no = #{studentNo})
+			(
+				a.user_no in (select a.parent_user_no from tb_student_parent a where a.student_user_no = #{studentNo})
 				or a.user_no = #{studentNo}
 			)
 			and a.device_token is not null

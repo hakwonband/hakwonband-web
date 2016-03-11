@@ -241,7 +241,7 @@ public class HakwonService {
 		List<UserDevice> deviceList = commonDAO.getUserDeviceToken(param);
 
 		PushMessage pushMessage = new PushMessage();
-		pushMessage.setTicker("학원밴드 입니다.");
+		pushMessage.setTicker("학원밴드");
 		pushMessage.setTitle("학원 소개 미리보기 정보 입니다.");
 		pushMessage.setLink_url("https://m.hakwonband.com/preview.do?preview_no="+previewNo);
 

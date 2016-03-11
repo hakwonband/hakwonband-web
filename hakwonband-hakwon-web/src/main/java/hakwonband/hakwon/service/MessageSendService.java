@@ -202,8 +202,8 @@ public class MessageSendService {
 		logger.info("executeTeacherMessageSend deviceList["+deviceList+"]");
 		if( deviceList != null && deviceList.size() > 0 ) {
 			PushMessage pushMessage = new PushMessage();
-			pushMessage.setTicker("학원밴드 입니다.");
-			pushMessage.setTitle(param.getString("user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setTicker("학원밴드");
+			pushMessage.setTitle("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
@@ -449,8 +449,8 @@ public class MessageSendService {
 		logger.info("executeMasterMessageSend deviceList["+deviceList+"]");
 		if( deviceList != null && deviceList.size() > 0 ) {
 			PushMessage pushMessage = new PushMessage();
-			pushMessage.setTicker("학원밴드 입니다.");
-			pushMessage.setTitle(param.getString("user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setTicker("학원밴드");
+			pushMessage.setTitle("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
