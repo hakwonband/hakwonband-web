@@ -112,7 +112,7 @@ public class ReplyService {
 
 			messageParam.put("receiveUserNo", receiveUserNo);
 			List<UserDevice> deviceList = commonDAO.getUserDeviceToken(messageParam);
-			logger.info("executeTeacherMessageSend deviceList["+deviceList+"]");
+			logger.info("registReply deviceList["+deviceList+"]");
 
 			String hakwonNo		= messageUserInfo.getString("hakwon_no");
 			String receiveNo	= messageUserInfo.getString("receive_no");
