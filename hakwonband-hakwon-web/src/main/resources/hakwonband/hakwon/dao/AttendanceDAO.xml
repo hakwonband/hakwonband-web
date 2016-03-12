@@ -186,8 +186,7 @@
 	<![CDATA[
 		/* AttendanceDAO.selectParentDevice */
 		select
-			a.user_no
-			, a.device_token
+			a.device_token
 			, a.device_type
 			, a.is_production
 		from
