@@ -200,9 +200,7 @@ public class AttendanceService {
 
 				pushMessage.setTicker(ticker);
 				pushMessage.setTitle(title);
-				pushMessage.setContent(title);
-				pushMessage.setImage_url("");
-				pushMessage.addCustomParam("hakwon_name", hakwonInfo.getString("hakwon_name"));
+				pushMessage.setContent("학원밴드");
 //				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+hakwonInfo.getString("user_no")+"&no="+attendance_no+"&type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
 				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+hakwonInfo.getString("user_no")+"&no="+attendance_no+"&type="+param.getString("attendanceType"));
 
@@ -418,9 +416,7 @@ public class AttendanceService {
 
 			pushMessage.setTicker(ticker);
 			pushMessage.setTitle(title);
-			pushMessage.setContent(title);
-			pushMessage.setImage_url("");
-			pushMessage.addCustomParam("hakwon_name", studentInfo.getString("hakwon_name"));
+			pushMessage.setContent("학원밴드");
 //			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+studentInfo.getString("user_no")+"&no="+attendanceNo+"&type="+param.getString("attType")+"&t="+System.currentTimeMillis());
 			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+studentInfo.getString("user_no")+"&no="+attendanceNo+"&type="+param.getString("attType"));
 
