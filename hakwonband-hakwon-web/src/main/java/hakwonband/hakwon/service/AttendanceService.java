@@ -175,26 +175,30 @@ public class AttendanceService {
 				String currentTime = DateUtil.getDate("HH시 mm분");
 				PushMessage pushMessage = new PushMessage();
 
-				String title = "";
+				String title = "", ticker = "";
 				if("001".equals(param.getString("dataType"))) {
 					/*	등,하원 알림 발송	*/
 					title = hakwonInfo.getString("user_name") + "님이 '" + hakwonInfo.getString("hakwon_name");
 					if("start".equals(param.getString("attendanceType"))) {
 						title += "'에 등원 하셨습니다.(" + currentTime + ")";
+						ticker = hakwonInfo.getString("hakwon_name")+" 등원 알림";
 					} else {
 						title += "'에서 하원 하셨습니다.(" + currentTime + ")";
+						ticker = hakwonInfo.getString("hakwon_name")+" 하원 알림";
 					}
 				} else {
 					/*	승,하차 알림 발송	*/
 					title = hakwonInfo.getString("user_name") + "님이 '" + hakwonInfo.getString("hakwon_name");
 					if("start".equals(param.getString("attendanceType"))) {
 						title += "'버스에 승차 하셨습니다.(" + currentTime + ")";
+						ticker = hakwonInfo.getString("hakwon_name")+" 승차 알림";
 					} else {
 						title += "'버스에서 하차 하셨습니다.(" + currentTime + ")";
+						ticker = hakwonInfo.getString("hakwon_name")+" 하차 알림";
 					}
 				}
 
-				pushMessage.setTicker("학원밴드");
+				pushMessage.setTicker(ticker);
 				pushMessage.setTitle(title);
 				pushMessage.setContent(title);
 				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+hakwonInfo.getString("user_no")+"&attendance_no="+attendance_no+"&attendance_type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
@@ -386,26 +390,30 @@ public class AttendanceService {
 			String currentTime = DateUtil.getDate("HH시 mm분");
 			PushMessage pushMessage = new PushMessage();
 
-			String title = "";
+			String title = "", ticker = "";
 			if("001".equals(param.getString("dataType"))) {
 				/*	등,하원 알림 발송	*/
 				title = studentInfo.getString("user_name") + "님이 '" + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
 					title += "'에 등원 하셨습니다.(" + currentTime + ")";
+					ticker = studentInfo.getString("hakwon_name")+" 등원 알림";
 				} else {
 					title += "'에서 하원 하셨습니다.(" + currentTime + ")";
+					ticker = studentInfo.getString("hakwon_name")+" 하원 알림";
 				}
 			} else {
 				/*	승,하차 알림 발송	*/
 				title = studentInfo.getString("user_name") + "님이 '" + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
 					title += "'버스에 승차 하셨습니다.(" + currentTime + ")";
+					ticker = studentInfo.getString("hakwon_name")+" 승차 알림";
 				} else {
 					title += "'버스에서 하차 하셨습니다.(" + currentTime + ")";
+					ticker = studentInfo.getString("hakwon_name")+" 하차 알림";
 				}
 			}
 
-			pushMessage.setTicker("학원밴드");
+			pushMessage.setTicker(ticker);
 			pushMessage.setTitle(title);
 			pushMessage.setContent(title);
 			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+studentInfo.getString("user_no")+"&attendance_no="+attendanceNo+"&attendance_type="+param.getString("attType")+"&t="+System.currentTimeMillis());
