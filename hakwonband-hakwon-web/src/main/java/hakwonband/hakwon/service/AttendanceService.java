@@ -180,10 +180,10 @@ public class AttendanceService {
 					/*	등,하원 알림 발송	*/
 					title = hakwonInfo.getString("user_name") + "님이 '" + hakwonInfo.getString("hakwon_name");
 					if("start".equals(param.getString("attendanceType"))) {
-						title += "'에 등원 하셨습니다.(" + currentTime + ")";
+						title += "'에 등원 하셨습니다.";
 						ticker = hakwonInfo.getString("hakwon_name")+" 등원 알림";
 					} else {
-						title += "'에서 하원 하셨습니다.(" + currentTime + ")";
+						title += "'에서 하원 하셨습니다.";
 						ticker = hakwonInfo.getString("hakwon_name")+" 하원 알림";
 					}
 				} else {
@@ -395,10 +395,10 @@ public class AttendanceService {
 				/*	등,하원 알림 발송	*/
 				title = studentInfo.getString("user_name") + "님이 '" + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
-					title += "'에 등원 하셨습니다.(" + currentTime + ")";
+					title += "'에 등원 하셨습니다.";
 					ticker = studentInfo.getString("hakwon_name")+" 등원 알림";
 				} else {
-					title += "'에서 하원 하셨습니다.(" + currentTime + ")";
+					title += "'에서 하원 하셨습니다.";
 					ticker = studentInfo.getString("hakwon_name")+" 하원 알림";
 				}
 			} else {
