@@ -373,9 +373,9 @@ public class CommonController extends BaseAction {
 		if( authUserInfo == null ) {
 			return new ModelAndView("redirect:https://m.hakwonband.com/");
 		} else {
-			String student_no		= request.getParameter("student_no");
-			String attendance_no	= request.getParameter("attendance_no");
-			String attendance_type	= request.getParameter("attendance_type");
+			String student_no		= request.getParameter("user_no");
+			String attendance_no	= request.getParameter("no");
+			String attendance_type	= request.getParameter("type");
 
 			return new ModelAndView("redirect:https://m.hakwonband.com/#/attendanceList?student_no="+student_no+"&attendance_no="+attendance_no+"&attendance_type="+attendance_type+"&t="+System.currentTimeMillis());
 		}

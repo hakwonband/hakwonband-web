@@ -188,12 +188,12 @@ public class AttendanceService {
 					}
 				} else {
 					/*	승,하차 알림 발송	*/
-					title = hakwonInfo.getString("user_name") + "님이 '" + hakwonInfo.getString("hakwon_name");
+					title = hakwonInfo.getString("user_name") + "님이 " + hakwonInfo.getString("hakwon_name");
 					if("start".equals(param.getString("attendanceType"))) {
-						title += "'버스에 승차 하셨습니다.(" + currentTime + ")";
+						title += "버스에 승차 하셨습니다.(" + currentTime + ")";
 						ticker = hakwonInfo.getString("hakwon_name")+" 승차 알림";
 					} else {
-						title += "'버스에서 하차 하셨습니다.(" + currentTime + ")";
+						title += "버스에서 하차 하셨습니다.(" + currentTime + ")";
 						ticker = hakwonInfo.getString("hakwon_name")+" 하차 알림";
 					}
 				}
@@ -203,8 +203,7 @@ public class AttendanceService {
 				pushMessage.setContent(title);
 				pushMessage.setImage_url("");
 				pushMessage.addCustomParam("hakwon_name", hakwonInfo.getString("hakwon_name"));
-				//pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+hakwonInfo.getString("user_no")+"&attendance_no="+attendance_no+"&attendance_type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
-				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do");
+				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+hakwonInfo.getString("user_no")+"&no="+attendance_no+"&type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
 
 				DevicePushData devicePushData = new DevicePushData(pushMessage, parentDeviceList);
 				param.put("devicePushData",	devicePushData);
@@ -396,7 +395,7 @@ public class AttendanceService {
 			String title = "", ticker = "";
 			if("001".equals(param.getString("dataType"))) {
 				/*	등,하원 알림 발송	*/
-				title = studentInfo.getString("user_name") + "님이'" + studentInfo.getString("hakwon_name");
+				title = studentInfo.getString("user_name") + "님이 " + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
 					title += "에 등원 하셨습니다.";
 					ticker = studentInfo.getString("hakwon_name")+" 등원 알림";
@@ -406,12 +405,12 @@ public class AttendanceService {
 				}
 			} else {
 				/*	승,하차 알림 발송	*/
-				title = studentInfo.getString("user_name") + "님이 '" + studentInfo.getString("hakwon_name");
+				title = studentInfo.getString("user_name") + "님이 " + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
-					title += "'버스에 승차 하셨습니다.(" + currentTime + ")";
+					title += "버스에 승차 하셨습니다.(" + currentTime + ")";
 					ticker = studentInfo.getString("hakwon_name")+" 승차 알림";
 				} else {
-					title += "'버스에서 하차 하셨습니다.(" + currentTime + ")";
+					title += "버스에서 하차 하셨습니다.(" + currentTime + ")";
 					ticker = studentInfo.getString("hakwon_name")+" 하차 알림";
 				}
 			}
@@ -421,8 +420,7 @@ public class AttendanceService {
 			pushMessage.setContent(title);
 			pushMessage.setImage_url("");
 			pushMessage.addCustomParam("hakwon_name", studentInfo.getString("hakwon_name"));
-//			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?student_no="+studentInfo.getString("user_no")+"&attendance_no="+attendanceNo+"&attendance_type="+param.getString("attType")+"&t="+System.currentTimeMillis());
-			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do");
+			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+studentInfo.getString("user_no")+"&no="+attendanceNo+"&type="+param.getString("attType")+"&t="+System.currentTimeMillis());
 
 			devicePushData = new DevicePushData(pushMessage, parentDeviceList);
 		}
