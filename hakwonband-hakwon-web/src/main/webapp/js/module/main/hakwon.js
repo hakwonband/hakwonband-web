@@ -465,7 +465,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		$('#mainNgView').on(clickEvent, 'button[data-act=youtubeInsert]', function() {
 			var youtubeID = $('#mainNgView').find('input[name=youtubeID]').val();
 
-			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
+			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a><br/>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
 		});
 
@@ -635,7 +635,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		/*	이미지 클릭시 에디터에 이미지 첨부	*/
 		$scope.insertImageToEditor = function(filePath, fileNo) {
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
-			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
 			tinymce.activeEditor.insertContent(strImage);
 		};
 

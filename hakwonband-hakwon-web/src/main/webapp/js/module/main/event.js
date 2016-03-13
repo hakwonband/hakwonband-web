@@ -475,7 +475,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 	/*	파일 본문 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div.image', function() {
 		var imgSrc = $(this).find('img').attr('src');
-		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a>');
+		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a><br/>');
 	});
 
 	/*	비디오 삽입	*/
@@ -611,7 +611,7 @@ hakwonMainApp.controller('eventEditController', function($scope, $location, $rou
 	/*	파일 본문 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div.image', function() {
 		var imgSrc = $(this).find('img').attr('src');
-		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a>');
+		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a><br/>');
 	});
 	/*	비디오 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=video]', function() {
