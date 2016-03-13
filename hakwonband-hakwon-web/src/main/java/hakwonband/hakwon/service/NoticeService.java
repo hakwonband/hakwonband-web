@@ -173,10 +173,11 @@ public class NoticeService {
 				}
 
 				DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(tempMap);
-				String title = hakwonInfo.getString("hakwon_name")+" [전체공지] " + param.getString("title");
+				String title = "[전체공지] " + hakwonInfo.getString("hakwon_name")+ " " + param.getString("title");
 
 				pushMessage.setTicker("학원밴드");
 				pushMessage.setTitle(title);
+				pushMessage.setIos_title(title);
 				pushMessage.addCustomParam("hakwonNo", hakwonInfo.getString("hakwon_no"));
 				pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonInfo.getString("hakwon_no")+"&notice_no="+noticeNo);
 			} else if( param.equals("notice_type", "003") ) {
@@ -205,10 +206,11 @@ public class NoticeService {
 				}
 
 				DataMap classInfo = hakwonDAO.classSimpleDetail(tempMap);
-				String title = classInfo.getString("hakwon_name")+" [반공지] " + param.getString("title");
+				String title = "[반공지] " + classInfo.getString("hakwon_name")+" " + param.getString("title");
 
 				pushMessage.setTicker("학원밴드");
 				pushMessage.setTitle(title);
+				pushMessage.setIos_title(title);
 				pushMessage.addCustomParam("hakwonNo", classInfo.getString("hakwon_no"));
 				pushMessage.addCustomParam("classNo", classInfo.getString("class_no"));
 				pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+classInfo.getString("hakwon_no")+"&class_no="+classInfo.getString("class_no")+"&notice_no="+noticeNo);

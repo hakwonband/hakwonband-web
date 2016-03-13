@@ -243,6 +243,7 @@ public class HakwonService {
 		PushMessage pushMessage = new PushMessage();
 		pushMessage.setTicker("학원밴드");
 		pushMessage.setTitle("학원 소개 미리보기 정보 입니다.");
+		pushMessage.setIos_title("학원 소개 미리보기 정보 입니다.");
 		pushMessage.setLink_url("https://m.hakwonband.com/preview.do?preview_no="+previewNo);
 
 		DevicePushData devicePushData = new DevicePushData(pushMessage, deviceList);

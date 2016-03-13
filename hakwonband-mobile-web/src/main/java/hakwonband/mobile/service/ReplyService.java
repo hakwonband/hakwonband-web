@@ -118,7 +118,8 @@ public class ReplyService {
 			if( deviceList != null && deviceList.size() > 0 ) {
 				PushMessage pushMessage = new PushMessage();
 				pushMessage.setTicker("학원밴드 입니다.");
-				pushMessage.setTitle("학원밴드에서 메세지를 보냈습니다.");
+				pushMessage.setTitle("[메세지 댓글] 학원밴드에서 메세지를 보냈습니다.");
+				pushMessage.setIos_title("[메세지 댓글] "+messageUserInfo.getString("title"));
 				pushMessage.setContent(messageUserInfo.getString("title")+"에 댓글이 달렸습니다.");
 
 				if( HakwonConstant.UserType.ADMIN.equals(receiveUserType) ) {

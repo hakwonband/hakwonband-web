@@ -200,7 +200,8 @@ public class AttendanceService {
 
 				pushMessage.setTicker(ticker);
 				pushMessage.setTitle(title);
-				pushMessage.setContent(title);
+				pushMessage.setIos_title(title);
+//				pushMessage.setContent(title);
 				pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+hakwonInfo.getString("user_no")+"&no="+attendance_no+"&type="+param.getString("attendanceType")+"&t="+System.currentTimeMillis());
 
 				DevicePushData devicePushData = new DevicePushData(pushMessage, parentDeviceList);
@@ -415,7 +416,8 @@ public class AttendanceService {
 
 			pushMessage.setTicker(ticker);
 			pushMessage.setTitle(title);
-			pushMessage.setContent(title);
+			pushMessage.setIos_title(title);
+//			pushMessage.setContent(title);
 			pushMessage.setLink_url("https://m.hakwonband.com/attendanceList.do?user_no="+studentInfo.getString("user_no")+"&no="+attendanceNo+"&type="+param.getString("attType")+"&t="+System.currentTimeMillis());
 
 			devicePushData = new DevicePushData(pushMessage, parentDeviceList);

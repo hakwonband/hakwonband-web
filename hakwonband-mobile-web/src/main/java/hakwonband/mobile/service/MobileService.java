@@ -359,6 +359,7 @@ public class MobileService {
 				PushMessage pushMessage = new PushMessage();
 				pushMessage.setTicker("학원밴드 입니다.");
 				pushMessage.setTitle(param.getString("user_name")+"님께서 메세지를 보냈습니다.");
+				pushMessage.setIos_title(param.getString("user_name")+"님께서 학생 승인을 거절 하셨습니다.");
 				pushMessage.setContent("학생 승인을 거절 하셨습니다.");
 				pushMessage.setLink_url("https://m.hakwonband.com/#/userMain");
 

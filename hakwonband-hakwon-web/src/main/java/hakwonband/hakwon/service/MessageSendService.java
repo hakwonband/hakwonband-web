@@ -204,6 +204,7 @@ public class MessageSendService {
 			PushMessage pushMessage = new PushMessage();
 			pushMessage.setTicker("학원밴드");
 			pushMessage.setTitle("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setIos_title("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
@@ -451,6 +452,7 @@ public class MessageSendService {
 			PushMessage pushMessage = new PushMessage();
 			pushMessage.setTicker("학원밴드");
 			pushMessage.setTitle("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setIos_title("[메세지] " + param.getString("user_name")+"님께서 메세지를 보냈습니다.");
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");

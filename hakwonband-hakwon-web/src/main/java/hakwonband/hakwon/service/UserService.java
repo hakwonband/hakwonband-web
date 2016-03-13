@@ -260,6 +260,7 @@ public class UserService {
 				PushMessage pushMessage = new PushMessage();
 				pushMessage.setTicker("학원밴드");
 				pushMessage.setTitle(title);
+				pushMessage.setIos_title(title);
 				pushMessage.setContent(content);
 				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1");
 
@@ -324,6 +325,7 @@ public class UserService {
 				PushMessage pushMessage = new PushMessage();
 				pushMessage.setTicker("학원밴드");
 				pushMessage.setTitle("["+hakwonInfo.getString("hakwon_name")+"] 선생님께서 학원밴드를 탈퇴 했습니다.");
+				pushMessage.setIos_title("["+hakwonInfo.getString("hakwon_name")+"] 선생님께서 학원밴드를 탈퇴 했습니다.");
 				pushMessage.setContent(content);
 				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+hakwonInfo.getString("hakwon_no"));
 

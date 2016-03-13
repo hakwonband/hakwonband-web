@@ -233,7 +233,8 @@ public class MessageService {
 		if( deviceList != null && deviceList.size() > 0 ) {
 			PushMessage pushMessage = new PushMessage();
 			pushMessage.setTicker("학원밴드 입니다.");
-			pushMessage.setTitle(param.getString("send_user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setTitle("[메세지] " + param.getString("send_user_name")+"님께서 메세지를 보냈습니다.");
+			pushMessage.setIos_title("[메세지] " + param.getString("send_user_name")+"님께서 메세지를 보냈습니다.");
 			pushMessage.setContent(param.getString("title"));
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");

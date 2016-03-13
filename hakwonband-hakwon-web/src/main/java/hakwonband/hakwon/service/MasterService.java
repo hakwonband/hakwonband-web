@@ -474,7 +474,7 @@ public class MasterService {
 		String messageContent = param.getString("message");
 
 		DataMap messageMap = new DataMap();
-		String title = "학원["+hakwonInfo.getString("hakwon_name") + "]의 원장님께서 선생님을 탈퇴처리 했습니다.";
+		String title = "[메세지] 학원["+hakwonInfo.getString("hakwon_name") + "]의 원장님께서 선생님을 탈퇴처리 했습니다.";
 		String preview_content = "";
 		if( messageContent.length() > 20 ) {
 			preview_content = messageContent.substring(0, 20);
@@ -523,7 +523,8 @@ public class MasterService {
 			PushMessage pushMessage = new PushMessage();
 			pushMessage.setTicker("학원밴드");
 			pushMessage.setTitle(title);
-			pushMessage.setContent(title);
+			pushMessage.setIos_title(title);
+//			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", "-1");
 			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1");
 
