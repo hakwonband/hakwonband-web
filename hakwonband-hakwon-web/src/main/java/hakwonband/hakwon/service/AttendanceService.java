@@ -190,10 +190,10 @@ public class AttendanceService {
 					/*	승,하차 알림 발송	*/
 					title = hakwonInfo.getString("user_name") + "님이 " + hakwonInfo.getString("hakwon_name");
 					if("start".equals(param.getString("attendanceType"))) {
-						title += "버스에 승차.(" + currentTime + ")";
+						title += "버스에 승차.";
 						ticker = hakwonInfo.getString("hakwon_name")+" 승차 알림";
 					} else {
-						title += "버스에서 하차.(" + currentTime + ")";
+						title += "버스에서 하차.";
 						ticker = hakwonInfo.getString("hakwon_name")+" 하차 알림";
 					}
 				}
@@ -405,10 +405,10 @@ public class AttendanceService {
 				/*	승,하차 알림 발송	*/
 				title = studentInfo.getString("user_name") + "님이 " + studentInfo.getString("hakwon_name");
 				if("start".equals(param.getString("attType"))) {
-					title += "버스에 승차.(" + currentTime + ")";
+					title += "버스에 승차.";
 					ticker = studentInfo.getString("hakwon_name")+" 승차 알림";
 				} else {
-					title += "버스에서 하차.(" + currentTime + ")";
+					title += "버스에서 하차.";
 					ticker = studentInfo.getString("hakwon_name")+" 하차 알림";
 				}
 			}
