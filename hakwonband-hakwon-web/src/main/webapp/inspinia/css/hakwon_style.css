@@ -309,10 +309,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .address_search_result li{padding:5px 10px; border-bottom:1px dotted #e7eaec;}
 .academy_info li .name{font-size:18px; margin:0 5px;}
 .academy_info li .info_text{float:right; margin-top:5px;}
-.academy_info li a{display:block; margin:0; padding:5px 40px 5px 0; color:inherit;}
-.academy_info li{position:relative;}
-.academy_info li .btn_del_pa{position:absolute; top:5px; right:0;}
-
+.academy_info a{display:block; margin:0; padding:0; color:inherit;}
 .ad_open{background:#d3f859;}
 .box_nodata{text-align:center; padding:200px 0 !important;}
 .class_box{position:relative; min-height:110px;}
@@ -400,6 +397,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .class_list_pc li p, .class_list_pc li strong{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 
 @media (max-width: 768px) {
+	.file-box{width:120px;}
 	.navbar-right li a{width:30px; height:30px; min-height:30px; overflow:hidden; word-wrap:break-word; word-break:break-all;}
 	.page-heading{padding:5px 15px;}
 	.page-heading h1{display:none;}
@@ -459,8 +457,6 @@ fieldset[disabled] .select_join_type .ui-button.active {
 }
 @media (max-width: 480px) {
 	.middle-box{width:300px;}
-	.file-box{float:none; margin:0 auto;}
-	.file-box .file{margin-right:0;}
 	.ad_list_box li a{padding-right:15px; padding-left:60px;}
 	.ad_list_box .ad_size{width:30px; height:30px; font-size:15px; line-height:30px;}
 	.comment_list .comment_box{padding-right:0px;}
