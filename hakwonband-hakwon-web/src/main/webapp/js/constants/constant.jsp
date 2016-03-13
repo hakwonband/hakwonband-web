@@ -31,6 +31,7 @@ var tinymceConst = {
 	]
 	, toolbar1 : 'fontselect fontsizeselect | bold italic underline strikethrough forecolor backcolor '
 		+'| alignleft aligncenter alignright alignjustify | styleselect | bullist numlist | link charmap emoticons | fullscreen | code '
+	, toolbar_mobile : 'bold italic underline strikethrough forecolor backcolor alignleft aligncenter alignright alignjustify'
 	, valid_elements : 'iframe[width|height|src|frameborder|allowfullscreen|style|data-type],video[width|height|controls],div[align|style],ol,ul,li,dl,dt,dd,table,hr,a[href|target=_blank],em,address,img[src|width|height|data-img-type|data-img-no|data-mce-src|style|class],input,button,select,textarea,table,p[style],h1,h2,h3,h4,h5,h6,tr,th,td[style],thead,tbody,legend,button,select,blockquote,em,span[style],q,i,article,section,br,strong/b,pre[contenteditable|class],audio[src|preload|controls],source[src|type]'
 	, extended_valid_elements : "a[name|href|target|title|onclick|target=_blank],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],table[style|class|border=2|width|cellspacing|cellpadding|bgcolor],colgroup,col[style|width],tbody,tr[style|class],td[style|class|colspan|rowspan|width|height],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
 };
