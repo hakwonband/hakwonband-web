@@ -91,6 +91,8 @@
 			, date_format(a.reservation_date, '%Y-%m-%d') as reservation_date_1
 			, date_format(a.reservation_date, '%H:%i') as reservation_date_2
 			, a.reservation_send_date
+			, a.rel_notice_no
+			, a.share_no
 		from
 			tb_notice a
 			, tb_user_info b

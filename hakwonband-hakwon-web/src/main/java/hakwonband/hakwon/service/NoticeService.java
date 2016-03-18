@@ -85,7 +85,15 @@ public class NoticeService {
 		List<DataMap> replyList = replyDAO.replyList(param);
 
 		/* 공지사항 파일 리스트 조회 */
-		List<DataMap> fileList = fileDAO.fileList(param);
+
+		DataMap fileParam = new DataMap();
+		fileParam.put("file_parent_type", param.getString("file_parent_type"));
+		if( noticeDetail.isNotNull("rel_notice_no") && noticeDetail.isNotNull("share_no") ) {
+			fileParam.put("file_parent_no", noticeDetail.getString("rel_notice_no"));
+		} else {
+			fileParam.put("file_parent_no", param.getString("file_parent_no"));
+		}
+		List<DataMap> fileList = fileDAO.fileList(fileParam);
 
 		/* 상세확인시, 기존 읽은상태정보 체크 */
 		int resultReadCount = readDAO.contentReadCount(param);
