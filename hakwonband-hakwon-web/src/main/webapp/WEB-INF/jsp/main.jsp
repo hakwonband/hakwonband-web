@@ -1,27 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%
-	String cacheTime = "2016031701";
-
-	boolean isLive = false;
 	String cacheManifest = "";
-	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
-		/*	로컬은 캐시 적용 안한다.	*/
-		isLive = false;
-	} else {
-		cacheManifest = "main.cache.manifest?"+cacheTime;
-		isLive = true;
-	}
-	boolean isMobile = false;
-	String userAgent = request.getHeader("User-Agent");
-	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
-		isMobile = true;
-	} else {
-		/*	pc웹에서는 캐싱하지 않는다.	*/
-		cacheManifest = "";
-	}
+	if( isLive == true ) cacheManifest = "main.cache.manifest?"+cacheTime;
 %>
-
 
 <!--
 

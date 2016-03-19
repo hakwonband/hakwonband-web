@@ -29,21 +29,6 @@
 	if( hakwonDetail.isNull("logo_file_path") ) {
 		hakwonLogo = request.getContextPath()+"/images/logo/144x144.png";
 	}
-
-	boolean isMobile = false;
-	String userAgent = request.getHeader("User-Agent");
-	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
-		isMobile = true;
-	}
-
-	boolean isLive = false;
-	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
-		isLive = false;
-	} else {
-		isLive = true;
-	}
-
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

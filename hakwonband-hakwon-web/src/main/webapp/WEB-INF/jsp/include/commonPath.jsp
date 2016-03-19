@@ -28,4 +28,20 @@
 	} else {
 		loginFlag = false;
 	}
+
+
+	String cacheTime = "2016031601";
+	boolean isLive = false;
+	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
+		/*	로컬은 캐시 적용 안한다.	*/
+		isLive = false;
+	} else {
+		isLive = true;
+	}
+
+	boolean isMobile = false;
+	String userAgent = request.getHeader("User-Agent");
+	if( userAgent.indexOf("Mobile") >= 0 || userAgent.indexOf("Android") >= 0 || userAgent.indexOf("PlayBook") >= 0 || userAgent.indexOf("KFAPWI") >= 0 ) {
+		isMobile = true;
+	}
 %>
