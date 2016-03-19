@@ -1,5 +1,6 @@
 package hakwonband.hakwon.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -84,16 +85,20 @@ public class NoticeService {
 		/* 공지사항 댓글 리스트 조회 */
 		List<DataMap> replyList = replyDAO.replyList(param);
 
-		/* 공지사항 파일 리스트 조회 */
+		/**
+		 * 공지사항 파일 리스트 조회
+		 * 기본 공지의 파일 조회 및 공유받은 공지의 파일도 같이 조회.
+		 */
+		List<DataMap> fileList = new ArrayList<DataMap>();
+		fileList.addAll(fileDAO.fileList(param));
 
-		DataMap fileParam = new DataMap();
-		fileParam.put("file_parent_type", param.getString("file_parent_type"));
 		if( noticeDetail.isNotNull("rel_notice_no") && noticeDetail.isNotNull("share_no") ) {
+			DataMap fileParam = new DataMap();
+			fileParam.put("file_parent_type", param.getString("file_parent_type"));
 			fileParam.put("file_parent_no", noticeDetail.getString("rel_notice_no"));
-		} else {
-			fileParam.put("file_parent_no", param.getString("file_parent_no"));
+
+			fileList.addAll(fileDAO.fileList(fileParam));
 		}
-		List<DataMap> fileList = fileDAO.fileList(fileParam);
 
 		/* 상세확인시, 기존 읽은상태정보 체크 */
 		int resultReadCount = readDAO.contentReadCount(param);
