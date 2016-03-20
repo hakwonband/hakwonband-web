@@ -9,7 +9,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import hakwonband.common.exception.LoginFailException;
 import hakwonband.mobile.common.constant.HakwonConstant;
-import hakwonband.util.CookieUtils;
 import hakwonband.util.DataMap;
 
 /**
@@ -30,8 +29,8 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter  {
 
 		if( authUserInfo == null ) {
 
-			CookieUtils cookieUtils = new CookieUtils(request, response, true);
-			cookieUtils.delCookieAll();
+//			CookieUtils cookieUtils = new CookieUtils(request, response, true);
+//			cookieUtils.delCookieAll();
 
 			throw new LoginFailException("AuthFail");
 		}
