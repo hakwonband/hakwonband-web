@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String cacheTime = "20160307";
+	String cacheTime = "20160320";
 	String cacheManifest = "";
 	boolean isLive = false;
 	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
