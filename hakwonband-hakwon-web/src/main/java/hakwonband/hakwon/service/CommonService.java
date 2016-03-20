@@ -124,6 +124,15 @@ public class CommonService {
 	}
 
 	/**
+	 * 로그인 디바이스 정보 조회
+	 * @param param
+	 * @return
+	 */
+	public DataMap getLoginDeviceInfo(DataMap param) {
+		return commonDAO.loginDeviceInfo(param);
+	}
+
+	/**
 	 * 앱 버전 조회
 	 * @param param
 	 * @return

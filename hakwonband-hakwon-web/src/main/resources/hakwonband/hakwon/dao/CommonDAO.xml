@@ -370,4 +370,19 @@
 			auth_key = #{auth_key}
 	]]>
 	</update>
+
+	<!-- 로그인 디바이스 정보 -->
+ 	<select id="loginDeviceInfo" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* CommonDAO.loginDeviceInfo */
+		select
+			x.device_token
+			, x.device_type
+		from
+			tb_login_hist x
+		where
+			x.auth_key = #{authKey}
+			and x.device_type in ('ios', 'android')
+	]]>
+	</select>
 </mapper>

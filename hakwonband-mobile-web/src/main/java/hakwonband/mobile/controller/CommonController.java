@@ -193,6 +193,7 @@ public class CommonController extends BaseAction {
 	public void authCheck(HttpServletRequest request, HttpServletResponse response) {
 		/* 인증 정보 */
 		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		String authKey = (String)request.getAttribute(CommonConstant.Cookie.hkBandAuthKey);
 
 		DataMap colData = new DataMap();
 		colData.put("authUserInfo", authUserInfo);
@@ -213,6 +214,18 @@ public class CommonController extends BaseAction {
 				colData.put("familyList", childList);
 			}
 		}
+
+		if( authUserInfo != null && StringUtils.isNotBlank(authKey) ) {
+			/*	인증 정보가 있을때 디바이스 인증키 내려준다.	*/
+			DataMap param = new DataMap();
+			param.put("authKey",	authKey);
+
+			DataMap deviceInfo = commonService.getLoginDeviceInfo(param);
+			if( deviceInfo != null ) {
+				colData.put("deviceInfo",	deviceInfo);
+			}
+		}
+
 
 		/*	app 버전 조회	*/
 		List<DataMap> appVersionList = commonService.getAppVersion();

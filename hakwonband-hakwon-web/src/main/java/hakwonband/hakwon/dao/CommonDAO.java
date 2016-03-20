@@ -156,4 +156,11 @@ public interface CommonDAO {
 	 * @param param
 	 */
 	public void insertErrorLog(String log);
+
+	/**
+	 * 로그인 디바이스 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap loginDeviceInfo(DataMap param);
 }
