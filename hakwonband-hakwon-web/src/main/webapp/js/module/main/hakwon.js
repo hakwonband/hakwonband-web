@@ -448,6 +448,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			var $mapHtml = $(mapHtml).css('margin', '10px auto').attr('data-type', 'frameMap');
 			$('#mainNgView').find('input[name=mapHtml]').val('');
 			tinymce.activeEditor.insertContent($mapHtml.prop('outerHTML'));
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		});
 		$('#mainNgView').on(clickEvent, 'button[data-act=daumMapInsert]', function() {
 			var mapHtml = $('#mainNgView').find('input[name=daumMapHtml]').val();
@@ -459,14 +460,16 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			$('#temp_map_div').remove();
 
 			tinymce.activeEditor.insertContent(mapDataHtml);
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		});
 
 		/*	youtube 삽입	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=youtubeInsert]', function() {
 			var youtubeID = $('#mainNgView').find('input[name=youtubeID]').val();
 
-			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a><br/>';
+			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		});
 
 		/*	파일 업로드 초기화	*/
@@ -635,8 +638,9 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		/*	이미지 클릭시 에디터에 이미지 첨부	*/
 		$scope.insertImageToEditor = function(filePath, fileNo) {
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
-			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 			tinymce.activeEditor.insertContent(strImage);
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		};
 
 		/*	첨부 파일 삭제 처리	*/

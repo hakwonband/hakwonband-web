@@ -482,11 +482,12 @@ hakwonMainApp.controller('registQuestionController', function($scope, $location,
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
 			if( isMobile.any() ) {
 				var editWidth = $('[data-lib=editor]').width();
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 			} else {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 			}
 			tinymce.activeEditor.insertContent(strImage);
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		};
 
 		/*	첨부 파일 삭제 처리	*/

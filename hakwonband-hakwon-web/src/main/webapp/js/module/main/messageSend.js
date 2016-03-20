@@ -472,15 +472,16 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
-				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><br/>';
+				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
 				tinymce.activeEditor.insertContent(audioHtml);
 			} else if( fileType == 'video' ) {
 				var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
 				tinymce.activeEditor.insertContent(videoHtml);
 			}
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		});
 
 		/**
@@ -759,7 +760,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a><br/>';
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
 				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><br/>';
@@ -768,6 +769,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 				var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
 				tinymce.activeEditor.insertContent(videoHtml);
 			}
+			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 		});
 
 		/**
