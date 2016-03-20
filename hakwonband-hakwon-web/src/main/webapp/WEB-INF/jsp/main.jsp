@@ -86,6 +86,8 @@
 	<!-- 공통 js -->
 	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
+	<script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
+
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
 
@@ -238,14 +240,14 @@ $(document).ready(function () {
 		$.getScript("https://developers.kakao.com/sdk/js/kakao.min.js", function(data, textStatus, jqxhr) {
 			Kakao.init(HakwonConstant.Sns.KAKAO);
 		});
-
+/*
 		$.getScript("/js/lib/tinymce-4.1.7/tinymce.min.js", function(data, textStatus, jqxhr) {
 			console.info('[Load] /js/lib/tinymce-4.1.7/tinymce.min.js');
 			window.tinymce.dom.Event.domLoaded = true;
 			tinymce.baseURL = "/js/lib/tinymce-4.1.7";
 			tinymce.suffix = ".min";
 		});
-
+*/
 	} catch(ex) {
 	}
 });
