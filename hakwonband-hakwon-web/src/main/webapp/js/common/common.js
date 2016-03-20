@@ -328,6 +328,7 @@ var HakwonCommon = function() {
 					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
 
 					if( colData.authUserInfo.user_id == 'bumwonjang' ) {
+						alert('범원장');
 						if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
 							/*	디바이스 정보가 있고.	*/
 							alert('디바이스 키가 없다.');
@@ -351,35 +352,6 @@ var HakwonCommon = function() {
 						colData.authUserInfo.profile_path = '/assets/img/p3.jpg';
 					}
 					userAuth.profilePath = colData.authUserInfo.profile_path;
-
-					if( window.PLATFORM ) {
-						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
-							userAuth.deviceAuth = {
-								device_type : colData.authUserInfo.device_type
-								, device_token : colData.authUserInfo.device_token
-							};
-						} else {
-							var newKey = window.PLATFORM.getGcmKey();
-							setPushNotiKey(newKey, CommonConstant.DeviceType.android, '', function(data) {
-								if( data.flag == 'success' ) {
-									userAuth.deviceAuth = {
-										device_type : colData.authUserInfo.device_type
-										, device_token : colData.authUserInfo.device_token
-									};
-								}
-							});
-						}
-					} else if( getBrowser() == 'iosApp' ) {
-						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
-							userAuth.deviceAuth = {
-								device_type : colData.authUserInfo.device_type
-								, device_token : colData.authUserInfo.device_token
-							};
-						} else {
-							/*	ios 푸시키 요청	*/
-							window.location = 'hakwonband://notification/getToken';
-						}
-					}
 				} else {
 					userAuth = {};
 				}

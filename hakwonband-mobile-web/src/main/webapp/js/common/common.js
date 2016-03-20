@@ -776,6 +776,15 @@ var HakwonCommon = function() {
 				if( colData && colData.authUserInfo ) {
 					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
 
+					if( colData.authUserInfo.user_id == 'bumstudent' ) {
+						alert('범학생');
+						if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
+							/*	디바이스 정보가 있고.	*/
+							alert('디바이스 키가 없다.');
+							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
+						}
+					}
+
 					userAuth.userName 	= colData.authUserInfo.user_name;
 					userAuth.userEmail 	= colData.authUserInfo.user_email;
 					userAuth.userType 	= colData.authUserInfo.user_type;
