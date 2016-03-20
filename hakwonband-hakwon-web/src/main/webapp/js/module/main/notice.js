@@ -622,7 +622,13 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 		/*	이미지 클릭시 에디터에 이미지 첨부	*/
 		$scope.insertImageToEditor = function(filePath, fileNo) {
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
-			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+
+			if( isMobile.any() ) {
+				var editWidth = $('[data-lib=editor]').width();
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+			} else {
+				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a><br/>';
+			}
 			tinymce.activeEditor.insertContent(strImage);
 		};
 
