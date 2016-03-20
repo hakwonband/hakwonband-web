@@ -327,13 +327,9 @@ var HakwonCommon = function() {
 				if( colData && colData.authUserInfo ) {
 					setCookie('hakwonband.cookie.001', $.cookie('hakwonband.cookie.001'), 'Y');
 
-					if( colData.authUserInfo.user_id == 'bumwonjang' ) {
-						alert('범원장');
-						if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
-							/*	디바이스 정보가 있고.	*/
-							alert('디바이스 키가 없다.');
-							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
-						}
+					if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
+						/*	디바이스 정보가 있고.	*/
+						window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
 					}
 
 					if( colData.authUserInfo.user_type == HakwonConstant.UserType.STUDENT || colData.authUserInfo.user_type == HakwonConstant.UserType.PARENT ) {
