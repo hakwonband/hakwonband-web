@@ -30,7 +30,7 @@
 	}
 
 
-	String cacheTime = "2016032101";
+	String cacheTime = "2016032201";
 	boolean isLive = false;
 	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
 		/*	로컬은 캐시 적용 안한다.	*/
