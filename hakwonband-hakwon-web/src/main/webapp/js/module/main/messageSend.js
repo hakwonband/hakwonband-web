@@ -20,7 +20,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			success: function(data) {
 				try {
 					var colData = data.colData;
-					$('#mainNgView div.ibox').html($.tmpl(hakwonTmpl.message.teacherSend, {classList:colData.dataList}));
+					$('#mainNgView div.ibox').html($.tmpl(hakwonTmpl.message.teacherSend, {classList:colData.dataList, isMobile:isMobile.any()}));
 					callBackFun();
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
@@ -45,7 +45,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 			success: function(data) {
 				try {
 					var colData = data.colData;
-					$('#mainNgView div.ibox').html($.tmpl(hakwonTmpl.message.masterSend, {classList:colData.dataList}));
+					$('#mainNgView div.ibox').html($.tmpl(hakwonTmpl.message.masterSend, {classList:colData.dataList, isMobile:isMobile.any()}));
 					callBackFun();
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
@@ -472,7 +472,12 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				if( isMobile.any() ) {
+					var editWidth = $('[data-lib=editor]').width();
+					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				} else {
+					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				}
 				tinymce.activeEditor.insertContent(strImage);
 			} else if( fileType == 'audio' ) {
 				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p>';
@@ -482,6 +487,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 				tinymce.activeEditor.insertContent(videoHtml);
 			}
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/**
@@ -760,8 +766,14 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 			var fullFilePath= $(this).attr('data-file-url');
 			var fileNo		= $(this).attr('data-file-no');
 			if( fileType == 'img' ) {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
+				if( isMobile.any() ) {
+					var editWidth = $('[data-lib=editor]').width();
+					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
+				} else {
+					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
+				}
 				tinymce.activeEditor.insertContent(strImage);
+				tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			} else if( fileType == 'audio' ) {
 				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><br/>';
 				tinymce.activeEditor.insertContent(audioHtml);
@@ -770,6 +782,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 				tinymce.activeEditor.insertContent(videoHtml);
 			}
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/**

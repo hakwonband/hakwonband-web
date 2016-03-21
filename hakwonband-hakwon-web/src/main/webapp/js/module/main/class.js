@@ -1299,6 +1299,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	파일 객체 초기화 및 데이터 호출		*/
@@ -1587,6 +1588,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			}
 			tinymce.activeEditor.insertContent(strImage);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		};
 
 		/*	비디오 삽입	*/
@@ -1595,6 +1597,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 			tinymce.activeEditor.insertContent(videoHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 		/*	오디오 삽입	*/
 		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
@@ -1602,6 +1605,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p><br/>';
 			tinymce.activeEditor.insertContent(audioHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	취소	*/

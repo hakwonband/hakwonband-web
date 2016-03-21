@@ -477,6 +477,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 		var imgSrc = $(this).find('img').attr('src');
 		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a>');
 		tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+		tinymce.activeEditor.focus();
 	});
 
 	/*	비디오 삽입	*/
@@ -485,6 +486,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 		var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 		tinymce.activeEditor.insertContent(videoHtml);
 		tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+		tinymce.activeEditor.focus();
 	});
 
 
@@ -615,6 +617,7 @@ hakwonMainApp.controller('eventEditController', function($scope, $location, $rou
 		var imgSrc = $(this).find('img').attr('src');
 		tinymce.activeEditor.insertContent('<a href="'+ imgSrc + '" target="_blank"><img src="'+imgSrc+'" class="img-responsive"></a>');
 		tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+		tinymce.activeEditor.focus();
 	});
 	/*	비디오 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=video]', function() {
@@ -622,6 +625,7 @@ hakwonMainApp.controller('eventEditController', function($scope, $location, $rou
 		var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 		tinymce.activeEditor.insertContent(videoHtml);
 		tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+		tinymce.activeEditor.focus();
 	});
 
 

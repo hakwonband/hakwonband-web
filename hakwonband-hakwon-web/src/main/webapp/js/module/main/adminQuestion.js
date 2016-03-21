@@ -488,6 +488,7 @@ hakwonMainApp.controller('registQuestionController', function($scope, $location,
 			}
 			tinymce.activeEditor.insertContent(strImage);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		};
 
 		/*	첨부 파일 삭제 처리	*/

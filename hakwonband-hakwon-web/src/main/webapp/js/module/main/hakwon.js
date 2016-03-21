@@ -449,6 +449,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			$('#mainNgView').find('input[name=mapHtml]').val('');
 			tinymce.activeEditor.insertContent($mapHtml.prop('outerHTML'));
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 		$('#mainNgView').on(clickEvent, 'button[data-act=daumMapInsert]', function() {
 			var mapHtml = $('#mainNgView').find('input[name=daumMapHtml]').val();
@@ -461,6 +462,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 
 			tinymce.activeEditor.insertContent(mapDataHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	youtube 삽입	*/
@@ -470,6 +472,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	파일 업로드 초기화	*/
@@ -641,6 +644,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
 			tinymce.activeEditor.insertContent(strImage);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		};
 
 		/*	첨부 파일 삭제 처리	*/

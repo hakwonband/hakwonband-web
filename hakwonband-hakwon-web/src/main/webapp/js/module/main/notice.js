@@ -631,6 +631,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			}
 			tinymce.activeEditor.insertContent(strImage);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		};
 
 		/*	비디오 삽입	*/
@@ -639,6 +640,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 			tinymce.activeEditor.insertContent(videoHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	오디오 삽입	*/
@@ -647,6 +649,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p>';
 			tinymce.activeEditor.insertContent(audioHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	첨부 파일 삭제 처리	*/
@@ -680,6 +683,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
 			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.focus();
 		});
 
 		/*	취소	*/
