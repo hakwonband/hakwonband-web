@@ -210,7 +210,7 @@
 		<dependency>
 			<groupId>hakwonband</groupId>
 			<artifactId>hakwonband-core</artifactId>
-			<version>0.0.1-20160313-03</version>
+			<version>0.0.1-20160323-01</version>
 			<type>jar</type>
 		</dependency>
 
