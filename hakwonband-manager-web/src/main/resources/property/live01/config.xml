@@ -33,12 +33,12 @@
 	<push>
 		<ios>
 			<live>
-				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-production.p12</certificatePath>
-				<pass>qwer1234</pass>
+				<certificatePath>/hakwon-band/ssl/2016/ios/apns_key_real.p12</certificatePath>
+				<pass>qwer1234!@#</pass>
 			</live>
 			<dev>
-				<certificatePath>/hakwon-band/ssl/2015/ios/new-hakwon-aps-for-sandbox.p12</certificatePath>
-				<pass>qwer1234</pass>
+				<certificatePath>/hakwon-band/ssl/2016/ios/apns_key_dev.p12</certificatePath>
+				<pass>qwer1234!@#</pass>
 			</dev>
 		</ios>
 		<gcm>
