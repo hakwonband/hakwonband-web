@@ -102,10 +102,8 @@ hakwonMainApp.factory('CommUtil', function($http, $window, $log) {
 				hakwon_no : hakwonInfo.hakwon_no
 			}, params);
 			$window.location.href = href + '?' + $.param(params, true);
-			return false;
 		} else {
 			$window.location.href = href + '?' + $.param(params, true);
-			return false;
 		}
 	};
 

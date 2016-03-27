@@ -1031,8 +1031,7 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 
 		/*	반 상세정보로 이동	*/
 		$scope.goClassNotice = function(classNo) {
-			CommUtil.locationHref(PageUrl.common.classNoticeList, {class_no:classNo}, 'hakwon');
-			return false;
+			CommUtil.locationHref(PageUrl.common.classNoticeList, {class_no:classNo, page:1}, 'hakwon');
 		};
 
 		$scope.getFileFullPath = function(logo_file_path) {
