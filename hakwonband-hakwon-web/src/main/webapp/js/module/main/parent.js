@@ -95,6 +95,9 @@ hakwonMainApp.controller('parentListController', function($scope, $location, $ro
 		/*	헤더 셋팅	*/
 		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'학부모 리스트'}]);
 
+		/*	is Mobile	*/
+		$scope.isMobile = isMobile.any();
+
 		/*	공통 유틸	*/
 		$scope.CommUtil = CommUtil;
 		$scope.PageUrl = PageUrl;

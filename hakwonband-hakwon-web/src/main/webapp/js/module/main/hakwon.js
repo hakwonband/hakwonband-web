@@ -249,7 +249,9 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 
 
 		if( hakwonInfo.hakwonList.length > 0 ) {
-			alert('추가등록시 추가비용이발생합니다.');
+			if( window.confirm('추가 비용이 발생합니다. 계속 이용 하시겠습니까?') == false ) {
+				return ;
+			}
 		}
 
 		/**
@@ -437,6 +439,9 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		$("#wrapper").show();
 
 		$scope.urlParams = $routeParams;
+
+		/*	is Mobile	*/
+		$scope.isMobile = isMobile.any();
 
 		/*	학원소개정보 조회 값	*/
 		$scope.hakwonObj		= {};

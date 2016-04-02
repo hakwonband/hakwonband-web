@@ -16,8 +16,8 @@
 						<!--<th><input type="checkbox" class="i-checks" name="input"></th>-->
 						<th>이름</th>
 						<th>아이디</th>
-						<th>학원 가입일</th>
-						<th>기타</th>
+						<th ng-show="isMobile==false">학원 가입일</th>
+						<th ng-show="isMobile==false">기타</th>
 						<th>메세지</th>
 					</tr>
 				</thead>
@@ -33,8 +33,8 @@
 							</a>
 						</td>
 						<td><span>{{loopData.user_id}}</span></td>
-						<td><span>{{loopData.reg_date}}</span></td>
-						<td><span>{{loopData.user_gender=="M"?"남":"여"}}({{!loopData.user_age||loopData.user_age==0?"생일 미입력":loopData.user_age+"세"}})</span></td>
+						<td ng-show="isMobile==false"><span>{{loopData.reg_date}}</span></td>
+						<td ng-show="isMobile==false"><span>{{loopData.user_gender=="M"?"남":"여"}}({{!loopData.user_age||loopData.user_age==0?"생일 미입력":loopData.user_age+"세"}})</span></td>
 						<td><span><button class="btn btn-default btn_message" data-act="user_message" ng-click="userMessage(loopData.user_no)" type="button" title="메세지 보내기"><i class="fa fa-envelope"></i> </button></span></td>
 					</tr>
 				</tbody>

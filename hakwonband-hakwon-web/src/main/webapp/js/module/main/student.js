@@ -272,6 +272,9 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 		$scope.PageUrl	= PageUrl;
 		$scope.userAuth	= userAuth;
 
+		/*	is Mobile	*/
+		$scope.isMobile = isMobile.any();
+
 		/**
 		 * 페이지 번호
 		 */

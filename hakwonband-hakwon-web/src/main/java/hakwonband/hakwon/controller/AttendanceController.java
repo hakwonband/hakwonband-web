@@ -322,6 +322,7 @@ public class AttendanceController extends BaseAction {
 		headerList.add(new ColumnModel("이름",	"user_name"));
 		headerList.add(new ColumnModel("아이디",	"user_id"));
 		headerList.add(new ColumnModel("반이름",	"class_name"));
+		headerList.add(new ColumnModel("출결번호",	"attendance_code"));
 		for(int i=1; i<=31; i++) {
 			String dayVal = (i<10)?"0"+i:String.valueOf(i);
 			headerList.add(new ColumnModel(dayVal,	dayVal));

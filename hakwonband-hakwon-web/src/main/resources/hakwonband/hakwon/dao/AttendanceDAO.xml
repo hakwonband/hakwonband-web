@@ -520,6 +520,7 @@
 				where x.hakwon_no = a.hakwon_no and x.student_user_no = a.user_no and x.class_no = y.class_no
 			) as class_name
 			, get_user_attendance(a.hakwon_no, a.user_no, #{yearMonth}) as days
+			, b.attendance_code
 		from
 			tb_hakwon_member a
 			, tb_user_info b
