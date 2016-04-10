@@ -875,6 +875,7 @@ hakwonTmpl.hakwon = {
 		, '					<img class="img-circle" src="{{= hakwonCommon.createFilePullPath(managerInfo.photo_file_no, "photo", true)}}" alt="{{= managerInfo.user_name}}" width="30" height="30">'
 		, '					<strong class="name">{{= managerInfo.user_name}}</strong>'
 		, '				</a>'
+		//, '				&nbsp;<strong class="name" style="cursor:hand; cursor:pointer;" data-no="{{managerInfo.user_no}}" data-act="manager_del">X</strong>'
 		, '			</div>'
 		, '		</div>'
 		, '	{{/if}}'

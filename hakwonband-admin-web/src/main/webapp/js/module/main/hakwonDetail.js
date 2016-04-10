@@ -28,6 +28,15 @@ hakwonMainApp.service('hakwonDetailService', function($http, CommUtil) {
 						/*	소개 페이지	*/
 						$('div[data-view=content]').html($.tmpl(hakwonTmpl.hakwon.hakwonIntroduce, colData));
 					}
+/*
+					setTimeout(function(){
+						console.log('여기탄다~', $('span[data-act=manager_del]'));
+						$('span[data-act=manager_del]').bind('click', function() {
+							var managerUserNo = $(this).attr('data-no');
+							alert('managerUserNo : ' + managerUserNo);
+						});
+					}, 1000);
+*/
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}
