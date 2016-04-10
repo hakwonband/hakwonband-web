@@ -238,6 +238,10 @@ var HakwonCommon = function() {
 					hakwonInfo.master_user_no	= hakwonList[0].master_user_no;
 					hakwonInfo.logo_path		= hakwonList[0].logo_path;
 					hakwonInfo.hakwonList		= hakwonList;
+
+					if( userAuth.userNo == hakwonList[0].master_user_no && !hakwonList[0].manager_no ) {
+						alert('메니저를 설정해주세요. 더 많은 혜택이 있습니다.');
+					}
 				} else {
 					hakwonInfo.hakwon_name		= undefined;
 					hakwonInfo.hakwon_no		= undefined;

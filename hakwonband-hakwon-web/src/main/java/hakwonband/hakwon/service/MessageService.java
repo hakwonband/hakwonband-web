@@ -242,7 +242,27 @@ public class MessageService {
 		}
 
 		/*	받은 메세지 삭제	*/
-		messageViewDAO.deleteReservationReceiveMessage(param);
+		messageViewDAO.deleteReceiveMessage(param);
+
+		/*	파일 삭제	*/
+		fileDAO.unUsingMessageUpdate(param);
+	}
+
+	/**
+	 * 메세지 삭제
+	 * @param param
+	 * @return
+	 */
+	public void deleteMessage(DataMap param) {
+
+		/*	메세지 삭제	*/
+		int delCount = messageViewDAO.deleteMessage(param);
+		if( delCount != 1 ) {
+			throw new HKBandException("삭제 실패");
+		}
+
+		/*	받은 메세지 삭제	*/
+		messageViewDAO.deleteReceiveMessage(param);
 
 		/*	파일 삭제	*/
 		fileDAO.unUsingMessageUpdate(param);

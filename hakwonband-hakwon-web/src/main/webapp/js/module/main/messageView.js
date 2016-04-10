@@ -452,6 +452,40 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 메세지 삭제
+	 */
+	messageViewService.msgDelete = function(message_no, moveLocation) {
+		var params = {message_no:message_no};
+		$.ajax({
+			url: contextPath+"/hakwon/message/msgDelete.do",
+			type: "post",
+			data: $.param(params, true),
+			headers : hakwonInfo.getHeader(),
+			dataType: "json",
+			success: function(data) {
+				try {
+					if( data.error ) {
+						alert('메세지 삭제를 실패 했습니다.');
+						return false;
+					}
+
+					var colData = data.colData;
+					if( colData.flag == CommonConstant.Flag.success ) {
+						commProto.hrefMove(moveLocation);
+					} else {
+						alert('메세지 삭제를 실패 했습니다.');
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
+		});
+	};
+
 	return messageViewService;
 });
 
@@ -555,9 +589,16 @@ hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $l
 			commProto.hrefMove(PageUrl.message.sendMessageGroupList);
 		});
 
-		/*	예약 메세지 상세	*/
+		/*	예약 메세지 삭제	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
 			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageGroupList);
+		});
+
+		/*	메세지 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=delMsg]', function() {
+			if( window.confirm('보낸 메세지를 정말 삭제 하시겠습니까?') ) {
+				messageViewService.msgDelete(messageNo, PageUrl.message.sendMessageGroupList);
+			}
 		});
 
 		$scope.$$postDigest(function() {
@@ -596,7 +637,15 @@ hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $
 			commProto.hrefMove(PageUrl.message.sendMessageSingleList);
 		});
 
-		/*	예약 메세지 상세	*/
+		/*	메세지 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=delMsg]', function() {
+			if( window.confirm('보낸 메세지를 정말 삭제 하시겠습니까?') ) {
+				var messageNo = $(this).attr('data-message-no');
+				messageViewService.msgDelete(messageNo, PageUrl.message.sendMessageSingleList);
+			}
+		});
+
+		/*	예약 메세지 삭제	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
 			var messageNo = $(this).attr('data-message-no');
 			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageSingleList);

@@ -455,7 +455,7 @@ public class MessageController extends BaseAction {
 	}
 
 	/**
-	 * 예약 메시지 상세
+	 * 예약 메시지 삭제
 	 * @param request
 	 * @param response
 	 * @url /hakwon/message/reservationMsgDelete.do
@@ -473,6 +473,28 @@ public class MessageController extends BaseAction {
 
 		/*	메세지 삭제	*/
 		messageService.deleteReservationMsg(param);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
+	 * 싱글 메세지 삭제
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/msgDelete")
+	public void msgDelete(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		String messageNo	= request.getParameter("message_no");
+
+		DataMap param = new DataMap();
+		param.put("messageNo",	messageNo);
+		param.put("user_no",	authUserInfo.getString("user_no"));
+
+		/*	메세지 삭제	*/
+		messageService.deleteMessage(param);
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}

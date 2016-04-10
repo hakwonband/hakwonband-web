@@ -42,6 +42,7 @@
 			, a.master_user_no
 			, a.hakwon_code
 			, a.reg_date
+			, a.manager_no
 			, b.hakwon_name
 			, get_file_path(b.logo_file_no) as logo_path
 		from

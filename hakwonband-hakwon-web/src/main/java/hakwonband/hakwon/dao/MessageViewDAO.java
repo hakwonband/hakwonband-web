@@ -119,9 +119,16 @@ public interface MessageViewDAO {
 	public int deleteReservationMessage(DataMap param);
 
 	/**
+	 * 메세지 삭제
+	 * @param param
+	 * @return
+	 */
+	public int deleteMessage(DataMap param);
+
+	/**
 	 * 예약 받은 메세지 삭제
 	 * @param param
 	 * @return
 	 */
-	public int deleteReservationReceiveMessage(DataMap param);
+	public int deleteReceiveMessage(DataMap param);
 }

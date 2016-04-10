@@ -380,10 +380,21 @@
 	]]>
 	</delete>
 
-	<!-- 예약 받은 메세지 삭제 -->
-	<delete id="deleteReservationReceiveMessage" parameterType="dataMap">
+	<!-- 싱글 메세지 삭제 -->
+	<delete id="deleteMessage" parameterType="dataMap">
 	<![CDATA[
-		/* MessageViewDAO.deleteReservationReceiveMessage */
+		/* MessageViewDAO.deleteMessage */
+		delete from tb_message
+		where
+			message_no = #{messageNo}
+			and send_user_no = #{user_no}
+	]]>
+	</delete>
+
+	<!-- 받은 메세지 삭제 -->
+	<delete id="deleteReceiveMessage" parameterType="dataMap">
+	<![CDATA[
+		/* MessageViewDAO.deleteReceiveMessage */
 		delete from tb_message_receiver
 		where
 			message_no = #{messageNo}
