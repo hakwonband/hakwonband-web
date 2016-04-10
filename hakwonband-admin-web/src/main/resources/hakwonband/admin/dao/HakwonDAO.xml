@@ -22,6 +22,9 @@
 			, a.hakwon_status
 			, get_code_name('012', a.hakwon_status) as hakwon_status_name
 			, a.admin_reg_yn
+			, a.manager_no
+			, (select x.user_name from tb_user_info x, tb_manager y where y.manager_no = a.manager_no and y.user_no = x.user_no) as manager_name
+			, (select y.user_no from tb_manager y where y.manager_no = a.manager_no) as manager_user_no
 		from
 			tb_hakwon a
 			, tb_user_info b

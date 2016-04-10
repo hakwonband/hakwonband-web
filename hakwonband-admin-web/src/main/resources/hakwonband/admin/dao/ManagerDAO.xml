@@ -109,6 +109,7 @@
 			, d.old_sido
 			, d.old_gugun
 			, (select cate_name from tb_hakwon_cate where cate_code = b.hakwon_cate) as hakwon_cate_name
+			, b.admin_reg_yn
 		from
 			tb_manager a
 			, tb_hakwon b
