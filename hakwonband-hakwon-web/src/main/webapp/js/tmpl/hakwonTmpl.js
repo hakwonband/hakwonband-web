@@ -298,7 +298,7 @@ hakwonTmpl.dashBoard = {
     // 광고배너추가
 	    , '               <a href="#"> <img src="../images/gyengsi.png" border="0"> </a>'
 
-	/*학생학부모명수			
+	/*학생학부모명수없애기			
 	                        <span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'            
 
 		, '				</td>'
@@ -311,7 +311,7 @@ hakwonTmpl.dashBoard = {
 		, '			<tr>'
 		, '				<td>'
 		, '					<span class="count_num btn-info">{{userCount.parents_count}}</span> 학부모'                  
-	 학생학부모명수*/		
+	 학생학부모명수없애기*/		
 		, '				</td>'
 		, '			</tr>'
 		, '		</tbody>'
