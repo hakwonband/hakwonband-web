@@ -289,6 +289,7 @@ hakwonTmpl.dashBoard = {
 		, '	</div>'
 		, '</div>'
 		, '<div class="col-md-6">'
+/*
 		, '	<table class="table dashboard_counting" summary="학원의 선생님, 학생, 학부모의 수를 나타냅니다">'
 		, '		<caption>학원 인원 정보</caption>'
 		, '		<tbody>'
@@ -309,6 +310,7 @@ hakwonTmpl.dashBoard = {
 		, '			</tr>'
 		, '		</tbody>'
 		, '	</table>'
+*/
 		, '	<div class="code_view"><i class="fa fa-angellist btn-danger"></i> 학원코드 : {{hakwonObj.hakwon_code}}</div>'
 		, '	<button class="btn btn-block btn-lg btn-primary m-b" data-act="hakwonIntro">학원소개</button>'
 		, '	<div class="sns_area" style="display:none;">'
