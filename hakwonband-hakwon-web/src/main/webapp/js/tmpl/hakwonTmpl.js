@@ -290,17 +290,11 @@ hakwonTmpl.dashBoard = {
 		, '</div>'
 		, '<div class="col-md-6">'
 		, '	<table class="table dashboard_counting" summary="학원의 선생님, 학생, 학부모의 수를 나타냅니다">'
-		, '		<caption>학원 필요 정보</caption>'
+		, '		<caption>학원 인원 정보</caption>'
 		, '		<tbody>'
 		, '			<tr>'
 		, '				<td>'
-		                
-    // 광고배너추가
-	    , '               <a href="#"> <img src="../images/gyengsi.png" border="0"> </a>'
-
-	/*학생학부모명수없애기			
-	                        <span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'            
-
+		, '					<span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'
 		, '				</td>'
 		, '			</tr>'
 		, '			<tr>'
@@ -310,8 +304,7 @@ hakwonTmpl.dashBoard = {
 		, '			</tr>'
 		, '			<tr>'
 		, '				<td>'
-		, '					<span class="count_num btn-info">{{userCount.parents_count}}</span> 학부모'                  
-	 학생학부모명수없애기*/		
+		, '					<span class="count_num btn-info">{{userCount.parents_count}}</span> 학부모'
 		, '				</td>'
 		, '			</tr>'
 		, '		</tbody>'
