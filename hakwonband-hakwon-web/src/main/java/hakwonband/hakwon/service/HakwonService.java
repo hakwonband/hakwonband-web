@@ -284,6 +284,17 @@ public class HakwonService {
 	}
 
 	/**
+	 * 매니저 해지
+	 * @param param
+	 */
+	public void updateHakwonManagerRemove(DataMap param) {
+		int updateCnt = managerDAO.hakwonManagerRemove(param);
+		if( updateCnt != 1 ) {
+			throw new HKBandException();
+		}
+	}
+
+	/**
 	 * 학원 반 리스트
 	 * @param param
 	 * @return

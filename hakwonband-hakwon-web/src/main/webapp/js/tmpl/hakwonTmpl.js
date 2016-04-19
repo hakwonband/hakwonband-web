@@ -1254,6 +1254,7 @@ hakwonTmpl.setting = {
 			, '		<p class="contact-box-info">'
 			, '			매니저 번호 : {{= managerInfo.manager_no}}/ 연락처 : {{= managerInfo.tel1_no}}'
 			, '		</p>'
+			, '		<button type="button" data-act="removeManager" data-manager-no="{{= managerInfo.manager_no}}" class="btn btn-primary">매니저 해지</button>'
 			, '	</div>'
 		].join('')
 	}

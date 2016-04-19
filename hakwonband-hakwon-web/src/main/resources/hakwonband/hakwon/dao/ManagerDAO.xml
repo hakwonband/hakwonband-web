@@ -57,4 +57,15 @@
 	]]>
 	</update>
 
+	<delete id="hakwonManagerRemove" parameterType="dataMap">
+	<![CDATA[
+		/*	ManagerDAO.hakwonManagerRemove	*/
+		update tb_hakwon set
+			manager_no = null
+		where
+			hakwon_no = #{hakwonNo}
+			and master_user_no = #{userNo}
+	]]>
+	</delete>
+
 </mapper>

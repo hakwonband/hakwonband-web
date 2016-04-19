@@ -282,6 +282,12 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 		if( !pageNo ) {
 			pageNo = 1;
 		}
+		var pageScale = $routeParams.pageScale;
+		if( !pageScale ) {
+			pageScale = '10';
+		}
+		$scope.pageScale = pageScale;
+
 		var searchTextParam = $routeParams.searchText;
 		if( !searchTextParam ) searchTextParam = '';
 		$scope.searchText = searchTextParam;
@@ -292,7 +298,7 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 
 		/*	검색	*/
 		$scope.search = function() {
-			window.location = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no+'&searchText='+$scope.searchText;
+			window.location = PageUrl.common.studentList+'?hakwon_no='+hakwonInfo.hakwon_no+'&searchText='+$scope.searchText+'&pageScale='+$scope.pageScale;
 		};
 
 		/*	메세지 보내기	*/
@@ -322,7 +328,7 @@ hakwonMainApp.controller('studentListController', function($scope, $location, $r
 				});
 			},50);
 		}
-		studentService.studentList({pageNo : pageNo, searchText : $scope.searchText, hakwonNo : hakwonInfo.hakwon_no}, searchCallback);
+		studentService.studentList({pageNo : pageNo, pageScale:$scope.pageScale, searchText : $scope.searchText, hakwonNo : hakwonInfo.hakwon_no}, searchCallback);
 
 
 		$scope.$on('$viewContentLoaded', function() {

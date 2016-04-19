@@ -2,6 +2,15 @@
 	<div class="col-md-6 input-group col-md-offset-3">
 		<input type="text" name="searchText" ng-model="searchText" ng-enter="search()" class="form-control" placeholder="이름 및 아이디 검색">
 		<span class="input-group-btn"> <button type="button" ng-click="search()" class="btn btn-primary">검색</button> </span>
+		<select class="form-control m-b"
+				ng-change="search()"
+				ng-model="pageScale"
+		>
+			<option value="10">10</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+			<option value="200">200</option>
+		</select>
 	</div>
 	<div class="ibox m m-t-xl">
 <!--

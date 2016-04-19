@@ -26,4 +26,11 @@ public interface ManagerDAO {
 	 * @return
 	 */
 	public int hakwonManagerSetting(DataMap param);
+
+	/**
+	 * 학원 매니저 해지
+	 * @param param
+	 * @return
+	 */
+	public int hakwonManagerRemove(DataMap param);
 }
