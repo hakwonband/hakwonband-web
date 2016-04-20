@@ -277,6 +277,43 @@ hakwonMainApp.service('settingService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 매니저 해지
+	 */
+	settingService.hakwonManagerRemove = function(managerNo) {
+
+		var param = {
+			hakwonNo:hakwonInfo.hakwon_no
+			, managerNo : managerNo
+		};
+
+		$.ajax({
+			url: contextPath+"/hakwon/setting/hakwonManagerRemove.do",
+			type: "post",
+			headers : hakwonInfo.getHeader(),
+			data : $.param(param, true),
+			dataType: "json",
+			success: function(data) {
+				try {
+					if( data.error ) {
+						alert('매니저 해지를 실패 했습니다.');
+					} else {
+						var colData = data.colData;
+
+						if( colData.flag == 'success' ) {
+							settingService.hakwonManagerInfo();
+						}
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
+		});
+	};
+
 	return settingService;
 });
 
@@ -378,6 +415,16 @@ hakwonMainApp.controller('settingManagerController', function($scope, $location,
 			settingService.hakwonManagerSetting(managerNo);
 		});
 
+		/*	매니저 해지	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=removeManager]', function() {
+			var managerNo = $(this).attr('data-manager-no');
+			if( isNull(managerNo) ) {
+				return ;
+			}
+			if( window.confirm('매니저를 해지하시겠습니까?') ) {
+				settingService.hakwonManagerRemove(managerNo);
+			}
+		});
 
 		/**
 		 * 저장

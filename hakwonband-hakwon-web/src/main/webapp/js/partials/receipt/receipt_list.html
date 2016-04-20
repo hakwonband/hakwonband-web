@@ -45,6 +45,17 @@
 					</div>
 				</div>
 				<div class="col-md-1">
+					<select class="form-control m-b"
+						ng-change="receiptSearch()"
+						ng-model="pageScale"
+					>
+						<option value="10">10</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+						<option value="200">200</option>
+					</select>
+				</div>
+				<div class="col-md-1">
 					<button type="button" class="btn btn-primary" ng-click="excelSave()">엑셀저장</button>
 				</div>
 			</div>

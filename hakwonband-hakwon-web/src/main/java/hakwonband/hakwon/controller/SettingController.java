@@ -160,4 +160,27 @@ public class SettingController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
+
+	/**
+	 * 학원 매니저 해지
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/hakwonManagerRemove")
+	public void hakwonManagerRemove(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		String hakwonNo		= request.getParameter("hakwonNo");
+		String managerNo	= request.getParameter("managerNo");
+
+		DataMap param = new DataMap();
+		param.put("hakwonNo",	hakwonNo);
+		param.put("managerNo",	managerNo);
+		param.put("userNo",		authUserInfo.getString("user_no"));
+
+		/*	매니저 해지	*/
+		hakwonService.updateHakwonManagerRemove(param);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
 }

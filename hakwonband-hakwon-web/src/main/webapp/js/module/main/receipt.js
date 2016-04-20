@@ -136,7 +136,7 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var dateTerm		= $scope.dateTerm;
 
 		var params = {
-			hakwonNo:hakwonNo, pageNo:$scope.pageNo, searchType:searchType, searchText:searchText
+			hakwonNo:hakwonNo, pageNo:$scope.pageNo, pageScale:$scope.pageScale, searchType:searchType, searchText:searchText
 			, startDate:startDate, endDate:endDate, classNo:classNo
 			, dateTerm:dateTerm, receiptType:receiptType
 			, receiptMethod:receiptMethod
@@ -601,6 +601,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 		$scope.receiptList			= [];		// 수납 리스트
 		$scope.receiptListTotCount	= 0;		// 수납리스트 전체 카운트
 		$scope.pageNo				= 1;		// 현재 페이지 번호
+		$scope.pageScale			= '10';		// 페이지 스케일
 		$scope.startDate			= "";
 		$scope.endDate				= "";
 		$scope.dateTerm				= "";
