@@ -307,8 +307,7 @@ public class ReceiptController extends BaseAction {
 		}
 
 		int pageNo = StringUtil.parseInt(request.getParameter("pageNo"), 1);
-		int pageScale = PageScale.STUDENT_LIST;
-		// pageScale = 5;
+		int pageScale = StringUtil.parseInt(request.getParameter("pageScale"), PageScale.STUDENT_LIST);
 
 		DataMap param = new DataMap();
 		param.put("hakwonNo", hakwonNo);
