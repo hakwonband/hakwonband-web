@@ -269,7 +269,7 @@ hakwonTmpl.dashBoard = {
 	].join('')
 	/*	대시 보드 영역	*/
 	, main : [
-		'<div class="col-md-6">'
+		'<div class="col-md-6" name="ban">'
 		, '	<div class="widget-head-color-box navy-bg p-lg text-center" data-view="dashProfile">'
 		, '		<h2 class="font-bold">{{hakwonObj.hakwon_name}}</h2>'
 		, '		<img ng-src="{{ getFileFullPath() }}" class="circle-border m-md img-responsive" alt="학원 프로필 사진" width="300" data-view="logo_preview">'
@@ -295,6 +295,16 @@ hakwonTmpl.dashBoard = {
 		, '		<tbody>'
 		, '			<tr>'
 		, '				<td>'
+*/
+
+    // 광고배너추가 2016.14.22
+	////////////////////////////////////////////////////////////
+	    , '            <a href="'+PageUrl.dashBoard.ban_list+'"> <img src="../images/gyengsi.png" border="0" style="max-width:100%; height:auto;"> </a>'
+		/////////////////////////////////////////////////////////
+
+	/*학생학부모명수없애기
+	                        <span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'
+
 		, '					<span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'
 		, '				</td>'
 		, '			</tr>'
@@ -324,6 +334,16 @@ hakwonTmpl.dashBoard = {
 		, '	</div>'
 		, '</div>'
 	].join('')
+		//2016.04.22 배너 리스트 추가함
+	////////////////////////////////////////////////////////
+	, ban_list : [
+		, '<div class="col-md-6">'
+		, '	<li><a href="http://www.canonoa.co.kr" target="_blank"> <img src="../images/htoa.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
+		, '	<li><a href="http://www.ithezun.co.kr/default/sub04/sub01.php?com_board_basic=read_form&com_board_idx=8&topmenu=4&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&" target="_blank"> <img src="../images/ithejun.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
+		, '	<li><a href="http://www.littlejohn.co.kr" target="_blank"> <img src="../images/littlejohn.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
+		, '</div>'
+	].join('')
+		/////////////////////////////////////////////////////
 };
 
 /*	이벤트	*/
