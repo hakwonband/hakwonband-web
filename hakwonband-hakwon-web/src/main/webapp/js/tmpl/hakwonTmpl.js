@@ -272,7 +272,20 @@ hakwonTmpl.dashBoard = {
 		'<div class="col-md-6" name="ban">'
 		, '	<div class="widget-head-color-box navy-bg p-lg text-center" data-view="dashProfile">'
 		, '		<h2 class="font-bold">{{hakwonObj.hakwon_name}}</h2>'
-		, '	<h2 class="font-bold">단체 접수 공간입니다.</h2>'
+		, '		<img ng-src="{{ getFileFullPath() }}" class="circle-border m-md img-responsive" alt="학원 프로필 사진" width="300" data-view="logo_preview">'
+		, '		<span class="btn btn-danger btn-rounded btn_edit" title="프로필수정" ng-if="checkAuthType()"><i class="fa fa-camera"></i> </span>'
+		, '		<input type="file" class="input_file_icon" data-act="logo_upload" accept="image/*" ng-if="checkAuthType()">'
+		, '		<p>{{hakwonObj.old_sido}} / {{hakwonObj.hakwon_cate_name}}</p>'
+		, '	</div>'
+		, '	<div class="widget-text-box">'
+		, '		<h3 class="media-heading">학원정보</h3>'
+		, '		<div class="row">'
+		, '			<p class="col-md-10">'
+		, '				주소 : {{ getAllAddrText() }}<br>'
+		, '				전화번호 : {{hakwonObj.tel_no_1}}'
+		, '			</p>'
+		, '			<div class="col-md-2 text-right"><button ng-if="checkAuthType()" class="btn btn-default btn_edit" data-act="hakwonModify" type="button">수정</button></div>'
+		, '		</div>'
 		, '	</div>'
 		, '</div>'
 		, '<div class="col-md-6">'
@@ -286,10 +299,7 @@ hakwonTmpl.dashBoard = {
 
     // 광고배너추가 2016.14.22
 	////////////////////////////////////////////////////////////
-		, '   <li><a href="http://www.canonoa.co.kr" target="_blank"> <img src="../images/htoa.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-		, '   <li><a href="http://www.ithezun.co.kr/default/sub04/sub01.php?com_board_basic=read_form&com_board_idx=8&topmenu=4&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&" target="_blank"> <img src="../images/ithejun.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-		, '   <li><a href="http://www.littlejohn.co.kr" target="_blank"> <img src="../images/littlejohn.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-
+	    , '            <a href="'+PageUrl.dashBoard.ban_list+'"> <img src="../images/gyengsi.png" border="0" style="max-width:100%; height:auto;"> </a>'
 		/////////////////////////////////////////////////////////
 
 	/*학생학부모명수없애기
