@@ -24,6 +24,10 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			}
 			, controller: 'mainController'
 		})
+		/*	임시 베너	*/
+		.when('/ban_list', {
+			templateUrl: '/js/partials/main/ban_list.html'
+		})
 		/*	회원정보	*/
 		.when('/memberProfile', {
 			templateUrl: '/js/partials/memberProfile.html'

@@ -175,7 +175,7 @@ var PageUrl = {
 		, send : '#/notice/share/send'
 	}
 	, dashBoard : {
-		ban_list : '#'
+		ban_list : '#/ban_list'
 	}
 };
 
