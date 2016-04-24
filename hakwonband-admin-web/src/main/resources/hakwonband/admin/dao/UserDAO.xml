@@ -98,8 +98,9 @@
 		where
 			a.user_no = #{user_no}
 	]]>
-	<if test="@hakwonband.util.StringUtil@isNotNull( user_type )">
+		<if test="@hakwonband.util.StringUtil@isNotNull( user_type )">
 			and a.user_type= #{user_type}
+		</if>
 	<![CDATA[
 			and a.user_no = b.user_no
 	]]>
