@@ -225,6 +225,7 @@
 <script type="text/javascript" src="/js/module/main/adminQuestion.js"></script>
 <script type="text/javascript" src="/js/module/main/questionsMail.js"></script>
 <script type="text/javascript" src="/js/module/main/excelUpload.js"></script>
+<script type="text/javascript" src="/js/module/main/user.js"></script>
 
 <script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
 

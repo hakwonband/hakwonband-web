@@ -153,7 +153,6 @@ public class HakwonController extends BaseAction {
 	public void hakwonModifyInfo(HttpServletRequest request, HttpServletResponse response) {
 		DataMap param = new DataMap();
 		param.put("hakwonNo",	request.getParameter("hakwonNo"));
-		param.put("adminRegYn",	"Y");		//	관리자 학원만 조회
 
 		DataMap hakwonModifyInfo = hakwonService.hakwonModifyInfo(param);
 

@@ -253,7 +253,6 @@
 			, hakwon_cate = #{hakwonCate}
 		where
 			hakwon_no = #{hakwonNo}
-			and admin_reg_yn = 'Y'
 	]]>
 	</update>
 

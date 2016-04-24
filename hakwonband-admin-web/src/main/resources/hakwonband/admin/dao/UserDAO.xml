@@ -90,14 +90,17 @@
 			, calc_age(b.user_birthday) as user_age
 			, date_format(a.reg_date, '%Y.%m.%d') as reg_date
 			, a.use_yn
+			, a.user_type
 			, b.attendance_code
 		from
 			tb_user a
 			, tb_user_info b
 		where
 			a.user_no = #{user_no}
+	]]>
+	<if test="@hakwonband.util.StringUtil@isNotNull( user_type )">
 			and a.user_type= #{user_type}
-			and a.approved_yn = 'Y'
+	<![CDATA[
 			and a.user_no = b.user_no
 	]]>
 	</select>

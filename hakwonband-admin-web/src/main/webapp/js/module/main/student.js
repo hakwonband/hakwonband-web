@@ -180,6 +180,13 @@ hakwonMainApp.controller('studentViewController', function($scope, $location, $r
 			commProto.hrefMove(PageUrl.student.list);
 		});
 
+		/*	수정	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=modify]', function() {
+			console.log('PageUrl.user.modify : ' + PageUrl.user.modify);
+
+			window.location.href = PageUrl.user.modify+'?user_no='+studentUserNo;
+		});
+
 
 		$("#wrapper").show();
 		$scope.$$postDigest(function(){
