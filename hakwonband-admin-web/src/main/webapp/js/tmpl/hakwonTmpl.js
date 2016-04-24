@@ -1474,7 +1474,7 @@ hakwonTmpl.student = {
 		, '{{/if}}'
 		, '	<div class="text-right m-t">'
 		, '		<button class="btn btn-default" data-act="list" type="button">목록으로</button>'
-		, '		<button class="btn btn-default" data-act="modify" type="button">수정</button>'
+		//, '		<button class="btn btn-default" data-act="modify" type="button">수정</button>'
 		, '	</div>'
 	].join('')
 };

@@ -29,6 +29,7 @@ public class UserController extends BaseAction {
 
 	/**
 	 * 사용자 정보
+	 * @url /admin/user/info.do
 	 * @return
 	 */
 	@RequestMapping("/info")

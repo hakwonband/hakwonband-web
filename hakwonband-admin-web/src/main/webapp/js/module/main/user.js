@@ -10,7 +10,7 @@ hakwonMainApp.service('userService', function($http, CommUtil) {
 	 * 사용자 정보
 	 */
 	userService.userInfo = function(param, callback) {
-		CommUtil.ajax({url:contextPath+"/admin/edvertise/bannerReqDetail.do", param:param, successFun:callback});
+		CommUtil.ajax({url:contextPath+"/admin/user/info.do", param:param, successFun:callback});
 	};
 
 	return userService;
@@ -32,9 +32,20 @@ hakwonMainApp.controller('userModifyController', function($scope, $location, $ro
 		/*	공통 유틸	*/
 		$scope.CommUtil = CommUtil;
 
+		var userNo = $routeParams.user_no;
 
-		userService.userInfo({user_no:''}, function() {
+		/*	수정 데이타	*/
+		$scope.modify = {};
 
+		/**
+		 * 사용자 정보 조회
+		 */
+		userService.userInfo({userNo:userNo}, function(data) {
+			var colData = data.colData;
+
+			var userInfo = colData.userInfo;
+
+			$scope.modify = angular.copy(userInfo);
 		});
 
 	} catch(ex) {

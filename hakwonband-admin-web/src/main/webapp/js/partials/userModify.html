@@ -1,9 +1,16 @@
 <div class="ibox m">
 	<div class="ibox-content form-horizontal">
 		<div class="form-group">
-			<label class="col-sm-1 control-label" for="academy_write_01">학원명</label>
+			<label class="col-sm-1 control-label" for="academy_write_01">사용자 타입</label>
 			<div class="col-sm-11">
-				<input type="text" name="hakwonName" value="{{= hakwonInfo.hakwon_name}}" class="form-control" placeholder="20자까지" maxLength="20" id="academy_write_01">
+				{{ modify.user_type_name }}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_01">사용자 이름</label>
+			<div class="col-sm-11">
+				<input type="text" name="modify.user_name" value="{{ modify.user_name }}" class="form-control" placeholder="20자까지" maxLength="20">
 			</div>
 		</div>
 		<div class="form-group">
