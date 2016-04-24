@@ -18,6 +18,12 @@ hakwonMainApp.config(['$routeProvider', function($routeProvider) {
 			, controller: 'mainController'
 		})
 
+		/*	사용자 정보 수정	*/
+		.when('/user/modify', {
+			templateUrl: '/js/partials/userModify.html'
+			, controller: 'userModifyController'
+		})
+
 		/*	광고 입금	##############################################	*/
 		/*	광고 입금 리스트	*/
 		.when('/edvertise/bankDeposit/list', {

@@ -117,6 +117,9 @@ var PageUrl = {
 		list : '#/questionsMail/list'	//	문의 메일 리스트
 		, view : '#/questionsMail/view'	//	문의 메일 리스트
 	}
+	, user : {
+		modify : '#/user/modify'	//	사용자 정보 수정
+	}
 	, setting : {
 		hakwonCategory : '#/setting/hakwonCategory'		//	학원 카테고리 설정
 		, bannerDefaultPrice : '#/setting/bannerDefaultPrice'	//	베너 기본 가격

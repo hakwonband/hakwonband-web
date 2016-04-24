@@ -1,0 +1,86 @@
+<div class="ibox m">
+	<div class="ibox-content form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_01">사용자 타입</label>
+			<div class="col-sm-11">
+				{{ modify.user_type_name }}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_01">사용자 이름</label>
+			<div class="col-sm-11">
+				<input type="text" name="modify.user_name" value="{{ modify.user_name }}" class="form-control" placeholder="20자까지" maxLength="20">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_02">로고 이미지</label>
+			<div class="col-sm-11">
+				<span class="btn btn-primary">파일 업로드</span>
+				<input type="file" class="input_file" data-act="photo_upload" id="academy_write_02" accept="image/*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label">이미지 확인</label>
+			<div class="col-sm-11" data-view="image_preveiw">
+				<img alt="image" src="{{= HakwonConstant.FileServer.ATTATCH_DOMAIN + hakwonInfo.logo_file_path}}" data-file-no="{{= hakwonInfo.logo_file_no}}">
+				<button type="button" data-act="logoDelete" class="btn btn-default">삭제</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_02">전화번호</label>
+			<div class="col-sm-11">
+				<input type="tel" name="telNo" class="form-control" value="{{= hakwonInfo.tel_no_1}}" placeholder="전화번호" id="academy_write_02">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_03">업종</label>
+			<div class="col-sm-11">
+				<select name="hakwonCate" class="form-control" ng-options="hakwonCate.cateName for hakwonCate in hakwonCateList track by hakwonCate.cateCode" ng-model="searchCateCode">
+					<option value="">카테고리</option>
+					<option value="{{= loopHakwonCate.cateCode}}" {{= loopHakwonCate.cateCode == hakwonInfo.hakwon_cate?"selected":""}}>{{= loopHakwonCate.cateName}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_04">지번주소</label>
+			<div class="col-sm-11">
+				<div class="col-md-4 input-group m-b">
+					<input type="text" class="form-control" name="searchOldDong" placeholder="동 이름으로 검색" id="academy_write_04">
+					<span class="input-group-btn"> <button type="button" data-act="searchOldAddr" class="btn btn-primary">검색</button> </span>
+				</div>
+				<ul class="address_search_result" style="display:none;" data-view="oldAddrList"></ul>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" data-addr-no="{{= hakwonInfo.addr_no}}" name="oldAddr1" value="{{= hakwonInfo.old_addr1}}" class="form-control" placeholder="검색된 주소">
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="oldAddr2" value="{{= hakwonInfo.old_addr2}}" class="form-control" placeholder="기타주소 입력">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label" for="academy_write_05">도로명주소</label>
+			<div class="col-sm-11">
+				<div class="col-md-4 input-group m-b">
+					<input type="text" name="searchStreetDong" class="form-control" placeholder="동 이름으로 검색" id="academy_write_05">
+					<span class="input-group-btn"> <button type="button" data-act="searchStreetDong" class="btn btn-primary">검색</button> </span>
+				</div>
+				<ul class="address_search_result" style="display:none;" data-view="streetAddrList"></ul>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" name="streetAddr1" value="{{= hakwonInfo.street_addr1}}" class="form-control" placeholder="검색된 주소" readOnly="true">
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="streetAddr2" value="{{= hakwonInfo.street_addr2}}" class="form-control" placeholder="기타주소 입력">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ibox-content text-right">
+		<button type="button" data-act="cancel" class="btn btn-default">취소하기</button>
+		<button type="button" data-act="modify" class="btn btn-primary">수정완료</button>
+	</div>
+</div>

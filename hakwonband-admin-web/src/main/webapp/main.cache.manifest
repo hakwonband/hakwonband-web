@@ -61,6 +61,7 @@ CACHE:
 /js/module/main/setting.js
 /js/module/main/student.js
 /js/module/main/teacher.js
+/js/module/main/user.js
 /js/module/main/testModule.js
 /js/module/main/adminQuestion.js
 /js/module/main/questionsMail.js
@@ -74,6 +75,7 @@ CACHE:
 /js/partials/messageSend.html
 /js/partials/messageSendList.html
 /js/partials/messageSendView.html
+/js/partials/userModify.html
 
 /js/tmpl/hakwonTmpl.js
 
