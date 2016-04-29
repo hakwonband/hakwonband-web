@@ -81,6 +81,7 @@
 		/*	UserDAO.userInfo	*/
 		select
 			a.user_no
+			, a.user_id
 			, b.user_name
 			, a.user_email
 			, case when b.user_gender = 'M' then '남' else '여' end as user_gender_name
@@ -182,7 +183,14 @@
 			, tb_user_info b
 		where
 			a.user_no = b.user_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
 			and (b.user_name like concat('%', #{searchText}, '%') or b.user_id like concat('%', #{searchText}, '%'))
+		</if>
+		<if test="@hakwonband.util.StringUtil@isNotNull( userNo )">
+			and a.user_no = #{userNo}
+		</if>
+	<![CDATA[
 		order by
 			b.user_name asc
 		limit 50

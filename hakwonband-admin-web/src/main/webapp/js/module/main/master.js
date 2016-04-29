@@ -415,6 +415,13 @@ hakwonMainApp.controller('masterViewController', function($scope, $location, $ro
 			masterService.userStop(masterUserNo);
 		});
 
+		/*	메세지 발송	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=messageSend]', function() {
+			var userNo = $(this).attr('data-user-no');
+
+			window.location = '#/message/send?userNo='+userNo;
+		});
+
 
 
 		$("#wrapper").show();

@@ -121,10 +121,12 @@ public class MessageController extends BaseAction {
 	@RequestMapping("/userList")
 	public void masterList(HttpServletRequest request, HttpServletResponse response) {
 
-		String searchText = request.getParameter("searchText");
+		String searchText	= request.getParameter("searchText");
+		String userNo		= request.getParameter("userNo");
 
 		DataMap param = new DataMap();
 		param.put("searchText",	searchText);
+		param.put("userNo",		userNo);
 
 		/*	사용자 리스트 검색	*/
 		List<DataMap> userList = userService.userList(param);
