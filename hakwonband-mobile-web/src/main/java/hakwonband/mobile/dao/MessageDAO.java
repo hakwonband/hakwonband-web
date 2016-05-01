@@ -94,4 +94,12 @@ public interface MessageDAO {
 	 * @return
 	 */
 	public DataMap messageUserInfo(DataMap param);
+
+
+	/**
+	 * 메세지 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap messageInfo(DataMap param);
 }

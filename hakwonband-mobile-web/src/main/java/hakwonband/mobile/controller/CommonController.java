@@ -295,12 +295,17 @@ public class CommonController extends BaseAction {
 		} else {
 			logger.debug("authUserInfo : " + authUserInfo);
 
-			String hakwonNo = request.getParameter("hakwonNo");
-			String userType = authUserInfo.getString("user_type");
-			logger.info("\n!!!!!!!!!!!!message hakwonNo["+hakwonNo+"] userType["+userType+"]");
+			String hakwonNo		= request.getParameter("hakwonNo");
+			String messageNo	= request.getParameter("messageNo");
+			String userType		= authUserInfo.getString("user_type");
+			logger.info("\n!!!!!!!!!!!!message hakwonNo["+hakwonNo+"] messageNo["+messageNo+"] userType["+userType+"]");
 
 			if( HakwonConstant.UserType.STUDENT.equals(userType) || HakwonConstant.UserType.PARENT.equals(userType) ) {
-				return new ModelAndView("redirect:https://m.hakwonband.com/#/receiveMessageList?"+System.currentTimeMillis());
+				if( StringUtils.isBlank(messageNo) ) {
+					return new ModelAndView("redirect:https://m.hakwonband.com/#/receiveMessageList?"+System.currentTimeMillis());
+				} else {
+					return new ModelAndView("redirect:https://m.hakwonband.com/#/messageDetail?message_no="+messageNo+"&type=receive&page=1&t="+System.currentTimeMillis());
+				}
 			} else if( HakwonConstant.UserType.WONJANG.equals(userType) || HakwonConstant.UserType.TEACHER.equals(userType) ) {
 				if( StringUtil.isBlank(hakwonNo) ) {
 					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do");
@@ -309,8 +314,11 @@ public class CommonController extends BaseAction {
 						DataMap hakwonInfo = userService.messageMoveHakwonInfo(authUserInfo);
 						hakwonNo = hakwonInfo.getString("hakwon_no");
 					}
-					logger.info("\n!!!!master&teacher hakwon_no["+hakwonNo+"]");
-					return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&t="+System.currentTimeMillis());
+					if( StringUtils.isBlank(messageNo) ) {
+						return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&t="+System.currentTimeMillis());
+					} else {
+						return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&message_no="+messageNo+"&t="+System.currentTimeMillis());
+					}
 				}
 			} else if( HakwonConstant.UserType.ADMIN.equals(userType) ) {
 				return new ModelAndView("redirect:https://admin.hakwonband.com/");

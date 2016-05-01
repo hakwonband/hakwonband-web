@@ -139,10 +139,12 @@ public class MessageController extends BaseAction {
 
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
-		String receive_no = request.getParameter("receive_no");
+		String receive_no	= request.getParameter("receive_no");
+		String message_no	= request.getParameter("message_no");
 
 		DataMap param = new DataMap();
-		param.put("receive_no",	receive_no);
+		param.put("receive_no",			receive_no);
+		param.put("message_no",			message_no);
 		param.put("content_type", 		"002");							// 댓글타입 002 메세지
 		param.put("content_parent_no",	receive_no);
 		param.put("file_parent_type",	"002");							// 파일타입 002 메세지
