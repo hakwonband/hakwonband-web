@@ -290,4 +290,21 @@
 			a.receive_no = #{receive_no}
 			and a.message_no = b.message_no
 	</select>
+
+	<!-- 메세지 정보 -->
+	<select id="messageInfo" parameterType="dataMap" resultType="dataMap">
+		/*	MessageDAO.messageInfo	*/
+		select
+			a.receive_no
+			, a.hakwon_no
+		from
+			tb_message_receiver a
+		where
+			a.message_no = #{message_no}
+			and a.receive_user_no = #{user_no}
+		order by
+			a.receive_no desc
+		limit 1
+	</select>
+
 </mapper>

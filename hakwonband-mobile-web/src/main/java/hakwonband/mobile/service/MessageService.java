@@ -131,6 +131,13 @@ public class MessageService {
 	public DataMap executeReceiveMessageDetail(DataMap param) {
 		logger.debug("receiveMessageDetail param["+param+"]");
 
+		if( param.isNotNull("message_no") ) {
+			DataMap messageInfo = messageDAO.messageInfo(param);
+			String receive_no	= messageInfo.getString("receive_no");
+			param.put("receive_no",			receive_no);
+			param.put("content_parent_no",	receive_no);
+		}
+
 		/*	받은메세지 상세조회시, receive_date 업데이트	*/
 		messageDAO.updateMessageReceiveDate(param);
 
@@ -169,8 +176,8 @@ public class MessageService {
 			throw new HKBandException("MessageDAO.messageInsert error");
 		}
 
-		long lastId = param.getLong("idx");
-		param.put("message_no", lastId);
+		long message_no = param.getLong("idx");
+		param.put("message_no", message_no);
 
 		/* 메세지 수신자 정보 셋팅 */
 		String strUserNoList = (String)param.get("user_no_list");
@@ -238,7 +245,7 @@ public class MessageService {
 			pushMessage.setContent(param.getString("title"));
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
-			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no"));
+			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no")+"&messageNo="+message_no);
 
 			devicePushData = new DevicePushData(pushMessage, deviceList);
 			resultObj.put("devicePushData",	devicePushData);

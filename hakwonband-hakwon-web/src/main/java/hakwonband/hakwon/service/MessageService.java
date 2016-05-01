@@ -212,6 +212,11 @@ public class MessageService {
 	public DataMap executeReceiveMessageDetail(DataMap param) {
 		DataMap colData = new DataMap();
 
+		if( param.isNotNull("messageNo") ) {
+			DataMap messageInfo = messageViewDAO.messageInfo(param);
+			param.put("receiveNo", messageInfo.getString("receive_no"));
+		}
+
 		/*	메세지 상세	*/
 		DataMap messageDetail = messageViewDAO.receiveMessageDetail(param);
 		colData.put("messageDetail", messageDetail);

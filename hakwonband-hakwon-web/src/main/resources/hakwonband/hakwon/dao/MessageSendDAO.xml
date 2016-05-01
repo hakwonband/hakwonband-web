@@ -223,6 +223,7 @@
 			, get_file_path(c.photo_file_no) as user_photo_path
 			, calc_age(c.user_birthday) as user_age
 			, '' as parent_list
+			, get_code_name('001', b.user_type) as user_type_name
 		from
 			tb_hakwon_teacher a
 			, tb_user b
@@ -259,6 +260,7 @@
 			, case when (select count(1) from tb_hakwon_class_student where student_user_no = a.user_no) > 0
 				then (select group_concat(get_user_info(y.user_no) SEPARATOR 0x12) from tb_student_parent x, tb_user_info y where x.student_user_no = a.user_no and x.parent_user_no = y.user_no)
 				else '' end as parent_list
+			, get_code_name('001', b.user_type) as user_type_name
 		from
 			tb_hakwon_member a
 			, tb_user b

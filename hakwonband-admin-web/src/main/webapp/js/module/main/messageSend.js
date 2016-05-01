@@ -97,7 +97,7 @@ hakwonMainApp.service('messageSendService', function() {
 	};
 
 	/*	업종 조회	*/
-	messageSendService.hakwonCate = function() {
+	messageSendService.hakwonCate = function(callback) {
 		$.ajax({
 			url: contextPath+"/admin/hakwonCate/cateList.do",
 			type: "post",
@@ -132,6 +132,10 @@ hakwonMainApp.service('messageSendService', function() {
 					}).on('ifUnchecked', function(event) {
 						$('#mainNgView label[data-check-type=hakwonCate]').iCheck('uncheck');
 					});
+
+					if( callback ) {
+						callback();
+					}
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}
@@ -200,14 +204,19 @@ hakwonMainApp.service('messageSendService', function() {
 	/**
 	 * 사용자 검색
 	 */
-	messageSendService.userSearch = function() {
-		var searchText = $('input[name=userSearchText]').val();
-		if( isNull(searchText) ) {
-			alert('검색어를 입력해 주세요.');
-			$('input[name=userSearchText]').focus();
-			return ;
+	messageSendService.userSearch = function(userNo) {
+		var param = {};
+		if( userNo ) {
+			param = {userNo:userNo};
+		} else {
+			var searchText = $('input[name=userSearchText]').val();
+			if( isNull(searchText) ) {
+				alert('검색어를 입력해 주세요.');
+				$('input[name=userSearchText]').focus();
+				return ;
+			}
+			param = {searchText:searchText};
 		}
-		var param = {searchText:searchText};
 
 		$.ajax({
 			url: contextPath+"/admin/message/userList.do",
@@ -228,13 +237,25 @@ hakwonMainApp.service('messageSendService', function() {
 						for(var i=0; i<userList.length; i++) {
 							var userInfo = userList[i];
 
-							userHtml += '<li data-user-no="'+userInfo.user_no+'" data-user-type="'+userInfo.user_type_name+'" style="cursor:pointer;">';
+							if( userNo == userInfo.user_no ) {
+								userHtml += '<li data-user-no="'+userInfo.user_no+'" data-user-type="'+userInfo.user_type_name+'" style="cursor:pointer;display:none;">';
+							} else {
+								userHtml += '<li data-user-no="'+userInfo.user_no+'" data-user-type="'+userInfo.user_type_name+'" style="cursor:pointer;">';
+							}
 							userHtml += '	<img class="img-circle" src="'+comm.userProfileImg(userInfo.photo_file_path)+'" alt="'+userInfo.user_name+'" width="50" height="50">';
 							userHtml += '	<strong class="name">'+userInfo.user_name+'</strong> '+userInfo.user_id + ' / '+userInfo.user_type_name + ' / ' + (userInfo.user_gender=='M'?'남자':'여자') + ' / '+userInfo.user_age + '세';
 							userHtml += '</li>';
 						}
 					}
 					$('div[data-view-type=userSearch] ul.search_name_list').html(userHtml);
+
+					if( userNo ) {
+						if( data.colData.dataList.length == 1 ) {
+							var userInfo = data.colData.dataList[0];
+							var tempHtml = '<li data-user-no="'+userInfo.user_no+'">'+userInfo.user_name + ' / '+userInfo.user_type_name+' <button type="button" class="btn_x" title="삭제">x</button></li>';
+							$('div[data-view-type=userSearch] ul.chosen_select').append(tempHtml);
+						}
+					}
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}
@@ -525,6 +546,9 @@ hakwonMainApp.controller('messageSendController', function($scope, $location, $r
 		$('#mainNgView').on(clickEvent, 'button[data-act=send]', messageSendService.messageSend);
 
 
+		var userNo = $routeParams.userNo;
+		console.log('userNo : ' + userNo);
+
 
 		$scope.$$postDigest(function() {
 			console.log('$$postDigest');
@@ -538,7 +562,15 @@ hakwonMainApp.controller('messageSendController', function($scope, $location, $r
 			messageSendService.sido();
 
 			/*	업종 조회	*/
-			messageSendService.hakwonCate();
+			messageSendService.hakwonCate(function() {
+				if( userNo ) {
+					$('div[data-view=commMenu]').hide();
+					$('div[data-view-type=userSearch]').show();
+					$('select[name=messageType]').val('userSearch');
+
+					messageSendService.userSearch(userNo);
+				}
+			});
 
 			/*	파일 업로드 셋팅	*/
 			if( comm.isAndroidUploader() ) {

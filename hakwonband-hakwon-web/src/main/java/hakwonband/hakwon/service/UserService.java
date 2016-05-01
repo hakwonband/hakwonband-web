@@ -262,7 +262,7 @@ public class UserService {
 				pushMessage.setTitle(title);
 				pushMessage.setIos_title(title);
 				pushMessage.setContent(content);
-				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1");
+				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1&messageNo="+messageNo);
 
 				devicePushData = new DevicePushData(pushMessage, deviceList);
 			}
@@ -327,7 +327,7 @@ public class UserService {
 				pushMessage.setTitle("["+hakwonInfo.getString("hakwon_name")+"] 선생님께서 학원밴드를 탈퇴 했습니다.");
 				pushMessage.setIos_title("["+hakwonInfo.getString("hakwon_name")+"] 선생님께서 학원밴드를 탈퇴 했습니다.");
 				pushMessage.setContent(content);
-				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+hakwonInfo.getString("hakwon_no"));
+				pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+hakwonInfo.getString("hakwon_no")+"&messageNo="+messageNo);
 
 				devicePushData = new DevicePushData(pushMessage, deviceList);
 			}

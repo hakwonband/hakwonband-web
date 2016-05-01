@@ -131,4 +131,11 @@ public interface MessageViewDAO {
 	 * @return
 	 */
 	public int deleteReceiveMessage(DataMap param);
+
+	/**
+	 * 메세지 정보
+	 * @param param
+	 * @return
+	 */
+	public DataMap messageInfo(DataMap param);
 }

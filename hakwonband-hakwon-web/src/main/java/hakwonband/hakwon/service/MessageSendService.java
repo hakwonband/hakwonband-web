@@ -208,7 +208,7 @@ public class MessageSendService {
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
-			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no"));
+			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no")+"&messageNo="+messageNo);
 
 			devicePushData = new DevicePushData(pushMessage, deviceList);
 		}
@@ -284,7 +284,6 @@ public class MessageSendService {
 			messageMap.put("reservationYn",		"N");
 		}
 
-		System.out.println("messageMap\n" + messageMap);
 		messageSendDAO.messageInsert(messageMap);
 		long messageNo = messageMap.getLong("idx");
 		param.put("messageNo", messageNo);
@@ -456,7 +455,7 @@ public class MessageSendService {
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
-			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no"));
+			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no")+"&messageNo="+messageNo);
 
 			devicePushData = new DevicePushData(pushMessage, deviceList);
 		}

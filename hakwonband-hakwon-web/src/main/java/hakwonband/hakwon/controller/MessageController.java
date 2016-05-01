@@ -374,9 +374,11 @@ public class MessageController extends BaseAction {
 		String hakwon_no		= request.getParameter("hakwon_no");
 
 		String receiveNo = request.getParameter("receiveNo");
+		String messageNo = request.getParameter("messageNo");
 
 		DataMap param = new DataMap();
 		param.put("receiveNo",	receiveNo);
+		param.put("messageNo",	messageNo);
 		param.put("user_no",	authUserInfo.getString("user_no"));
 		param.put("hakwon_no",	hakwon_no);
 
