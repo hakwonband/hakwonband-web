@@ -358,7 +358,7 @@ public class MessageService {
 			pushMessage.setContent(title);
 			pushMessage.addCustomParam("hakwonNo", "-1");
 			pushMessage.setImage_url("");
-			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1");
+			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo=-1&messageNo="+messageNo);
 
 			devicePushData = new DevicePushData(pushMessage, deviceList);
 		}
