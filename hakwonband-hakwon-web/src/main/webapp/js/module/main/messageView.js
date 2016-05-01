@@ -254,8 +254,8 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 	};
 
 	/*	받은 메세지 상세	*/
-	messageViewService.receiveMessageDetail = function(receiveNo) {
-		var param = {receiveNo : receiveNo};
+	messageViewService.receiveMessageDetail = function(receiveNo, messageNo) {
+		var param = {receiveNo : receiveNo, messageNo:messageNo};
 		$.ajax({
 			url: contextPath+"/hakwon/message/receiveMessageDetail.do",
 			type: "post",
@@ -725,6 +725,8 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 		$("#wrapper").show();
 
 		var receiveNo = $routeParams.receiveNo;
+		var messageNo = $routeParams.messageNo;
+
 		/*	리플 작성	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=replyWrite]', function() {
 			messageViewService.replyWrite(receiveNo);
@@ -746,7 +748,7 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 
 		$scope.$$postDigest(function() {
 			/*	개별메세지 상세	*/
-			messageViewService.receiveMessageDetail(receiveNo);
+			messageViewService.receiveMessageDetail(receiveNo, messageNo);
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

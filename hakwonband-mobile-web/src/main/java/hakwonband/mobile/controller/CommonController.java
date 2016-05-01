@@ -317,7 +317,7 @@ public class CommonController extends BaseAction {
 					if( StringUtils.isBlank(messageNo) ) {
 						return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&t="+System.currentTimeMillis());
 					} else {
-						return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageList?hakwon_no="+hakwonNo+"&message_no="+messageNo+"&t="+System.currentTimeMillis());
+						return new ModelAndView("redirect:https://hakwon.hakwonband.com/main.do#/message/receiveMessageDetail?hakwon_no="+hakwonNo+"&messageNo="+messageNo+"&t="+System.currentTimeMillis());
 					}
 				}
 			} else if( HakwonConstant.UserType.ADMIN.equals(userType) ) {
