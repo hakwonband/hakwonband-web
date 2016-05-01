@@ -245,7 +245,7 @@ public class MessageService {
 			pushMessage.setContent(param.getString("title"));
 			pushMessage.addCustomParam("hakwonNo", param.getString("hakwon_no"));
 			pushMessage.setImage_url("");
-			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no")+"&message_no="+message_no);
+			pushMessage.setLink_url("https://m.hakwonband.com/message.do?hakwonNo="+param.getString("hakwon_no")+"&messageNo="+message_no);
 
 			devicePushData = new DevicePushData(pushMessage, deviceList);
 			resultObj.put("devicePushData",	devicePushData);
