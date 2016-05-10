@@ -47,9 +47,9 @@ public class UserController extends BaseAction {
 
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		List<DataMap> userHakwonList = userService.userHakwonList(authUserInfo);
+		DataMap colData = userService.userHakwonList(authUserInfo);
 
-		sendList(userHakwonList, request, response);
+		sendColData(colData, request, response);
 	}
 
 	/**

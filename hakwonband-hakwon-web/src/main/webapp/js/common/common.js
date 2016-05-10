@@ -232,8 +232,8 @@ var HakwonCommon = function() {
 				console.log('hakwonList', data);
 
 				var colData = data.colData;
-				if( colData && colData.dataList && colData.dataList.length > 0 ) {
-					var hakwonList = colData.dataList;
+				if( colData && colData.hakwonList && colData.hakwonList.length > 0 ) {
+					var hakwonList = colData.hakwonList;
 
 					/*	학원 정보 저장	*/
 					hakwonInfo.hakwon_name		= hakwonList[0].hakwon_name;
@@ -251,6 +251,12 @@ var HakwonCommon = function() {
 					hakwonInfo.master_user_no	= undefined;
 					hakwonInfo.logo_path		= undefined;
 					hakwonInfo.hakwonList		= [];
+				}
+
+				if( colData && colData.uncertifiedList && colData.uncertifiedList.length > 0 ) {
+					hakwonInfo.uncertifiedList = colData.uncertifiedList;
+				} else {
+					hakwonInfo.uncertifiedList = [];
 				}
 			});
 		}

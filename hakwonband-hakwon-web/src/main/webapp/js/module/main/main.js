@@ -69,6 +69,10 @@ hakwonMainApp.controller('mainController', function($scope, $window, $location, 
 		$scope.hakwonObj = {};
 		$scope.userCount = {};
 
+		$scope.PageUrl = PageUrl;
+
+		$scope.uncertifiedList = hakwonInfo.uncertifiedList;
+
 		$scope.getHakwonDetail = function() {
 
 			if (isNull($routeParams.hakwon_no)) {

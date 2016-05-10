@@ -11,56 +11,56 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			, controller: 'indexController'
 		})
 		.when('/main', {
-			template: function() {
+			templateUrl: function() {
 				if( hakwonInfo.hakwonList.length == 0 ) {
 					if( userAuth.userType == HakwonConstant.UserType.WONJANG ) {
-						return hakwonTmpl.dashBoard.emptyMaster;
+						return '/assets/partials/main/dashBoardEmptyMaster.html';
 					} else {
-						return hakwonTmpl.dashBoard.emptyTeacher;
+						return '/assets/partials/main/dashBoardEmptyTeacher.html';
 					}
 				} else {
-					return hakwonTmpl.dashBoard.main;
+					return '/assets/partials/main/dashBoardMain.html';
 				}
 			}
 			, controller: 'mainController'
 		})
 		/*	임시 베너	*/
 		.when('/ban_list', {
-			templateUrl: '/js/partials/main/ban_list.html'
+			templateUrl: '/assets/partials/main/ban_list.html'
 		})
 		/*	회원정보	*/
 		.when('/memberProfile', {
-			templateUrl: '/js/partials/memberProfile.html'
+			templateUrl: '/assets/partials/memberProfile.html'
 			, controller: 'memberProfileController'
 		})
 		/*	회원정보수정	*/
 		.when('/memberEdit', {
-			templateUrl: '/js/partials/memberEdit.html'
+			templateUrl: '/assets/partials/memberEdit.html'
 			, controller: 'memberEditController'
 		})
 		/*	학원정보 수정	*/
 		.when('/hakwonModify', {
-			templateUrl: '/js/partials/hakwonModify.html'
+			templateUrl: '/assets/partials/hakwonModify.html'
 			, controller: 'hakwonModifyController'
 		})
 		/*	학원소개	*/
 		.when('/hakwonIntro', {
-			templateUrl: '/js/partials/hakwonIntro.html'
+			templateUrl: '/assets/partials/hakwonIntro.html'
 			, controller: 'hakwonIntroController'
 		})
 		/*	학원소개 작성-수정	*/
 		.when('/hakwonIntroEdit', {
-			templateUrl: '/js/partials/hakwonIntroEdit.html'
+			templateUrl: '/assets/partials/hakwonIntroEdit.html'
 			, controller: 'hakwonIntroEditController'
 		})
 		/*	학원 전체 리스트	*/
 		.when('/hakwonAllList', {
-			templateUrl: '/js/partials/hakwonAllList.html'
+			templateUrl: '/assets/partials/hakwonAllList.html'
 			, controller: 'hakwonAllListController'
 		})
 		/*	선생님 학원 전체 리스트	*/
 		.when('/teacherHakwonAllList', {
-			templateUrl: '/js/partials/teacherHakwonAllList.html'
+			templateUrl: '/assets/partials/teacherHakwonAllList.html'
 			, controller: 'teacherHakwonAllListController'
 		})
 
@@ -79,7 +79,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 
 		/*	보낸 메시지	*/
 		.when('/sentMessage', {
-			templateUrl: '/js/partials/sentMessage.html'
+			templateUrl: '/assets/partials/sentMessage.html'
 			, controller: 'sentMessageController'
 		})
 		/*	선생님 메시지 보내기	*/
@@ -118,37 +118,37 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	반 관련 뷰 ############################################################		*/
 		/*	반 전체리스트	*/
 		.when('/class/classList', {
-			templateUrl: '/js/partials/class/class_list.html'
+			templateUrl: '/assets/partials/class/class_list.html'
 			, controller: 'classInfoListController'
 		})
 		/*	반 - 메인, 공지사항 리스트	*/
 		.when('/class/noticeList', {
-			templateUrl: '/js/partials/class/class_notice_list.html'
+			templateUrl: '/assets/partials/class/class_notice_list.html'
 			, controller: 'classNoticeListController'
 		})
 		/*	반 - 공지사항 상세보기	*/
 		.when('/class/noticeDetail', {
-			templateUrl: '/js/partials/class/class_notice_detail.html'
+			templateUrl: '/assets/partials/class/class_notice_detail.html'
 			, controller: 'classNoticeDetailController'
 		})
 		/*	반 - 공지사항 작성	*/
 		.when('/class/noticeEdit', {
-			templateUrl: '/js/partials/class/class_notice_edit.html'
+			templateUrl: '/assets/partials/class/class_notice_edit.html'
 			, controller: 'classNoticeEditController'
 		})
 		/*	반 - 학생 리스트 	*/
 		.when('/class/studentList', {
-			templateUrl: '/js/partials/class/class_student_list.html'
+			templateUrl: '/assets/partials/class/class_student_list.html'
 			, controller: 'classStudentListController'
 		})
 		/*	반 - 학부모 리스트	*/
 		.when('/class/parentList', {
-			templateUrl: '/js/partials/class/class_parent_list.html'
+			templateUrl: '/assets/partials/class/class_parent_list.html'
 			, controller: 'classParentListController'
 		})
 		/*	반 - 선생님 리스트	*/
 		.when('/class/teacherList', {
-			templateUrl: '/js/partials/class/class_teacher_list.html'
+			templateUrl: '/assets/partials/class/class_teacher_list.html'
 			, controller: 'classTeacherListController'
 		})
 
@@ -156,37 +156,37 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	공지사항(학원) ############################################################		*/
 		/*	학원 공지사항 리스트	*/
 		.when('/notice/list', {
-			templateUrl: '/js/partials/hakwonNoticeList.html'
+			templateUrl: '/assets/partials/hakwonNoticeList.html'
 			, controller: 'noticeListController'
 		})
 
 		/*	학원 공지사항 상세보기	*/
 		.when('/notice/detail', {
-			templateUrl: '/js/partials/hakwonNoticeDetail.html'
+			templateUrl: '/assets/partials/hakwonNoticeDetail.html'
 			, controller: 'noticeDetailController'
 		})
 
 		/*	학원 공지사항 등록	*/
 		.when('/notice/edit', {
-			templateUrl: '/js/partials/hakwonNoticeEdit.html'
+			templateUrl: '/assets/partials/hakwonNoticeEdit.html'
 			, controller: 'noticeEditController'
 		})
 
 		/*	공지 공유 리스트	*/
 		.when('/notice/share/sendList', {
-			templateUrl: '/js/partials/notice_share/noticeShareSendList.html'
+			templateUrl: '/assets/partials/notice_share/noticeShareSendList.html'
 			, controller: 'noticeShareSendListController'
 		})
 
 		/*	공지 공유	*/
 		.when('/notice/share/send', {
-			templateUrl: '/js/partials/notice_share/noticeShareSend.html'
+			templateUrl: '/assets/partials/notice_share/noticeShareSend.html'
 			, controller: 'noticeShareSendController'
 		})
 
 		/*	받은 공지 리스트	*/
 		.when('/notice/share/receiveList', {
-			templateUrl: '/js/partials/notice_share/noticeShareReceiveList.html'
+			templateUrl: '/assets/partials/notice_share/noticeShareReceiveList.html'
 			, controller: 'noticeShareReceiveListController'
 		})
 
@@ -248,7 +248,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	학원내 선생님 리스트	*/
 		.when('/master/hakwonTeacherList', {
-			templateUrl: './js/partials/hakwonTeacherList.html'
+			templateUrl: './assets/partials/hakwonTeacherList.html'
 			, controller: 'masterTeacherListController'
 		})
 		/*	가입 요청 선생님	*/
@@ -269,30 +269,30 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		/*	학생	##############################################	*/
 		/*	학생 리스트	*/
 		.when('/student/list', {
-			templateUrl:'/js/partials/student/student_list.html'
+			templateUrl:'/assets/partials/student/student_list.html'
 			, controller: 'studentListController'
 		})
 		.when('/student/view', {
-			templateUrl: '/js/partials/student/student_view.html'
+			templateUrl: '/assets/partials/student/student_view.html'
 			, controller: 'studentViewController'
 		})
 		.when('/student/modify', {
-			templateUrl: '/js/partials/student/student_modify.html'
+			templateUrl: '/assets/partials/student/student_modify.html'
 			, controller: 'studentModifyController'
 		})
 
 		/*	학부모	##############################################	*/
 		/*	학부모 리스트	*/
 		.when('/parent/list', {
-			templateUrl: '/js/partials/parent/parent_list.html'
+			templateUrl: '/assets/partials/parent/parent_list.html'
 			, controller: 'parentListController'
 		})
 		.when('/parent/view', {
-			templateUrl: '/js/partials/parent/parent_view.html'
+			templateUrl: '/assets/partials/parent/parent_view.html'
 			, controller: 'parentViewController'
 		})
 		.when('/parent/modify', {
-			templateUrl: '/js/partials/parent/parent_modify.html'
+			templateUrl: '/assets/partials/parent/parent_modify.html'
 			, controller: 'parentModifyController'
 		})
 
@@ -309,7 +309,7 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	관리자에게 문의하기 등록	*/
 		.when('/adminQuestion/regist', {
-			templateUrl: '/js/partials/admin_question/admin_question_write.html'
+			templateUrl: '/assets/partials/admin_question/admin_question_write.html'
 			, controller: 'registQuestionController'
 		})
 
@@ -322,69 +322,69 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	매니저 설정	*/
 		.when('/setting/manager', {
-			templateUrl: '/js/partials/settingManager.html'
+			templateUrl: '/assets/partials/settingManager.html'
 			, controller: 'settingManagerController'
 		})
 
 
 		/*	학생별 주간 출결 리스트	*/
 		.when('/attendance/attendanceWeekList', {
-			templateUrl: '/js/partials/attendanceWeekList.html'
+			templateUrl: '/assets/partials/attendanceWeekList.html'
 			, controller : 'attendanceWeekListController'
 		})
 
 		/*	가이드	##############################################	*/
 		/*	지도 가이드	*/
 		.when('/guide/map', {
-			templateUrl: '/js/partials/guideMap.html'
+			templateUrl: '/assets/partials/guideMap.html'
 		})
 		.when('/guide/daumMap', {
-			templateUrl: '/js/partials/guide_03.html'
+			templateUrl: '/assets/partials/guide_03.html'
 		})
 		/*	youtube 가이드	*/
 		.when('/guide/youtube', {
-			templateUrl: '/js/partials/guideYoutube.html'
+			templateUrl: '/assets/partials/guideYoutube.html'
 		})
 
 		/*	수납 등록	*/
 		.when('/receipt/insert', {
-			templateUrl: '/js/partials/receipt/receipt_insert.html'
+			templateUrl: '/assets/partials/receipt/receipt_insert.html'
 			, controller : 'receiptController'
 		})
 		/*	수납 리스트	*/
 		.when('/receipt/list', {
-			templateUrl: '/js/partials/receipt/receipt_list.html'
+			templateUrl: '/assets/partials/receipt/receipt_list.html'
 			, controller : 'receiptListController'
 		})
 		/*	수납 일년간 리스트	*/
 		.when('/receipt/listYear', {
-			templateUrl: '/js/partials/receipt/receipt_year_list.html'
+			templateUrl: '/assets/partials/receipt/receipt_year_list.html'
 			, controller : 'receiptYearListController'
 		})
 		/*	수납 상세	*/
 		.when('/receipt/detail', {
-			templateUrl: '/js/partials/receipt/receipt_detail.html'
+			templateUrl: '/assets/partials/receipt/receipt_detail.html'
 			, controller : 'receiptDetailController'
 		})
 
 		/*	상담 등록 */
 		.when('/counsel/insert', {
-			templateUrl: '/js/partials/counsel/counsel_insert.html'
+			templateUrl: '/assets/partials/counsel/counsel_insert.html'
 			, controller : 'counselInsertController'
 		})
 		/*	상담 리스트 */
 		.when('/counsel/list', {
-			templateUrl: '/js/partials/counsel/counsel_list.html'
+			templateUrl: '/assets/partials/counsel/counsel_list.html'
 			, controller : 'counselListController'
 		})
 		/*	상담 상세	*/
 		.when('/counsel/detail', {
-			templateUrl: '/js/partials/counsel/counsel_detail.html'
+			templateUrl: '/assets/partials/counsel/counsel_detail.html'
 			, controller : 'counselDetailController'
 		})
 		/*	상담 수정	*/
 		.when('/counsel/update', {
-			templateUrl: '/js/partials/counsel/counsel_update.html'
+			templateUrl: '/assets/partials/counsel/counsel_update.html'
 			, controller : 'counselUpdateController'
 		})
 

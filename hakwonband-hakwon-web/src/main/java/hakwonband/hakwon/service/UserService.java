@@ -97,20 +97,28 @@ public class UserService {
 	 * @param param
 	 * @return
 	 */
-	public List<DataMap> userHakwonList(DataMap authUserInfo) {
+	public DataMap userHakwonList(DataMap authUserInfo) {
 
-		List<DataMap> hakwonList = null;
+		DataMap rtnData = new DataMap();
+
 		if( authUserInfo.equals("user_type", HakwonConstant.UserType.WONJANG) ) {
 			/*	원장님	*/
 			DataMap param = new DataMap();
 			param.put("master_user_no", authUserInfo.getString("user_no"));
-			hakwonList = masterDAO.masterHakwonList(param);
+			List<DataMap> hakwonList = masterDAO.masterHakwonList(param);
+			rtnData.put("hakwonList", hakwonList);
+
+			/*	미인증 학원 리스트	*/
+			List<DataMap> uncertifiedList = masterDAO.masterHakwonUncertifiedList(param);
+			rtnData.put("uncertifiedList", uncertifiedList);
+
 		} else if( authUserInfo.equals("user_type", HakwonConstant.UserType.TEACHER) ) {
 			/*	선생님	*/
-			hakwonList = teacherDAO.teacherHakwonList(authUserInfo);
+			List<DataMap> hakwonList = teacherDAO.teacherHakwonList(authUserInfo);
+			rtnData.put("hakwonList", hakwonList);
 		}
 
-		return hakwonList;
+		return rtnData;
 	}
 
 	/**

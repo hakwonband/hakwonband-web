@@ -36,7 +36,7 @@
 	<!-- 학원 리스트 -->
 	<select id="masterHakwonList" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[
-		/* MasterDAO.hakwonList */
+		/* MasterDAO.masterHakwonList */
 		select
 			a.hakwon_no
 			, a.master_user_no
@@ -57,10 +57,33 @@
 	]]>
 	</select>
 
+	<select id="masterHakwonUncertifiedList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* MasterDAO.masterHakwonUncertifiedList */
+		select
+			a.hakwon_no
+			, a.master_user_no
+			, a.hakwon_code
+			, a.reg_date
+			, a.manager_no
+			, b.hakwon_name
+			, get_file_path(b.logo_file_no) as logo_path
+		from
+			tb_hakwon a
+			, tb_hakwon_info b
+		where
+			a.master_user_no = #{master_user_no}
+			and a.hakwon_status = '002'
+			and a.hakwon_no = b.hakwon_no
+		order by
+			b.hakwon_name asc
+	]]>
+	</select>
+
 	<!-- 학원 리스트 카운트-->
 	<select id="masterHakwonListCount" parameterType="dataMap" resultType="int">
 	<![CDATA[
-		/* MasterDAO.hakwonList */
+		/* MasterDAO.masterHakwonListCount */
 		select
 			count(1)
 		from
