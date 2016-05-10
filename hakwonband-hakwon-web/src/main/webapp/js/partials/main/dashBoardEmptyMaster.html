@@ -1,0 +1,21 @@
+<div ng-show="uncertifiedList.length > 0" class="middle-box text-center animated fadeInRightBig">
+	<h3 class="font-bold">미인증 학원이 있습니다.<br/>활성화를 위해 학원밴드에 문의해 주세요.<br/>문의 : <a href="mailto:hakwonband@naver.com">hakwonband@naver.com</a></h3>
+
+	<br/><br/><br/>
+	<div class="error-desc">
+		미인증 학원 리스트<br/>
+		<div ng-repeat="item in uncertifiedList">
+			<!--<a href="#" onclick="return false;" class="btn btn-primary m-t"></a>-->
+			<button type="button" class="btn btn-default btn-block m-t-xl">{{item.hakwon_name}}</button>
+
+		</div>
+	</div>
+</div>
+
+<div ng-show="uncertifiedList.length == 0" class="middle-box text-center animated fadeInRightBig">
+	<h3 class="font-bold">등록된 학원이 없습니다.</h3>
+	<div class="error-desc">
+		학원을 등록해 주세요.<br/>
+		<a href="{{PageUrl.master.hakwonCreate}}" class="btn btn-primary m-t">학원등록하기</a>
+	</div>
+</div>

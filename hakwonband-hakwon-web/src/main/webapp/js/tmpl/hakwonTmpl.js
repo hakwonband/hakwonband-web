@@ -249,6 +249,7 @@ hakwonTmpl.leftMenu = {
 
 /*	대시 보드	*/
 hakwonTmpl.dashBoard = {
+
 	emptyMaster : [
  		'<div class="middle-box text-center animated fadeInRightBig">'
 		, '	<h3 class="font-bold">등록된 학원이 없습니다</h3>'

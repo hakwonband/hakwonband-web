@@ -19,6 +19,13 @@ public interface MasterDAO {
 	public List<DataMap> masterHakwonList(DataMap param);
 
 	/**
+	 * 원장 미인증 학원 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> masterHakwonUncertifiedList(DataMap param);
+
+	/**
 	 * 미승인 학원 리스트
 	 * @param param
 	 * @return
