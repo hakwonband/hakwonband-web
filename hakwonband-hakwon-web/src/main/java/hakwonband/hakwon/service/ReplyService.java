@@ -150,15 +150,17 @@ public class ReplyService {
 	 * @return
 	 */
 	public DataMap deleteReply(DataMap param) {
-		logger.debug("editReply param["+param+"]");
+		logger.debug("deleteReply param["+param+"]");
 
 		DataMap replyInfo = replyDAO.replyInfo(param);
 
-		if( replyInfo.equals("reg_user_no", param.getString("user_no")) ) {
-			/*	본인 리플 삭제	*/
-		} else if( replyInfo.equals("master_user_no", param.getString("user_no")) ) {
-			/*	원장님 삭제	*/
-			param.put("master_del", "true");
+		if( replyInfo != null ) {
+			if( replyInfo.equals("reg_user_no", param.getString("user_no")) ) {
+				/*	본인 리플 삭제	*/
+			} else if( replyInfo.equals("master_user_no", param.getString("user_no")) ) {
+				/*	원장님 삭제	*/
+				param.put("master_del", "true");
+			}
 		}
 
 		int resultDelete = replyDAO.replyDelete(param);
