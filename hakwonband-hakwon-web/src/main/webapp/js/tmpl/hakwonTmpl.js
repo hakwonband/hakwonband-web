@@ -247,106 +247,6 @@ hakwonTmpl.leftMenu = {
 	].join('')
 };
 
-/*	대시 보드	*/
-hakwonTmpl.dashBoard = {
-
-	emptyMaster : [
- 		'<div class="middle-box text-center animated fadeInRightBig">'
-		, '	<h3 class="font-bold">등록된 학원이 없습니다</h3>'
-		, '	<div class="error-desc">'
-		, '		학원을 등록해 주세요<br/>'
-		, '		<a href="'+PageUrl.master.hakwonCreate+'" class="btn btn-primary m-t">학원등록하기</a>'
-		, '	</div>'
-		, '</div>'
-	].join('')
-	, emptyTeacher : [
- 		'<div class="middle-box text-center animated fadeInRightBig">'
-		, '	<h3 class="font-bold">등록된 학원이 없습니다</h3>'
-		, '	<div class="error-desc">'
-		, '		학원을 등록해 주세요<br/>'
-		, '		<a href="'+PageUrl.teacher.hakwonRegist+'" class="btn btn-primary m-t">학원등록하기</a>'
-		, '	</div>'
-		, '</div>'
-	].join('')
-	/*	대시 보드 영역	*/
-	, main : [
-		'<div class="col-md-6" name="ban">'
-		, '	<div class="widget-head-color-box navy-bg p-lg text-center" data-view="dashProfile">'
-		, '		<h2 class="font-bold">{{hakwonObj.hakwon_name}}</h2>'
-		, '		<img ng-src="{{ getFileFullPath() }}" class="circle-border m-md img-responsive" alt="학원 프로필 사진" width="300" data-view="logo_preview">'
-		, '		<span class="btn btn-danger btn-rounded btn_edit" title="프로필수정" ng-if="checkAuthType()"><i class="fa fa-camera"></i> </span>'
-		, '		<input type="file" class="input_file_icon" data-act="logo_upload" accept="image/*" ng-if="checkAuthType()">'
-		, '		<p>{{hakwonObj.old_sido}} / {{hakwonObj.hakwon_cate_name}}</p>'
-		, '	</div>'
-		, '	<div class="widget-text-box">'
-		, '		<h3 class="media-heading">학원정보</h3>'
-		, '		<div class="row">'
-		, '			<p class="col-md-10">'
-		, '				주소 : {{ getAllAddrText() }}<br>'
-		, '				전화번호 : {{hakwonObj.tel_no_1}}'
-		, '			</p>'
-		, '			<div class="col-md-2 text-right"><button ng-if="checkAuthType()" class="btn btn-default btn_edit" data-act="hakwonModify" type="button">수정</button></div>'
-		, '		</div>'
-		, '	</div>'
-		, '</div>'
-		, '<div class="col-md-6">'
-/*
-		, '	<table class="table dashboard_counting" summary="학원의 선생님, 학생, 학부모의 수를 나타냅니다">'
-		, '		<caption>학원 인원 정보</caption>'
-		, '		<tbody>'
-		, '			<tr>'
-		, '				<td>'
-*/
-
-    // 광고배너추가 2016.14.22
-	////////////////////////////////////////////////////////////
-	    , '            <a href="'+PageUrl.dashBoard.ban_list+'"> <img src="../images/gyengsi.png" border="0" style="max-width:100%; height:auto;"> </a>'
-		/////////////////////////////////////////////////////////
-
-	/*학생학부모명수없애기
-	                        <span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'
-
-		, '					<span class="count_num btn-warning">{{userCount.teacher_count}}</span> 선생님'
-		, '				</td>'
-		, '			</tr>'
-		, '			<tr>'
-		, '				<td>'
-		, '					<span class="count_num btn-success">{{userCount.student_count}}</span> 학생'
-		, '				</td>'
-		, '			</tr>'
-		, '			<tr>'
-		, '				<td>'
-		, '					<span class="count_num btn-info">{{userCount.parents_count}}</span> 학부모'
-		, '				</td>'
-		, '			</tr>'
-		, '		</tbody>'
-		, '	</table>'
-*/
-		, '	<div class="code_view"><i class="fa fa-angellist btn-danger"></i> 학원코드 : {{hakwonObj.hakwon_code}}</div>'
-		, '	<button class="btn btn-block btn-lg btn-primary m-b" data-act="hakwonIntro">학원소개</button>'
-		, '	<div class="sns_area" style="display:none;">'
-		, '		<ul>'
-		, '			<li><button type="button" class="sns_01" data-act="snsShare" data-type="facebook">페이스북</button><li>'
-		, '			<li><button type="button" class="sns_03" data-act="snsShare" data-type="line">라인</button><li>'
-		, '			<li><button type="button" class="sns_04" data-type="kakao">카카오톡</button><li>'
-		, '			<li><button type="button" class="sns_05" data-act="snsShare" data-type="band">밴드</button><li>'
-		, '			<li><button type="button" class="sns_06" data-act="snsShare" data-type="sms">메세지</button><li>'
-		, '		</ul>'
-		, '	</div>'
-		, '</div>'
-	].join('')
-		//2016.04.22 배너 리스트 추가함
-	////////////////////////////////////////////////////////
-	, ban_list : [
-		, '<div class="col-md-6">'
-		, '	<li><a href="http://www.canonoa.co.kr" target="_blank"> <img src="../images/htoa.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-		, '	<li><a href="http://www.ithezun.co.kr/default/sub04/sub01.php?com_board_basic=read_form&com_board_idx=8&topmenu=4&&com_board_search_code=&com_board_search_value1=&com_board_search_value2=&com_board_page=&" target="_blank"> <img src="../images/ithejun.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-		, '	<li><a href="http://www.littlejohn.co.kr" target="_blank"> <img src="../images/littlejohn.png" border="0" style="max-width:100%; height:auto;"> </a><li>'
-		, '</div>'
-	].join('')
-		/////////////////////////////////////////////////////
-};
-
 /*	이벤트	*/
 hakwonTmpl.event = {
 	list : [
@@ -1564,7 +1464,7 @@ hakwonTmpl.messageView = {
 		'{{each(i, loopData) dataList}}'
 		, '	<!-- 메세지 단위 시작 -->'
 		, '	<div class="feed-element message_box">'
-		, '		<a href="{{= PageUrl.message.receiveMessageDetail+"?hakwon_no="+hakwonInfo.hakwon_no+"&receiveNo="+loopData.receive_no}}">'
+		, '		<a href="{{= PageUrl.message.receiveMessageDetail+"?hakwon_no="+hakwonInfo.hakwon_no+"&receiveNo="+loopData.receive_no+"&pageNo="+pageNo}}">'
 		, '			<span class="pull-left"><img alt="image" class="img-circle" src="{{= hakwonCommon.createFilePullPath(loopData.send_user_info.user_photo_path, "photo", true)}}"></span>'
 		, '			<div class="media-body">'
 		, '				<small class="pull-right"><span class="text-muted">{{= loopData.send_date}}</span> / {{= loopData.receive_date?"읽음":"읽기전"}}</small>'

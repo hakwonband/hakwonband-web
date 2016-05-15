@@ -32,6 +32,7 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 						return false;
 					}
 					var colData = data.colData;
+					colData.pageNo = pageNo;
 
 
 					if( colData.newReceiveMessageCount == 0 ) {
@@ -724,8 +725,9 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 
 		$("#wrapper").show();
 
-		var receiveNo = $routeParams.receiveNo;
-		var messageNo = $routeParams.messageNo;
+		var receiveNo	= $routeParams.receiveNo;
+		var messageNo	= $routeParams.messageNo;
+		var pageNo		= $routeParams.pageNo;
 
 		/*	리플 작성	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=replyWrite]', function() {
@@ -733,7 +735,11 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 		});
 
 		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
-			commProto.hrefMove(PageUrl.message.sendMessageSingleList);
+			if( pageNo ) {
+				window.history.back();
+			} else {
+				window.location.href = PageUrl.message.receiveMessageList;
+			}
 		});
 
 		/*	본인 메세지 삭제	*/
