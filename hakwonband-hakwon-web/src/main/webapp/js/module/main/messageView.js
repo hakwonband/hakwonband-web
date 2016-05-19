@@ -740,6 +740,8 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 			} else {
 				window.location.href = PageUrl.message.receiveMessageList;
 			}
+
+			return false;
 		});
 
 		/*	본인 메세지 삭제	*/
