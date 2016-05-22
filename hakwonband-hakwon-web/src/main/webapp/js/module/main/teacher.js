@@ -162,10 +162,6 @@ hakwonMainApp.controller('teacherHakwonRegistController', function($scope, $loca
 		/*	요청 취소	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonReqCancel]', teacherService.hakwonReqCancel);
 
-		$scope.$$postDigest(function(){
-			console.log('$$postDigest');
-		});
-
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}

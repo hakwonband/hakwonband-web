@@ -790,6 +790,7 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 		 */
 		$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
 			commProto.hrefMove(PageUrl.main+'?hakwon_no='+hakwon_no);
+			return false;
 		});
 
 		/**

@@ -577,6 +577,7 @@ hakwonMainApp.controller('receiptController', function($scope, $location, $route
 		/*	수납 취소	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=receiptInsertCancel]', function() {
 			window.history.go(-1);
+			return false;
 		});
 
 
@@ -680,6 +681,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'tbody tr td a', function() {
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
+			return false;
 		});
 
 	} catch(ex) {
@@ -756,6 +758,7 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		/*	학생 선택후, 수납 등록 페이지이동	*/
 		$('#mainNgView').on(clickEvent, 'tbody tr td[name=registDay]', function() {
 			$window.location.href = PageUrl.receipt.insert + '?hakwonNo=' + hakwonInfo.hakwon_no + '&studentId=' + $(this).attr("st-id");
+			return false;
 		});
 
 
@@ -777,6 +780,7 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'tbody tr td a', function() {
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
+			return false;
 		});
 
 	} catch(ex) {
@@ -834,6 +838,7 @@ hakwonMainApp.controller('receiptDetailController', function($scope, $location, 
 		/*	학생 상세보기	*/
 		$('#mainNgView').on(clickEvent, 'div[name=studentDetail] a', function() {
 			$window.location.href = PageUrl.common.studentView + '?hakwon_no=' + hakwonInfo.hakwon_no + '&studentUserNo=' + $(this).attr("student-no");
+			return false;
 		});
 
 
@@ -845,6 +850,7 @@ hakwonMainApp.controller('receiptDetailController', function($scope, $location, 
 		/*	수납 수정 취소	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=receiptUpdateCancel]', function() {
 			window.history.back();
+			return false;
 		});
 
 		/*	수납 삭제	*/
