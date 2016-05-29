@@ -494,19 +494,18 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		};
 
 		/* historyBack */
-		$scope.historyBack = function() {
+		$scope.historyBack = function($event) {
 			if ($scope.messageType == 'send') {
 				var params = {page: $scope.page};
 				CommUtil.locationHref(MENUS.sharpUrls.sendMessageList, params);
-				return false;
 			} else if ($scope.messageType == 'receive') {
 				var params = {page: $scope.page};
 				CommUtil.locationHref(MENUS.sharpUrls.receiveMessageList, params);
-				return false;
 			} else {
 				$window.history.back();
-				return false;
 			}
+			$event.stopPropagation();
+			return false;
 		};
 
 		$scope.getFileFullPath = function(filePath, type, isThumb) {
