@@ -685,6 +685,8 @@ hakwonApp.controller('messageWriteController', function($scope, $location, $wind
 						} catch(e) {
 							alert('파일 업로드를 실패 했습니다.');
 						}
+
+						return false;
 					};
 					var param = {
 						fileType : 'all'

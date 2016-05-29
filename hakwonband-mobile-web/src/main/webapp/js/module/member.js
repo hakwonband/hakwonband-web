@@ -556,6 +556,7 @@ hakwonApp.controller('memberModifyController', function($scope, $window, $locati
 						} catch(e) {
 							alert('파일 업로드를 실패 했습니다.');
 						}
+						return false;
 					};
 					var param = {
 						fileType : 'img'
@@ -743,6 +744,7 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 						} catch(e) {
 							alert('파일 업로드를 실패 했습니다.');
 						}
+						return false;
 					};
 					var param = {
 						fileType : 'img'
