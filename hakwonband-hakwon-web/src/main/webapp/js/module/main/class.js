@@ -968,7 +968,10 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 			$scope.hakwonNo = hakwonInfo.hakwon_no;
 		}
 
-		$scope.page					= 1;
+		/*	반 이름 검색 데이터	*/
+		$scope.search_text			= $routeParams.search_text;
+		$scope.page					= $routeParams.page_no;
+		if( !$scope.page ) $scope.page = 1;
 		$scope.urlParams			= $routeParams;
 		$scope.checkAuthType		= comm.checkAuthType;
 		$scope.classList			= [];
@@ -977,17 +980,18 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 		/*	반 등록 데이터	*/
 		$scope.regClassInfo = {class_title:'', class_intro:'', class_order:''};
 
-		/*	반 이름 검색 데이터	*/
-		$scope.search_text = '';
-
+		$scope.classSearch = function() {
+			$location.search('search_text', $scope.search_text).search('page_no', '1');
+		}
 		/*	반 리스트 조회	*/
 		$scope.getClassList = function(pageNo) {
 			if( !pageNo ) {
 				pageNo = 1;
 			}
 			$scope.page = pageNo;
+/*
 			var params = {
-				hakwon_no		: $routeParams.hakwon_no
+				hakwon_no		: $scope.hakwonNo
 				, search_text	: $scope.search_text
 				, page_no		: pageNo
 			};
@@ -1014,6 +1018,7 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 					commProto.errorDump({errorObj: ex});
 				}
 			});
+*/
 		};
 
 		/*	페이지네이션 페이지 이동	*/
@@ -1021,7 +1026,7 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 			if ($scope.page === page) {
 				return;
 			}
-			$scope.getClassList(page);
+			$location.search('page_no', page);
 		};
 
 		/*	반 등록	*/
@@ -1039,7 +1044,34 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 		};
 
 		/*	반 공지사항 리스트 정보조회	*/
-		$scope.getClassList();
+		var params = {
+			hakwon_no		: $scope.hakwonNo
+			, search_text	: $scope.search_text
+			, page_no		: $scope.page
+		};
+		classService.hakwonClassList(params, function(data) {
+			try {
+				if( data.error ) {
+					alert('반 리스트 조회를 실패 했습니다.');
+					return ;
+				}
+
+				var colData = data.colData;
+				if (colData) {
+					$scope.classList = colData.classList;
+					$scope.classListTotCount = colData.classListTotCount;
+					$scope.pageInfo = CommUtil.getPagenationInfo(colData.classListTotCount, colData.pageScale, DefaultInfo.pageScale, params.page_no);
+				} else {
+					commProto.logger({hakwonClassListError: data});
+				}
+
+				$timeout(function() {
+					$(document).scrollTop($('input[ng-model=search_text]').offset().top);
+				},50);
+			} catch (ex) {
+				commProto.errorDump({errorObj: ex});
+			}
+		});
 
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

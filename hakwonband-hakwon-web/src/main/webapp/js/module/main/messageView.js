@@ -588,6 +588,7 @@ hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $l
 		/*	목록으로	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
 			commProto.hrefMove(PageUrl.message.sendMessageGroupList);
+			return false;
 		});
 
 		/*	예약 메세지 삭제	*/
@@ -636,6 +637,7 @@ hakwonMainApp.controller('messageSingleSendDetailController', function($scope, $
 
 		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
 			commProto.hrefMove(PageUrl.message.sendMessageSingleList);
+			return false;
 		});
 
 		/*	메세지 삭제	*/
@@ -740,6 +742,8 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 			} else {
 				window.location.href = PageUrl.message.receiveMessageList;
 			}
+
+			return false;
 		});
 
 		/*	본인 메세지 삭제	*/
@@ -748,6 +752,7 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 				var replyNo = $(this).attr('data-reply-no');
 				messageViewService.replyDelete(replyNo);
 			}
+			return false;
 		});
 
 

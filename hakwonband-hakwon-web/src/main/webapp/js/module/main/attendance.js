@@ -410,12 +410,7 @@ hakwonMainApp.controller('attendanceMakeController', function($scope, $location,
 
 		/*	코드 생성	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=makeAttendanceCode]', function() {
-
 			attendanceService.makeCode();
-			// 화면 랜더링 이후에 동작
-			$scope.$$postDigest(function(){
-				console.log('성공???');
-			});
 		});
 
 		/*	등원	*/

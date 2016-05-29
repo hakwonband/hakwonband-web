@@ -462,6 +462,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 	/*	취소	*/
 	$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
 		window.history.back();
+		return false;
 	});
 
 	/*	저장	*/
@@ -632,6 +633,7 @@ hakwonMainApp.controller('eventEditController', function($scope, $location, $rou
 	/*	취소	*/
 	$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
 		window.history.back();
+		return false;
 	});
 
 	/*	수정	*/

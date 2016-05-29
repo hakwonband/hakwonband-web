@@ -396,6 +396,7 @@ hakwonMainApp.controller('counselInsertController', function($scope, $location, 
 		/*	상담 취소	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=counselInsertCancel]', function() {
 			window.history.go(-1);
+			return false;
 		});
 
 
