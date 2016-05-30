@@ -494,7 +494,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		};
 
 		/* historyBack */
-		$scope.historyBack = function($event) {
+		$scope.historyBack = function() {
 			if ($scope.messageType == 'send') {
 				var params = {page: $scope.page};
 				CommUtil.locationHref(MENUS.sharpUrls.sendMessageList, params);
@@ -504,7 +504,6 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 			} else {
 				$window.history.back();
 			}
-			$event.stopPropagation();
 			return false;
 		};
 
