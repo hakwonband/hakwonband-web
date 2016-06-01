@@ -155,6 +155,7 @@ hakwonApp.controller('loginController', function($scope, $location, loginService
 		/*	회원 가입으로 이동	*/
 		$('#wrap_cont').on(clickEvent, 'button[data-act=signUp]', function() {
 			window.location.href = MENUS.sharpUrls.signUp;
+			return false;
 		});
 
 		$scope.$on('$viewContentLoaded', function() {

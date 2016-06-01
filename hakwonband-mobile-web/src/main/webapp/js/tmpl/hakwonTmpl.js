@@ -142,8 +142,8 @@ var hakwonTmpl = {
 		, '		</div>'
 
 		, '		<!--버튼 영역-->'
-		, '		<button type="button" ng-click="login()" data-act="login" class="btn btn_style_submit btn_bold btn_block mb_5">로그인</button>'
-		, '		<button type="button" ng-click="goSignUp()" data-act="signUp" class="btn btn_style_info btn_bold btn_block">학원밴드 가입하기</button>'
+		, '		<button type="button" data-act="login" class="btn btn_style_submit btn_bold btn_block mb_5">로그인</button>'
+		, '		<button type="button" data-act="signUp" class="btn btn_style_info btn_bold btn_block">학원밴드 가입하기</button>'
 		, '		<!--//버튼 영역-->'
 
 		, '		<div class="txt">'

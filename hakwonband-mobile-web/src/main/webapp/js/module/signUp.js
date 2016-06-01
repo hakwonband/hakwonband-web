@@ -9,6 +9,7 @@ hakwonApp.controller('signUpController', function($scope, $window, $location, $r
 
 		/* 가입 유형 선택 */
 		$scope.moveNextStep = function(userType) {
+			console.log('moveNextStep call userType['+userType+']');
 
 			if( userType == '003' || userType == '004' ) {
 				/*	원장님 선생님	*/
