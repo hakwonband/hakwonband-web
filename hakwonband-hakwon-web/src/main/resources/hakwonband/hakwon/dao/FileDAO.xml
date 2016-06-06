@@ -120,6 +120,7 @@
 			, a.save_file_name as saveFileName
 			, a.file_size as fileSize
 			, a.file_ext_type as fileExtType
+			, a.file_ext_type as mimeType
 			, a.file_ext as fileExt
 			, a.file_path_prefix filePathPrefix
 			, a.file_path as filePath
