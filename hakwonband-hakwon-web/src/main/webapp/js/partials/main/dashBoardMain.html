@@ -16,10 +16,8 @@
 			<div class="col-md-2 text-right"><button ng-if="checkAuthType()" class="btn btn-default btn_edit" data-act="hakwonModify" type="button">수정</button></div>
 		</div>
 	</div>
-</div>
 
-<div class="col-md-6">
-	<a href="{{PageUrl.dashBoard.ban_list}}"> <img src="/assets/img/gyengsi.png" border="0" style="max-width:100%; height:auto;"> </a>
+
 	<div class="code_view"><i class="fa fa-angellist btn-danger"></i> 학원코드 : {{hakwonObj.hakwon_code}}</div>
 	<button class="btn btn-block btn-lg btn-primary m-b" data-act="hakwonIntro">학원소개</button>
 	<div class="sns_area" style="display:none;">
@@ -31,4 +29,10 @@
 			<li><button type="button" class="sns_06" data-act="snsShare" data-type="sms">메세지</button><li>
 		</ul>
 	</div>
+</div>
+
+<div class="col-md-6">
+	<!-- <a href="{{PageUrl.dashBoard.ban_list}}"> <img src="/assets/img/gyengsi.png" border="0" style="max-width:100%; height:auto;"> </a> -->
+	<iframe ng-src="{{bannerUrl}}" border="0" marginwidth="0" marginheight="0" width="100%"  frameborder="0" height="900"></iframe>
+
 </div>

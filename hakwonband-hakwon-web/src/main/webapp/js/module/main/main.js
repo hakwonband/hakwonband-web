@@ -55,7 +55,7 @@ hakwonMainApp.service('mainService', function() {
 /**
  * 메인 컨트롤러
  */
-hakwonMainApp.controller('mainController', function($scope, $window, $location, $routeParams, mainService, CommUtil) {
+hakwonMainApp.controller('mainController', function($scope, $sce, $window, $location, $routeParams, mainService, CommUtil) {
 	console.log('hakwonMainApp mainController call');
 
 	try {
@@ -72,6 +72,8 @@ hakwonMainApp.controller('mainController', function($scope, $window, $location, 
 		$scope.PageUrl = PageUrl;
 
 		$scope.uncertifiedList = hakwonInfo.uncertifiedList;
+
+		$scope.bannerUrl = $sce.trustAsResourceUrl("https://lms.hakwonband.com/userBanner/userBanner");
 
 		$scope.getHakwonDetail = function() {
 
