@@ -132,10 +132,10 @@ hakwonCommonApp.service('SignUpService', function() {
 		$scope.checkUserName = 'true';
 
 		if (isNull($scope.regUserInfo.user_birthday)) {
-			alert('생년월일을 입력해 주세요.');
-			$('input[name=birthday]').focus();
-			$scope.checkBirthday = 'false';
-			return;
+//			alert('생년월일을 입력해 주세요.');
+//			$('input[name=birthday]').focus();
+//			$scope.checkBirthday = 'false';
+//			return;
 		} else {
 			$scope.regUserInfo.user_birthday = self.dateFormatBirthDay($scope.regUserInfo.user_birthday);
 			$scope.checkBirthday = 'true';
