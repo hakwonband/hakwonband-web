@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String cacheManifest = "";
-	if( isLive == true ) cacheManifest = "main.cache.manifest?"+cacheTime;
+	if( isLive == true ) cacheManifest = "main.cache.manifest";
 %>
 
 <!--
@@ -159,7 +159,7 @@
 <%
 	if( isLive ) {
 %>
-	<script type="text/javascript" src="/assets/js/main.module.min.js?<%=cacheTime%>"></script>
+	<script type="text/javascript" src="/assets/js/main.module.min.js"></script>
 <%
 	} else {
 %>
@@ -199,6 +199,15 @@
 	}
 %>
 <script>
+
+window.addEventListener('load', function(e) {
+	window.applicationCache.addEventListener('updateready', function(e) {
+		if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+			window.applicationCache.swapCache();
+			window.location.reload();
+		}
+	},false);
+},false);
 
 $(document).ready(function () {
 	console.log('document ready');
