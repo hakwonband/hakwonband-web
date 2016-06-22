@@ -160,7 +160,7 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 					$scope.regClassInfo.class_title = '';
 					$scope.regClassInfo.class_intro = '';
 					$scope.regClassInfo.class_order = '';
-					$scope.getClassList(1);
+					$scope.movePage(1);
 				} else {
 					commProto.logger({masterHakwonClassInsertError: data});
 				}
@@ -983,47 +983,13 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 		$scope.classSearch = function() {
 			$location.search('search_text', $scope.search_text).search('page_no', '1');
 		}
-		/*	반 리스트 조회	*/
-		$scope.getClassList = function(pageNo) {
-			if( !pageNo ) {
-				pageNo = 1;
-			}
-			$scope.page = pageNo;
-/*
-			var params = {
-				hakwon_no		: $scope.hakwonNo
-				, search_text	: $scope.search_text
-				, page_no		: pageNo
-			};
-			classService.hakwonClassList(params, function(data) {
-				try {
-					if( data.error ) {
-						alert('반 리스트 조회를 실패 했습니다.');
-						return ;
-					}
-
-					var colData = data.colData;
-					if (colData) {
-						$scope.classList = colData.classList;
-						$scope.classListTotCount = colData.classListTotCount;
-						$scope.pageInfo = CommUtil.getPagenationInfo(colData.classListTotCount, colData.pageScale, DefaultInfo.pageScale, pageNo);
-					} else {
-						commProto.logger({hakwonClassListError: data});
-					}
-
-					$timeout(function() {
-						$(document).scrollTop($('input[ng-model=search_text]').offset().top);
-					},50);
-				} catch (ex) {
-					commProto.errorDump({errorObj: ex});
-				}
-			});
-*/
-		};
 
 		/*	페이지네이션 페이지 이동	*/
 		$scope.movePage = function(page) {
-			if ($scope.page === page) {
+			if ($scope.page == page) {
+				if( page == 1 ) {
+					$location.search('t', Date());
+				}
 				return;
 			}
 			$location.search('page_no', page);
@@ -1066,7 +1032,8 @@ hakwonMainApp.controller('classInfoListController', function($rootScope, $scope,
 				}
 
 				$timeout(function() {
-					$(document).scrollTop($('input[ng-model=search_text]').offset().top);
+					//$(document).scrollTop($('input[ng-model=search_text]').offset().top);
+					$(document).scrollTop(0);
 				},50);
 			} catch (ex) {
 				commProto.errorDump({errorObj: ex});
