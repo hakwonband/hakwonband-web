@@ -40,6 +40,9 @@ CACHE:
 
 /assets/js/main.module.min.js
 
+/assets/fonts/NanumGothic-Bold.woff2
+/assets/fonts/NanumGothic-Regular.woff2
+/assets/partials/main/dashBoardMain.html
 
 # 언제나 네트웍을 통해 받아와야만 하는 파일 리스트
 NETWORK:
