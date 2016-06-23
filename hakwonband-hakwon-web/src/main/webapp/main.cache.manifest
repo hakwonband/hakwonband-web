@@ -24,6 +24,23 @@ CACHE:
 /assets/css/hakwon_style.css
 /assets/css/font_style.css
 
+
+/assets/css/bootstrap.min.css
+/assets/css/plugins/iCheck/custom.css
+/assets/css/animate.css
+/assets/css/style.css
+/assets/css/hakwon_style.css
+/assets/css/plugins/switchery/switchery.css
+/assets/css/plugins/fullcalendar/fullcalendar.css
+/assets/css/plugins/fullcalendar/fullcalendar.print.css
+
+/js/constants/constant.jsp
+/js/lib/tinymce-4.1.7/tinymce.min.js
+/assets/js/common.lib.min.js
+
+/assets/js/main.module.min.js
+
+
 # 언제나 네트웍을 통해 받아와야만 하는 파일 리스트
 NETWORK:
 *

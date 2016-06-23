@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String cacheManifest = "";
-	if( isLive == true ) cacheManifest = "index.cache.manifest?"+cacheTime;
+	if( isLive == true ) cacheManifest = "index.cache.manifest";
 %>
 <!--
 ############################################################
@@ -94,6 +94,15 @@
 </div>
 
 <script type="text/javascript">
+window.addEventListener('load', function(e) {
+	window.applicationCache.addEventListener('updateready', function(e) {
+		if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+			window.applicationCache.swapCache();
+			window.location.reload();
+		}
+	},false);
+},false);
+
 $('#wrapper').css('height', $( document ).height());
 var loadingImg = $('#loadingImg');
 loadingImg.load(function() {
