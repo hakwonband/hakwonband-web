@@ -499,11 +499,17 @@ hakwonMainApp.controller('memberEditController', function($scope, $location, $ro
 				return ;
 			}
 
+			if( isNull($scope.memberObj.user_gender) ) {
+				alert('성별을 선택해 주세요.');
+				return ;
+			}
+
 			var params = {};
 			params.user_password	= $scope.memberObj.user_password;
 			params.user_name		= $scope.memberObj.user_name;
 			params.tel1_no 			= $scope.memberObj.tel1_no;
 			params.user_email 		= $scope.memberObj.user_email;
+			params.user_gender 		= $scope.memberObj.user_gender;
 			params.user_birthday 	= $scope.getBirthDayFormat($scope.memberObj.user_birthday);
 
 			console.log(params);

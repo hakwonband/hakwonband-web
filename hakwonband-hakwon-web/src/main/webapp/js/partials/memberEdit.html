@@ -32,6 +32,14 @@
 				<input type="text" name="userName" class="form-control m-b-xs" placeholder="이름" ng-model="memberObj.user_name">
 			</li>
 			<li class="form-group">
+				<label class="control-label">성별</label>
+				<select ng-model="memberObj.user_gender" class="form-control m-b-xs">
+					<option value="">성별</option>
+					<option value="M">남</option>
+					<option value="F">여</option>
+				</select>
+			</li>
+			<li class="form-group">
 				<label class="control-label">생년월일 </label>
 				<input type="date" min="1950-01-01" max="2016-01-01" name="userBirthday" class="form-control m-b-xs" placeholder="생년월일" ng-model="memberObj.user_birthday">
 			</li>
