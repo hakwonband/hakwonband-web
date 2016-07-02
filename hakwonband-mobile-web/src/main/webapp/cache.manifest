@@ -10,6 +10,9 @@ CACHE MANIFEST
 # 캐쉬될 파일들을 지정하는 곳. CACHE:는 생략해도 된다.
 CACHE:
 
+#css
+/assets/css/common.css
+
 # lib
 /assets/js/common.lib.min.js
 /assets/js/module.min.js
