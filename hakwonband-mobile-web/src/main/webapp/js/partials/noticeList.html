@@ -14,7 +14,7 @@
 				<a href="" ng-click="goNoticeDetail($event)" data-idx="{{item.notice_no}}">
 					{{item.title}}
 				</a>
-				<img src="/images/ico_new.gif" alt="" width="15" ng-if="isNewItem(item.new_date) && item.read_status == 0"/>
+				<img src="/assets/images/ico_new.gif" alt="" width="15" ng-if="isNewItem(item.new_date) && item.read_status == 0"/>
 			</div>
 			<div class="notice_cont">
 				<div class="cont img" ng-if="item.thumbFileList.length > 0">

@@ -470,9 +470,9 @@ var HakwonCommon = function() {
 					var colData = data.colData;
 
 					var widthVal = 74;
-					var hakwonBanner1 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/images/banner/default_banner_01.gif" alt="" height="74" width="74" /></li>';
-					var hakwonBanner2 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/images/banner/default_banner_02.gif" alt="" height="74" width="148" /></li>';
-					var hakwonBanner3 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/images/banner/default_banner_03.gif" alt="" height="74" width="222" /></li>';
+					var hakwonBanner1 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/assets/images/banner/default_banner_01.gif" alt="" height="74" width="74" /></li>';
+					var hakwonBanner2 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/assets/images/banner/default_banner_02.gif" alt="" height="74" width="148" /></li>';
+					var hakwonBanner3 = '<li><a href="#" onclick="alert(\'준비 중 입니다.\'); return false;"><img src="/assets/images/banner/default_banner_03.gif" alt="" height="74" width="222" /></li>';
 
 					var blockHtml = '';
 					blockHtml += '<section class="line_n" data-view="advertBlock">';
@@ -509,7 +509,7 @@ var HakwonCommon = function() {
 					if( remainCount == 0 ) blockHtml += hakwonBanner3;
 					if( remainCount == 4 ) blockHtml += hakwonBanner3;
 
-					blockHtml += '				<li><a href="#/advertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/images/img_ad_btn.gif" alt="목록" width="74" height="74" /></a></li>';
+					blockHtml += '				<li><a href="#/advertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" height="74" /></a></li>';
 					blockHtml += '			</ul>';
 					blockHtml += '		</div>';
 					blockHtml += '	</div>';

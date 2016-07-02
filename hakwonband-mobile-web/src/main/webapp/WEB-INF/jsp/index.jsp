@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String cacheTime = "2016050101";
-	String cacheManifest = "";
 	boolean isLive = false;
 	if( request.getServerName().indexOf("teamoboki.com") >= 0 ) {
 		/*	로컬은 캐시 적용 안한다.	*/
 		isLive = false;
 	} else {
-		cacheManifest = "cache.manifest?"+cacheTime;
 		isLive = true;
 	}
+	String cacheManifest = "cache.manifest";
 
 	boolean isMobile = false;
 	String userAgent = request.getHeader("User-Agent");
@@ -17,19 +15,7 @@
 		isMobile = true;
 	}
 %>
-<!--
-############################################################
-############################################################
-# 2016-03-07 01
-############################################################
-############################################################
 
-############################################################
-############################################################
-# 2016-05-01 01
-############################################################
-############################################################
--->
 <!DOCTYPE html>
 <html manifest="<%=cacheManifest%>" ng-app="hakwonApp">
 <head>
@@ -54,17 +40,17 @@
 	<meta property="og:site_name" content="HAKWONBAND">
 	<meta property="og:title" content=" 소셜 학원네트워크 학원밴드">
 	<meta property="og:description" content="학원밴드는 학원네트워크를 기반으로한 소셜 도구로 학원원장님, 선생님, 학부모, 학생 모두가 간단한 절차를 통해 가입하여 여러 학원간 공지나 알림을 실시간으로 받고 원활한 소통을 하게 합니다. 지역기반 주요 학원정보도 받아볼수 있으며 학원밴드를 통해 학원홍보를 할수도 있습니다.">
-	<meta property="og:image" content="/images/facebook_screen.png">
+	<meta property="og:image" content="/assets/images/facebook_screen.png">
 
 
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<link rel="apple-touch-startup-image" href="/images/appintro.png" />
+	<link rel="apple-touch-startup-image" href="/assets/images/appintro.png" />
 
-	<link rel="shortcut icon" href="/images/logo/114x114.png" />
-	<link rel="apple-touch-icon" href="/images/logo/144x144.png" />
+	<link rel="shortcut icon" href="/assets/images/logo/114x114.png" />
+	<link rel="apple-touch-icon" href="/assets/images/logo/144x144.png" />
 
 
-	<link rel="stylesheet" type="text/css" media="screen" href="/css/common.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/common.css" />
 <%
 	if( isMobile == false ) {
 %>
@@ -119,11 +105,11 @@
 <script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
 <!-- 공통 모듈 -->
-<script src="/assets/js/common.lib.min.js?<%=cacheTime%>"></script>
+<script src="/assets/js/common.lib.min.js"></script>
 <%
 	if( isLive ) {
 %>
-<script src="/assets/js/module.min.js?<%=cacheTime%>"></script>
+<script src="/assets/js/module.min.js"></script>
 <%
 	} else {
 %>

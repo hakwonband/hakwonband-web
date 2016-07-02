@@ -3,19 +3,7 @@ CACHE MANIFEST
 
 ############################################################
 ############################################################
-# 2016-03-07 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2016-03-20 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2016-05-01 01
+# 2016-07-03 01
 ############################################################
 ############################################################
 
@@ -24,9 +12,12 @@ CACHE:
 
 # lib
 /assets/js/common.lib.min.js
+/assets/js/module.min.js
 
 # 카카오톡
 https://developers.kakao.com/sdk/js/kakao.min.js
+
+/js/constants/constant.jsp
 
 # 이미지
 /assets/images/tit_band.gif
@@ -38,7 +29,13 @@ https://developers.kakao.com/sdk/js/kakao.min.js
 /assets/images/ico_sns_twitter.png
 /assets/images/ico_sns_kakao.png
 /assets/images/ico_sns_line.png
-
+/assets/images/new/loading.gif
+/assets/images/img_add.gif
+/assets/images/img_add_02.gif
+/assets/images/ico_new.gif
+/assets/images/btn_close_02.png
+/assets/images/icon_bg.png
+/assets/images/logo/144x144.png
 
 /assets/partials/eventDetail.html
 /assets/partials/eventJoin.html

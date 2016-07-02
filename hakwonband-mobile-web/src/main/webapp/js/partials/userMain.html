@@ -20,12 +20,12 @@
 
 				<!-- 홀수일 경우 -->
 				<li ng-if="hakwonList.length > 0 && hakwonList.length % 2 > 0">
-					<a href="{{siteUrls.hakwonSearch}}"><img src="/images/img_add.gif" alt="학원 추가 가입하기" class="temp" width="140" height="140" /></a>
+					<a href="{{siteUrls.hakwonSearch}}"><img src="/assets/images/img_add.gif" alt="학원 추가 가입하기" class="temp" width="140" height="140" /></a>
 				</li>
 
 				<!-- 짝수일 경우 -->
 				<li class="clear_li" ng-if="hakwonList.length > 0 && hakwonList.length % 2 === 0">
-					<a href="{{siteUrls.hakwonSearch}}"><img src="/images/img_add_02.gif" alt="학원 추가 가입하기" width="300"></a>
+					<a href="{{siteUrls.hakwonSearch}}"><img src="/assets/images/img_add_02.gif" alt="학원 추가 가입하기" width="300"></a>
 				</li>
 			</ul>
 		</div>
@@ -82,7 +82,7 @@
 				<div class="alarm_cont main">
 					<a href="{{siteUrls.messageDetail}}?receive_no={{item.receive_no}}&type=receive">
 						{{item.title?item.title:'제목 없음'}}
-						<img src="/images/ico_new.gif" alt="새메세지" width="15" ng-if=" item.receive_date == null "/>
+						<img src="/assets/images/ico_new.gif" alt="새메세지" width="15" ng-if=" item.receive_date == null "/>
 						<span class="date">{{item.send_date}}</span>
 					</a>
 				</div>
@@ -108,7 +108,7 @@
 				<div class="alarm_cont main">
 					<a href="{{siteUrls.noticeDetail}}?hakwon_no={{item.hakwon_no}}&class_no={{item.class_no}}&notice_no={{item.notice_no}}">
 						{{item.title}}
-						<img src="/images/ico_new.gif" alt="새글" width="15" ng-show=" item.read_status == 0 "/>
+						<img src="/assets/images/ico_new.gif" alt="새글" width="15" ng-show=" item.read_status == 0 "/>
 						<span class="date">{{item.reg_date}}</span>
 					</a>
 
@@ -142,7 +142,7 @@
 				<div class="alarm_cont main">
 					<a href="{{siteUrls.eventDetail}}?hakwon_no={{item.hakwon_no}}&event_no={{item.event_no}}">
 						{{item.event_title}}
-						<img src="/images/ico_new.gif" alt="새이벤트" width="15" ng-show="isNewItem(item.begin_date) && item.read_status == 0 "/>
+						<img src="/assets/images/ico_new.gif" alt="새이벤트" width="15" ng-show="isNewItem(item.begin_date) && item.read_status == 0 "/>
 					</a>
 				</div>
 				<div class="alarm_tit list">
@@ -162,14 +162,14 @@
 	<div class="sec_blk_02">
 		<div class="sec_ad_area">
 			<ul class="sec_ad_list">
-				<li><img src="/images/img_ad_01.gif" alt="샘플" width="74" /></li>
-				<li><img src="/images/img_ad_02.gif" alt="샘플" width="149" /></li>
-				<li><img src="/images/img_ad_03.gif" alt="샘플" width="74" /></li>
-				<li class="clear"><img src="/images/img_ad_04.gif" alt="샘플" width="224" /></li>
-				<li><img src="/images/img_ad_05.gif" alt="샘플" width="74" /></li>
-				<li class="clear"><img src="/images/img_ad_06.gif" alt="샘플" width="149" /></li>
-				<li><img src="/images/img_ad_07.gif" alt="샘플" width="74" /></li>
-				<li><a href="#n"><img src="/images/img_ad_btn.gif" alt="목록" width="74" /></a></li>
+				<li><img src="/assets/images/img_ad_01.gif" alt="샘플" width="74" /></li>
+				<li><img src="/assets/images/img_ad_02.gif" alt="샘플" width="149" /></li>
+				<li><img src="/assets/images/img_ad_03.gif" alt="샘플" width="74" /></li>
+				<li class="clear"><img src="/assets/images/img_ad_04.gif" alt="샘플" width="224" /></li>
+				<li><img src="/assets/images/img_ad_05.gif" alt="샘플" width="74" /></li>
+				<li class="clear"><img src="/assets/images/img_ad_06.gif" alt="샘플" width="149" /></li>
+				<li><img src="/assets/images/img_ad_07.gif" alt="샘플" width="74" /></li>
+				<li><a href="#n"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" /></a></li>
 			</ul>
 		</div>
 	</div>
@@ -180,7 +180,7 @@
 	<div style="position:absolute;top:0;left:0;width:100%;height:100%;background-color:#555;opacity:0.7;"></div>
 	<div style="position:absolute;top:100px;left:0;width:100%;">
 		<div style="margin:0 auto;width:320px;height:209px;text-align:right;">
-			<img src="/images/btn_close_02.png" alt="닫기" width="28"  ng-click="closePopup();" style="margin-bottom:5px;cursor:pointer"/>
+			<img src="/assets/images/btn_close_02.png" alt="닫기" width="28"  ng-click="closePopup();" style="margin-bottom:5px;cursor:pointer"/>
 			<object id="first_popup_movie" width="320" height="180" data="http://www.youtube.com/embed/af3AXUB_daw"></object>
 		</div>
 	</div>

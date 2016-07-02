@@ -39,12 +39,12 @@
 	</div>
 <!--
 	<div class="sec_con_sns">
-		<a href="#" onclick="return false;" data-act="snsShare" data-type="facebook"><img src="/images/ico_sns_facebook.png" alt="페이스북" width="46" /></a>
-		<a href="#" onclick="return false;" data-act="snsShare" data-type="twitter"><img src="/images/ico_sns_twitter.png" alt="트위터" width="46" /></a>
-		<a href="#" onclick="return false;" data-act="snsShare" data-type="kakao"><img src="/images/ico_sns_kakao.png" alt="카카오톡" width="46" /></a>
-		<a href="#" onclick="return false;" data-act="snsShare" data-type="sms"><img src="/images/ico_sns_kakao.png" alt="문자발송" width="46" /></a>
-		<a href="#" onclick="return false;" data-act="snsShare" data-type="band"><img src="/images/ico_sns_band.png" alt="네이버 밴드" width="46" /></a>
-		<a href="http://line.me/R/msg/text/{{lineShareUrl}}"><img src="/images/ico_sns_line.png" alt="라인" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="facebook"><img src="/assets/images/ico_sns_facebook.png" alt="페이스북" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="twitter"><img src="/assets/images/ico_sns_twitter.png" alt="트위터" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="kakao"><img src="/assets/images/ico_sns_kakao.png" alt="카카오톡" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="sms"><img src="/assets/images/ico_sns_kakao.png" alt="문자발송" width="46" /></a>
+		<a href="#" onclick="return false;" data-act="snsShare" data-type="band"><img src="/assets/images/ico_sns_band.png" alt="네이버 밴드" width="46" /></a>
+		<a href="http://line.me/R/msg/text/{{lineShareUrl}}"><img src="/assets/images/ico_sns_line.png" alt="라인" width="46" /></a>
 	</div>
 -->
 </section>
@@ -64,7 +64,7 @@
 					<a href="{{siteUrls.eventDetail}}?hakwon_no={{detail.hakwon_no}}&&event_no={{item.event_no}}">
 						{{item.event_title}}
 					</a>
-					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.new_date) && item.read_status == 0"/>
+					<img src="/assets/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.new_date) && item.read_status == 0"/>
 				</div>
 				<div class="list_date">
 					종료일 : {{item.end_date}}
@@ -91,7 +91,7 @@
 					<a href="{{siteUrls.noticeDetail}}?hakwon_no={{detail.hakwon_no}}&notice_no={{item.notice_no}}">
 						{{item.title}}
 					</a>
-					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="item.isNew"/>
+					<img src="/assets/images/ico_new.gif" alt="새글" width="15" ng-show="item.isNew"/>
 				</div>
 				<div class="list_date">
 					등록일 : {{item.reg_date}}

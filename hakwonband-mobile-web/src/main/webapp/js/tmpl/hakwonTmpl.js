@@ -3,7 +3,7 @@ var hakwonTmpl = {
 	init : [
 /*
 		'<section id="fn_12">'
-		, '<img src="/images/loading.gif">'
+		, '<img src="/assets/images/loading.gif">'
 		, '</section>'
 */
 		'<div class="sk-spinner sk-spinner-wave">'
@@ -35,7 +35,7 @@ var hakwonTmpl = {
 		, leftMenu : [
 			'	<div class="tit">'
 			, '		<span>My Page</span>'
-			, '		<a href="#" class="btn_close" onclick="return false;"><img src="/images/btn_close.png" alt="닫기" width="15"></a>'
+			, '		<a href="#" class="btn_close" onclick="return false;"><img src="/assets/images/btn_close.png" alt="닫기" width="15"></a>'
 			, '	</div>'
 			, '	<div class="my_info">'
 			, '		<div class="about">'
@@ -85,7 +85,7 @@ var hakwonTmpl = {
 		, rightMenu : [
 			'	<div class="tit">'
 			, '		<span>학원정보</span>'
-			, '		<a href="#" class="btn_close" onclick="return false;"><img src="/images/btn_close.png" alt="닫기" width="15" /></a>'
+			, '		<a href="#" class="btn_close" onclick="return false;"><img src="/assets/images/btn_close.png" alt="닫기" width="15" /></a>'
 			, '	</div>'
 			, '	<div class="my_info">'
 			, '	<div class="about">'
@@ -130,7 +130,7 @@ var hakwonTmpl = {
 
 		, '	<div class="sec_login">'
 		, '		<div class="tit">'
-		, '			<img src="/images/tit_band.gif" alt="HAKWONBAND" width="186" />'
+		, '			<img src="/assets/images/tit_band.gif" alt="HAKWONBAND" width="186" />'
 		, '		</div>'
 		, '		<div class="input">'
 		, '			<input type="text" name="userId" title="아이디 입력" placeholder="아이디" class="id" value="" />'
@@ -222,14 +222,14 @@ var hakwonTmpl = {
 		, '	<div class="sec_blk_02">'
 		, '		<div class="sec_ad_area">'
 		, '			<ul class="sec_ad_list">'
-		, '				<li><img src="/images/img_ad_01.gif" alt="" width="74" /></li>'
-		, '				<li><img src="/images/img_ad_02.gif" alt="" width="149" /></li>'
-		, '				<li><img src="/images/img_ad_03.gif" alt="" width="74" /></li>'
-		, '				<li class="clear"><img src="/images/img_ad_04.gif" alt="" width="224" /></li>'
-		, '				<li><img src="/images/img_ad_05.gif" alt="" width="74" /></li>'
-		, '				<li class="clear"><img src="/images/img_ad_06.gif" alt="" width="149" /></li>'
-		, '				<li><img src="/images/img_ad_07.gif" alt="" width="74" /></li>'
-		, '				<li><a href="#/advertiseList?hakwon_no={{= hakwonInfo.currentHakwon.hakwon_no}}"><img src="/images/img_ad_btn.gif" alt="목록" width="74" /></a></li>'
+		, '				<li><img src="/assets/images/img_ad_01.gif" alt="" width="74" /></li>'
+		, '				<li><img src="/assets/images/img_ad_02.gif" alt="" width="149" /></li>'
+		, '				<li><img src="/assets/images/img_ad_03.gif" alt="" width="74" /></li>'
+		, '				<li class="clear"><img src="/assets/images/img_ad_04.gif" alt="" width="224" /></li>'
+		, '				<li><img src="/assets/images/img_ad_05.gif" alt="" width="74" /></li>'
+		, '				<li class="clear"><img src="/assets/images/img_ad_06.gif" alt="" width="149" /></li>'
+		, '				<li><img src="/assets/images/img_ad_07.gif" alt="" width="74" /></li>'
+		, '				<li><a href="#/advertiseList?hakwon_no={{= hakwonInfo.currentHakwon.hakwon_no}}"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" /></a></li>'
 		, '			</ul>'
 		, '		</div>'
 		, '	</div>'
