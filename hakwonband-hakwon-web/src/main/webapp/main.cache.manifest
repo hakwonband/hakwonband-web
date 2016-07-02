@@ -30,6 +30,8 @@ CACHE:
 /assets/css/hakwon_style.css
 /assets/css/font_style.css
 
+/assets/css/patterns/header-profile-skin-1.png
+/images/logo/144x144.png
 
 /assets/css/bootstrap.min.css
 /assets/css/plugins/iCheck/custom.css
