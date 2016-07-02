@@ -4,26 +4,17 @@
 	</div>
 	<form role="form" action="" class="form-group">
 		<ul class="info_list_box">
-			<!-- 인풋 입력값에 따른 상황 li에다가 has-success, has-warning, has-error 태그를 붙여 인풋박스 색깔을 변화시켜줌.  -->
-			<!--<li class="form-group has-success">-->
-			<!--<label class="control-label">성공</label>-->
-			<!--<input type="text" class="form-control" placeholder="성공">-->
-			<!--</li>-->
-			<!--<li class="form-group has-warning">-->
-			<!--<label class="control-label">주의</label>-->
-			<!--<input type="text" class="form-control" placeholder="주의">-->
-			<!--</li>-->
-			<!--<li class="form-group has-error">-->
-			<!--<label class="control-label">에러</label>-->
-			<!--<input type="text" class="form-control" placeholder="에러">-->
-			<!--</li>-->
-			<!-- 여기까지는 상황 예제 설명이니 개발시 참고 후 지우세요~ -->
+			<li class="form-group">
+				<label class="control-label">비밀번호변경</label>
+				<a href="#" ng-show="is_pwd_change == false" onclick="return false;" ng-click="is_pwd_change = !is_pwd_change">비밀번호 변경</a>
+				<a href="#" ng-show="is_pwd_change == true" onclick="return false;" ng-click="is_pwd_change = !is_pwd_change">비밀번호 변경 취소</a>
+			</li>
 
-			<li class="form-group" ng-class="{'has-success' : checkUserPwd1 === true, 'has-error' : checkUserPwd1 === false}">
+			<li ng-show="is_pwd_change == true" class="form-group" ng-class="{'has-success' : checkUserPwd1 === true, 'has-error' : checkUserPwd1 === false}">
 				<label class="control-label">비밀번호</label>
 				<input type="password" name="userPassword" class="form-control m-b-xs" placeholder="비밀번호" ng-model="memberObj.user_password">
 			</li>
-			<li class="form-group" ng-class="{'has-success' : checkUserPwd2 === true, 'has-error' : checkUserPwd2 === false}">
+			<li ng-show="is_pwd_change == true" class="form-group" ng-class="{'has-success' : checkUserPwd2 === true, 'has-error' : checkUserPwd2 === false}">
 				<label class="control-label">비밀번호 확인</label>
 				<input type="password" name="pwdConfirm" class="form-control m-b-xs" placeholder="비밀번호 확인" ng-model="memberObj.chk_password">
 			</li>

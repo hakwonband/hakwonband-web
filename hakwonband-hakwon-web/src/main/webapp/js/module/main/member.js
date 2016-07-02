@@ -14,12 +14,6 @@ hakwonMainApp.service('memberService', function() {
 		return !numberExp.test(value) || !strExp.test(value);
 	};
 
-	/*	생년원일 입력후, 포멧 변경		*/
-	memberService.dateFormatBirthDay = function(date) {
-		var birthDay = moment(date).format('YYYY-MM-DD');
-		return birthDay;
-	};
-
 	/*  이메일 검증  */
 	memberService.checkEmailValidation = function(email) {
 		if (isNull(email)) {
@@ -55,7 +49,7 @@ hakwonMainApp.service('memberService', function() {
 	/*  완료버튼시 가입자 전체정보 검증처리  */
 	memberService.validateMemberEdit = function($scope) {
 
-		if (!isNull($scope.memberObj.user_password) || !isNull($scope.memberObj.chk_password)) {
+		if( $scope.is_pwd_change == true && (!isNull($scope.memberObj.user_password) || !isNull($scope.memberObj.chk_password)) ) {
 			if (!memberService.checkPwdValidation($scope.memberObj.user_password)) {
 				$scope.checkUserPwd1 = false;
 				$('input[name=userPassword]').focus();
@@ -93,7 +87,7 @@ hakwonMainApp.service('memberService', function() {
 			$('input[name=userBirthday]').focus();
 			return;
 		} else {
-			$scope.memberObj.user_birthday = memberService.dateFormatBirthDay($scope.memberObj.user_birthday);
+			$scope.memberObj.update_user_birthday = moment($scope.memberObj.user_birthday).format('YYYY-MM-DD');
 		}
 
 		if (isNull($scope.memberObj.tel1_no)) {
@@ -353,8 +347,6 @@ hakwonMainApp.controller('memberEditController', function($scope, $location, $ro
 
 		$("#wrapper").show();
 
-		console.log($routeParams);
-
 		$scope.userType 		= userAuth.userType;
 		$scope.userNo 			= userAuth.userNo;
 		$scope.urlParams 		= $routeParams;
@@ -365,6 +357,8 @@ hakwonMainApp.controller('memberEditController', function($scope, $location, $ro
 		$scope.changeEmail		= true;
 		$scope.checkUserPwd1	= '';
 		$scope.checkUserPwd2	= '';
+
+		$scope.is_pwd_change = false;
 
 		$scope.getFileFullPath = function() {
 			return CommUtil.createFileFullPath($scope.memberObj.photo_file_path, 'photo');
@@ -412,7 +406,7 @@ hakwonMainApp.controller('memberEditController', function($scope, $location, $ro
 					if( colData ) {
 						$scope.memberObj = colData;
 						$scope.oldEmail = colData.user_email;
-						$scope.memberObj.user_birthday = $scope.getInitBirthDay(colData.user_birthday);
+						$scope.memberObj.user_birthday = new Date(colData.user_birthday);
 					} else {
 						commProto.logger({hakwonDetailError:data});
 					}
@@ -510,9 +504,7 @@ hakwonMainApp.controller('memberEditController', function($scope, $location, $ro
 			params.tel1_no 			= $scope.memberObj.tel1_no;
 			params.user_email 		= $scope.memberObj.user_email;
 			params.user_gender 		= $scope.memberObj.user_gender;
-			params.user_birthday 	= $scope.getBirthDayFormat($scope.memberObj.user_birthday);
-
-			console.log(params);
+			params.user_birthday 	= $scope.memberObj.update_user_birthday;
 
 			CommUtil.ajax({url:contextPath+finalUrl, param:params, successFun:function(data) {
 				try {
