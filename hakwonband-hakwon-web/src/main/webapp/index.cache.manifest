@@ -27,6 +27,9 @@ CACHE MANIFEST
 # 캐쉬될 파일들을 지정하는 곳. CACHE:는 생략해도 된다.
 CACHE:
 
+/js/constants/constant.jsp
+/js/partials/index/login.html
+
 /assets/img/favicon/64x64.png
 
 /assets/css/index.lib.min.css
