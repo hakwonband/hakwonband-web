@@ -15,7 +15,7 @@
 			<li ng-repeat="item in eventListObj.eventList">
 				<div class="list_subj">
 					<a href="" ng-click="goEventDetail(item)">{{item.event_title}}</a>
-					<img src="/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.begin_date) && item.read_status == 0 " />
+					<img src="/assets/images/ico_new.gif" alt="새글" width="15" ng-show="isNewItem(item.begin_date) && item.read_status == 0 " />
 				</div>
 				<div class="list_date">
 					종료일 : {{item.end_date}}

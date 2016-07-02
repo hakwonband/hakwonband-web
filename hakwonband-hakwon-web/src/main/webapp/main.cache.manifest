@@ -13,6 +13,12 @@ CACHE MANIFEST
 ############################################################
 ############################################################
 
+############################################################
+############################################################
+# 2016-07-03 01
+############################################################
+############################################################
+
 # 캐쉬될 파일들을 지정하는 곳. CACHE:는 생략해도 된다.
 CACHE:
 
@@ -24,6 +30,8 @@ CACHE:
 /assets/css/hakwon_style.css
 /assets/css/font_style.css
 
+/assets/css/patterns/header-profile-skin-1.png
+/images/logo/144x144.png
 
 /assets/css/bootstrap.min.css
 /assets/css/plugins/iCheck/custom.css
@@ -40,6 +48,9 @@ CACHE:
 
 /assets/js/main.module.min.js
 
+/assets/fonts/NanumGothic-Bold.woff2
+/assets/fonts/NanumGothic-Regular.woff2
+/assets/partials/main/dashBoardMain.html
 
 # 언제나 네트웍을 통해 받아와야만 하는 파일 리스트
 NETWORK:
