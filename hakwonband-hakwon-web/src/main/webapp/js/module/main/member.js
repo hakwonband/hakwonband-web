@@ -243,15 +243,11 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 
 		/*	로그아웃	*/
 		$scope.logout = function() {
-			if( $scope.is_app == true ) {
-				var promptVal = window.prompt("로그아웃 하시려면 '로그아웃'을 입력해 주세요.");
-				if( promptVal == '로그아웃'  ) {
-					window.location = '/logout.do';
-				}
+			var promptVal = window.prompt("로그아웃 하시려면 '로그아웃'을 입력해 주세요.");
+			if( promptVal == '로그아웃'  ) {
+				window.location = '/logout.do';
 			} else {
-				if( window.confirm('로그아웃 하시겠습니까?') ) {
-					window.location = '/logout.do';
-				}
+				alert('정확하게 입력해 주세요.');
 			}
 			return false;
 		};

@@ -100,10 +100,10 @@
 	]]>
 		<set>
 			<if test="@hakwonband.util.StringUtil@isNotBlank( user_email )">
-				user_email = #{user_email}
+				user_email = #{user_email},
 			</if>
 			<if test="@hakwonband.util.StringUtil@isNotBlank( user_password )">
-				, user_password = #{user_password}
+				user_password = #{user_password}
 			</if>
 		</set>
 	<![CDATA[
