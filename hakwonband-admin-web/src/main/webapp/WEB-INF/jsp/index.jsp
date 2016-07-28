@@ -116,6 +116,16 @@
 <script type="text/javascript" src="/js/module/index/hakwonCommonApp.js"></script>
 <script type="text/javascript" src="/js/module/index/index.js"></script>
 <script type="text/javascript" src="/js/module/index/login.js"></script>
+<script type="text/javascript">
+window.addEventListener('load', function(e) {
+	window.applicationCache.addEventListener('updateready', function(e) {
+		if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+			window.applicationCache.swapCache();
+			window.location.reload();
+		}
+	},false);
+},false);
+</script>
 <!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

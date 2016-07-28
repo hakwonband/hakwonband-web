@@ -90,7 +90,7 @@ hakwonMainApp.service('masterService', function() {
 							total: totalPages,
 							page: pageNo,
 							maxVisible: DefaultInfo.pageScale,
-							leaps: true
+							//leaps: true
 						}).unbind("page").bind("page", function(event, page){
 							param.pageNo = page;
 							window.location = PageUrl.master.list+"?"+$.param(param);
