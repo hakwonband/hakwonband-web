@@ -232,16 +232,22 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 
 		/*	회원 탈퇴	*/
 		$scope.memberOut = function() {
-			if( window.confirm('탈퇴 하시면 학원밴드 서비스를 더이상 이용할 수 없습니다.\n정말 회원 탈퇴를 하시겠습니까?') ) {
+			var promptVal = window.prompt("탈퇴 하시면 학원밴드 서비스를 더이상 이용할 수 없습니다.\n탈퇴 하시려면 '탈퇴 합니다.'를 입력해 주세요.");
+			if( promptVal == '탈퇴 합니다.'  ) {
 				memberService.memberOut();
+			} else {
+				alert('메세지를 정확히 입력해 주세요.');
 			}
 			return false;
 		};
 
 		/*	로그아웃	*/
 		$scope.logout = function() {
-			if( window.confirm('로그아웃 하시겠습니까?') ) {
+			var promptVal = window.prompt("로그아웃 하시려면 '로그아웃'을 입력해 주세요.");
+			if( promptVal == '로그아웃'  ) {
 				window.location = '/logout.do';
+			} else {
+				alert('정확하게 입력해 주세요.');
 			}
 			return false;
 		};

@@ -98,7 +98,11 @@ public class StudentService {
 		userParam.put("user_password",	param.getString("user_pwd"));
 		userParam.put("user_email",		param.getString("user_email"));
 		userParam.put("user_no",		param.getString("student_user_no"));
-		userDAO.updateUser(userParam);
+
+		if( param.isNull("user_pwd") && param.isNull("user_email") ) {
+		} else {
+			userDAO.updateUser(userParam);
+		}
 
 		/**
 		 * 학교 정보 수정
