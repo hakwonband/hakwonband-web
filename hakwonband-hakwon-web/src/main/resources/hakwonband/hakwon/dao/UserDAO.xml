@@ -92,6 +92,18 @@
 	]]>
 	</insert>
 
+	<!-- 학생 이메일 변경시 체크 -->
+	<select id="checkStudentEmail" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* UserDAO.checkStudentEmail */
+		select count(1)
+		from tb_user
+		where
+			user_no <> #{student_user_no}
+			and user_email = #{user_email}
+	]]>
+	</select>
+
 	<!-- 사용자 비밀번호 및 이메일 정보 수정 -->
 	<update id="updateUser" parameterType="dataMap">
 	<![CDATA[

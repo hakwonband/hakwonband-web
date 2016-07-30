@@ -666,11 +666,17 @@ hakwonMainApp.controller('studentModifyController', function($scope, $location, 
 			};
 
 			studentService.studentUpdate(param, function(data) {
-				if( data && data.colData && data.colData.flag == 'success' ) {
-					if (history.length > 1) {
-						window.history.back();
+				if( data && data.colData ) {
+					if( data.colData.flag == 'success' ) {
+						if (history.length > 1) {
+							window.history.back();
+						} else {
+							$location.path('/student/list');
+						}
+					} else if( data.colData.flag == 'email_dup' ) {
+						alert('중복되는 이메일 주소 입니다.');
 					} else {
-						$location.path('/student/list');
+						alert('수정을 실패 했습니다.');
 					}
 				} else {
 					alert('수정을 실패 했습니다.');
