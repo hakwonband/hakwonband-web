@@ -13,7 +13,6 @@ import hakwonband.mobile.common.constant.HakwonConstant;
 import hakwonband.mobile.service.CommonService;
 import hakwonband.util.CookieUtils;
 import hakwonband.util.DataMap;
-import hakwonband.util.HKBandUtil;
 import hakwonband.util.StringUtil;
 
 /**

@@ -69,6 +69,22 @@ public class CommonController extends BaseAction {
 	 */
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		if( authUserInfo != null ) {
+			logger.error("index.do authUserInfo is not null authUserInfo : " + authUserInfo.getString("user_type"));
+			if( authUserInfo.equals("user_type", HakwonConstant.UserType.TEACHER) || authUserInfo.equals("user_type", HakwonConstant.UserType.WONJANG) ) {
+
+			} else if( authUserInfo.equals("user_type", HakwonConstant.UserType.MANAGER) ) {
+
+			} else if( authUserInfo.equals("user_type", HakwonConstant.UserType.ADMIN) ) {
+
+			}
+		} else {
+			logger.error("index.do authUserInfo is null");
+		}
+
 		return new ModelAndView("/index");
 	}
 
