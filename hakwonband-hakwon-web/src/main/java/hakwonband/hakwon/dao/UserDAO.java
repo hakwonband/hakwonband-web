@@ -104,4 +104,11 @@ public interface UserDAO {
 	public List<DataMap> childList(DataMap param);
 
 	public void updateReceiptDate(DataMap param);
+
+	/**
+	 * 학생 이메일 변경시 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkStudentEmail(DataMap param);
 }

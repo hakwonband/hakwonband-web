@@ -146,6 +146,13 @@ public class StudentController extends BaseAction {
 		param.put("hakwon_no",			hakwonNo);
 		param.put("authUserInfo",		authUserInfo);
 
+		if( StringUtils.isNotBlank(user_email) ) {
+			int checkCnt = studentService.checkStudentEmail(param);
+			if( checkCnt == 1 ) {
+				sendFlag("email_dup", request, response);
+				return ;
+			}
+		}
 		/**
 		 * 업데이트
 		 */

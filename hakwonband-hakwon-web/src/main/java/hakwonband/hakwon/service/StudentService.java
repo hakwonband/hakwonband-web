@@ -63,6 +63,14 @@ public class StudentService {
 	}
 
 	/**
+	 * 학생 이메일 주소 체크
+	 * @return
+	 */
+	public int checkStudentEmail(DataMap param) {
+		return userDAO.checkStudentEmail(param);
+	}
+
+	/**
 	 * 학생 수정
 	 * @return
 	 */
