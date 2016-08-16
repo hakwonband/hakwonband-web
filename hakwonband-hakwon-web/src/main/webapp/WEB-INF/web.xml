@@ -134,5 +134,11 @@
 		<extension>manifest</extension>
 		<mime-type>text/cache-manifest</mime-type>
 	</mime-mapping>
+	
+	<session-config>
+        <cookie-config>
+            <name>HAKWONBAND_JSESSIONID</name>
+        </cookie-config>
+    </session-config>
 
 </web-app>
