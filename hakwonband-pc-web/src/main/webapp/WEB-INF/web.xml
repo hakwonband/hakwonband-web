@@ -91,5 +91,11 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
+	<session-config>
+        <cookie-config>
+            <name>HAKWONBAND_JSESSIONID</name>
+        </cookie-config>
+    </session-config>
 
 </web-app>
