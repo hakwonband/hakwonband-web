@@ -228,6 +228,7 @@
 			, a.hakwon_status
 			, get_code_name('012', a.hakwon_status) as hakwon_status_name
 			, c.introduction
+			, a.admin_reg_yn
 		from
 			tb_hakwon a
 			, tb_user_info b
