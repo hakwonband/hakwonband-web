@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<%@ include file="/WEB-INF/jsp/include/commonHeader.jspf" %>
+	<script type="text/javascript" src="<%=jsPath %>/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
 	<title><%=errorMessage%></title>
 
 <script type="text/javascript">

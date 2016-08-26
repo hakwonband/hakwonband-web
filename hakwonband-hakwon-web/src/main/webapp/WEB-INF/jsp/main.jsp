@@ -65,6 +65,8 @@
 	<link href="/assets/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 	<link href="/assets/css/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print">
 
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
 	<!-- 공통 js -->
 	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
@@ -72,6 +74,8 @@
 
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
+
+<script>if (window.module) module = window.module;</script>
 
 <style type="text/css">
 	#calendar {
