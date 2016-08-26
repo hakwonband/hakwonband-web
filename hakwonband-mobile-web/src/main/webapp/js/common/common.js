@@ -855,13 +855,13 @@ var HakwonCommon = function() {
 	 */
 	this.appUpdateCheck = function(appVersionList) {
 		if( isMobile.Android() ) {
+/*
 			if( window.PLATFORM ) {
-				/*	앱	*/
 				var uploadFlag = false;
 				if( appVersionList && appVersionList.length > 0 ) {
 					var checkCurrentVersion = window.PLATFORM.version();
 
-					/*	앱이 두개밖에 안되 그냥다 가져왔다.	*/
+					//	앱이 두개밖에 안되 그냥다 가져왔다.
 					for(var i=0; i<appVersionList.length; i++) {
 						if( appVersionList[i].device_type == CommonConstant.DeviceType.android ) {
 							var appVersion = appVersionList[i].app_version;
@@ -882,12 +882,13 @@ var HakwonCommon = function() {
 					}
 				}
 			} else {
-				/*	일반 브라우저	*/
+				//	일반 브라우저
 				$('div.popup_box > p').html('학원밴드 안드로이드 앱이 있습니다.<br/>더 원활한 학원밴드 이용을 위해 앱을 다운로드 해주세요.');
 				$('div.popup_box > button[data-act=install]').html('앱 설치');
 
 				$('div.popup_box').show();
 			}
+*/
 		} else {
 			if( isIE() ) {
 				/*	ie면 팝업 보여준다.	*/
