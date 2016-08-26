@@ -18,7 +18,7 @@ CACHE:
 /assets/js/module.min.js
 
 # 카카오톡
-https://developers.kakao.com/sdk/js/kakao.min.js
+#https://developers.kakao.com/sdk/js/kakao.min.js
 
 /js/constants/constant.jsp
 
