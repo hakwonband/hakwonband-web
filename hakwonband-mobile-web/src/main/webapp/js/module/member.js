@@ -638,8 +638,8 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		/*	로그 아웃	*/
 		$scope.logout = function() {
 			if( $scope.is_app == true ) {
-				var promptVal = window.prompt("로그아웃 하시려면 '로그아웃'을 입력해 주세요.");
-				if( promptVal == '로그아웃'  ) {
+				var promptVal = window.prompt("로그아웃 하시려면'logout'를 입력해주세요.\ntype the phrase 'logout' to sign out");
+				if( promptVal == 'logout'  ) {
 					window.location = '/logout.do';
 				}
 			} else {
