@@ -197,7 +197,7 @@ public class CommonController extends BaseAction {
 		CookieUtils cookieUtils = new CookieUtils(request, response, true);
 		cookieUtils.delCookie(CommonConstant.Cookie.hkBandAuthKey);
 
-		return new ModelAndView("redirect:/index.do");
+		return new ModelAndView("redirect:https://m.hakwonband.com/index.do");
 	}
 
 	/**

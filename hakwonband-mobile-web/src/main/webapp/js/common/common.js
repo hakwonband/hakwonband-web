@@ -855,7 +855,6 @@ var HakwonCommon = function() {
 	 */
 	this.appUpdateCheck = function(appVersionList) {
 		if( isMobile.Android() ) {
-/*
 			if( window.PLATFORM ) {
 				var uploadFlag = false;
 				if( appVersionList && appVersionList.length > 0 ) {
@@ -886,14 +885,6 @@ var HakwonCommon = function() {
 				$('div.popup_box > p').html('학원밴드 안드로이드 앱이 있습니다.<br/>더 원활한 학원밴드 이용을 위해 앱을 다운로드 해주세요.');
 				$('div.popup_box > button[data-act=install]').html('앱 설치');
 
-				$('div.popup_box').show();
-			}
-*/
-		} else {
-			if( isIE() ) {
-				/*	ie면 팝업 보여준다.	*/
-				$('div.popup_box > p').html('학원밴드 서비스는 IE 브라우저는 지원하지 않습니다. IE가 아닌 크롬, 파이어폭스, 사파리 등 다른 브라우저를 사용해 주세요.');
-				$('div.popup_box > button[data-act=install]').hide();
 				$('div.popup_box').show();
 			}
 		}
