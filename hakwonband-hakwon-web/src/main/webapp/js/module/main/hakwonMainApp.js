@@ -322,8 +322,12 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	매니저 설정	*/
 		.when('/setting/manager', {
-			templateUrl: '/assets/partials/settingManager.html'
+			templateUrl: '/assets/partials/setting/manager.html'
 			, controller: 'settingManagerController'
+		})
+		.when('/setting/excelRegist', {
+			templateUrl: '/assets//partials/setting/excel_regist.html'
+			, controller: 'settingExcelRegistController'
 		})
 
 
@@ -521,6 +525,9 @@ var HakwonCommon = function() {
 			} else if( dataAct == 'settingManager' ) {
 				/*	원장님 셋팅 매니저	*/
 				moveLeftLocation = PageUrl.setting.manager+'?hakwon_no='+hakwonInfo.hakwon_no;
+			} else if( dataAct == 'settingExcelRegist' ) {
+				/*	원장님 셋팅 엑셀 회원 등록	*/
+				moveLeftLocation = PageUrl.setting.excelRegist+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'adminQuestion' ) {
 				/*	관리자에게 문의 하기	*/
 				moveLeftLocation = PageUrl.common.adminQuestionList+'?hakwon_no='+hakwonInfo.hakwon_no;

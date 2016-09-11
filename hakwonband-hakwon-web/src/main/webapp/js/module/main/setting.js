@@ -441,3 +441,82 @@ hakwonMainApp.controller('settingManagerController', function($scope, $location,
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}
 });
+
+
+/**
+ * 엑셀 등록
+ */
+hakwonMainApp.controller('settingExcelRegistController', function($scope, $location, $routeParams, settingService, CommUtil) {
+	console.log('hakwonMainApp settingExcelRegistController call');
+
+	try {
+		/*	페이지 초기화 호출	*/
+		hakwonCommon.pageInit();
+
+		/*	헤더 셋팅	*/
+		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'설정'}, {url:'#', title:'엑셀 회원 등록'}]);
+
+		/*	공통 유틸	*/
+		$scope.CommUtil = CommUtil;
+
+		$("#wrapper").show();
+
+		$scope.$$postDigest(function(){
+			console.log('$$postDigest');
+
+			/*	파일 업로드 객체 생성		*/
+			if( comm.isAndroidUploader() ) {
+				angular.element("input[data-act=file_upload]").click(function() {
+					delete window.uploadCallBack;
+					window.uploadCallBack = function(uploadJsonStr) {
+						try {
+							var resultObj = JSON.parse(uploadJsonStr);
+							if( !resultObj.resultList || resultObj.resultList.length == 0 ) {
+								alert('파일 업로드를 실패 했습니다.');
+							} else {
+								alert('업로드 우선 성공');
+							}
+						} catch(e) {
+							alert('파일 업로드를 실패 했습니다.');
+						}
+					};
+					var param = {
+						fileType : 'all'
+						, multipleYn : 'Y'
+						, callBack : 'uploadCallBack'
+						, upload : {
+							url : window.location.protocol+'//'+window.location.host+'/hakwon/excel_join.do'
+							, param : {hakwonNo:hakwonInfo.hakwon_no}
+							, cookie : document.cookie
+						}
+					};
+					window.PLATFORM.fileChooser(JSON.stringify(param));
+
+					return false;
+				});
+			} else {
+				var fileUploadOptions = new UploadOptions();
+				fileUploadOptions.customExtraFields = {hakwonNo:hakwonInfo.hakwon_no};
+				fileUploadOptions.url = '/hakwon/excel_join.do';
+				fileUploadOptions.onFinish = function(event, total) {
+					if (this.errorFileArray.length + this.errorCount > 0) {
+						alert('첨부파일 업로드를 실패 했습니다.' +  this.errorFileArray + '-' + this.errorCount);
+					} else {
+						var result = this.uploadFileArray[0];
+						if( !result.resultList || result.resultList.length == 0 ) {
+							alert('파일 업로드를 실패 했습니다.');
+						} else {
+							alert('업로드 우선 성공');
+						}
+						$scope.$digest();
+					}
+				};
+
+				$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(fileUploadOptions);
+			}
+		});
+
+	} catch(ex) {
+		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
+	}
+});

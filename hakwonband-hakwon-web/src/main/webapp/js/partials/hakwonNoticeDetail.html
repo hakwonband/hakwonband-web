@@ -5,8 +5,14 @@
 			{{noticeDetail.title}}
 			<small ng-if="noticeDetail.reservation_yn == 'Y' && !noticeDetail.reservation_send_date">[예약] {{ noticeDetail.reservation_date }} / {{ noticeDetail.reg_user_name }}</small>
 			<small ng-if="noticeDetail.reservation_yn == 'N' || noticeDetail.reservation_send_date">{{ noticeDetail.reg_date }} / {{ noticeDetail.reg_user_name }}</small>
+			<button type="button" class="btn btn-primary" ng-click="copy_prompt()">학생 주소 복사</button>
 		</h2>
 	</div>
+	<!--
+	<div class="ibox-title">
+		{{student_url}} <button type="button" class="btn btn-primary" ng-click="copy_prompt()">복사</button>
+	</div>
+	-->
 	<div class="ibox-content" id="content_view_div" ng-bind-html="noticeDetail.content | rawHtml">
 
 	</div>

@@ -1164,6 +1164,11 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 			$scope.page = 1;
 		}
 
+		$scope.student_url = 'https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no='+$scope.hakwonNo+'&notice_no='+$scope.noticeNo+'&class_no='+$scope.classNo;
+		$scope.copy_prompt = function() {
+			prompt("Ctrl+C를 눌러 복사하세요.", $scope.student_url);
+		}
+
 		/*	댓글 입력 정보	*/
 		$scope.replyInfo = {
 			content_type		: '001',

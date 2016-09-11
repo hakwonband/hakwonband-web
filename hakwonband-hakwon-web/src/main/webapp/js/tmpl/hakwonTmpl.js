@@ -141,6 +141,7 @@ hakwonTmpl.leftMenu = {
 		, '		<ul class="nav nav-second-level">'
 		, '			<li><a href="#" data-type="leftMenu" data-act="settingNoticeCate">공지사항 카테고리</a></li>'
 		, '			<li><a href="#" data-type="leftMenu" data-act="settingManager">매니저 설정</a></li>'
+		//, '			<li><a href="#" data-type="leftMenu" data-act="settingExcelRegist">엑셀 회원 등록</a></li>'
 		, '		</ul>'
 		, '	</li>'
 		, '	<li>'

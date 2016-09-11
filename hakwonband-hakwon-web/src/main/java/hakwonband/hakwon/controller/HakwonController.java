@@ -1,18 +1,27 @@
 package hakwonband.hakwon.controller;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
+import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.service.HakwonService;
 import hakwonband.hakwon.service.NoticeService;
@@ -391,5 +400,74 @@ public class HakwonController extends BaseAction {
 
 
 		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
+	 * 엑셀 가입
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/excel_join")
+	public void excelJoin(HttpServletRequest request, HttpServletResponse response) {
+
+		DataMap colData = new DataMap();
+		try {
+			/*	인증 정보	*/
+			DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			MultiValueMap<String, MultipartFile> map = multipartRequest.getMultiFileMap();
+
+			String hakwonNo		= multipartRequest.getParameter("hakwonNo");
+
+			String newUploadDirPath = System.getProperty("java.io.tmpdir")+"/hakwon/";
+
+			File dirFilePath = new File(newUploadDirPath);
+			if( !dirFilePath.exists() ) {
+				dirFilePath.mkdirs();
+			}
+
+			if(map != null) {
+				@SuppressWarnings("rawtypes")
+				Iterator iter = map.keySet().iterator();
+				while(iter.hasNext()) {
+					List<MultipartFile> fileList =  map.get(iter.next());
+					for(MultipartFile mpf : fileList) {
+
+						String uploadFilePath = newUploadDirPath + UUID.randomUUID().toString() + authUserInfo.getString("user_no");
+
+						/*	파일 타입	*/
+						String mimeType = (new Tika()).detect(mpf.getInputStream());
+						logger.debug("mimeType : " + mimeType);
+
+						/*	파일 이동	*/
+						File newFile = new File(uploadFilePath);
+						mpf.transferTo(newFile);
+
+						List<DataMap> resultList = new ArrayList<DataMap>();
+						if( "application/x-tika-msoffice".equals(mimeType) ) {
+							//	xls
+							DataMap result = new DataMap();
+							result.put("user_name", "김개똥");
+							resultList.add(result);
+						} else if( "application/x-tika-ooxml".equals(mimeType) ) {
+							//	xlsx
+							DataMap result = new DataMap();
+							result.put("user_name", "김개똥");
+							resultList.add(result);
+						}
+						colData.put("resultList",	resultList);
+						colData.put("fileNo",		"1");	//	임시로 넣는다.
+					}
+				}
+			} else {
+				throw new HKBandException();
+			}
+		} catch(Exception e) {
+			logger.error("", e);
+			colData.put("error",	"fail");
+		} finally {
+			sendColData(colData, request, response);
+		}
 	}
 }
