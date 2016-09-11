@@ -38,8 +38,6 @@ public class FileUploadController extends BaseAction {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
 	@Autowired
 	private FileService fileService;
 
@@ -70,6 +68,7 @@ public class FileUploadController extends BaseAction {
 			String hakwonNo		= multipartRequest.getParameter("hakwonNo");
 			String classNo		= multipartRequest.getParameter("classNo");
 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			String toDay = sdf.format(new Date());
 			if( CommonConstant.ServerType.local.equals(CommonConfig.getServerType()) ) {
 				String localPath = request.getServletContext().getRealPath("");

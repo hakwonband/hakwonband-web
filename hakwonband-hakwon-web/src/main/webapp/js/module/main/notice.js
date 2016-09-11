@@ -346,6 +346,11 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 			$scope.noticeNo = $routeParams.notice_no;
 		}
 
+		$scope.student_url = 'https://m.hakwonband.com/index.do#/hakwon/noticeDetail?hakwon_no='+$scope.hakwonNo+'&notice_no='+$scope.noticeNo;
+		$scope.copy_prompt = function() {
+			prompt("Ctrl+C를 눌러 복사하세요.", $scope.student_url);
+		}
+
 		$scope.page = $routeParams.page;
 		if( isNull($scope.page) ) {
 			$scope.page = 1;

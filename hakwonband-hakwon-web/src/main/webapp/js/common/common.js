@@ -128,6 +128,7 @@ var PageUrl = {
 	, setting : {
 		noticeCategory : '#/setting/noticeCategory'
 		, manager : '#/setting/manager'
+		, excelRegist : '#/setting/excelRegist'
 	}
 	, message : {
 		masterSend : '#/message/masterSend'	//메세지 발송
