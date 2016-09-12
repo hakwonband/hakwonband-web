@@ -197,29 +197,13 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 	};
 
 	/*	메세지 그룹 상세	*/
-	messageViewService.sendMessageGroupDetail = function(messageNo) {
+	messageViewService.sendMessageGroupDetail = function(messageNo, callback) {
 		var param = {messageNo : messageNo};
-		$.ajax({
-			url: contextPath+"/hakwon/message/groupMessageDetail.do",
-			type: "post",
-			data: $.param(param, true),
-			headers : hakwonInfo.getHeader(),
-			dataType: "json",
-			success: function(data) {
-				try {
-					if( data.error ) {
-						alert('메세지 상세 조회를 실패 했습니다.');
-						return false;
-					}
-					var colData = data.colData;
-					$('div[data-view=data-view]').html($.tmpl(hakwonTmpl.messageView.sendMessageGroupView, colData));
-				} catch(ex) {
-					commProto.errorDump({errorObj:ex});
-				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				alert('통신을 실패 했습니다.');
-			}
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/message/groupMessageDetail.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
 		});
 	};
 
@@ -571,44 +555,64 @@ hakwonMainApp.controller('messageSendGroupListController', function($scope, $loc
 hakwonMainApp.controller('messageGroupSendDetailController', function($scope, $location, $routeParams, messageViewService, CommUtil) {
 	console.log('hakwonMainApp messageGroupSendDetailController call');
 
-	try {
-		/*	페이지 초기화 호출	*/
-		hakwonCommon.pageInit();
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
 
-		/*	헤더 셋팅	*/
-		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'메세지'}, {url:'#', title:'보낸 그룹 메세지'}]);
+	/*	헤더 셋팅	*/
+	comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'메세지'}, {url:'#', title:'보낸 그룹 메세지'}]);
 
-		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+	/*	공통 유틸	*/
+	$scope.CommUtil = CommUtil;
 
-		$("#wrapper").show();
+	$("#wrapper").show();
 
-		var messageNo = $routeParams.messageNo;
+	var messageNo = $routeParams.messageNo;
 
-		/*	목록으로	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
-			commProto.hrefMove(PageUrl.message.sendMessageGroupList);
+	/*	목록으로	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=goList]', function() {
+		commProto.hrefMove(PageUrl.message.sendMessageGroupList);
+		return false;
+	});
+
+	/*	예약 메세지 삭제	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
+		messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageGroupList);
+	});
+
+	/*	메세지 삭제	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=delMsg]', function() {
+		if( window.confirm('보낸 메세지를 정말 삭제 하시겠습니까?') ) {
+			messageViewService.msgDelete(messageNo, PageUrl.message.sendMessageGroupList);
+		}
+	});
+
+	$scope.hakwonCommon = hakwonCommon;
+	$scope.result_view = false;
+
+	/*	보낸 그룹 메세지 상세 정보 조회	*/
+	messageViewService.sendMessageGroupDetail(messageNo, function(data) {
+		if( data.error ) {
+			alert('메세지 상세 조회를 실패 했습니다.');
 			return false;
-		});
+		}
+		$scope.msgData = data.colData;
 
-		/*	예약 메세지 삭제	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=reservationMsgDelete]', function() {
-			messageViewService.reservationMsgDelete(messageNo, PageUrl.message.sendMessageGroupList);
-		});
+		/*	읽음/안읽음 카운트 체크	*/
+		$scope.read_count = 0;
+		$scope.unread_count = 0;
+		for(var i=0; i<$scope.msgData.receiveUserList.length; i++) {
+			var user = $scope.msgData.receiveUserList[i];
 
-		/*	메세지 삭제	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=delMsg]', function() {
-			if( window.confirm('보낸 메세지를 정말 삭제 하시겠습니까?') ) {
-				messageViewService.msgDelete(messageNo, PageUrl.message.sendMessageGroupList);
+			if( user.receive_date ) {
+				$scope.read_count++;
+			} else {
+				$scope.unread_count++;
 			}
-		});
+		}
 
-		$scope.$$postDigest(function() {
-			messageViewService.sendMessageGroupDetail(messageNo);
-		});
-	} catch(ex) {
-		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
-	}
+
+//
+	});
 });
 
 /**

@@ -104,7 +104,8 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	보낸 그룹 메세지 상세	*/
 		.when('/message/sendGroupMessageDetail', {
-			template: hakwonTmpl.messageView.viewForm
+			//template: hakwonTmpl.messageView.viewForm
+			templateUrl: '/assets/partials/message/messageGroupSendDetail.html'
 			, controller: 'messageGroupSendDetailController'
 		})
 		/*	보낸 개별 메세지 상세	*/
