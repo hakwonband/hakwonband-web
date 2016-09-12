@@ -122,6 +122,9 @@
 					<a href="#/questionsMail/list" data-type="leftMenu"><i class="fa fa-graduation-cap"></i> <span class="nav-label">문의 메일</span></a>
 				</li>
 				<li>
+					<a href="/admin/user/list/excel.do" target="_blank"><i class="fa fa-graduation-cap"></i> <span class="nav-label">회원 엑셀 다운로드</span></a>
+				</li>
+				<li>
 					<a href="#"><i class="fa fa-cog"></i> <span class="nav-label">설정</span> <span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
 						<li><a href="#/setting/hakwonCategory" data-type="leftMenu">학원업종관리</a></li>
