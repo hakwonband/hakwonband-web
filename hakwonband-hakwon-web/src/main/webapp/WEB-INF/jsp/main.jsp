@@ -75,6 +75,8 @@
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
 
+	<script src='/assets/js/lib/zeroClipboard/ZeroClipboard.min.js'></script>
+
 <script>if (window.module) module = window.module;</script>
 
 <style type="text/css">
@@ -221,6 +223,11 @@ $(document).ready(function () {
 			$('body').addClass('body-small');
 		}
 	}
+
+	ZeroClipboard.config({
+		swfPath: '/assets/js/lib/zeroClipboard/ZeroClipboard.swf',
+		forceHandCursor: true
+	});
 
 	try {
 		$.getScript("https://developers.kakao.com/sdk/js/kakao.min.js", function(data, textStatus, jqxhr) {

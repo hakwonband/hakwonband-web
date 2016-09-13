@@ -800,3 +800,15 @@ var getBrowser = function() {
 
 /*	디버그 모드	*/
 var isDebug = false;
+
+
+var isFlashInstalled = function() {
+	var is_flash_installed = false;
+	try {
+		if(new ActiveXObject('ShockwaveFlash.ShockwaveFlash')) is_flash_installed=true;
+	} catch(e) {
+		if(navigator.mimeTypes['application/x-shockwave-flash'] != undefined) is_flash_installed=true;
+	}
+
+	return is_flash_installed;
+}
