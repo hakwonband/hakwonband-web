@@ -1,6 +1,7 @@
 package hakwonband.hakwon.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,14 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -444,18 +453,18 @@ public class HakwonController extends BaseAction {
 						File newFile = new File(uploadFilePath);
 						mpf.transferTo(newFile);
 
+						List<DataMap> dataList = null;
 						List<DataMap> resultList = new ArrayList<DataMap>();
 						if( "application/x-tika-msoffice".equals(mimeType) ) {
 							//	xls
-							DataMap result = new DataMap();
-							result.put("user_name", "김개똥");
-							resultList.add(result);
+							dataList = getXlsDataList(newFile);
 						} else if( "application/x-tika-ooxml".equals(mimeType) ) {
 							//	xlsx
-							DataMap result = new DataMap();
-							result.put("user_name", "김개똥");
-							resultList.add(result);
+							dataList = getXlsxDataList(newFile);
 						}
+
+						resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+
 						colData.put("resultList",	resultList);
 						colData.put("fileNo",		"1");	//	임시로 넣는다.
 					}
@@ -469,5 +478,190 @@ public class HakwonController extends BaseAction {
 		} finally {
 			sendColData(colData, request, response);
 		}
+	}
+
+	/**
+	 * xls 데이타 조회
+	 * @param newFile
+	 * @return
+	 * @throws Exception
+	 */
+	private List<DataMap> getXlsDataList(File newFile) throws Exception {
+
+		List<DataMap> list = new ArrayList<DataMap>();
+
+		FileInputStream fis = null;
+		try {
+			fis		= new FileInputStream(newFile);
+			HSSFWorkbook workbook	= new HSSFWorkbook(fis);
+
+			int rowindex	= 0;
+			int columnindex	= 0;
+			//시트 수 (첫번째에만 존재하므로 0을 준다)
+
+			//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
+			HSSFSheet sheet	= workbook.getSheetAt(0);
+
+			//행의 수
+			int rows = sheet.getPhysicalNumberOfRows();
+			for(rowindex=1; rowindex<rows; rowindex++) {
+				//행을 읽는다
+				HSSFRow row = sheet.getRow(rowindex);
+				if( row != null ) {
+
+					DataMap userDataMap = new DataMap();
+
+					//셀의 수
+					int cells = row.getPhysicalNumberOfCells();
+					for(columnindex=0; columnindex<=cells; columnindex++){
+						//셀값을 읽는다
+						HSSFCell cell = row.getCell(columnindex);
+						String value="";
+						//셀이 빈값일경우를 위한 널체크
+						if( cell==null ) {
+							continue;
+						} else {
+							//타입별로 내용 읽기
+							switch (cell.getCellType()){
+								case HSSFCell.CELL_TYPE_FORMULA:
+									value=cell.getCellFormula();
+									break;
+								case HSSFCell.CELL_TYPE_NUMERIC:
+									value=cell.getNumericCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_STRING:
+									value=cell.getStringCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_BLANK:
+									value=cell.getBooleanCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_ERROR:
+									value=cell.getErrorCellValue()+"";
+									break;
+							}
+						}
+
+						if( columnindex == 0 ) {
+							userDataMap.put("type", value);
+						} else if( columnindex == 1 ) {
+							userDataMap.put("user_name", value);
+						} else if( columnindex == 2 ) {
+							userDataMap.put("user_id", value);
+						} else if( columnindex == 3 ) {
+							userDataMap.put("passwd", value);
+						} else if( columnindex == 4 ) {
+							userDataMap.put("user_email", value);
+						} else if( columnindex == 5 ) {
+							userDataMap.put("sex", value);
+						} else if( columnindex == 6 ) {
+							userDataMap.put("birthday", value);
+						} else if( columnindex == 7 ) {
+							userDataMap.put("tel", value);
+
+							list.add(userDataMap);
+						}
+					}
+				}
+			}
+		} finally {
+			if( fis != null ) {
+				fis.close();
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * xlsx 데이타 조회
+	 * @param newFile
+	 * @return
+	 * @throws Exception
+	 */
+	private List<DataMap> getXlsxDataList(File newFile) throws Exception {
+
+		List<DataMap> list = new ArrayList<DataMap>();
+
+		FileInputStream fis = null;
+		try {
+			fis		= new FileInputStream(newFile);
+			XSSFWorkbook workbook	= new XSSFWorkbook(fis);
+
+			int rowindex	= 0;
+			int columnindex	= 0;
+			//시트 수 (첫번째에만 존재하므로 0을 준다)
+
+			//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
+			XSSFSheet sheet = workbook.getSheetAt(0);
+
+			//행의 수
+			int rows = sheet.getPhysicalNumberOfRows();
+			for(rowindex=1; rowindex<rows; rowindex++) {
+				//행을 읽는다
+				XSSFRow row = sheet.getRow(rowindex);
+				if( row != null ) {
+
+					DataMap userDataMap = new DataMap();
+
+					//셀의 수
+					int cells = row.getPhysicalNumberOfCells();
+					for(columnindex=0; columnindex<=cells; columnindex++){
+						//셀값을 읽는다
+						XSSFCell cell = row.getCell(columnindex);
+						String value="";
+						//셀이 빈값일경우를 위한 널체크
+						if( cell==null ) {
+							continue;
+						} else {
+							//타입별로 내용 읽기
+							switch (cell.getCellType()){
+								case HSSFCell.CELL_TYPE_FORMULA:
+									value=cell.getCellFormula();
+									break;
+								case HSSFCell.CELL_TYPE_NUMERIC:
+									value=cell.getNumericCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_STRING:
+									value=cell.getStringCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_BLANK:
+									value=cell.getBooleanCellValue()+"";
+									break;
+								case HSSFCell.CELL_TYPE_ERROR:
+									value=cell.getErrorCellValue()+"";
+									break;
+							}
+						}
+
+						if( columnindex == 0 ) {
+							userDataMap.put("type", value);
+						} else if( columnindex == 1 ) {
+							userDataMap.put("user_name", value);
+						} else if( columnindex == 2 ) {
+							userDataMap.put("user_id", value);
+						} else if( columnindex == 3 ) {
+							userDataMap.put("passwd", value);
+						} else if( columnindex == 4 ) {
+							userDataMap.put("user_email", value);
+						} else if( columnindex == 5 ) {
+							userDataMap.put("sex", value);
+						} else if( columnindex == 6 ) {
+							userDataMap.put("birthday", value);
+						} else if( columnindex == 7 ) {
+							userDataMap.put("tel", value);
+
+							list.add(userDataMap);
+						}
+					}
+				}
+			}
+		} finally {
+			if( fis != null ) {
+				fis.close();
+			}
+		}
+
+
+		return list;
 	}
 }
