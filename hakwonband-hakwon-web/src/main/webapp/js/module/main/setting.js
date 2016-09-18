@@ -478,7 +478,6 @@ hakwonMainApp.controller('settingExcelRegistController', function($scope, $locat
 								alert('파일 업로드를 실패 했습니다.');
 								$scope.resultList = [];
 							} else {
-								alert('업로드 우선 성공');
 								$scope.resultList = resultList;
 							}
 						} catch(e) {
@@ -514,7 +513,6 @@ hakwonMainApp.controller('settingExcelRegistController', function($scope, $locat
 							alert('파일 업로드를 실패 했습니다.');
 							$scope.resultList = [];
 						} else {
-							alert('업로드 우선 성공');
 							$scope.resultList = result.resultList;
 						}
 						$scope.$digest();
