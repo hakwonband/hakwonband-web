@@ -131,6 +131,9 @@ var merge		= require('merge-stream'),
 		, font_awesome: [
 			'./inspinia/font-awesome/**/*'
 		]
+		, zeroClipboard: [
+			'./js/lib/zeroClipboard/**/*'
+		]
 	};
 
 
@@ -162,6 +165,12 @@ gulp.task('fonts', function() {
 gulp.task('font_awesome', function() {
 	return gulp.src(paths.font_awesome)
 		.pipe(gulp.dest('./assets/font-awesome'));
+});
+
+
+gulp.task('zeroClipboard', function() {
+	return gulp.src(paths.zeroClipboard)
+	.pipe(gulp.dest('./assets/js/lib/zeroClipboard'));
 });
 
 // css
@@ -254,6 +263,7 @@ gulp.task('watch', function() {
 	gulp.watch(paths.images, ['images']);
 	gulp.watch(paths.fonts, ['fonts']);
 	gulp.watch(paths.font_awesome, ['font_awesome']);
+	gulp.watch(paths.zeroClipboard, ['zeroClipboard']);
 	gulp.watch(paths.common_lib_js, ['common_lib_js']);
 	gulp.watch(paths.attendance_lib_js, ['attendance_lib_js']);
 	gulp.watch(paths.main_lib_js, ['main_lib_js']);
@@ -269,9 +279,9 @@ gulp.task('default', ['clean', 'build:development'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
+	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
 });
 
 gulp.task('build:development', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
+	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
 });

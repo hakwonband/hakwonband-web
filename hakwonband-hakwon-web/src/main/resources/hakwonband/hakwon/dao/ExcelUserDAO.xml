@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.ExcelUserDAO">
+
+	<!-- 회원가입 1차 기본정보 입력 -->
+	<insert id="insertUser" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertUser */
+		insert into tb_user (
+			user_type, user_id, user_email, user_password, use_yn, approved_yn, reg_date
+		) values (
+			#{user_type}, #{user_id}, #{user_email}, #{user_password}, 'Y', 'Y',now()
+		)
+	]]>
+	<selectKey keyProperty="idx" resultType="long">
+		select last_insert_id()
+	</selectKey>
+	</insert>
+
+	<!-- 회원가입 2차 부가정보 입력 -->
+	<insert id="insertUserInfo" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertUserInfo */
+		insert into tb_user_info (
+			user_no, user_id, user_name, user_gender, user_birthday, photo_file_no, tel1_no, tel2_no, user_url, agree01, agree02
+	]]>
+	<if test=" '006' == user_type ">
+		, attendance_code
+	</if>
+
+		) values (
+			#{user_no}, #{user_id}, #{user_name}, #{user_gender}, #{user_birthday}, #{photo_file_no}, #{tel1_no}, #{tel2_no}, #{user_url}, #{agree01}, #{agree02}
+
+	<if test=" '006' == user_type ">
+		, (select (ifnull(max(x.attendance_code), 10000) + 1) from tb_user_info x )
+	</if>
+
+		)
+	</insert>
+
+	<insert id="insertHakwonMember" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertHakwonMember */
+		insert into tb_hakwon_member (
+			hakwon_no, user_no, user_type, member_yn, reg_date
+		) values (
+			#{hakwon_no}, #{user_no}, #{user_type}, 'Y', now()
+		)
+	]]>
+	</insert>
+
+	<!-- 반 번호 조회 -->
+	<select id="getClassNo" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* ExcelUserDAO.getClassNo */
+		select class_no from tb_hakwon_class where class_title = #{class_name} and hakwon_no = #{hakwon_no} limit 1
+	]]>
+	</select>
+
+	<!-- 학원 반 정보(학생) 등록 -->
+	<insert id="insertClassStudent" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertClassStudent */
+		insert into tb_hakwon_class_student (
+			hakwon_no, class_no, student_user_no, reg_date
+		) values (
+			#{hakwon_no}, #{class_no}, #{student_user_no}, now()
+		)
+	]]>
+	</insert>
+
+</mapper>

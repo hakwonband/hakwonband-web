@@ -207,4 +207,26 @@
 			user_no = #{user_no}
 	]]>
 	</update>
+
+	<!-- 사용자 리스트 -->
+	<select id="excelUserList" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.excelUserList	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, calc_age(b.user_birthday) as user_age
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+		order by
+			b.user_name asc
+	]]>
+	</select>
 </mapper>

@@ -533,4 +533,13 @@ public class MasterService {
 
 		return devicePushData;
 	}
+
+	/**
+	 * 학원 원장님 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkHakwonMaster(DataMap param) {
+		return masterDAO.checkHakwonMaster(param);
+	}
 }

@@ -567,4 +567,11 @@
 			and teacher_user_no = #{teacher_user_no}
 	]]>
 	</delete>
+
+	<!-- 원장님 권한 체크 -->
+	<select id="checkHakwonMaster" parameterType="dataMap" resultType="int">
+		/* MasterDAO.checkHakwonMaster */
+		select count(1) from tb_hakwon where master_user_no = #{user_no} and hakwon_no = #{hakwon_no}
+	</select>
+
 </mapper>

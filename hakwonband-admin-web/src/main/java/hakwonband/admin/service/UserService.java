@@ -1,17 +1,16 @@
 package hakwonband.admin.service;
 
-import hakwonband.admin.common.constant.HakwonConstant;
-import hakwonband.admin.dao.UserDAO;
-import hakwonband.common.exception.HKBandException;
-import hakwonband.util.CommonConfig;
-import hakwonband.util.DataMap;
-
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import hakwonband.admin.common.constant.HakwonConstant;
+import hakwonband.admin.dao.UserDAO;
+import hakwonband.common.exception.HKBandException;
+import hakwonband.util.DataMap;
 
 /**
  * 사용자 서비스
@@ -33,6 +32,14 @@ public class UserService {
 	 */
 	public List<DataMap> userList(DataMap param) {
 		return userDAO.userList(param);
+	}
+
+	/**
+	 * 엑셀 유저 리스트
+	 * @return
+	 */
+	public List<DataMap> excelUserList() {
+		return userDAO.excelUserList();
 	}
 
 	/**

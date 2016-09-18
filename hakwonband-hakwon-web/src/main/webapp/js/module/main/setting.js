@@ -461,6 +461,9 @@ hakwonMainApp.controller('settingExcelRegistController', function($scope, $locat
 
 		$("#wrapper").show();
 
+		/*	결과 리스트	*/
+		$scope.resultList = [];
+
 		$scope.$$postDigest(function(){
 			console.log('$$postDigest');
 
@@ -473,11 +476,13 @@ hakwonMainApp.controller('settingExcelRegistController', function($scope, $locat
 							var resultObj = JSON.parse(uploadJsonStr);
 							if( !resultObj.resultList || resultObj.resultList.length == 0 ) {
 								alert('파일 업로드를 실패 했습니다.');
+								$scope.resultList = [];
 							} else {
-								alert('업로드 우선 성공');
+								$scope.resultList = resultList;
 							}
 						} catch(e) {
 							alert('파일 업로드를 실패 했습니다.');
+							$scope.resultList = [];
 						}
 					};
 					var param = {
@@ -501,12 +506,14 @@ hakwonMainApp.controller('settingExcelRegistController', function($scope, $locat
 				fileUploadOptions.onFinish = function(event, total) {
 					if (this.errorFileArray.length + this.errorCount > 0) {
 						alert('첨부파일 업로드를 실패 했습니다.' +  this.errorFileArray + '-' + this.errorCount);
+						$scope.resultList = [];
 					} else {
 						var result = this.uploadFileArray[0];
 						if( !result.resultList || result.resultList.length == 0 ) {
 							alert('파일 업로드를 실패 했습니다.');
+							$scope.resultList = [];
 						} else {
-							alert('업로드 우선 성공');
+							$scope.resultList = result.resultList;
 						}
 						$scope.$digest();
 					}

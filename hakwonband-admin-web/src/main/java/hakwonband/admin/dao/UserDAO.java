@@ -26,6 +26,12 @@ public interface UserDAO {
 	public List<DataMap> unauthorizedUserList(DataMap param);
 
 	/**
+	 * 엑셀 사용자 리스트
+	 * @return
+	 */
+	public List<DataMap> excelUserList();
+
+	/**
 	 * 미승인 사용자 카운트
 	 * @param param
 	 * @return
