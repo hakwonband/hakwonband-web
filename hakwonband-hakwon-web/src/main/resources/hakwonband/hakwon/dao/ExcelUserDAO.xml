@@ -50,4 +50,24 @@
 	]]>
 	</insert>
 
+	<!-- 반 번호 조회 -->
+	<select id="getClassNo" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* ExcelUserDAO.getClassNo */
+		select class_no from tb_hakwon_class where class_title = #{class_name} and hakwon_no = #{hakwon_no} limit 1
+	]]>
+	</select>
+
+	<!-- 학원 반 정보(학생) 등록 -->
+	<insert id="insertClassStudent" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertClassStudent */
+		insert into tb_hakwon_class_student (
+			hakwon_no, class_no, student_user_no, reg_date
+		) values (
+			#{hakwon_no}, #{class_no}, #{student_user_no}, now()
+		)
+	]]>
+	</insert>
+
 </mapper>

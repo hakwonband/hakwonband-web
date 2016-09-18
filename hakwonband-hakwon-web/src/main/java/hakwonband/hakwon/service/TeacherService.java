@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.dao.EventDAO;
-import hakwonband.hakwon.dao.FileDAO;
-import hakwonband.hakwon.dao.NoticeDAO;
-import hakwonband.hakwon.dao.ReadDAO;
 import hakwonband.hakwon.dao.TeacherDAO;
 import hakwonband.hakwon.dao.UserDAO;
 import hakwonband.util.DataMap;
@@ -33,19 +30,7 @@ public class TeacherService {
 	private UserDAO userDAO;
 
 	@Autowired
-	private NoticeDAO noticeDAO;
-
-	@Autowired
 	private EventDAO eventDAO;
-
-	@Autowired
-	private ReadDAO readDAO;
-
-	@Autowired
-	private FileDAO fileDAO;
-
-	@Autowired
-	private ReplyService replyService;
 
 	@Autowired
 	private FileService fileService;
@@ -360,5 +345,14 @@ public class TeacherService {
 	 */
 	public List<DataMap> hakwonAllList(DataMap param) {
 		return teacherDAO.hakwonAllList(param);
+	}
+
+	/**
+	 * 선생님 권한 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkHakwonTeacher(DataMap param) {
+		return teacherDAO.checkHakwonTeacher(param);
 	}
 }

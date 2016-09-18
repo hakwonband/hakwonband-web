@@ -33,7 +33,9 @@ import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.service.HakwonService;
+import hakwonband.hakwon.service.MasterService;
 import hakwonband.hakwon.service.NoticeService;
+import hakwonband.hakwon.service.TeacherService;
 import hakwonband.util.DataMap;
 import hakwonband.util.StringUtil;
 
@@ -50,6 +52,12 @@ public class HakwonController extends BaseAction {
 
 	@Autowired
 	private HakwonService hakwonService;
+
+	@Autowired
+	private MasterService masterService;
+
+	@Autowired
+	private TeacherService teacherService;
 
 	@Autowired
 	private NoticeService noticeService;
@@ -463,7 +471,29 @@ public class HakwonController extends BaseAction {
 							dataList = getXlsxDataList(newFile);
 						}
 
-						resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+						/*	사용자 권한 체크	*/
+						String userNo = authUserInfo.getString("user_no");
+						if( authUserInfo.equals("user_type", "003") ) {
+							/*	원장님	*/
+							DataMap checkParam = new DataMap();
+							checkParam.put("user_no",	userNo);
+							checkParam.put("hakwon_no",	hakwonNo);
+							int checkCount = masterService.checkHakwonMaster(checkParam);
+							if( checkCount > 0 ) {
+								resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+							}
+						} else if( authUserInfo.equals("user_type", "004") ) {
+							/*	선생님	*/
+
+							DataMap checkParam = new DataMap();
+							checkParam.put("user_no",	userNo);
+							checkParam.put("hakwon_no",	hakwonNo);
+							int checkCount = teacherService.checkHakwonTeacher(checkParam);
+							if( checkCount > 0 ) {
+								resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+							}
+
+						}
 
 						colData.put("resultList",	resultList);
 						colData.put("fileNo",		"1");	//	임시로 넣는다.
@@ -496,7 +526,6 @@ public class HakwonController extends BaseAction {
 			HSSFWorkbook workbook	= new HSSFWorkbook(fis);
 
 			int rowindex	= 0;
-			int columnindex	= 0;
 			//시트 수 (첫번째에만 존재하므로 0을 준다)
 
 			//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
@@ -512,14 +541,13 @@ public class HakwonController extends BaseAction {
 					DataMap userDataMap = new DataMap();
 
 					//셀의 수
-					int cells = row.getPhysicalNumberOfCells();
-					for(columnindex=0; columnindex<=cells; columnindex++){
+//					int cells = row.getPhysicalNumberOfCells();
+					for(int columnindex=0; columnindex<=8; columnindex++){
 						//셀값을 읽는다
 						HSSFCell cell = row.getCell(columnindex);
 						String value="";
 						//셀이 빈값일경우를 위한 널체크
 						if( cell==null ) {
-							continue;
 						} else {
 							//타입별로 내용 읽기
 							switch (cell.getCellType()){
@@ -542,7 +570,7 @@ public class HakwonController extends BaseAction {
 						}
 
 						if( columnindex == 0 ) {
-							userDataMap.put("type", value);
+							userDataMap.put("type", value.toUpperCase());
 						} else if( columnindex == 1 ) {
 							userDataMap.put("user_name", value);
 						} else if( columnindex == 2 ) {
@@ -557,7 +585,8 @@ public class HakwonController extends BaseAction {
 							userDataMap.put("birthday", value);
 						} else if( columnindex == 7 ) {
 							userDataMap.put("tel", value);
-
+						} else if( columnindex == 8 ) {
+							userDataMap.put("class_name", value);
 							list.add(userDataMap);
 						}
 					}
@@ -588,7 +617,6 @@ public class HakwonController extends BaseAction {
 			XSSFWorkbook workbook	= new XSSFWorkbook(fis);
 
 			int rowindex	= 0;
-			int columnindex	= 0;
 			//시트 수 (첫번째에만 존재하므로 0을 준다)
 
 			//만약 각 시트를 읽기위해서는 FOR문을 한번더 돌려준다
@@ -600,18 +628,16 @@ public class HakwonController extends BaseAction {
 				//행을 읽는다
 				XSSFRow row = sheet.getRow(rowindex);
 				if( row != null ) {
-
 					DataMap userDataMap = new DataMap();
 
 					//셀의 수
-					int cells = row.getPhysicalNumberOfCells();
-					for(columnindex=0; columnindex<=cells; columnindex++){
+//					int cells = row.getPhysicalNumberOfCells();
+					for(int columnindex=0; columnindex<=8; columnindex++) {
 						//셀값을 읽는다
 						XSSFCell cell = row.getCell(columnindex);
 						String value="";
 						//셀이 빈값일경우를 위한 널체크
 						if( cell==null ) {
-							continue;
 						} else {
 							//타입별로 내용 읽기
 							switch (cell.getCellType()){
@@ -634,7 +660,7 @@ public class HakwonController extends BaseAction {
 						}
 
 						if( columnindex == 0 ) {
-							userDataMap.put("type", value);
+							userDataMap.put("type", value.toUpperCase());
 						} else if( columnindex == 1 ) {
 							userDataMap.put("user_name", value);
 						} else if( columnindex == 2 ) {
@@ -649,7 +675,8 @@ public class HakwonController extends BaseAction {
 							userDataMap.put("birthday", value);
 						} else if( columnindex == 7 ) {
 							userDataMap.put("tel", value);
-
+						} else if( columnindex == 8 ) {
+							userDataMap.put("class_name", value);
 							list.add(userDataMap);
 						}
 					}

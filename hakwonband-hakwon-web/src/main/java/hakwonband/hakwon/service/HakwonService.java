@@ -350,12 +350,15 @@ public class HakwonService {
 			String flag = CommonConstant.Flag.fail;
 			try {
 				DataMap insertUser = new DataMap();
-				if( user.equals("user_type", "S") ) {
+				if( user.equals("type", "S") ) {
+					/*	학생	*/
 					insertUser.put("user_type", "006");
-				} else if( user.equals("user_type", "P") ) {
+				} else if( user.equals("type", "P") ) {
+					/*	학부모	*/
 					insertUser.put("user_type", "005");
 				}
 				insertUser.put("user_id",		user.getString("user_id"));
+				insertUser.put("user_name",		user.getString("user_name"));
 				insertUser.put("user_email",	user.getString("user_email"));
 				insertUser.put("user_password",	SecuUtil.sha256(user.getString("passwd")));
 				insertUser.put("tel1_no",		user.getString("tel"));
@@ -382,6 +385,23 @@ public class HakwonService {
 				/* 회원 가입시 학원 등록을 같이 한 경우*/
 				insertUser.put("hakwon_no", hakwonNo);
 				excelUserDAO.insertHakwonMember(insertUser);
+
+				if( user.equals("user_type", "S") ) {
+					String class_name = user.getString("class_name");
+					DataMap classSearchParam = new DataMap();
+					classSearchParam.put("hakwon_no", hakwonNo);
+					classSearchParam.put("class_name", class_name);
+
+					int class_no = excelUserDAO.getClassNo(classSearchParam);
+					if( class_no > 0 ) {
+						DataMap classInsertParam = new DataMap();
+						classInsertParam.put("hakwon_no",	hakwonNo);
+						classInsertParam.put("class_no",	class_no);
+						classInsertParam.put("student_user_no",	lastId);
+
+						excelUserDAO.insertClassStudent(classInsertParam);
+					}
+				}
 
 				flag = CommonConstant.Flag.success;
 			} catch(Exception e) {

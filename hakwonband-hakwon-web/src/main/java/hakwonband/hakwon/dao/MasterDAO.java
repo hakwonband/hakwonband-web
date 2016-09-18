@@ -216,4 +216,11 @@ public interface MasterDAO {
 	 * @return
 	 */
 	public int teacherClassDelete(DataMap param);
+
+	/**
+	 * 학원 원장님 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkHakwonMaster(DataMap param);
 }

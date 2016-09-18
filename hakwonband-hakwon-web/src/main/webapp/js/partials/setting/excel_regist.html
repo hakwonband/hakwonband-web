@@ -1,5 +1,5 @@
 
-<a href="/file/회원등록엑셀.xlsx" target="_blank">샘플 파일</a>
+<a href="/file/회원등록엑셀.xlsx" target="_blank">샘플 파일 다운로드</a>
 
 <div class="input-group m-b-xl col-md-4 col-md-offset-4">
 	<div class="form-group">
@@ -10,4 +10,9 @@
 	</div>
 </div>
 
-<div data-view="result"></div>
+<div>
+	<span ng-show="resultList.length > 0">업로드 결과 입니다.</span>
+	<ul>
+		<li ng-repeat="item in resultList">{{item.flag == 'success'?"성공":"실패"}} - {{item.user_id}}({{item.user_name}})</li>
+	</ul>
+</div>

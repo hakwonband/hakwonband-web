@@ -151,4 +151,11 @@ public interface TeacherDAO {
 	 * @return
 	 */
 	public List<DataMap> hakwonAllList(DataMap param);
+
+	/**
+	 * 선생님 권한 체크
+	 * @param param
+	 * @return
+	 */
+	public int checkHakwonTeacher(DataMap param);
 }

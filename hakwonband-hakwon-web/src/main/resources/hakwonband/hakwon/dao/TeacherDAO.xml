@@ -452,4 +452,9 @@
 	]]>
 	</select>
 
+	<!-- 원장님 권한 체크 -->
+	<select id="checkHakwonTeacher" parameterType="dataMap" resultType="int">
+		/* TeacherDAO.checkHakwonTeacher */
+		select count(1) from tb_hakwon_teacher where user_no = #{user_no} and hakwon_no = #{hakwon_no} and approved_yn = 'Y'
+	</select>
 </mapper>

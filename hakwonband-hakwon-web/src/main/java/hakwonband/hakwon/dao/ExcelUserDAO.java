@@ -30,4 +30,17 @@ public interface ExcelUserDAO {
 	 * @return
 	 */
 	public int insertHakwonMember(DataMap param);
+
+	/**
+	 * 반 번호 조회
+	 * @param param
+	 * @return
+	 */
+	public int getClassNo(DataMap param);
+
+	/**
+	 * 학생 반에 등록
+	 * @param param
+	 */
+	public void insertClassStudent(DataMap param);
 }
