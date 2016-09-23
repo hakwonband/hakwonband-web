@@ -121,7 +121,7 @@
 		</if>
 	<![CDATA[
 		order by
-			a.receipt_date desc, a.reg_date desc
+			a.receipt_date asc, a.reg_date desc
 		limit
 			#{startNo}, #{pageScale}
 	]]>
