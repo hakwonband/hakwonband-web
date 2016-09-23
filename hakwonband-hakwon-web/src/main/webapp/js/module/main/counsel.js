@@ -68,6 +68,12 @@ hakwonMainApp.service('counselService', function(CommUtil) {
 
 		var hakwonNo = hakwonInfo.hakwon_no;
 		var counseleeNo = $counselParam.find('input[name=counseleeNo]').val();
+
+		if( !$scope.counselDate ) {
+			alert('올바른 날짜를 입력해 주세요.(2015-01-01 ~ 2030-12-31)');
+			return ;
+		}
+
 		var counselDate = $scope.counselDate.yyyymmdd('-');
 		var title = $counselParam.find('input[name=title]').val();
 		var content = $counselParam.find('textarea[name=content]').val();
@@ -145,6 +151,10 @@ hakwonMainApp.service('counselService', function(CommUtil) {
 		var hakwonNo = hakwonInfo.hakwon_no;
 		var counseleeNo = $counselParam.find('input[name=counseleeNo]').val();
 		//var counselDate = $counselParam.find('input[name=counselDate]').val();
+		if( !$scope.counselDate ) {
+			alert('올바른 날짜를 입력해 주세요.(2015-01-01 ~ 2030-12-31)');
+			return ;
+		}
 		var counselDate = $scope.counselDate.yyyymmdd('-');
 		var title = $counselParam.find('input[name=title]').val();
 		var content = $counselParam.find('textarea[name=content]').val();

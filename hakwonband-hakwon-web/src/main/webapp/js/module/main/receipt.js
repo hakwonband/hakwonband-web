@@ -54,6 +54,10 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var hakwonNo		= hakwonInfo.hakwon_no;
 		var studentNo		= $receiptParam.find('input[name=studentNo]').val();
 		//var receiptDate		= $receiptParam.find('input[name=receiptDate]').val();
+		if( !$scope.receiptDate ) {
+			alert('올바른 날짜를 입력해 주세요.(2015-01-01 ~ 2030-12-31)');
+			return ;
+		}
 		var receiptDate		= $scope.receiptDate.yyyymmdd('-');
 		var receiptType		= $receiptParam.find('select[name=receiptType]').val();
 		var receiptAmount	= $receiptParam.find('input[name=receiptAmount]').val();
@@ -634,6 +638,13 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 			receiptService.receiptExcelSave($scope);
 		}
 
+		/**
+		 * 수납 등록 이동
+		 */
+		$scope.registMove = function() {
+			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
+		}
+
 		/*	수납 검색 키처리	*/
 		$scope.searchReceiptEnter = function(e) {
 			if (e && e.type === 'keydown' && e.keyCode !== 13) {
@@ -739,6 +750,13 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		 */
 		$scope.excelSave = function() {
 			receiptService.receiptYearExcelSave($scope);
+		}
+
+		/**
+		 * 수납 등록 이동
+		 */
+		$scope.registMove = function() {
+			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
 		}
 
 		/*	수납 검색 키처리	*/
