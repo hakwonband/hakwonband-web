@@ -1,5 +1,7 @@
 package hakwonband.mobile.common.interceptor;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,10 +37,21 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter  {
 
 		logger.debug("Interceptor AuthCheckInterceptor call ["+request.getRequestURL()+"]");
 
-		CookieUtils cookieUtils = new CookieUtils(request, response, true);
-		String authKey = cookieUtils.getCookie(CommonConstant.Cookie.hkBandAuthKey);
+		Enumeration headerEnum = request.getHeaderNames();
+		if( headerEnum != null ) {
+			while( headerEnum.hasMoreElements() ) {
+				Object obj = headerEnum.nextElement();
+				if( obj instanceof java.lang.String ) {
+					String value = request.getHeader((String)obj);
+					logger.debug("*  Header : " + obj + " value : " + value);
+				}
+			}
+		}
+
+		String authKey = request.getHeader(CommonConstant.Cookie.hkBandAuthKey);
 		if( StringUtil.isBlank(authKey) ) {
-			authKey = request.getHeader(CommonConstant.Cookie.hkBandAuthKey);
+			CookieUtils cookieUtils = new CookieUtils(request, response, true);
+			authKey = cookieUtils.getCookie(CommonConstant.Cookie.hkBandAuthKey);
 		}
 		logger.debug("authKey : " + authKey);
 

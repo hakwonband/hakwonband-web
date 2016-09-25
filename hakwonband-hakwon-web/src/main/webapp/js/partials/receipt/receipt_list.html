@@ -56,7 +56,8 @@
 					</select>
 				</div>
 				<div class="col-md-1">
-					<button type="button" class="btn btn-primary" ng-click="excelSave()">엑셀저장</button>
+					<button type="button" class="btn btn-primary" ng-click="excelSave()">엑셀 저장</button>
+					<button type="button" class="btn btn-primary" ng-click="registMove()">수납 등록</button>
 				</div>
 			</div>
 			<div class="ibox-content text-center">
@@ -74,9 +75,9 @@
 				<button type="button" class="btn btn-primary btn-rounded btn-rounded btn-outline" data-act="searchTerm" data-value="006">12개월</button>
 
 				<div class="input-daterange input-group">
-					<input type="date" min="2016-01-01" max="2030-01-01" name="startDate" value="{{startDate}}" class="input-sm form-control">
+					<input type="date" min="2015-01-01" max="2030-12-31" name="startDate" value="{{startDate}}" class="input-sm form-control">
 					<span class="input-group-addon">to</span>
-					<input type="date" min="2016-01-01" max="2030-01-01" name="endDate" value="{{endDate}}" class="input-sm form-control">
+					<input type="date" min="2015-01-01" max="2030-12-31" name="endDate" value="{{endDate}}" class="input-sm form-control">
 				</div>
 			</div>
 

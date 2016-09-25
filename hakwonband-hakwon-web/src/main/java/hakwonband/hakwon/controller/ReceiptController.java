@@ -134,7 +134,7 @@ public class ReceiptController extends BaseAction {
 		DataMap param = new DataMap();
 		param.put("hakwonNo", hakwonNo);
 		param.put("studentNo", studentNo);
-		param.put("startDate", DateUtil.addMonth(DateUtil.getDate("yyyyMM"), -3, "yyyyMM"));
+		param.put("startDate", DateUtil.addMonth(DateUtil.getDate("yyyyMM"), -10, "yyyyMM"));
 
 		List<DataMap> receiptList = receiptService.selectReceiptYear(param);
 		sendList(receiptList, request, response);

@@ -54,6 +54,10 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 		var hakwonNo		= hakwonInfo.hakwon_no;
 		var studentNo		= $receiptParam.find('input[name=studentNo]').val();
 		//var receiptDate		= $receiptParam.find('input[name=receiptDate]').val();
+		if( !$scope.receiptDate ) {
+			alert('올바른 날짜를 입력해 주세요.(2015-01-01 ~ 2030-12-31)');
+			return ;
+		}
 		var receiptDate		= $scope.receiptDate.yyyymmdd('-');
 		var receiptType		= $receiptParam.find('select[name=receiptType]').val();
 		var receiptAmount	= $receiptParam.find('input[name=receiptAmount]').val();
@@ -521,6 +525,10 @@ hakwonMainApp.controller('receiptController', function($scope, $location, $route
 		//$scope.receiptDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 		$scope.receiptDate = new Date();
 		$scope.studentIdFromList = "";
+		$scope.receiptType = '003';
+
+		/*	수납 월 show/hide	*/
+		$scope.show_receipt_month = true;
 
 		/*	학생별 리스트로부터 studentId를 달고 호출되었을때	*/
 		$scope.studentIdFromList = $routeParams.studentId;
@@ -529,6 +537,15 @@ hakwonMainApp.controller('receiptController', function($scope, $location, $route
 		}
 
 
+		/*	구분 변경시 수납월 show/hide	*/
+		$scope.receiptTypeChange = function() {
+
+			if( $scope.receiptType == '003' ) {
+				$scope.show_receipt_month = true;
+			} else {
+				$scope.show_receipt_month = false;
+			}
+		}
 
 		/*	학생 이름 검색 데이터	*/
 		$scope.searchOptions = {student_name: ""};
@@ -632,6 +649,13 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 		 */
 		$scope.excelSave = function() {
 			receiptService.receiptExcelSave($scope);
+		}
+
+		/**
+		 * 수납 등록 이동
+		 */
+		$scope.registMove = function() {
+			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
 		}
 
 		/*	수납 검색 키처리	*/
@@ -739,6 +763,13 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		 */
 		$scope.excelSave = function() {
 			receiptService.receiptYearExcelSave($scope);
+		}
+
+		/**
+		 * 수납 등록 이동
+		 */
+		$scope.registMove = function() {
+			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
 		}
 
 		/*	수납 검색 키처리	*/

@@ -51,6 +51,21 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 					tempObj.mime_type	= fileInfo.mimeType;
 
 					$scope.fileList.push(tempObj);
+
+					if( fileInfo.imageYn == 'Y' ) {
+						var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+						var fileNo = fileInfo.fileNo;
+
+						if( isMobile.any() ) {
+							var editWidth = $('[data-lib=editor]').width();
+							var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+						} else {
+							var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+						}
+						tinymce.activeEditor.insertContent(strImage);
+					}
+
+
 					$scope.$digest();
 				}
 			}
@@ -790,6 +805,20 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 								tempObj.mime_type	= fileInfo.mimeType;
 
 								$scope.fileList.push(tempObj);
+
+								if( fileInfo.imageYn == 'Y' ) {
+									var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+									var fileNo = fileInfo.fileNo;
+
+									if( isMobile.any() ) {
+										var editWidth = $('[data-lib=editor]').width();
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									} else {
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									}
+									tinymce.activeEditor.insertContent(strImage);
+								}
+
 								$scope.$digest();
 							}
 						} catch(e) {

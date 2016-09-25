@@ -590,6 +590,19 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 									var fileInfo = resultObj.colData;
 									fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
 									$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+
+									if( fileInfo.imageYn == 'Y' ) {
+										var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+										var fileNo = fileInfo.fileNo;
+
+										if( isMobile.any() ) {
+											var editWidth = $('[data-lib=editor]').width();
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										} else {
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										}
+										tinymce.activeEditor.insertContent(strImage);
+									}
 								}
 							} catch(e) {
 								alert('파일 업로드를 실패 했습니다.');
@@ -621,6 +634,19 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 								fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
 								$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+
+								if( fileInfo.imageYn == 'Y' ) {
+									var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+									var fileNo = fileInfo.fileNo;
+
+									if( isMobile.any() ) {
+										var editWidth = $('[data-lib=editor]').width();
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									} else {
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									}
+									tinymce.activeEditor.insertContent(strImage);
+								}
 							}
 						}
 					};
@@ -892,6 +918,19 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 									var fileInfo = resultObj.colData;
 									fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
 									$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+
+									if( fileInfo.imageYn == 'Y' ) {
+										var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+										var fileNo = fileInfo.fileNo;
+
+										if( isMobile.any() ) {
+											var editWidth = $('[data-lib=editor]').width();
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										} else {
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										}
+										tinymce.activeEditor.insertContent(strImage);
+									}
 								}
 							} catch(e) {
 								alert('파일 업로드를 실패 했습니다.');
@@ -922,6 +961,19 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 								var fileInfo = this.uploadFileArray[i];
 								fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
 								$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}))
+
+								if( fileInfo.imageYn == 'Y' ) {
+									var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+									var fileNo = fileInfo.fileNo;
+
+									if( isMobile.any() ) {
+										var editWidth = $('[data-lib=editor]').width();
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									} else {
+										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+									}
+									tinymce.activeEditor.insertContent(strImage);
+								}
 							}
 						}
 					};

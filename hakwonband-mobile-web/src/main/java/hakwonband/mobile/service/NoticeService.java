@@ -11,7 +11,7 @@ import hakwonband.mobile.dao.NoticeDAO;
 import hakwonband.util.DataMap;
 
 /**
- * 학원 Service
+ * 공지 Service
  * @author jszzang9
  */
 @Service
@@ -47,5 +47,15 @@ public class NoticeService {
 	 */
 	public DataMap getNoticeSelectOne(DataMap param) {
 		return noticeDAO.noticeDetail(param);
+	}
+
+	/**
+	 * 공지 상세 찾기
+	 * 권한체크도 같이 한다.
+	 * @param param
+	 * @return
+	 */
+	public DataMap findNoticeDetail(DataMap param) {
+		return null;
 	}
 }
