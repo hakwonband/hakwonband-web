@@ -35,13 +35,25 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 	/**
 	 * 원장님 반리스트 조회
 	 */
-	messageSendSerivce.masterClassList = function(callback) {
-		var param = {hakwon_no:hakwonInfo.hakwon_no};
-		CommUtil.colHttp({
-			url			: contextPath+"/hakwon/master/classList.do"
-			, header	: hakwonInfo.getHeader()
-			, param		: param
-			, callback	: callback
+	messageSendSerivce.masterClassList = function(callBackFun) {
+		$.ajax({
+			url: contextPath+"/hakwon/master/classList.do",
+			type: "post",
+			data: $.param({hakwon_no:hakwonInfo.hakwon_no}, true),
+			headers : hakwonInfo.getHeader(),
+			dataType: "json",
+			success: function(data) {
+				try {
+					var colData = data.colData;
+					$('#mainNgView div.ibox').html($.tmpl(hakwonTmpl.message.masterSend, {classList:colData.dataList, isMobile:isMobile.any()}));
+					callBackFun();
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
 		});
 	}
 
@@ -384,17 +396,34 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		/*	메세지 개별 대상	*/
 		var msg_user_no_array = $routeParams.msg_user_no_array;
 
-		/*	타겟 타입 초기화	*/
-		$scope.targetType = 'class';
 
-		if( msg_class_no ) {
-			/*	선택된 반이 있으면 정회원 학생 선택	*/
+		/**
+		 * 타겟 타입
+		 * class, userGroup, search
+		 */
+		var targetType = $routeParams.targetType;
+		if( !targetType ) {
 			targetType = 'class';
-		} else if( msg_user_no_array ) {
-			/*	사용자 번호가 있으면 사용자 선택	*/
-			targetType = 'search';
-			messageSendSerivce.targetUserSearch(msg_user_no_array);
 		}
+
+		/**
+		 * 대상 변경시
+		 */
+		$('#mainNgView').on('change', 'select[name=targetType]', function() {
+			$('div[data-target-form=Y]').hide();
+			$('div[data-target-type='+this.value+']').show();
+
+			if( this.value == 'userGroup' ) {
+				$('div[data-target-user=user]').show();
+				$('div[data-target-user=user] label[for=check_category_04]').show();
+				$('div[data-target-user=user] label[for=check_category_05]').show();
+			} else if( this.value == 'class' ) {
+				$('div[data-target-user=user] label[for=check_category_04]').hide();
+				$('div[data-target-user=user] label[for=check_category_05]').hide();
+			}
+
+			$('#mainNgView .i-checks').iCheck('uncheck');
+		});
 
 		/**
 		 * 메세지 대상 검색
@@ -486,32 +515,123 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 			}
 		});
 
+
 		$("#wrapper").show();
-
-		/*	모바일 여부	*/
-		$scope.isMobile = isMobile.any();
-
-		/*	반 리스트 셋팅	*/
-		messageSendSerivce.masterClassList(function(data) {
-			var colData = data.colData;
-			console.log('data', data);
-			$scope.classList = colData.dataList;
-		});
 
 		/*	초기화	*/
 		$scope.$$postDigest(function(){
 			console.log('messageTeacherSendController $$postDigest');
 
-			if( comm.isAndroidUploader() ) {
-				angular.element("input[data-act=file_upload]").click(function() {
-					delete window.uploadCallBack;
-					window.uploadCallBack = function(uploadJsonStr) {
-						try {
-							var resultObj = JSON.parse(uploadJsonStr);
-							if( resultObj.error ) {
+			/*	반 리스트 셋팅	*/
+			messageSendSerivce.masterClassList(function() {
+
+				$('.i-checks').iCheck({
+					checkboxClass: 'icheckbox_square-green'
+				});
+
+				/*	데이트 피커	*/
+				$('#mainNgView input[name=reservationDate]').datepicker({
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+					format: "yyyy-mm-dd"
+				});
+
+				$('label[data-type=targetUserType]').on('ifChecked ifUnchecked', function(event){
+					if( $(this).attr('data-value') == 'search' ) {
+						if( event.type == 'ifChecked' ) {
+							$('div[data-view=classDiv]').hide();
+
+							$('select[name=targetType]').attr('disabled', true);
+							$('div[data-view=searchDiv]').show();
+							$('div[data-view=searchTarget]').show();
+							$('div[data-view=searchResult]').show();
+							$('input[name=searchText]').val('');
+
+							$('ul.search_name_list > li').remove();
+							$('ul.chosen_select > li').remove();
+
+							$('input[value=student]').iCheck('disable');
+							$('input[value=parent]').iCheck('disable');
+							$('input[value=nonStudent]').iCheck('disable');
+							$('input[value=nonParent]').iCheck('disable');
+							$('input[value=teacher]').iCheck('disable');
+						} else if( event.type == 'ifUnchecked' ) {
+							$('div[data-view=classDiv]').show();
+
+							$('select[name=targetType]').attr('disabled', false);
+							$('div[data-view=searchDiv]').hide();
+							$('div[data-view=searchTarget]').hide();
+							$('div[data-view=searchResult]').hide();
+							$('input[name=searchText]').val('');
+
+							$('ul.search_name_list > li').remove();
+							$('ul.chosen_select > li').remove();
+
+							$('input[value=student]').iCheck('enable');
+							$('input[value=parent]').iCheck('enable');
+							$('input[value=nonStudent]').iCheck('enable');
+							$('input[value=nonParent]').iCheck('enable');
+							$('input[value=teacher]').iCheck('enable');
+						}
+					}
+				});
+
+
+				if( comm.isAndroidUploader() ) {
+					angular.element("input[data-act=file_upload]").click(function() {
+						delete window.uploadCallBack;
+						window.uploadCallBack = function(uploadJsonStr) {
+							try {
+								var resultObj = JSON.parse(uploadJsonStr);
+								if( resultObj.error ) {
+									alert('파일 업로드를 실패 했습니다.');
+								} else {
+									var fileInfo = resultObj.colData;
+									fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
+									$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+
+									if( fileInfo.imageYn == 'Y' ) {
+										var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+										var fileNo = fileInfo.fileNo;
+
+										if( isMobile.any() ) {
+											var editWidth = $('[data-lib=editor]').width();
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										} else {
+											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										}
+										tinymce.activeEditor.insertContent(strImage);
+									}
+								}
+							} catch(e) {
 								alert('파일 업로드를 실패 했습니다.');
-							} else {
-								var fileInfo = resultObj.colData;
+							}
+						};
+						var param = {
+							fileType : 'all'
+							, multipleYn : 'Y'
+							, callBack : 'uploadCallBack'
+							, upload : {
+								url : window.location.protocol+'//'+window.location.host+uploadUrl
+								, param : {uploadType:CommonConstant.File.TYPE_MESSAGE}
+								, cookie : document.cookie
+							}
+						};
+						window.PLATFORM.fileChooser(JSON.stringify(param));
+
+						return false;
+					});
+				} else {
+					var messageUploadOptions = new UploadOptions();
+					messageUploadOptions.customExtraFields = {'uploadType' : CommonConstant.File.TYPE_MESSAGE};
+					messageUploadOptions.onFinish = function(event, total) {
+						if (this.errorFileArray.length + this.errorCount > 0) {
+							alert('메세지 파일 업로드를 실패 했습니다.');
+						} else {
+							for (var i = 0; i < this.uploadFileArray.length; i++) {
+								var fileInfo = this.uploadFileArray[i];
+
 								fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
 								$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
 
@@ -528,79 +648,47 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 									tinymce.activeEditor.insertContent(strImage);
 								}
 							}
-						} catch(e) {
-							alert('파일 업로드를 실패 했습니다.');
 						}
 					};
-					var param = {
-						fileType : 'all'
-						, multipleYn : 'Y'
-						, callBack : 'uploadCallBack'
-						, upload : {
-							url : window.location.protocol+'//'+window.location.host+uploadUrl
-							, param : {uploadType:CommonConstant.File.TYPE_MESSAGE}
-							, cookie : document.cookie
-						}
-					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
 
-					return false;
-				});
-			} else {
-				var messageUploadOptions = new UploadOptions();
-				messageUploadOptions.customExtraFields = {'uploadType' : CommonConstant.File.TYPE_MESSAGE};
-				messageUploadOptions.onFinish = function(event, total) {
-					if (this.errorFileArray.length + this.errorCount > 0) {
-						alert('메세지 파일 업로드를 실패 했습니다.');
-					} else {
-						for (var i = 0; i < this.uploadFileArray.length; i++) {
-							var fileInfo = this.uploadFileArray[i];
+					$("input[data-act=file_upload]").html5_upload(messageUploadOptions);
+				}
+				$('div[data-target-form=Y]').hide();
+				$('div[data-target-type='+targetType+']').show();
 
-							fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
-							$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+				if( msg_class_no ) {
+					/*	선택된 반이 있으면 정회원 학생 선택	*/
+					$('#mainNgView select[name=targetType]').val('class').trigger('change');
+				} else if( msg_user_no_array ) {
+					/*	사용자 번호가 있으면 사용자 선택	*/
+					$('#mainNgView select[name=targetType]').val('search').trigger('change');
+					messageSendSerivce.targetUserSearch(msg_user_no_array);
+				}
 
-							if( fileInfo.imageYn == 'Y' ) {
-								var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
-								var fileNo = fileInfo.fileNo;
 
-								if( isMobile.any() ) {
-									var editWidth = $('[data-lib=editor]').width();
-									var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
-								} else {
-									var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
-								}
-								tinymce.activeEditor.insertContent(strImage);
+				/*	에디터 초기화 완료 후 value 셋팅	*/
+				var editOptions = comm.getEditorOptions();
+				editOptions.setup = function(ed) {
+					ed.on('init', function(e) {
+						//$('div.mce-toolbar-grp.mce-panel').hide();
+					}).on('KeyDown', function(e) {
+						var thisEditor = this;
+						var keyCode = undefined;
+						if (e.keyCode) keyCode = e.keyCode;
+						else if (e.which) keyCode = e.which;
+
+						if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
+							if (e.shiftKey) {
+								thisEditor.execCommand('Outdent');
+							} else {
+								thisEditor.execCommand('Indent');
 							}
+							return tinymce.dom.Event.cancel(e);
 						}
-					}
+					});
 				};
-
-				$("input[data-act=file_upload]").html5_upload(messageUploadOptions);
-			}
-
-
-			/*	에디터 초기화 완료 후 value 셋팅	*/
-			var editOptions = comm.getEditorOptions();
-			editOptions.setup = function(ed) {
-				ed.on('init', function(e) {
-					//$('div.mce-toolbar-grp.mce-panel').hide();
-				}).on('KeyDown', function(e) {
-					var thisEditor = this;
-					var keyCode = undefined;
-					if (e.keyCode) keyCode = e.keyCode;
-					else if (e.which) keyCode = e.which;
-
-					if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
-						if (e.shiftKey) {
-							thisEditor.execCommand('Outdent');
-						} else {
-							thisEditor.execCommand('Indent');
-						}
-						return tinymce.dom.Event.cancel(e);
-					}
-				});
-			};
-			tinymce.init(editOptions);
+				tinymce.init(editOptions);
+			});
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

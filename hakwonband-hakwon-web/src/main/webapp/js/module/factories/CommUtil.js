@@ -356,4 +356,60 @@ hakwonMainApp.directive('ngEnter', function () {
 			}
 		});
 	};
-})
+});
+
+
+hakwonMainApp.directive('icheck', function($timeout, $parse) {
+    return {
+      link: function ($scope, element, $attrs) {
+         var value = $attrs['value'],
+             ngModelGetter = $parse($attrs['ngIcheckModel']);
+
+         return $timeout(function () {
+
+             $(element).iCheck({
+               checkboxClass: 'icheckbox_square',
+               radioClass: 'iradio_square',
+              //  labelHover: false,
+               increaseArea: '20%' // optional
+             }).on('ifChanged', function (event) {
+
+                 var elemType = $(element).attr('type');
+
+                 if (elemType === 'checkbox' && $attrs.ngIcheckModel) {
+                     $scope.$apply(function() {
+                         return ngModelGetter.assign($scope, event.target.checked);
+                     });
+                 }
+                 else if (elemType === 'radio' && $attrs.ngIcheckModel) {
+                     return $scope.$apply(function () {
+                         return ngModelGetter.assign($scope, value);
+                     });
+                 }
+
+                 if($attrs.icheckAfterChange && $scope[$attrs.icheckAfterChange]){
+                   $scope[$attrs.icheckAfterChange](event.target.checked);
+                 }
+             });
+
+
+             if($scope[$attrs.ngIcheckModel]){
+               $(element).iCheck('check');
+             }
+             else {
+               $(element).iCheck('uncheck');
+             }
+
+             $scope.$watch($attrs.ngIcheckModel, function (newValue) {
+                 if(newValue){
+                   $(element).iCheck('check');
+                 }
+                 else {
+                   $(element).iCheck('uncheck');
+                 }
+             });
+
+         }, 0);
+     }
+   };
+});
