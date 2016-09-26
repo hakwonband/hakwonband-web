@@ -364,7 +364,7 @@ hakwonMainApp.service('messageSendSerivce', function($http, CommUtil) {
 /**
  * 원장님 메세지 보내기
  */
-hakwonMainApp.controller('messageMasterSendController', function($scope, $location, $routeParams, messageSendSerivce, CommUtil) {
+hakwonMainApp.controller('messageMasterSendController', function($scope, $location, $routeParams, messageSendSerivce, CommUtil, $timeout) {
 	console.log('hakwonMainApp messageMasterSendController call');
 
 	try {
@@ -389,10 +389,10 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 		if( msg_class_no ) {
 			/*	선택된 반이 있으면 정회원 학생 선택	*/
-			targetType = 'class';
+			$scope.targetType = 'class';
 		} else if( msg_user_no_array ) {
 			/*	사용자 번호가 있으면 사용자 선택	*/
-			targetType = 'search';
+			$scope.targetType = 'search';
 			messageSendSerivce.targetUserSearch(msg_user_no_array);
 		}
 
@@ -491,16 +491,17 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		/*	모바일 여부	*/
 		$scope.isMobile = isMobile.any();
 
-		/*	반 리스트 셋팅	*/
-		messageSendSerivce.masterClassList(function(data) {
-			var colData = data.colData;
-			console.log('data', data);
-			$scope.classList = colData.dataList;
-		});
-
-		/*	초기화	*/
-		$scope.$$postDigest(function(){
-			console.log('messageTeacherSendController $$postDigest');
+		var pageInit = function() {
+			$('.i-checks').iCheck({
+				checkboxClass: 'icheckbox_square-green'
+			});
+			/*	데이트 피커	*/
+			$('#mainNgView input[name=reservationDate]').datepicker({
+				keyboardNavigation: false,
+				forceParse: false,
+				autoclose: true,
+				format: "yyyy-mm-dd"
+			});
 
 			if( comm.isAndroidUploader() ) {
 				angular.element("input[data-act=file_upload]").click(function() {
@@ -601,6 +602,17 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 				});
 			};
 			tinymce.init(editOptions);
+		}
+
+		/*	반 리스트 셋팅	*/
+		messageSendSerivce.masterClassList(function(data) {
+			var colData = data.colData;
+			console.log('data', data);
+			$scope.classList = colData.dataList;
+
+			$timeout(function() {
+				pageInit();
+			},50);
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
