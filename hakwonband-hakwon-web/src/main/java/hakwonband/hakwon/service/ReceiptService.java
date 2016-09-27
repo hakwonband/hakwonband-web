@@ -75,7 +75,7 @@ public class ReceiptService {
 			/*	등록월 -3 월부터 ~ 12개월 구하기	*/
 			String startDate = result.getString("reg_date");
 			startDate = startDate.substring(0, 4) + startDate.substring(5, 7);
-			startDate = DateUtil.addMonth(startDate, -3, "yyyyMM");
+			startDate = DateUtil.addMonth(startDate, -9, "yyyyMM");
 
 			param.put("hakwonNo", result.getString("hakwon_no"));
 			param.put("studentNo", result.getString("student_no"));
