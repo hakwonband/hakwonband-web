@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import hakwonband.common.constant.CommonConstant;
@@ -403,9 +404,12 @@ public class HakwonService {
 					}
 				}
 
-				flag = CommonConstant.Flag.success;
+				flag = "성공";
+			} catch(DuplicateKeyException e) {
+				flag = "중복 아이디";
+				logger.error("", e);
 			} catch(Exception e) {
-				flag = CommonConstant.Flag.fail;
+				flag = "실패";
 				logger.error("", e);
 			} finally {
 				DataMap result = new DataMap();

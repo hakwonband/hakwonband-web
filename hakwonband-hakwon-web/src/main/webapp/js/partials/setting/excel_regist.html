@@ -13,6 +13,8 @@
 <div>
 	<span ng-show="resultList.length > 0">업로드 결과 입니다.</span>
 	<ul>
-		<li ng-repeat="item in resultList">{{item.flag == 'success'?"성공":"실패"}} - {{item.user_id}}({{item.user_name}})</li>
+		<li ng-repeat="item in resultList">
+			{{item.flag}} - {{item.user_id}}({{item.user_name}})
+		</li>
 	</ul>
 </div>
