@@ -41,12 +41,10 @@
 			<button type="button" class="btn btn-primary" ng-click="goClassNoticeList()">목록으로</button>
 		</div>
 
-		<!--
 		<div class="ibox-content text-right m-t">
-			<a href="#">전체 사용자 <strong>234</strong>명중 <strong>34</strong>명 읽음</a>
+			<a href="#" onclick="return false;" ng-click="reader_show = !reader_show;">전체 사용자 <strong>{{classNoticeReaderList.length}}</strong>명중 <strong>{{read_user_count}}</strong>명 읽음</a>
 		</div>
-		-->
-		<div class="ibox-content">
+		<div class="ibox-content" ng-show="reader_show == true">
 			<table class="table table-hover table_link">
 				<tbody>
 					<tr ng-repeat="noticeReader in classNoticeReaderList">

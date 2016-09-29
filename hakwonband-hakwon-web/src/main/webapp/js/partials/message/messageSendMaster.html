@@ -66,7 +66,7 @@
 		<label class="col-sm-1 control-label">검색하기</label>
 		<div class="col-sm-11">
 			<div class="input-group">
-				<input type="text" name="searchText" class="form-control" placeholder="학생 및 선생님 (아이디,이름) 검색"> <span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="messageTargetSearch">검색하기</button></span>
+				<input type="text" name="searchText" ng-model="searchText" ng-enter="masterMessageTargetSearch()" class="form-control" placeholder="학생 및 선생님 (아이디,이름) 검색"> <span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="masterMessageTargetSearch()">검색하기</button></span>
 			</div>
 		</div>
 	</div>
@@ -74,14 +74,35 @@
 	<div class="form-group"  ng-show="targetType == 'search'" data-view="searchResult">
 		<label class="col-sm-1 control-label">검색결과</label>
 		<div class="col-sm-11">
-			<ul class="search_name_list"></ul>
+			<ul class="search_name_list">
+				<li ng-if="search_result == 'empty'">검색대상이 없습니다.</li>
+
+				<li ng-repeat="searchUser in search_user_list">
+					<span class="student_add_box">
+						<i>{{ searchUser.user_type=="004"?"선":"학"}}</i>
+						<img class="img-circle" src="{{comm.userProfileImg(searchUser.user_photo_path)}}" alt="프로필" width="35" height="35">
+						<strong class="name">{{ searchUser.user_name}}</strong> {{ searchUser.user_id}} / {{ searchUser.user_gender=="M"?"남자":"여자"}} / {{ searchUser.user_type_name}} / {{ !searchUser.user_age||searchUser.user_age==0?"생일 미입력":searchUser.user_age+"세"}}
+						<button type="button" data-val="{{ searchUser.user_name + CommonConstant.ChDiv.CH_DEL + searchUser.user_no}}" ng-click="searchTargetSelect(searchUser)" class="btn btn-default btn-sm">추가</button>
+					</span>
+					<span class="parents_add_box" ng-repeat="parentUser in searchUser.relationList">
+						<i>{{ parentUser.user_gender=="M"?"부":"모"}}</i>
+						<img class="img-circle" src="{{comm.userProfileImg(parentUser.user_photo_path)}}" alt="프로필" width="30" height="30">
+						<strong class="name">{{ parentUser.user_name}}</strong> {{ parentUser.user_id}} / {{ parentUser.user_gender=="M"?"남자":"여자"}} / {{ !parentUser.user_age||parentUser.user_age==0?"생일 미입력":parentUser.user_age+"세"}}
+						<button type="button" data-val="{{ parentUser.user_name + CommonConstant.ChDiv.CH_DEL + parentUser.user_no}}" ng-click="searchTargetSelect(parentUser)" class="btn btn-default btn-xs">추가</button>
+					</span>
+				</li>
+			</ul>
 		</div>
 	</div>
 	<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 끝 -->
 	<div class="form-group"  ng-show="targetType == 'search'" data-view="searchTarget">
 		<label class="col-sm-1 control-label">선택자</label>
 		<div class="col-sm-11">
-			<ul class="chosen_select"></ul>
+			<ul class="chosen_select">
+				<li data-user-no="{{target.user_no}}" ng-repeat="target in choiceSearchTarget">
+					{{target.user_name?target.user_name:target.user_id}} <button type="button" class="btn_x" ng-click="removeTargetSelect(target)" title="삭제">x</button>
+				</li>
+			</ul>
 		</div>
 	</div>
 	<div class="form-group">
@@ -110,8 +131,8 @@
 	</div>
 </div>
 <div class="ibox-content text-right">
-	<button type="button" class="btn btn-default" data-act="cancel">취소하기</button>
-	<button type="button" class="btn btn-primary" data-act="messageSend">등록하기</button>
+	<button type="button" class="btn btn-default" ng-click="cancelFun()">취소하기</button>
+	<button type="button" class="btn btn-primary" ng-click="messageSend()">등록하기</button>
 </div>
 
 

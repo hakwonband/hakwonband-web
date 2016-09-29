@@ -89,7 +89,6 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 		/*	원장님 메시지 보내기	*/
 		.when('/message/masterSend', {
-			//template: hakwonTmpl.message.masterSendForm
 			templateUrl: '/assets/partials/message/messageSendMaster.html'
 			, controller: 'messageMasterSendController'
 		})

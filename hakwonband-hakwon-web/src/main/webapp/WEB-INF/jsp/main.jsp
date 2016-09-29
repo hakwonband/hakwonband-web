@@ -4,21 +4,6 @@
 	if( isLive == true ) cacheManifest = "main.cache.manifest";
 %>
 
-<!--
-
-############################################################
-############################################################
-# 2016-05-11 01
-############################################################
-############################################################
-
-############################################################
-############################################################
-# 2016-05-15 01
-############################################################
-############################################################
-
--->
 <!DOCTYPE html>
 <html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonMainApp" ng-controller="baseController">
 <head>
@@ -188,7 +173,8 @@
 	<script type="text/javascript" src="/js/module/main/member.js"></script>
 	<script type="text/javascript" src="/js/module/main/master.js"></script>
 	<script type="text/javascript" src="/js/module/main/hakwon.js"></script>
-	<script type="text/javascript" src="/js/module/main/messageSend.js"></script>
+	<script type="text/javascript" src="/js/module/main/messageSendMaster.js"></script>
+	<script type="text/javascript" src="/js/module/main/messageSendTeacher.js"></script>
 	<script type="text/javascript" src="/js/module/main/messageView.js"></script>
 	<script type="text/javascript" src="/js/module/main/class.js"></script>
 	<script type="text/javascript" src="/js/module/main/notice.js"></script>

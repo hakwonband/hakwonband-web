@@ -245,8 +245,9 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .search_name_list, .chosen_select{padding:0; margin:0; list-style:none; float:none; overflow:hidden;}
 .search_name_list li{padding:5px 10px; border:1px solid #e5e6e7; overflow:hidden; margin-bottom:5px;}
 .search_name_list li .parents_add_box{border:1px solid #e5e6e7; margin:0 10px 5px 45px; display:block;}
-.search_name_list li .parents_add_box i{background:#666; color:#fff; float:left; margin-right:5px; line-height:32px; height:32px; padding:0 5px}
+.search_name_list li .parents_add_box > i{background:#666; color:#fff; float:left; margin-right:5px; line-height:32px; height:32px; padding:0 5px; font-style:normal;}
 .search_name_list li .student_add_box{margin:0 10px 5px 0; display:block;}
+.search_name_list li .student_add_box > i{background:#666; color:#fff; float:left; margin-right:5px; line-height:32px; height:32px; padding:0 5px; font-style:normal;}
 .search_name_list li .btn{margin:0 5px;}
 .search_name_list li img{display:inline-block; margin:0 5px 0 0px;}
 .search_name_list label{font-weight:normal;}
