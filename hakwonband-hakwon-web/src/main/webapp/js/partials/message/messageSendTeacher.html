@@ -1,0 +1,97 @@
+<!-- 선생님 메세지 보내기 -->
+<div class="ibox float-e-margins">
+
+
+<div class="ibox-content form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-1 control-label">반 선택</label>
+		<div class="col-sm-11">
+			<select name="classTarget" class="form-control m-b">
+{{each(i, loopClass) classList}}
+				<option value="{{= loopClass.class_no}}" data-count="{{= loopClass.student_count}}">{{= loopClass.class_title}}(학생수:{{= loopClass.student_count}})</option>
+{{/each}}
+				<option value="search">검색</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group" data-target-type="class">
+		<label class="col-sm-1 control-label">예약 발송</label>
+		<div class="col-md-2">
+			<input type="text" class="form-control" name="reservationDate" placeholder="날짜" readOnly>
+		</div>
+		<div class="col-md-2">
+			<input type="time" class="form-control" name="reservationTime" placeholder="시간">
+		</div>
+		<div class="col-md-2">
+			<span class="input-group-btn"> <button type="button" data-act="reservationCancel" class="btn btn-primary">예약 취소</button> </span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-1 control-label">선택방법</label>
+		<div class="col-sm-11">
+			<select class="form-control m-b" name="targetType">
+				<option value="student_all">학생 전체 메세지 보내기</option>
+				<option value="parent_all">학부모 전체 메세지 보내기</option>
+				<option value="all">학생/학부모 전체 메세지 보내기</option>
+			</select>
+		</div>
+	</div>
+	<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 시작 -->
+	<div class="form-group" data-view="searchDiv" style="display:none;">
+		<label class="col-sm-1 control-label">검색하기</label>
+		<div class="col-sm-11">
+			<div class="input-group">
+				<input type="text" name="searchText" class="form-control" placeholder="학생 아이디 및 이름으로 검색"> <span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="messageTargetSearch">검색하기</button></span>
+			</div>
+		</div>
+	</div>
+	<!-- 검색하기 버튼 클릭시 결과 나타남. 클릭 전에는 나타나지 않음 -->
+	<div class="form-group" data-view="searchResult" style="display:none;">
+		<label class="col-sm-1 control-label">검색결과</label>
+		<div class="col-sm-11">
+			<ul class="search_name_list"></ul>
+		</div>
+	</div>
+	<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 끝 -->
+	<div class="form-group" data-view="searchTarget" style="display:none;">
+		<label class="col-sm-1 control-label">선택자</label>
+		<div class="col-sm-11">
+			<ul class="chosen_select"></ul>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-1 control-label">내용</label>
+		<div class="col-sm-11">
+			<textarea cols="140" rows="10" name="messageContent" class="form-control" data-lib="editor"></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+, {{if isMobile == false }}
+		<label class="col-sm-1 control-label">파일첨부</label>
+, {{/if}}
+		<div class="col-sm-11">
+			<span class="btn btn-primary">파일 업로드</span>
+			<input type="file" class="input_file" data-act="file_upload" multiple>
+		</div>
+	</div>
+	<div class="form-group">
+, {{if isMobile == false }}
+		<label class="col-sm-1 control-label">첨부파일</label>
+, {{/if}}
+		<div class="col-sm-11">
+			<p>
+				<span><i class="fa fa-paperclip"></i> 0 개파일 첨부</span>
+			</p>
+			<div class="attachment">
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="ibox-content text-right">
+	<button type="button" class="btn btn-default" data-act="cancel">취소하기</button>
+	<button type="button" class="btn btn-primary" data-act="messageSend">등록하기</button>
+</div>
+
+
+</div>

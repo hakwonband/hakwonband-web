@@ -301,6 +301,13 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 					$scope.fileList				= colData.fileList;
 					$scope.classNoticeReaderList= colData.classNoticeReaderList;
 
+					$scope.read_user_count = 0;
+					for(var i=0; i<colData.classNoticeReaderList.length; i++) {
+						if( colData.classNoticeReaderList[i].read_date ) {
+							$scope.read_user_count++;
+						}
+					}
+
 					setTimeout(function(){
 						comm.contentImageReset();
 					}, 50);

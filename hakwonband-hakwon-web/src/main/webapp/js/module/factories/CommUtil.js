@@ -356,4 +356,4 @@ hakwonMainApp.directive('ngEnter', function () {
 			}
 		});
 	};
-})
+});
