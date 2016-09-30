@@ -2,21 +2,25 @@ hakwonband-admin-web/target
 hakwonband-admin-web/src/main/webapp/assets
 hakwonband-admin-web/src/main/webapp/node_modules
 hakwonband-admin-web/src/main/webapp/bower_components
+hakwonband-admin-web/src/main/webapp/assets
 
 hakwonband-hakwon-web/target
 hakwonband-hakwon-web/src/main/webapp/assets
 hakwonband-hakwon-web/src/main/webapp/node_modules
 hakwonband-hakwon-web/src/main/webapp/bower_components
+hakwonband-hakwon-web/src/main/webapp/assets
 
 hakwonband-manager-web/target
 hakwonband-manager-web/src/main/webapp/assets
 hakwonband-manager-web/src/main/webapp/node_modules
 hakwonband-manager-web/src/main/webapp/bower_components
+hakwonband-manager-web/src/main/webapp/assets
 
 hakwonband-mobile-web/target
 hakwonband-mobile-web/src/main/webapp/assets
 hakwonband-mobile-web/src/main/webapp/node_modules
 hakwonband-mobile-web/src/main/webapp/bower_components
+hakwonband-mobile-web/src/main/webapp/assets
 
 hakwonband-pc-web/target
 hakwonband-pc-web/src/main/webapp/assets
