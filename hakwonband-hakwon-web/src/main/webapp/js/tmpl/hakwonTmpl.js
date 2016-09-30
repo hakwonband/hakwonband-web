@@ -141,7 +141,7 @@ hakwonTmpl.leftMenu = {
 		, '		<ul class="nav nav-second-level">'
 		, '			<li><a href="#" data-type="leftMenu" data-act="settingNoticeCate">공지사항 카테고리</a></li>'
 		, '			<li><a href="#" data-type="leftMenu" data-act="settingManager">매니저 설정</a></li>'
-		//, '			<li><a href="#" data-type="leftMenu" data-act="settingExcelRegist">엑셀 회원 등록</a></li>'
+		, '			<li><a href="#" data-type="leftMenu" data-act="settingExcelRegist">엑셀 회원 등록</a></li>'
 		, '		</ul>'
 		, '	</li>'
 		, '	<li>'
@@ -190,7 +190,7 @@ hakwonTmpl.leftMenu = {
 		, '	<li style="display:none;" class="test_li">'
 		, '		<a href="#"><i class="fa fa-cog"></i> <span class="nav-label">베타 메뉴</span> <span class="fa arrow"></span></a>'
 		, '		<ul class="nav nav-second-level">'
-		, '			<li><a href="#" data-type="leftMenu" data-act="settingExcelRegist">엑셀 회원 등록</a></li>'
+		//, '			<li><a href="#" data-type="leftMenu" data-act="settingExcelRegist">엑셀 회원 등록</a></li>'
 		, '		</ul>'
 		, '	</li>'
 	].join('')
