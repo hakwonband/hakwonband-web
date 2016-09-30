@@ -157,6 +157,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 
 		/*	검색 대상	*/
 		$scope.search_user_list = [];
+		$scope.choiceSearchTarget = [];
 
 		if( msg_class_no ) {
 			/*	선택된 반이 있으면 정회원 학생 선택	*/
@@ -176,7 +177,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 					comm.initRelationList(dataList);
 
 					for(var i=0; i<dataList.length; i++) {
-						$scope.search_user_list.push(dataList[i]);
+						$scope.choiceSearchTarget.push(dataList[i]);
 					}
 					$scope.search_result = '';
 				} else {
@@ -212,7 +213,6 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		}
 
 		/*	검색 대상 선택	*/
-		$scope.choiceSearchTarget = [];
 		$scope.searchTargetSelect = function(targetUser) {
 
 			var chech_idx = _.find($scope.choiceSearchTarget, function(item) {
