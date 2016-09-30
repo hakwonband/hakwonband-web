@@ -43,40 +43,17 @@ hakwonMainApp.service('messageSendMasterSerivce', function($http, CommUtil) {
 	/**
 	 * 사용자 대상 조회
 	 */
-	messageSendMasterSerivce.targetUserSearch = function(userNoArray) {
+	messageSendMasterSerivce.targetUserSearch = function(userNoArray, callback) {
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, targetUserNoArray : userNoArray
 		};
 
-		$.ajax({
-			url: contextPath+"/hakwon/message/targetUserSearch.do",
-			type: "post",
-			data: $.param(param, true),
-			headers : hakwonInfo.getHeader(),
-			dataType: "json",
-			success: function(data) {
-				try {
-					if( data.error ) {
-						alert('사용자 대상 검색을 실패 했습니다.');
-						return ;
-					}
-					if( data.colData.dataList && data.colData.dataList.length > 0 ) {
-						for(var i=0; i<data.colData.dataList.length; i++) {
-							var tempUserInfo = data.colData.dataList[i];
-
-							$('#mainNgView ul.chosen_select').append($.tmpl(hakwonTmpl.message.choiceTarget, {target:tempUserInfo}));
-						}
-					} else {
-						alert('검색된 사용자가 없습니다.');
-					}
-				} catch(ex) {
-					commProto.errorDump({errorObj:ex});
-				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				alert('통신을 실패 했습니다.');
-			}
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/message/targetUserSearch.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callback
 		});
 	};
 
@@ -175,23 +152,43 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		/*	타겟 타입 초기화	*/
 		$scope.targetType = 'class';
 
+		$scope.comm = comm;
+		$scope.CommonConstant = CommonConstant;
+
+		/*	검색 대상	*/
+		$scope.search_user_list = [];
+
 		if( msg_class_no ) {
 			/*	선택된 반이 있으면 정회원 학생 선택	*/
 			$scope.targetType = 'class';
 		} else if( msg_user_no_array ) {
 			/*	사용자 번호가 있으면 사용자 선택	*/
 			$scope.targetType = 'search';
-			messageSendMasterSerivce.targetUserSearch(msg_user_no_array);
-		}
+			messageSendMasterSerivce.targetUserSearch(msg_user_no_array, function(data) {
+				if( data.error ) {
+					alert('사용자 대상 검색을 실패 했습니다.');
+					return ;
+				}
+				$scope.search_user_list = [];
+				var dataList = data.colData.dataList;
+				if( dataList && dataList.length > 0 ) {
 
-		$scope.comm = comm;
-		$scope.CommonConstant = CommonConstant;
+					comm.initRelationList(dataList);
+
+					for(var i=0; i<dataList.length; i++) {
+						$scope.search_user_list.push(dataList[i]);
+					}
+					$scope.search_result = '';
+				} else {
+					$scope.search_result = 'empty';
+				}
+			});
+		}
 
 		/**
 		 * 메세지 대상 검색
 		 */
 		$scope.searchText = "";
-		$scope.search_user_list = [];
 		$scope.masterMessageTargetSearch = function() {
 			messageSendMasterSerivce.masterMessageTargetSearch($scope, function(data) {
 				if( data.error ) {
