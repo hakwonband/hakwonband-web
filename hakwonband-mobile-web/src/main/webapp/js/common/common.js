@@ -968,7 +968,7 @@ var HakwonCommon = function() {
 		if( window.PLATFORM && window.PLATFORM.getLocation ) {
 			console.log('android getLocation call!~~~~');
 			if( gpsLocation.latitude ) {
-				var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				var latlng = new google.maps.LatLng(gpsLocation.latitude, gpsLocation.longitude);
 				var geocoder = new google.maps.Geocoder();
 				geocoder.geocode({'latLng' : latlng}, function(results, status) {
 					if( results && results.length > 0 ) {
