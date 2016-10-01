@@ -268,7 +268,7 @@ hakwonApp.service('memberService', function($http) {
 
 /*	아이디 찾기 */
 hakwonApp.controller('findIdController', function($scope, $location, $routeParams, memberService, CommUtil){
-	console.log('findIdController call', $scope);
+	console.log('findIdController call');
 
 	try {
 		/*	헤더 정보 셋팅	*/
@@ -375,7 +375,7 @@ hakwonApp.controller('findPwController', function($scope, $location, $routeParam
 
 /*	내정보 변경 컨트롤러  */
 hakwonApp.controller('memberModifyController', function($scope, $window, $location, $routeParams, memberService, CommUtil) {
-	console.log('memberModifyController call', $scope, $window, $location, $routeParams, memberService, CommUtil);
+	console.log('memberModifyController call');
 
 	try {
 		/*  인증 정보 체크  */
@@ -612,7 +612,7 @@ hakwonApp.controller('memberModifyController', function($scope, $window, $locati
 
 /*	내정보 */
 hakwonApp.controller('myInfoController', function($scope, $location, $routeParams, memberService, CommUtil){
-	console.log('myInfoController call', $scope);
+	console.log('myInfoController call');
 
 	try {
 		/*  인증 정보 체크  */

@@ -77,7 +77,7 @@ hakwonApp.controller('advertiseListController', function($scope, $window, $route
 
 /* 광고 UCC  */
 hakwonApp.controller('advertiseUccController', function($scope, $window){
-	console.log('advertiseUccController call', $scope);
+	console.log('advertiseUccController call');
 
 	/*	헤더 정보 셋팅	*/
 	hakwonHeader.setHeader({viewType:'user'});

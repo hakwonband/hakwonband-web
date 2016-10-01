@@ -49,8 +49,8 @@ $(window).load(function() {
 	});
 });
 
-	function locationCallBack(gpsStr) {
-		alert('gpsStr['+gpsStr+']');
+	window.locationCallBack = function(latitude, longitude) {
+		alert('latitude['+latitude+'] longitude['+longitude+']');
 	}
 
 </script>

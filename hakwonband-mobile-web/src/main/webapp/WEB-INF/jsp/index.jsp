@@ -238,6 +238,22 @@ try {
 	}
 } catch(ex) {
 }
+
+var gpsLocation = {
+	latitude : ''
+	, longitude : ''
+};
+window.locationCallBack = function(latitude, longitude) {
+	console.log('latitude['+latitude+'] longitude['+longitude+']');
+	gpsLocation.latitude = latitude;
+	gpsLocation.longitude = longitude;
+}
+
+if( window.PLATFORM && comm.getAppVersion() >= 601 ) {
+	if( window.PLATFORM.gpsCheck() == "true" ) {
+		window.PLATFORM.getLocation();
+	}
+}
 </script>
 </body>
 </html>

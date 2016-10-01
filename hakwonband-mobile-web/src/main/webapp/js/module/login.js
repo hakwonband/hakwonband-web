@@ -121,7 +121,7 @@ hakwonApp.service('loginService', function() {
  * 로그인 컨트롤러
  */
 hakwonApp.controller('loginController', function($scope, $location, loginService) {
-	console.log('loginController call', $scope, $location, loginService);
+	console.log('loginController call');
 
 	try {
 		$('.chk input[type="checkbox"]').ezMark({checkboxCls: 'ez-chkbox', checkedCls: 'ez-checked'});

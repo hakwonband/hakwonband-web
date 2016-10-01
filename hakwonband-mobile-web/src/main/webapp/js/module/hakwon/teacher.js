@@ -8,7 +8,7 @@ hakwonApp.service('teahcerListService', function() {
 
 /* 학원 선생님 리스트  */
 hakwonApp.controller('teacherListController', function($scope, $location, $routeParams, CommUtil, teahcerListService){
-	console.log('teacherListController call', $scope);
+	console.log('teacherListController call');
 
 	try {
 		/*  인증 정보 체크  */
