@@ -65,7 +65,7 @@ hakwonApp.service('loginService', function() {
 							/*	관리자로 이동	*/
 							alert('관리자 싸이트로 이동 합니다.');
 							//window.location = HakwonConstant.Site.ADMIN+'/main.do';
-							window.location.replace(HakwonConstant.Site.ADMIN+'/main.do';);
+							window.location.replace(HakwonConstant.Site.ADMIN+'/main.do');
 						} else if( colData.authUserInfo.user_type == '002' ) {
 							alert('매니저 싸이트로 이동 합니다.');
 							//window.location = HakwonConstant.Site.MANAGER;
