@@ -364,4 +364,21 @@ public class HakwonController extends BaseAction {
 
 		sendColData(hakwonService.updateHakwonIntro(param), request, response);
 	}
+
+	/**
+	 * 학원 삭제
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/delete")
+	public void delete(HttpServletRequest request, HttpServletResponse response) {
+
+		String hakwonNo = request.getParameter("hakwonNo");
+
+		logger.info("delete hakwonNo : " + hakwonNo);
+
+		hakwonService.deleteHakwon(Long.valueOf(hakwonNo));
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
 }

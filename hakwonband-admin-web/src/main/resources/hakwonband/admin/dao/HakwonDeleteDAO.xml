@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.admin.dao.HakwonDeleteDAO">
+
+	<delete id="delHakwonInfo" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonInfo */
+		delete from tb_hakwon_info
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonClass" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonClass */
+		delete from tb_hakwon_class
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonClassTeacher" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonClassTeacher */
+		delete from tb_hakwon_class_teacher
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonClassStudent" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonClassStudent */
+		delete from tb_hakwon_class_student
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonTeacher" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonTeacher */
+		delete from tb_hakwon_teacher
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonMember" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonMember */
+		delete from tb_hakwon_member
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwon" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwon */
+		delete from tb_hakwon
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+
+	<delete id="delHakwonEvent" parameterType="long">
+	<![CDATA[
+		/* HakwonDeleteDAO.delHakwonEvent */
+		delete from tb_event
+		where
+			hakwon_no = #{hakwon_no}
+	]]>
+	</delete>
+</mapper>

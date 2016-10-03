@@ -841,6 +841,7 @@ hakwonTmpl.hakwon = {
 		, '				<option value="002" {{= hakwonInfo.hakwon_status == "002"?"selected":""}}>미인증</option>'
 		, '				<option value="003" {{= hakwonInfo.hakwon_status == "003"?"selected":""}}>원장님&선생님 접근 금지</option>'
 		, '			</select>'
+		, '			<button type="button" data-act="hakwonDelete" class="btn btn-primary btn-block m-t-xl">학원 삭제</button>'
 		, '			<button type="button" data-toggle="modal" data-target="#hakwon_status_layer" class="btn btn-primary btn-block m-t-xl">학원 상태 변경</button>'
 		, '			<div class="modal inmodal" id="hakwon_status_layer" tabindex="-1" role="dialog" aria-hidden="true">'
 		, '				<div class="modal-dialog">'
