@@ -54,6 +54,7 @@ public class HakwonDaoAOP {
 			logger.info("\n--------------------------------------\n"+sb.toString());
 		}
 
+
 		return retVal;
 	}
 }

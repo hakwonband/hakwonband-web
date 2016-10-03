@@ -348,6 +348,7 @@ public class HakwonService {
 		List<DataMap> resultList = new ArrayList<DataMap>();
 
 		for(DataMap user : userList) {
+			System.out.println("user : " + user);
 			String flag = CommonConstant.Flag.fail;
 			try {
 				DataMap insertUser = new DataMap();
@@ -372,8 +373,8 @@ public class HakwonService {
 				if (resultUser != 1) {
 					throw new HKBandException("UserDAO.insertUser error");
 				}
-				long lastId = insertUser.getLong("idx");
-				insertUser.put("user_no", lastId);
+				long user_no = insertUser.getLong("idx");
+				insertUser.put("user_no", user_no);
 				insertUser.put("agree01", "Y");
 				insertUser.put("agree02", "Y");
 
@@ -387,27 +388,30 @@ public class HakwonService {
 				insertUser.put("hakwon_no", hakwonNo);
 				excelUserDAO.insertHakwonMember(insertUser);
 
-				if( user.equals("user_type", "S") ) {
-					String class_name = user.getString("class_name");
-					DataMap classSearchParam = new DataMap();
-					classSearchParam.put("hakwon_no", hakwonNo);
-					classSearchParam.put("class_name", class_name);
+				if( user.equals("type", "S") && user.isNotNull("class_name") ) {
+					String class_name_str = user.getString("class_name");
 
-					int class_no = excelUserDAO.getClassNo(classSearchParam);
-					if( class_no > 0 ) {
-						DataMap classInsertParam = new DataMap();
-						classInsertParam.put("hakwon_no",	hakwonNo);
-						classInsertParam.put("class_no",	class_no);
-						classInsertParam.put("student_user_no",	lastId);
+					for(String class_name : class_name_str.split("\\|")) {
 
-						excelUserDAO.insertClassStudent(classInsertParam);
+						DataMap classSearchParam = new DataMap();
+						classSearchParam.put("hakwon_no", hakwonNo);
+						classSearchParam.put("class_name", class_name);
+
+						Integer class_no = excelUserDAO.getClassNo(classSearchParam);
+						if( class_no != null && class_no > 0 ) {
+							DataMap classInsertParam = new DataMap();
+							classInsertParam.put("hakwon_no",	hakwonNo);
+							classInsertParam.put("class_no",	class_no);
+							classInsertParam.put("student_user_no",	user_no);
+
+							excelUserDAO.insertClassStudent(classInsertParam);
+						}
 					}
 				}
 
 				flag = "성공";
 			} catch(DuplicateKeyException e) {
 				flag = "중복 아이디";
-				logger.error("", e);
 			} catch(Exception e) {
 				flag = "실패";
 				logger.error("", e);
