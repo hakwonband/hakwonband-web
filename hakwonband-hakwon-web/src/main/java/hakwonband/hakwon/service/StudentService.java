@@ -120,7 +120,10 @@ public class StudentService {
 		schoolParam.put("school_level",	param.getString("school_level"));
 		schoolParam.put("level",		param.getString("school_level_level"));
 		schoolParam.put("user_no",		param.getString("student_user_no"));
-		studentDAO.updateSchool(schoolParam);
+		int cnt = studentDAO.updateSchool(schoolParam);
+		if( cnt == 0 ) {
+			studentDAO.insertStudentSchool(schoolParam);
+		}
 	}
 
 	/**

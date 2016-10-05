@@ -70,4 +70,15 @@
 	]]>
 	</insert>
 
+	<insert id="insertStudentSchool" parameterType="dataMap">
+	<![CDATA[
+		/* ExcelUserDAO.insertStudentSchool */
+		insert into tb_student_school(
+			user_no, school_name, school_level, level
+		) values (
+			#{student_user_no}, '', '', 0
+		)
+	]]>
+	</insert>
+
 </mapper>

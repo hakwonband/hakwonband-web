@@ -388,23 +388,28 @@ public class HakwonService {
 				insertUser.put("hakwon_no", hakwonNo);
 				excelUserDAO.insertHakwonMember(insertUser);
 
-				if( user.equals("type", "S") && user.isNotNull("class_name") ) {
-					String class_name_str = user.getString("class_name");
+				if( user.equals("type", "S") ) {
 
-					for(String class_name : class_name_str.split("\\|")) {
+					excelUserDAO.insertStudentSchool(insertUser);
 
-						DataMap classSearchParam = new DataMap();
-						classSearchParam.put("hakwon_no", hakwonNo);
-						classSearchParam.put("class_name", class_name);
+					if( user.isNotNull("class_name") ) {
+						String class_name_str = user.getString("class_name");
 
-						Integer class_no = excelUserDAO.getClassNo(classSearchParam);
-						if( class_no != null && class_no > 0 ) {
-							DataMap classInsertParam = new DataMap();
-							classInsertParam.put("hakwon_no",	hakwonNo);
-							classInsertParam.put("class_no",	class_no);
-							classInsertParam.put("student_user_no",	user_no);
+						for(String class_name : class_name_str.split("\\|")) {
 
-							excelUserDAO.insertClassStudent(classInsertParam);
+							DataMap classSearchParam = new DataMap();
+							classSearchParam.put("hakwon_no", hakwonNo);
+							classSearchParam.put("class_name", class_name);
+
+							Integer class_no = excelUserDAO.getClassNo(classSearchParam);
+							if( class_no != null && class_no > 0 ) {
+								DataMap classInsertParam = new DataMap();
+								classInsertParam.put("hakwon_no",	hakwonNo);
+								classInsertParam.put("class_no",	class_no);
+								classInsertParam.put("student_user_no",	user_no);
+
+								excelUserDAO.insertClassStudent(classInsertParam);
+							}
 						}
 					}
 				}

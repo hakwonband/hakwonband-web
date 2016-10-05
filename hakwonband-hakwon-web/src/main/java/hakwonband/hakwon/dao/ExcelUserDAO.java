@@ -43,4 +43,10 @@ public interface ExcelUserDAO {
 	 * @param param
 	 */
 	public void insertClassStudent(DataMap param);
+
+	/**
+	 * 학생 학교 등록
+	 * @param param
+	 */
+	public void insertStudentSchool(DataMap param);
 }
