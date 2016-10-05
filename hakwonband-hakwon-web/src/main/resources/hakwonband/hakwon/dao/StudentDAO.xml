@@ -254,4 +254,17 @@
 			and parent_user_no = #{parent_user_no}
 	]]>
 	</delete>
+
+
+	<insert id="insertStudentSchool" parameterType="dataMap">
+	<![CDATA[
+		/* StudentDAO.insertStudentSchool */
+		insert into tb_student_school(
+			user_no, school_name, school_level, level
+		) values (
+			#{user_no}, #{school_name}, #{school_level}, #{level}
+		)
+	]]>
+	</insert>
+
 </mapper>

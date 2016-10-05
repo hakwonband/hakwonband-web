@@ -73,4 +73,11 @@ public interface StudentDAO {
 	 * @return
 	 */
 	public int parentMappingDel(DataMap param);
+
+	/**
+	 * 학생 학교 등록
+	 * @param param
+	 * @return
+	 */
+	public int insertStudentSchool(DataMap param);
 }

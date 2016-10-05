@@ -21,7 +21,7 @@
 						<option value="002">출금</option>
 					</select>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-1">
 					<select name="receiptMethod" class="form-control">
 						<option value="">수납 방법</option>
 						<option value="001">카드</option>
@@ -30,13 +30,13 @@
 						<option value="004">기타</option>
 					</select>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-1">
 					<select name="searchType" class="form-control">
 						<option value="name">이름</option>
 						<option value="id">아이디</option>
 					</select>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<div class="input-group">
 						<input type="text" class="form-control" name="searchText" placeholder="검색어 입력" ng-keydown="searchReceiptEnter($event)" value="">
 						<span class="input-group-btn">
@@ -55,7 +55,7 @@
 						<option value="200">200</option>
 					</select>
 				</div>
-				<div class="col-md-1">
+				<div class="col-md-2">
 					<button type="button" class="btn btn-primary" ng-click="excelSave()">엑셀 저장</button>
 					<button type="button" class="btn btn-primary" ng-click="registMove()">수납 등록</button>
 				</div>

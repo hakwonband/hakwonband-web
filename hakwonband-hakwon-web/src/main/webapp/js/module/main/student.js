@@ -644,7 +644,11 @@ hakwonMainApp.controller('studentModifyController', function($scope, $location, 
 		studentService.studentInfo(studentUserNo, function(data) {
 			data.colData.userInfo.user_birthday = new Date(data.colData.userInfo.user_birthday);
 			$scope.user_info = data.colData.userInfo;
-			$scope.school_info = data.colData.schoolInfo;
+			if( data.colData.schoolInfo ) {
+				$scope.school_info = data.colData.schoolInfo;
+			} else {
+				$scope.school_info = {};
+			}
 		});
 
 		/**
