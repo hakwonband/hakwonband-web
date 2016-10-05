@@ -427,7 +427,7 @@
 			</if>
 		</if>
 		order by
-			a.member_yn desc, a.receipt_date asc, b.user_name asc
+			a.receipt_date asc, a.member_yn desc, b.user_name asc
 		limit
 			${startNo}, ${pageScale}
 	</select>
@@ -477,7 +477,7 @@
 			</if>
 		</if>
 		order by
-			a.member_yn desc, a.receipt_date asc, b.user_name asc
+			a.receipt_date asc, a.member_yn desc, b.user_name asc
 	</select>
 
 	<!-- 학원의 학생들 전체 카운트 조회 (학생별 수납리스트의 학생 목록) -->
