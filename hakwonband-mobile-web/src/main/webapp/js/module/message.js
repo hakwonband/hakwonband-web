@@ -213,7 +213,7 @@ hakwonApp.service('messageService', function($window, CommUtil) {
 
 /* 보낸 메세지 리스트 컨트롤러 */
 hakwonApp.controller('sendMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
-	console.log('sendMessageListController call', $scope, $location, $routeParams, CommUtil, messageService);
+	console.log('sendMessageListController call');
 
 	try {
 		/*  인증 정보 체크  */
@@ -289,7 +289,7 @@ hakwonApp.controller('sendMessageListController', function($scope, $location, $r
 
 /* 받은 메세지 리스트 컨트롤러 */
 hakwonApp.controller('receiveMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
-	console.log('receiveMessageListController call', $scope, $location, CommUtil, $routeParams, messageService);
+	console.log('receiveMessageListController call');
 
 	try {
 		/*  인증 정보 체크  */
@@ -369,7 +369,7 @@ hakwonApp.controller('receiveMessageListController', function($scope, $location,
 
 /* 메세지 상세보기 컨트롤러  */
 hakwonApp.controller('messageDetailController', function($scope, $window, $location, $routeParams, CommUtil, messageService) {
-	console.log('messageDetailController call', $scope, $window, $routeParams, CommUtil, messageService);
+	console.log('messageDetailController call');
 
 	try {
 		/*  인증 정보 체크  */

@@ -11,6 +11,7 @@ import hakwonband.admin.dao.CommonDAO;
 import hakwonband.admin.dao.FileDAO;
 import hakwonband.admin.dao.HakwonCateDAO;
 import hakwonband.admin.dao.HakwonDAO;
+import hakwonband.admin.dao.HakwonDeleteDAO;
 import hakwonband.admin.dao.ManagerDAO;
 import hakwonband.admin.dao.MessageSendDAO;
 import hakwonband.admin.model.DevicePushData;
@@ -47,6 +48,9 @@ public class HakwonService {
 
 	@Autowired
 	private ManagerDAO managerDAO;
+
+	@Autowired
+	private HakwonDeleteDAO hakwonDeleteDAO;
 
 	/**
 	 * 학원 리스트
@@ -376,5 +380,69 @@ public class HakwonService {
 		resultObj.put("updateFiles", 	updateFiles);
 
 		return resultObj;
+	}
+
+	/**
+	 * 학원 삭제
+	 * @param hakwonNo
+	 */
+	public void deleteHakwon(long hakwon_no) {
+
+		/**
+		 * 학원 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwon(hakwon_no);
+
+		/**
+		 * 학원 정보 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonInfo(hakwon_no);
+
+		/**
+		 * 학원 반 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonClass(hakwon_no);
+
+		/**
+		 * 반 선생님 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonClassTeacher(hakwon_no);
+
+		/**
+		 * 반 학생 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonClassStudent(hakwon_no);
+
+		/**
+		 * 학원 선생님 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonTeacher(hakwon_no);
+
+		/**
+		 * 학원 멤버 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonMember(hakwon_no);
+
+		/**
+		 * 학원 이벤트 삭제
+		 * @param hakwon_no
+		 * @return
+		 */
+		hakwonDeleteDAO.delHakwonEvent(hakwon_no);
+
 	}
 }

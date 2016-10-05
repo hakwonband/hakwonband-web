@@ -52,7 +52,7 @@ hakwonApp.service('attendanceListService', function($window, CommUtil) {
 
 /* 출결 리스트 컨트롤러 */
 hakwonApp.controller('attendanceListController', function($scope, $location, $routeParams, CommUtil, attendanceListService) {
-	console.log('attendanceListController call', $scope, $location, $routeParams, CommUtil, attendanceListService);
+	console.log('attendanceListController call');
 
 	try {
 		/*  인증 정보 체크  */

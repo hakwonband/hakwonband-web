@@ -42,7 +42,11 @@
 		</div>
 
 		<div class="ibox-content text-right m-t">
-			<a href="#" onclick="return false;" ng-click="reader_show = !reader_show;">전체 사용자 <strong>{{classNoticeReaderList.length}}</strong>명중 <strong>{{read_user_count}}</strong>명 읽음</a>
+			<a href="#" onclick="return false;" ng-click="reader_show = !reader_show;">
+				전체 사용자 <strong>{{classNoticeReaderList.length}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+				학생 <strong>{{all_student_count}}</strong>명 중 <strong>{{read_student_count}}</strong> 읽음&nbsp;&nbsp;&nbsp;&nbsp;
+				학부모 <strong>{{all_parent_count}}</strong>명 중 <strong>{{read_parent_count}}</strong> 읽음
+			</a>
 		</div>
 		<div class="ibox-content" ng-show="reader_show == true">
 			<table class="table table-hover table_link">

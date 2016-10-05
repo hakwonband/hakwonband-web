@@ -967,7 +967,26 @@ var HakwonCommon = function() {
 		 */
 		if( window.PLATFORM && window.PLATFORM.getLocation ) {
 			console.log('android getLocation call!~~~~');
-			window.PLATFORM.getLocation();
+			if( gpsLocation.latitude ) {
+				var latlng = new google.maps.LatLng(gpsLocation.latitude, gpsLocation.longitude);
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode({'latLng' : latlng}, function(results, status) {
+					if( results && results.length > 0 ) {
+						var geoObj = undefined;
+						for(var i=0; i<results.length; i++) {
+							if( results[i].types[0] == 'sublocality_level_1' ) {
+								var geoObj = results[i];
+							}
+						}
+						if( !geoObj ) {
+							geoObj = results[0];
+						}
+						self.setAddress(geoObj.formatted_address);
+					}
+				});
+			} else {
+				window.PLATFORM.getLocation();
+			}
 		} else if( navigator ) {
 			console.log('navigator call!~~~~');
 			navigator.geolocation.getCurrentPosition(function(position) {

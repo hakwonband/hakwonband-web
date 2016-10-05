@@ -428,6 +428,46 @@ hakwonMainApp.service('hakwonDetailService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 학원 삭제
+	 */
+	hakwonDetailService.hakwonDelete = function(hakwon_no) {
+		var prompt_val = window.prompt('학원이 삭제되면 다시 복구 할 수 없습니다.\n원장님 및 학원 멤버에게 알림은 가지 않습니다\n"학원 삭제"를 입력해 주세요.');
+		if( prompt_val == '학원 삭제' ) {
+		} else if( isNull(prompt_val) == false ) {
+			alert('올바른 글자를 입력해 주세요.');
+			return ;
+		} else {
+			return ;
+		}
+
+		var param = {hakwonNo:hakwon_no};
+		$.ajax({
+			url: contextPath+"/admin/hakwon/delete.do",
+			type: "post",
+			data: $.param(param, true),
+			headers : hakwonInfo.getHeader(),
+			dataType: "json",
+			success: function(data) {
+				if( data.error ) {
+					alert('학원 삭제를 실패 했습니다.');
+					return ;
+				}
+
+				var colData = data.colData;
+				if( colData.flag == CommonConstant.Flag.success ) {
+					alert('학원 삭제를 완료 했습니다.');
+					window.location.href = "#/hakwon/list";
+				} else {
+					alert('학원 삭제를 실패 했습니다.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
+		});
+	};
+
 	return hakwonDetailService;
 });
 
@@ -453,6 +493,11 @@ hakwonMainApp.controller('hakwonDetailClassListController', function($scope, $lo
 		/*	학원 상태 변경	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonStatusChange]', function() {
 			hakwonDetailService.hakwonStatusChange(currentHakwonNo);
+		});
+
+		/*	학원 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonDelete]', function() {
+			hakwonDetailService.hakwonDelete(currentHakwonNo);
 		});
 
 		$("#wrapper").show();
@@ -495,6 +540,11 @@ hakwonMainApp.controller('hakwonDetailTeacherListController', function($scope, $
 			hakwonDetailService.hakwonStatusChange(currentHakwonNo);
 		});
 
+		/*	학원 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonDelete]', function() {
+			hakwonDetailService.hakwonDelete(currentHakwonNo);
+		});
+
 		$("#wrapper").show();
 		$scope.$on('$viewContentLoaded', function() {
 			console.log('hakwonDetailTeacherController $viewContentLoaded call');
@@ -533,6 +583,11 @@ hakwonMainApp.controller('hakwonDetailParentListController', function($scope, $l
 		/*	학원 상태 변경	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonStatusChange]', function() {
 			hakwonDetailService.hakwonStatusChange(currentHakwonNo);
+		});
+
+		/*	학원 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonDelete]', function() {
+			hakwonDetailService.hakwonDelete(currentHakwonNo);
 		});
 
 		$("#wrapper").show();
@@ -613,6 +668,11 @@ hakwonMainApp.controller('hakwonDetailIntroduceController', function($scope, $lo
 			hakwonDetailService.hakwonStatusChange(currentHakwonNo);
 		});
 
+		/*	학원 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonDelete]', function() {
+			hakwonDetailService.hakwonDelete(currentHakwonNo);
+		});
+
 		$("#wrapper").show();
 		$scope.$on('$viewContentLoaded', function() {
 			console.log('hakwonDetailIntroduceController $viewContentLoaded call');
@@ -648,6 +708,11 @@ hakwonMainApp.controller('hakwonDetailIntroUpdateController', function($scope, $
 		/*	학원 상태 변경	*/
 		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonStatusChange]', function() {
 			hakwonDetailService.hakwonStatusChange(currentHakwonNo);
+		});
+
+		/*	학원 삭제	*/
+		$('#mainNgView').on(clickEvent, 'button[data-act=hakwonDelete]', function() {
+			hakwonDetailService.hakwonDelete(currentHakwonNo);
 		});
 
 		/*	취소	*/

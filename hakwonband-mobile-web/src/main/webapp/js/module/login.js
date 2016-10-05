@@ -64,13 +64,16 @@ hakwonApp.service('loginService', function() {
 						if( colData.authUserInfo.user_type == '001' ) {
 							/*	관리자로 이동	*/
 							alert('관리자 싸이트로 이동 합니다.');
-							window.location = HakwonConstant.Site.ADMIN+'/main.do';
+							//window.location = HakwonConstant.Site.ADMIN+'/main.do';
+							window.location.replace(HakwonConstant.Site.ADMIN+'/main.do');
 						} else if( colData.authUserInfo.user_type == '002' ) {
 							alert('매니저 싸이트로 이동 합니다.');
-							window.location = HakwonConstant.Site.MANAGER;
+							//window.location = HakwonConstant.Site.MANAGER;
+							window.location.replace(HakwonConstant.Site.MANAGER);
 						} else if( colData.authUserInfo.user_type == '003' || colData.authUserInfo.user_type == '004' ) {
 							alert('학원 싸이트로 이동 합니다.');
-							window.location = HakwonConstant.Site.HAKWON+'/main.do';
+							//window.location = HakwonConstant.Site.HAKWON+'/main.do';
+							window.location.replace(HakwonConstant.Site.HAKWON+'/main.do');
 						} else if( colData.authUserInfo.user_type == '005' || colData.authUserInfo.user_type == '006' ) {
 
 							userAuth.userName 	= colData.authUserInfo.user_name;
@@ -95,7 +98,8 @@ hakwonApp.service('loginService', function() {
 								};
 							}
 
-							window.location.href = MENUS.sharpUrls.userMain;
+							//window.location.href = MENUS.sharpUrls.userMain;
+							window.location.replace(MENUS.sharpUrls.userMain);
 						} else {
 							commProto.logger({loginError:colData});
 						}
@@ -121,7 +125,7 @@ hakwonApp.service('loginService', function() {
  * 로그인 컨트롤러
  */
 hakwonApp.controller('loginController', function($scope, $location, loginService) {
-	console.log('loginController call', $scope, $location, loginService);
+	console.log('loginController call');
 
 	try {
 		$('.chk input[type="checkbox"]').ezMark({checkboxCls: 'ez-chkbox', checkedCls: 'ez-checked'});

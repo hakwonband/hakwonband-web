@@ -169,7 +169,7 @@ hakwonApp.service('hakwonService', function($http) {
 
 /*	학원소개 컨트롤러  */
 hakwonApp.controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil){
-	console.log('hakwonIntroController call', $scope, $location, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonIntroController call');
 
 	try {
 		/*  학원 번호 체크  */
@@ -230,7 +230,7 @@ hakwonApp.controller('hakwonIntroController', function($scope, $location, $route
 
 /*	학원 상세정보  */
 hakwonApp.controller('hakwonDetailController', function($scope, $location, $routeParams, hakwonService, CommUtil){
-	console.log('hakwonDetailController call', $scope, $location, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonDetailController call');
 
 	try {
 		/*  학원 번호 체크  */
@@ -339,7 +339,7 @@ hakwonApp.controller('hakwonDetailController', function($scope, $location, $rout
 
 /*	학원 검색  */
 hakwonApp.controller('hakwonSearchController', function($scope, $location, $routeParams, hakwonService, CommUtil){
-	console.log('hakwonSearchController call', $scope, $location, $routeParams, hakwonService, CommUtil);
+	console.log('hakwonSearchController call');
 
 	try {
 		/*  인증 정보 체크  */
@@ -493,7 +493,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 			comm.screenInit();
 
 			/*	버전 체크후 gps 체크	*/
-			if( window.PLATFORM && comm.getAppVersion() >= 124 ) {
+			if( window.PLATFORM && comm.getAppVersion() >= 601 ) {
 				if( window.PLATFORM.gpsCheck() == "false" ) {
 					if( window.confirm('gps가 off되어 있습니다. 활성화 시키시겠습니까?') ) {
 						window.PLATFORM.gpsSettingMove();

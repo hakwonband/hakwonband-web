@@ -36,7 +36,7 @@ public interface ExcelUserDAO {
 	 * @param param
 	 * @return
 	 */
-	public int getClassNo(DataMap param);
+	public Integer getClassNo(DataMap param);
 
 	/**
 	 * 학생 반에 등록

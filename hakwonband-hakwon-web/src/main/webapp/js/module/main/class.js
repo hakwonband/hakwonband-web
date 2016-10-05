@@ -301,10 +301,22 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 					$scope.fileList				= colData.fileList;
 					$scope.classNoticeReaderList= colData.classNoticeReaderList;
 
-					$scope.read_user_count = 0;
+					$scope.all_student_count = 0;
+					$scope.read_student_count = 0;
+					$scope.all_parent_count = 0;
+					$scope.read_parent_count = 0;
 					for(var i=0; i<colData.classNoticeReaderList.length; i++) {
-						if( colData.classNoticeReaderList[i].read_date ) {
-							$scope.read_user_count++;
+						if( colData.classNoticeReaderList[i].user_type == '006' ) {
+							$scope.all_student_count++;
+							if( colData.classNoticeReaderList[i].read_date ) {
+								$scope.read_student_count++;
+							}
+
+						} else if( colData.classNoticeReaderList[i].user_type == '005' ) {
+							$scope.all_parent_count++;
+							if( colData.classNoticeReaderList[i].read_date ) {
+								$scope.read_parent_count++;
+							}
 						}
 					}
 

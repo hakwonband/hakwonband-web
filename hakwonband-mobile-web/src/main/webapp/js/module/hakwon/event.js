@@ -24,7 +24,7 @@ hakwonApp.service('eventService', function() {
  * 이벤트 리스트 컨트롤러
  */
 hakwonApp.controller('eventListController', function($scope, $location, $window, $routeParams, CommUtil, eventService){
-	console.log('eventListController call', $scope, $location, $window, $routeParams, CommUtil, eventService);
+	console.log('eventListController call');
 
 	try {
 		/*  학원 번호 체크  */
@@ -107,7 +107,7 @@ hakwonApp.controller('eventListController', function($scope, $location, $window,
 
 /* 이벤트 상세보기  */
 hakwonApp.controller('eventDetailController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
-	console.log('eventDetailController call', $scope, $window, $location, $routeParams, CommUtil, eventService);
+	console.log('eventDetailController call');
 
 	try {
 		/*  학원 번호 체크  */
@@ -242,7 +242,7 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 
 /* 이벤트 참여내역 컨트롤러 */
 hakwonApp.controller('eventJoinController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
-	console.log('eventJoinController call', $scope, $window, $location, $routeParams, CommUtil, eventService);
+	console.log('eventJoinController call');
 
 	try {
 		/*  인증 정보 체크  */

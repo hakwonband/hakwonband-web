@@ -51,7 +51,7 @@
 	</insert>
 
 	<!-- 반 번호 조회 -->
-	<select id="getClassNo" parameterType="dataMap" resultType="int">
+	<select id="getClassNo" parameterType="dataMap" resultType="Integer">
 	<![CDATA[
 		/* ExcelUserDAO.getClassNo */
 		select class_no from tb_hakwon_class where class_title = #{class_name} and hakwon_no = #{hakwon_no} limit 1

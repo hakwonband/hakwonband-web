@@ -44,7 +44,7 @@ hakwonApp.service('noticeService', function($http, CommUtil) {
 
 /* 공지사항 리스트 컨트롤러 */
 hakwonApp.controller('noticeListController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
-	console.log('noticeListController call', $scope, $window, $location, $routeParams, noticeService);
+	console.log('noticeListController call');
 
 	try {
 
@@ -136,7 +136,7 @@ hakwonApp.controller('noticeListController', function($scope, $window, $location
 
 /*	공지사항 상세보기  */
 hakwonApp.controller('noticeDetailController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
-	console.log('noticeDetailController call', $scope, $window, $location, $routeParams, CommUtil, noticeService);
+	console.log('noticeDetailController call');
 
 	try {
 

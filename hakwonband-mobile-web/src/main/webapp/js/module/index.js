@@ -1,9 +1,9 @@
 /*	index	*/
 hakwonApp.controller('indexController', function($scope, $location){
-	console.log('indexController call', $scope, $location);
+	console.log('indexController call');
 
 	$scope.$on("$routeChangeStart", function (event, current, previous, rejection) {
-		console.log('$routeChangeStart', event, current, previous, rejection);
+		console.log('$routeChangeStart');
 	});
 	$scope.$on('$viewContentLoaded', function() {
 		console.log('hakwonApp $viewContentLoaded', userAuth);
