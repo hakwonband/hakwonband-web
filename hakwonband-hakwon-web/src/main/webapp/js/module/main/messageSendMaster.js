@@ -150,7 +150,7 @@ hakwonMainApp.controller('messageMasterSendController', function($scope, $locati
 		var msg_user_no_array = $routeParams.msg_user_no_array;
 
 		/*	타겟 타입 초기화	*/
-		$scope.targetType = 'class';
+		$scope.targetType = 'search';
 
 		$scope.comm = comm;
 		$scope.CommonConstant = CommonConstant;

@@ -36,9 +36,12 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter  {
 		logger.debug("Interceptor AuthCheckInterceptor call");
 
 		CookieUtils cookieUtils = new CookieUtils(request, response, true);
-		String authKey = cookieUtils.getCookie(CommonConstant.Cookie.hkBandAuthKey);
+
+		String authKey = request.getHeader(CommonConstant.Cookie.hkBandAuthKey);
+		logger.debug("header authKey : " + authKey);
 		if( StringUtil.isBlank(authKey) ) {
-			authKey = request.getHeader(CommonConstant.Cookie.hkBandAuthKey);
+			authKey = cookieUtils.getCookie(CommonConstant.Cookie.hkBandAuthKey);
+			logger.debug("cookie authKey : " + authKey);
 		}
 		logger.debug("authKey : " + authKey);
 
