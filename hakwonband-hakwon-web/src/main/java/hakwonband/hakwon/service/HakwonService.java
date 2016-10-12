@@ -344,11 +344,11 @@ public class HakwonService {
 	 * @param userList
 	 * @return
 	 */
-	public List<DataMap> registExcelUser(String hakwonNo, List<DataMap> userList) {
+	public List<DataMap> registExcelUser2(String hakwonNo, List<DataMap> userList) {
 		List<DataMap> resultList = new ArrayList<DataMap>();
 
 		for(DataMap user : userList) {
-			System.out.println("user : " + user);
+			//System.out.println("user : " + user);
 			String flag = CommonConstant.Flag.fail;
 			try {
 				DataMap insertUser = new DataMap();
@@ -358,6 +358,9 @@ public class HakwonService {
 				} else if( user.equals("type", "P") ) {
 					/*	학부모	*/
 					insertUser.put("user_type", "005");
+				}
+				if( user.isNull("user_email") ) {
+					throw new HKBandException();
 				}
 				insertUser.put("user_id",		user.getString("user_id"));
 				insertUser.put("user_name",		user.getString("user_name"));
@@ -415,6 +418,8 @@ public class HakwonService {
 				}
 
 				flag = "성공";
+			} catch(HKBandException e) {
+				flag = "파라미터 오류";
 			} catch(DuplicateKeyException e) {
 				flag = "중복 아이디";
 			} catch(Exception e) {
@@ -432,5 +437,89 @@ public class HakwonService {
 		}
 
 		return resultList;
+	}
+
+	/**
+	 * 엑셀 유저 등록
+	 * @param userList
+	 * @return
+	 */
+	public String registExcelUser(final String hakwonNo, final DataMap user) {
+
+		String flag = CommonConstant.Flag.fail;
+		DataMap insertUser = new DataMap();
+		if( user.equals("type", "S") ) {
+			/*	학생	*/
+			insertUser.put("user_type", "006");
+		} else if( user.equals("type", "P") ) {
+			/*	학부모	*/
+			insertUser.put("user_type", "005");
+		} else {
+			throw new HKBandException();
+		}
+
+		if( user.isNull("user_email") ) {
+			throw new HKBandException();
+		}
+		insertUser.put("user_id",		user.getString("user_id"));
+		insertUser.put("user_name",		user.getString("user_name"));
+		insertUser.put("user_email",	user.getString("user_email"));
+		insertUser.put("user_password",	SecuUtil.sha256(user.getString("passwd")));
+		insertUser.put("tel1_no",		user.getString("tel"));
+		insertUser.put("user_gender",	user.getString("sex"));
+		insertUser.put("user_birthday",	user.getString("birthday"));
+
+
+		/* 사용자 기본정보 등록 */
+		int resultUser = excelUserDAO.insertUser(insertUser);
+		if (resultUser != 1) {
+			throw new HKBandException("excelUserDAO.insertUser error");
+		}
+		long user_no = insertUser.getLong("idx");
+		insertUser.put("user_no", user_no);
+		insertUser.put("agree01", "Y");
+		insertUser.put("agree02", "Y");
+
+		/* 사용자 부가정보 등록 */
+		int resultUserInfo = excelUserDAO.insertUserInfo(insertUser);
+		if (resultUserInfo != 1) {
+			throw new HKBandException("excelUserDAO.insertUserInfo error");
+		}
+
+		/* 회원 가입시 학원 등록을 같이 한 경우*/
+		insertUser.put("hakwon_no", hakwonNo);
+		int resultHakwon = excelUserDAO.insertHakwonMember(insertUser);
+		if (resultHakwon != 1) {
+			throw new HKBandException("excelUserDAO.insertHakwonMember error");
+		}
+
+		if( user.equals("type", "S") ) {
+
+			excelUserDAO.insertStudentSchool(insertUser);
+
+			if( user.isNotNull("class_name") ) {
+				String class_name_str = user.getString("class_name");
+
+				for(String class_name : class_name_str.split("\\|")) {
+
+					DataMap classSearchParam = new DataMap();
+					classSearchParam.put("hakwon_no", hakwonNo);
+					classSearchParam.put("class_name", class_name);
+
+					Integer class_no = excelUserDAO.getClassNo(classSearchParam);
+					if( class_no != null && class_no > 0 ) {
+						DataMap classInsertParam = new DataMap();
+						classInsertParam.put("hakwon_no",	hakwonNo);
+						classInsertParam.put("class_no",	class_no);
+						classInsertParam.put("student_user_no",	user_no);
+
+						excelUserDAO.insertClassStudent(classInsertParam);
+					}
+				}
+			}
+		}
+		flag = "성공";
+
+		return flag;
 	}
 }

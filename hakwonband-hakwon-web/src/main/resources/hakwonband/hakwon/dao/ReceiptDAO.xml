@@ -69,7 +69,7 @@
 			, a.receipt_amount
 			, a.receipt_type
 			, get_code_name('013', a.receipt_type) as receipt_type_name
-			, get_code_name('013', a.receipt_method) as receipt_method_name
+			, get_code_name('014', a.receipt_method) as receipt_method_name
 			, a.receipt_type
 			, a.receipt_method
 			, a.receipt_desc
@@ -140,7 +140,7 @@
 			, a.student_no
 			, a.receipt_amount
 			, get_code_name('013', a.receipt_type) as receipt_type_name
-			, get_code_name('013', a.receipt_method) as receipt_method_name
+			, get_code_name('014', a.receipt_method) as receipt_method_name
 			, a.receipt_desc
 			, a.receipt_date
 			, date_format(a.reg_date,'%Y-%m-%d') as reg_date
