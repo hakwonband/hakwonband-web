@@ -54,6 +54,15 @@
 	<link href="<%=contextPath %>/assets/css/style.min.css" rel="stylesheet">
 	<link href="<%=contextPath %>/assets/css/hakwon_style.css" rel="stylesheet">
 
+<script type="text/javascript">
+	if( window.PLATFORM ) {
+		var currentVersion = window.PLATFORM.version();
+		currentVersion = currentVersion.replace(/\./gi, '');
+		if( currentVersion >= 1338 ) {
+			window.PLATFORM.attendancePass('hak123');
+		}
+	}
+</script>
 </head>
 <!-- 원장님일 경우 body class="skin-1 pace-done", 선생님일 경우 body class="skin-3 pace-done"  -->
 <body class="skin-1 pace-done" onkeydown="keyCheckFun()">
@@ -642,7 +651,13 @@
 	/*	팝업 종료	*/
 	function popupClose() {
 		if( window.PLATFORM ) {
-			window.history.back();
+			var currentVersion = window.PLATFORM.version();
+			currentVersion = currentVersion.replace(/\./gi, '');
+			if( currentVersion >= 1338 ) {
+				window.PLATFORM.attendanceClose();
+			} else {
+				window.history.back();
+			}
 		} else {
 			window.close();
 		}

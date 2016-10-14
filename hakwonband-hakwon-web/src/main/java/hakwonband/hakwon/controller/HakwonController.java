@@ -22,6 +22,7 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -480,7 +481,31 @@ public class HakwonController extends BaseAction {
 							checkParam.put("hakwon_no",	hakwonNo);
 							int checkCount = masterService.checkHakwonMaster(checkParam);
 							if( checkCount > 0 ) {
-								resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+								for(DataMap user : dataList) {
+									String flag = "실패";
+									try {
+										if( user.isNull("user_name") || user.isNull("user_id") || user.isNull("passwd") || user.isNull("user_email") ) {
+											flag = "파라미터 오류";
+										} else {
+											flag = hakwonService.registExcelUser(hakwonNo, user);
+										}
+									} catch(HKBandException e) {
+										flag = "파라미터 오류";
+									} catch(DuplicateKeyException e) {
+										flag = "중복 아이디";
+									} catch(Exception e) {
+										flag = "실패";
+										logger.error("", e);
+									} finally {
+										DataMap result = new DataMap();
+										result.put("user_name",		user.getString("user_name"));
+										result.put("user_id",		user.getString("user_id"));
+										result.put("user_email",	user.getString("user_email"));
+										result.put("flag",			flag);
+
+										resultList.add(result);
+									}
+								}
 							}
 						} else if( authUserInfo.equals("user_type", "004") ) {
 							/*	선생님	*/
@@ -490,7 +515,31 @@ public class HakwonController extends BaseAction {
 							checkParam.put("hakwon_no",	hakwonNo);
 							int checkCount = teacherService.checkHakwonTeacher(checkParam);
 							if( checkCount > 0 ) {
-								resultList = hakwonService.registExcelUser(hakwonNo, dataList);
+								for(DataMap user : dataList) {
+									String flag = "실패";
+									try {
+										if( user.isNull("user_name") || user.isNull("user_id") || user.isNull("passwd") || user.isNull("user_email") ) {
+											flag = "파라미터 오류";
+										} else {
+											flag = hakwonService.registExcelUser(hakwonNo, user);
+										}
+									} catch(HKBandException e) {
+										flag = "파라미터 오류";
+									} catch(DuplicateKeyException e) {
+										flag = "중복 아이디";
+									} catch(Exception e) {
+										flag = "실패";
+										logger.error("", e);
+									} finally {
+										DataMap result = new DataMap();
+										result.put("user_name",		user.getString("user_name"));
+										result.put("user_id",		user.getString("user_id"));
+										result.put("user_email",	user.getString("user_email"));
+										result.put("flag",			flag);
+
+										resultList.add(result);
+									}
+								}
 							}
 
 						}
@@ -541,7 +590,6 @@ public class HakwonController extends BaseAction {
 					DataMap userDataMap = new DataMap();
 
 					//셀의 수
-//					int cells = row.getPhysicalNumberOfCells();
 					for(int columnindex=0; columnindex<=8; columnindex++){
 						//셀값을 읽는다
 						HSSFCell cell = row.getCell(columnindex);
