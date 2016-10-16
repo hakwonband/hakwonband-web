@@ -27,6 +27,7 @@
 		, "moment": "2.10.6"
 		, "requirejs": "2.2.0"
 		, "underscore": "1.7.0"
+		, "tinymce" : "4.4.3"
 
 		, "bower": "*"
 		, "install": "~1.0.4"

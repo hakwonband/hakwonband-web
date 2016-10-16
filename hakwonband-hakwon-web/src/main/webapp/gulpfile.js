@@ -52,7 +52,7 @@ var merge		= require('merge-stream'),
 			'./inspinia/css/**/*'
 		]
 		, tinymce_lib : [
-  			'./js/lib/tinymce-4.1.7/**/*'
+  			'./bower_components/tinymce/**/*'
   		]
 		, main_module : [
 			'./js/common/common.prototype.js'

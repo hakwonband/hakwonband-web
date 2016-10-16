@@ -549,10 +549,18 @@ var HakwonCommon = function() {
 				moveLeftLocation = PageUrl.attendance.start + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendancePop' ) {
 				/*	등원,하원 팝업	*/
-				window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
+				if( window.PLATFORM && comm.getAppVersion() >= 1321 ) {
+					window.location = '/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no;
+				} else {
+					window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');					
+				}
 			} else if( dataAct == 'attendanceBusPop' ) {
 				/*	승차,하차 팝업	*/
-				window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
+				if( window.PLATFORM && comm.getAppVersion() >= 1321 ) {
+					window.location = '/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no;
+				} else {
+					window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');					
+				}
 			} else if( dataAct == 'attendanceEnd' ) {
 				/*	하원	*/
 				moveLeftLocation = PageUrl.attendance.end + '?hakwonNo=' + hakwonInfo.hakwon_no;

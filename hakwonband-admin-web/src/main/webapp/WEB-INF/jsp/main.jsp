@@ -244,6 +244,15 @@ $(document).ready(function () {
 			$('body').addClass('body-small');
 		}
 	}
+<%
+	if( isMobile ) {
+%>
+	if( $(document).width() <= 768 ) {
+		$('#page-wrapper').css('min-height', '700px');
+	}
+<%
+	}
+%>
 });
 
 </script>

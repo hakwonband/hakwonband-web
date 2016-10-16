@@ -202,8 +202,32 @@ window.addEventListener('load', function(e) {
 },false);
 
 $(document).ready(function () {
-	console.log('document ready');
+<%
+	if( isMobile ) {
+%>
+	if( $(document).width() <= 768 ) {
+		$('#page-wrapper').css('min-height', '700px');
+	}
+<%
+	}
+%>
 
+
+	$('body').on('mini-navbar', function() {
+		console.log('변경 된다');
+		if( $(document).width() <= 768 ) {
+			console.log('768 보다 작다');
+			if( $('body').hasClass('mini-navbar') == false ) {
+				console.log('min-navbar 없다.');
+				$('#page-wrapper').css('min-height', '700px');				
+			} else {
+				console.log('min-navbar 있다.');
+			}
+		} else {
+			console.log('768 보다 크다');
+		}
+	});
+	
 	if( commProto.isResponsiveCheck() ) {
 		if( $('body').hasClass('body-small') == false ) {
 			$('body').addClass('body-small');

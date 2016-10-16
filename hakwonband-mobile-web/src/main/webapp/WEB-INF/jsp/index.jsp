@@ -151,7 +151,10 @@ loadingImg.show();
 %>
 $('body').on("selectstart", function(event){ return false; });
 $('body').on("dragstart", function(event){ return false; });
-
+<%
+	}
+	if( isMobile == false ) {
+%>
 document.oncontextmenu = function (e) {
 	return false;
 }
