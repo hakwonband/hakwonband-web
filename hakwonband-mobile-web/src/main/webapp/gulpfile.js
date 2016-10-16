@@ -45,6 +45,9 @@ var merge		= require('merge-stream'),
 		, partials: [
 			'./js/partials/**/*'
 		]
+		, tinymce_lib : [
+			'./bower_components/tinymce/**/*'
+		]
 		, images: [
 			'./images/**/*'
 		]
@@ -74,6 +77,11 @@ gulp.task('images', function() {
 gulp.task('css_markup', function() {
 	return gulp.src(paths.css_markup)
 		.pipe(gulp.dest('./assets/css'));
+});
+
+gulp.task('tinymce_lib', function() {
+	return gulp.src(paths.tinymce_lib)
+		.pipe(gulp.dest('./assets/tinymce'));
 });
 
 // common_libraries
@@ -110,9 +118,9 @@ gulp.task('default', ['clean', 'build:development'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'partials');
+	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
 });
 
 gulp.task('build:development', ['clean'], function() {
-	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'partials');
+	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
 });
