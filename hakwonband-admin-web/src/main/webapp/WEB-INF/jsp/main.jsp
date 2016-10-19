@@ -119,6 +119,15 @@
 					</ul>
 				</li>
 				<li>
+					<a href="#"><i class="fa fa-university"></i> <span class="nav-label">학습 스토어</span> <span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="https://lms.hakwonband.com/competition/competition">경시관리</a></li>
+						<li><a href="https://lms.hakwonband.com/competition/competition">협력업체광고</a></li>
+						<li><a href="https://lms.hakwonband.com/manager">학습스토어관리</a></li>
+						<li><a href="https://lms.hakwonband.com">학습스토어</a></li>
+					</ul>
+				</li>
+				<li>
 					<a href="#/questionsMail/list" data-type="leftMenu"><i class="fa fa-graduation-cap"></i> <span class="nav-label">문의 메일</span></a>
 				</li>
 				<li>

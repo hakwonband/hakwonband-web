@@ -12,7 +12,11 @@
 		<div class="sec_aca_list">
 			<ul class="aca_list">
 				<li ng-repeat="item in hakwonList">
-					<a href="{{siteUrls.hakwonDetail}}?hakwon_no={{item.hakwon_no}}">
+					<a ng-if="item.type=='custom'" href="{{item.link}}">
+						<img ng-src="{{ item.img_src }}" class="temp" width="140" height="140" />
+						<span class="name">{{item.hakwon_name}}</span>
+					</a>
+					<a ng-if="!item.type" href="{{siteUrls.hakwonDetail}}?hakwon_no={{item.hakwon_no}}">
 						<img ng-src="{{ createFileFullPath(item.file_path, 'hakwon', true) }}" class="temp" width="140" height="140" />
 						<span class="name">{{item.hakwon_name}}</span>
 					</a>

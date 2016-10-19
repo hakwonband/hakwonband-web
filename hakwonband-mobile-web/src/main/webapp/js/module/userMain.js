@@ -139,6 +139,14 @@ hakwonApp.controller('userMainController', function($scope, $location, $window, 
 
 			userMainService.getUserMainInfo(params, function(colData) {
 				$scope.hakwonList	= colData.hakwonList;
+				var lmsObj = {
+					type:'custom'
+					, img_src : '/assets/images/lms.jpg'
+					, hakwon_name : '학습 스토어'
+					, link : 'https://lms.hakwonband.com'
+				};
+				$scope.hakwonList.unshift(lmsObj);
+				
 				$scope.messageList	= colData.messageList;
 				$scope.noticeList	= colData.notisList;
 				$scope.eventList	= colData.eventList;
