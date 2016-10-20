@@ -255,7 +255,9 @@ window.locationCallBack = function(latitude, longitude) {
 }
 
 if( window.PLATFORM && comm.getAppVersion() >= 601 ) {
-	if( window.PLATFORM.gpsCheck() == "true" ) {
+	var gps_check = window.PLATFORM.gpsCheck();
+	console.log('gps_check : ' + gps_check);
+	if( gps_check == "true" ) {
 		window.PLATFORM.getLocation();
 	}
 }
