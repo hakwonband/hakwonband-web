@@ -124,8 +124,12 @@ var HakwonCommon = function() {
 		return address;
 	}
 	this.setAddress = function(setAddress) {
-		address = setAddress;
-		console.log('setAddress : ' + setAddress);
+		if( setAddress && typeof setAddress === 'string' ) {
+			address = setAddress;
+			console.log('setAddress : ' + setAddress);
+		} else {
+			console.log('잘못된 주소 : ' + setAddress);
+		}
 	}
 
 	var currentVersion = undefined;
@@ -975,7 +979,7 @@ var HakwonCommon = function() {
 						var address_str = '';
 						for(var i=0; i<results.length; i++) {
 							if( results[i].formatted_address && address_str.length < results[i].formatted_address.length ) {
-								address_str = results[i].formatted_address.length;
+								address_str = results[i].formatted_address;
 							}
 						}
 						self.setAddress(address_str);
@@ -996,7 +1000,7 @@ var HakwonCommon = function() {
 							var address_str = '';
 							for(var i=0; i<results.length; i++) {
 								if( results[i].formatted_address && address_str.length < results[i].formatted_address.length ) {
-									address_str = results[i].formatted_address.length;
+									address_str = results[i].formatted_address;
 								}
 							}
 							self.setAddress(address_str);

@@ -368,7 +368,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 	setTimeout(function(){
 		console.log('clearInterval(location_watch) call~');
 		clearInterval(location_watch);
-	}, 5000);
+	}, 30000);
 
 	/*	초기값 정보 조회	*/
 	$scope.setInit = function() {
@@ -378,7 +378,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 
 			$scope.$$postDigest(function() {
 				var address = comm.getAddress();
-				if( address ) {
+				if( address && typeof address === 'string' ) {
 					clearInterval(location_watch);	//	주소가 있으면 중지 한다.
 					console.log('clearInterval(location_watch) call~');
 					for(var i=0; i<colData.dataList.length; i++) {
@@ -413,7 +413,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 			if( isAddressCall === true ) {
 				$scope.$$postDigest(function() {
 					var address = comm.getAddress();
-					if( address ) {
+					if( address && typeof address === 'string' ) {
 						for(var i=0; i<colData.dataList.length; i++) {
 							var gugun = colData.dataList[i];
 							if( address.indexOf(gugun) >= 0 ) {
