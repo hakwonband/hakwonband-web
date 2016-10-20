@@ -89,14 +89,14 @@ gulp.task('common_lib_js', function() {
 	return gulp.src(paths.common_lib_js)
 		.pipe(concat('common.lib.min.js'))
 		.pipe(ngmin())
-		.pipe(uglify({mangle:false}))
+//		.pipe(uglify({mangle:false}))
 		.pipe(gulp.dest('./assets/js'));
 });
 gulp.task('module_js', function() {
 	return gulp.src(paths.module_js)
 		.pipe(concat('module.min.js'))
 		.pipe(ngmin())
-		.pipe(uglify({mangle:false}))
+//		.pipe(uglify({mangle:false}))
 		.pipe(gulp.dest('./assets/js'));
 });
 

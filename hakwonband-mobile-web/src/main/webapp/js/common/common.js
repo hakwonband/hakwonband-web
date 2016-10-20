@@ -974,6 +974,7 @@ var HakwonCommon = function() {
 					if( results && results.length > 0 ) {
 						var geoObj = undefined;
 						for(var i=0; i<results.length; i++) {
+							console.log('results['+i+'] : ', results[i]);
 							if( results[i].types[0] == 'sublocality_level_1' ) {
 								var geoObj = results[i];
 							}
