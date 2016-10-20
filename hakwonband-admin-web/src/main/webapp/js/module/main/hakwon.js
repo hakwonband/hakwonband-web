@@ -471,135 +471,123 @@ hakwonMainApp.service('hakwonService', function($http, CommUtil) {
 hakwonMainApp.controller('hakwonListController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
 	console.log('hakwonMainApp hakwonListController call', $scope, $location, $routeParams, hakwonService, CommUtil);
 
-	try {
-		/*	페이지 초기화 호출	*/
-		hakwonCommon.pageInit();
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
 
-		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+	/*	공통 유틸	*/
+	$scope.CommUtil = CommUtil;
 
-		/*	헤더 셋팅	*/
-		comm.setHeader([{url:'#/main', title:'홈'}, {url:'#', title:'학원'}, {url:'#', title:'학원 리스트'}]);
+	/*	헤더 셋팅	*/
+	comm.setHeader([{url:'#/main', title:'홈'}, {url:'#', title:'학원'}, {url:'#', title:'학원 리스트'}]);
+
+	/**
+	 * 학원 카테고리 리스트
+	 */
+	CommUtil.ajax({url:contextPath+"/admin/hakwonCate/cateList.do", successFun:function(data) {
+		try {
+			$scope.hakwonCateList = data.colData.dataList;
+		} catch(ex) {
+			commProto.errorDump({errorObj:ex});
+		}
+	}});
+
+	var paramSearchSido = $routeParams.searchSido;
+	$scope.searchSido = paramSearchSido;
+
+	/*	시도	*/
+	$scope.sidoArray = DefaultInfo.sido;
+
+	/*	시도 선택시	*/
+	$scope.sidoSelect = function() {
+		var searchParam = hakwonService.listSearchParam();
+
+		console.log('searchParam.searchSido : ' + searchParam.searchSido);
+
+		if( isNull(searchParam.searchSido) ) {
+			$('select[name=searchGugun]').empty().append('<option value="">구군 전체</option>');
+		}
+
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	};
+
+	/*	구군 선택시	*/
+	$('#mainNgView').on('change', 'select[name=searchGugun]', function() {
+		var searchParam = hakwonService.listSearchParam();
+
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	});
+
+	/*	검색	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=search]', function() {
+		var searchParam = hakwonService.listSearchParam();
+
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	});
+
+	/*	관리자 학원 등록	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=adminHakwonRegist]', function() {
+		window.location = '#/hakwon/regist';
+	});
+
+	/*	카테고리 변경	*/
+	$scope.cateChange = function() {
+		var searchParam = hakwonService.listSearchParam();
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	}
+
+	/*	상태 변경	*/
+	$scope.statusChange = function() {
+		var searchParam = hakwonService.listSearchParam();
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	}
+
+	/*	관리자 등록 여부 변경	*/
+	$scope.adminRegYnChange = function() {
+		var searchParam = hakwonService.listSearchParam();
+		window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
+	}
+
+
+	/*	화면 로드 후	*/
+	$scope.$on('$viewContentLoaded', function() {
+		console.log('hakwonListController $viewContentLoaded');
 
 		/**
-		 * 학원 카테고리 리스트
+		 * 페이지 번호
 		 */
-		CommUtil.ajax({url:contextPath+"/admin/hakwonCate/cateList.do", successFun:function(data) {
-			try {
-				$scope.hakwonCateList = data.colData.dataList;
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
+		var pageNo = $routeParams.pageNo;
+		if( !pageNo ) pageNo = 1;
 
-		var paramSearchSido = $routeParams.searchSido;
-		$scope.searchSido = paramSearchSido;
+		var searchSido = $routeParams.searchSido;
+		if( !searchSido ) searchSido = '';
 
-		/*	시도	*/
-		$scope.sidoArray = DefaultInfo.sido;
+		var searchGugun = $routeParams.searchGugun;
+		if( !searchGugun ) searchGugun = '';
 
-		/*	시도 선택시	*/
-		$scope.sidoSelect = function() {
-			var searchParam = hakwonService.listSearchParam();
+		var searchText = $routeParams.searchText;
+		if( !searchText ) searchText = '';
 
-			console.log('searchParam.searchSido : ' + searchParam.searchSido);
+		var searchCateCode = $routeParams.searchCateCode;
+		if( !searchCateCode ) searchCateCode = '';
+		$scope.searchCateCode = {};
+		$scope.searchCateCode.cateCode = searchCateCode;
 
-			if( isNull(searchParam.searchSido) ) {
-				$('select[name=searchGugun]').empty().append('<option value="">구군 전체</option>');
-			}
+		var adminRegYn = $routeParams.adminRegYn;
+		if( !adminRegYn ) adminRegYn = 'N';
+		$scope.adminRegYn = adminRegYn;
 
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		};
+		var searchStatus = $routeParams.searchStatus;
+		if( !searchStatus ) searchStatus = '';
+		$scope.searchStatus = searchStatus;
 
-		/*	구군 선택시	*/
-		$('#mainNgView').on('change', 'select[name=searchGugun]', function() {
-			var searchParam = hakwonService.listSearchParam();
+		$('#mainNgView input[name=searchText]').val(searchText);
 
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		});
-
-		/*	검색	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=search]', function() {
-			var searchParam = hakwonService.listSearchParam();
-
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		});
-
-		/*	관리자 학원 등록	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=adminHakwonRegist]', function() {
-			window.location = '#/hakwon/regist';
-		});
-
-		/*	카테고리 변경	*/
-		$scope.cateChange = function() {
-			var searchParam = hakwonService.listSearchParam();
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		}
-
-		/*	상태 변경	*/
-		$scope.statusChange = function() {
-			var searchParam = hakwonService.listSearchParam();
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		}
-
-		/*	관리자 등록 여부 변경	*/
-		$scope.adminRegYnChange = function() {
-			var searchParam = hakwonService.listSearchParam();
-			window.location.href = PageUrl.hakwon.list+'?'+$.param(searchParam);
-		}
-
-
-		/*	화면 로드 후	*/
-		$scope.$on('$viewContentLoaded', function() {
-			console.log('hakwonListController $viewContentLoaded');
-
-			/**
-			 * 페이지 번호
-			 */
-			var pageNo = $routeParams.pageNo;
-			if( !pageNo ) pageNo = 1;
-
-			var searchSido = $routeParams.searchSido;
-			if( !searchSido ) searchSido = '';
-
-			var searchGugun = $routeParams.searchGugun;
-			if( !searchGugun ) searchGugun = '';
-
-			var searchText = $routeParams.searchText;
-			if( !searchText ) searchText = '';
-
-			var searchCateCode = $routeParams.searchCateCode;
-			if( !searchCateCode ) searchCateCode = '';
-			$scope.searchCateCode = {};
-			$scope.searchCateCode.cateCode = searchCateCode;
-
-			var adminRegYn = $routeParams.adminRegYn;
-			if( !adminRegYn ) adminRegYn = 'N';
-			$scope.adminRegYn = adminRegYn;
-
-			var searchStatus = $routeParams.searchStatus;
-			if( !searchStatus ) searchStatus = '';
-			$scope.searchStatus = searchStatus;
-
-			$('#mainNgView input[name=searchText]').val(searchText);
-
-			/*	구군 셋팅	*/
-			if( searchSido ) {
-				var gugunArray = DefaultInfo.gugun[searchSido];
-				if( !gugunArray ) {
-					comm.getGugun(searchSido, function() {
-						gugunArray = DefaultInfo.gugun[searchSido];
-						var gugunHtml = '<option value="">구군 전체</option>';
-						for(var i=0; i<gugunArray.length; i++) {
-							var selectedVal = '';
-							if( searchGugun == gugunArray[i] ) {
-								selectedVal = 'selected';
-							}
-							gugunHtml += '<option value="'+gugunArray[i]+'" '+selectedVal+'>'+gugunArray[i]+'</option>';
-						}
-						$('select[name=searchGugun]').html(gugunHtml);
-					});
-				} else {
+		/*	구군 셋팅	*/
+		if( searchSido ) {
+			var gugunArray = DefaultInfo.gugun[searchSido];
+			if( !gugunArray ) {
+				comm.getGugun(searchSido, function() {
+					gugunArray = DefaultInfo.gugun[searchSido];
 					var gugunHtml = '<option value="">구군 전체</option>';
 					for(var i=0; i<gugunArray.length; i++) {
 						var selectedVal = '';
@@ -609,17 +597,24 @@ hakwonMainApp.controller('hakwonListController', function($scope, $location, $ro
 						gugunHtml += '<option value="'+gugunArray[i]+'" '+selectedVal+'>'+gugunArray[i]+'</option>';
 					}
 					$('select[name=searchGugun]').html(gugunHtml);
+				});
+			} else {
+				var gugunHtml = '<option value="">구군 전체</option>';
+				for(var i=0; i<gugunArray.length; i++) {
+					var selectedVal = '';
+					if( searchGugun == gugunArray[i] ) {
+						selectedVal = 'selected';
+					}
+					gugunHtml += '<option value="'+gugunArray[i]+'" '+selectedVal+'>'+gugunArray[i]+'</option>';
 				}
+				$('select[name=searchGugun]').html(gugunHtml);
 			}
+		}
 
-			hakwonService.hakwonList(pageNo, searchSido, searchGugun, searchCateCode, searchText, adminRegYn, searchStatus);
-		});
+		hakwonService.hakwonList(pageNo, searchSido, searchGugun, searchCateCode, searchText, adminRegYn, searchStatus);
+	});
 
-		$("#wrapper").show();
-
-	} catch(ex) {
-		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
-	}
+	$("#wrapper").show();
 });
 
 
@@ -629,143 +624,139 @@ hakwonMainApp.controller('hakwonListController', function($scope, $location, $ro
 hakwonMainApp.controller('hakwonRegistController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
 	console.log('hakwonMainApp hakwonRegistController call', $scope, $location, $routeParams, hakwonService, CommUtil);
 
-	try {
-		/*	페이지 초기화 호출	*/
-		hakwonCommon.pageInit();
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
 
-		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+	/*	공통 유틸	*/
+	$scope.CommUtil = CommUtil;
 
-		/*	헤더 셋팅	*/
-		comm.setHeader([{url:'#/main', title:'홈'}, {url:'#', title:'학원'}, {url:'#', title:'관리자 학원 등록'}]);
+	/*	헤더 셋팅	*/
+	comm.setHeader([{url:'#/main', title:'홈'}, {url:'#', title:'학원'}, {url:'#', title:'관리자 학원 등록'}]);
 
-		/**
-		 * 학원 카테고리 리스트
-		 */
-		CommUtil.ajax({url:contextPath+"/admin/hakwonCate/cateList.do", successFun:function(data) {
-			try {
-				$scope.hakwonCateList = data.colData.dataList;
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
-
-		/*	목록 이동	*/
-		$scope.goList = function () {
-			$location.path('/hakwon/list');
+	/**
+	 * 학원 카테고리 리스트
+	 */
+	CommUtil.ajax({url:contextPath+"/admin/hakwonCate/cateList.do", successFun:function(data) {
+		try {
+			$scope.hakwonCateList = data.colData.dataList;
+		} catch(ex) {
+			commProto.errorDump({errorObj:ex});
 		}
+	}});
 
-		/**
-		 * 학원 등록
-		 */
-		$scope.regist = function() {
-			hakwonService.hakwonRegist();
-		}
-
-		/**
-		 * 로고 삭제
-		 */
-		$scope.logoDelete = function() {
-			$('div[data-view=image_preveiw] > img').remove();
-		}
-
-		/**
-		 * 지번 검색
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=searchOldAddr]', hakwonService.searchOldAddr);
-		$('#mainNgView').on('keypress', 'input[name=searchOldDong]', function( event ) {
-			if ( event.which == 13 ) {
-				hakwonService.searchOldAddr();
-				event.preventDefault();
-			}
-		});
-
-		/**
-		 * 지번 선택
-		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
-			var addrNo = $(this).attr('data-addr-no');
-			$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
-
-			var addr1 = $(this).find('span').text();
-			$('input[name=oldAddr1]').val(addr1);
-			$('input[name=oldAddr2]').focus();
-
-			$('#mainNgView ul[data-view=oldAddrList]').hide();
-			$('#mainNgView').find('li[data-act=oldAddrLI]').remove();
-		});
-
-		/*	도로명 검색	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=searchStreetDong]', hakwonService.searchNewAddr);
-		$('#mainNgView').on('keypress', 'input[name=searchStreetDong]', function( event ) {
-			if ( event.which == 13 ) {
-				hakwonService.searchNewAddr();
-				event.preventDefault();
-			}
-		});
-		/**
-		 * 도로명 선택
-		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=streetAddrLI]', function() {
-			var addr1 = $(this).find('span').text();
-			$('input[name=streetAddr1]').val(addr1);
-			$('input[name=streetAddr2]').focus();
-
-			$('#mainNgView ul[data-view=streetAddrList]').hide();
-			$('#mainNgView').find('li[data-act=streetAddrLI]').remove();
-		});
-
-
-
-		$scope.$on('$viewContentLoaded', function() {
-			console.log('hakwonRegistController $viewContentLoaded call');
-
-			// 파일 업로드 객체 생성
-			if( comm.isAndroidUploader() ) {
-				angular.element("input[data-act=banner_upload]").click(function() {
-					delete window.uploadCallBack;
-					window.uploadCallBack = function(uploadJsonStr) {
-						try {
-							var resultObj = JSON.parse(uploadJsonStr);
-							if( resultObj.error ) {
-								alert('학원 로고 업로드를 실패 했습니다.');
-							} else {
-								var fileInfo = resultObj.colData;
-								if (fileInfo.imageYn == 'Y') {
-									$('div[data-view=image_preveiw] > img').remove();
-									$('div[data-view=image_preveiw]').prepend('<img alt="image" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.thumbFilePath+'" data-file-no="'+fileInfo.fileNo+'">');
-								} else {
-									alert('이미지 파일이 아닙니다.');
-								}
-							}
-						} catch(e) {
-							alert('학원 로고 업로드를 실패 했습니다.');
-						}
-					};
-					var param = {
-						fileType : 'img'
-						, multipleYn : 'N'
-						, callBack : 'uploadCallBack'
-						, upload : {
-							url : window.location.protocol+'//'+window.location.host+uploadUrl
-							, param : {uploadType:CommonConstant.File.TYPE_HAKWON_LOGO}
-							, cookie : document.cookie
-						}
-					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
-
-					return false;
-				});
-			} else {
-				$("input[data-act=banner_upload]").html5_upload(hakwonService.getUploadOptions());
-			}
-		});
-
-		$("#wrapper").show();
-
-	} catch(ex) {
-		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
+	/*	목록 이동	*/
+	$scope.goList = function () {
+		$location.path('/hakwon/list');
 	}
+
+	/**
+	 * 학원 등록
+	 */
+	$scope.regist = function() {
+		hakwonService.hakwonRegist();
+	}
+
+	/**
+	 * 로고 삭제
+	 */
+	$scope.logoDelete = function() {
+		$('div[data-view=image_preveiw] > img').remove();
+	}
+
+	/**
+	 * 지번 검색
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=searchOldAddr]', hakwonService.searchOldAddr);
+	$('#mainNgView').on('keypress', 'input[name=searchOldDong]', function( event ) {
+		if ( event.which == 13 ) {
+			hakwonService.searchOldAddr();
+			event.preventDefault();
+		}
+	});
+
+	/**
+	 * 지번 선택
+	 */
+	$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
+		var addrNo = $(this).attr('data-addr-no');
+		$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
+
+		var addr1 = $(this).find('span').text();
+		$('input[name=oldAddr1]').val(addr1);
+		$('input[name=oldAddr2]').focus();
+
+		$('#mainNgView ul[data-view=oldAddrList]').hide();
+		$('#mainNgView').find('li[data-act=oldAddrLI]').remove();
+	});
+
+	/*	도로명 검색	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=searchStreetDong]', hakwonService.searchNewAddr);
+	$('#mainNgView').on('keypress', 'input[name=searchStreetDong]', function( event ) {
+		if ( event.which == 13 ) {
+			hakwonService.searchNewAddr();
+			event.preventDefault();
+		}
+	});
+	/**
+	 * 도로명 선택
+	 */
+	$('#mainNgView').on(clickEvent, 'li[data-act=streetAddrLI]', function() {
+		var addr1 = $(this).find('span').text();
+		$('input[name=streetAddr1]').val(addr1);
+		$('input[name=streetAddr2]').focus();
+
+		$('#mainNgView ul[data-view=streetAddrList]').hide();
+		$('#mainNgView').find('li[data-act=streetAddrLI]').remove();
+	});
+
+
+
+	$scope.$on('$viewContentLoaded', function() {
+		console.log('hakwonRegistController $viewContentLoaded call');
+
+		// 파일 업로드 객체 생성
+		if( comm.isAndroidUploader() ) {
+			angular.element("input[data-act=banner_upload]").click(function() {
+				delete window.uploadCallBack;
+				window.uploadCallBack = function(uploadJsonStr) {
+					try {
+						var resultObj = JSON.parse(uploadJsonStr);
+						if( resultObj.error ) {
+							alert('학원 로고 업로드를 실패 했습니다.');
+						} else {
+							var fileInfo = resultObj.colData;
+							if (fileInfo.imageYn == 'Y') {
+								$('div[data-view=image_preveiw] > img').remove();
+								$('div[data-view=image_preveiw]').prepend('<img alt="image" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.thumbFilePath+'" data-file-no="'+fileInfo.fileNo+'">');
+							} else {
+								alert('이미지 파일이 아닙니다.');
+							}
+						}
+					} catch(e) {
+						alert('학원 로고 업로드를 실패 했습니다.');
+					}
+				};
+				var param = {
+					fileType : 'img'
+					, multipleYn : 'N'
+					, callBack : 'uploadCallBack'
+					, upload : {
+						url : window.location.protocol+'//'+window.location.host+uploadUrl
+						, param : {uploadType:CommonConstant.File.TYPE_HAKWON_LOGO}
+						, cookie : document.cookie
+					}
+				};
+				window.PLATFORM.fileChooser(JSON.stringify(param));
+
+				return false;
+			});
+		} else {
+			$("input[data-act=banner_upload]").html5_upload(hakwonService.getUploadOptions());
+		}
+	});
+
+	$("#wrapper").show();
+
 });
 
 
@@ -775,107 +766,103 @@ hakwonMainApp.controller('hakwonRegistController', function($scope, $location, $
 hakwonMainApp.controller('hakwonAdminModifyController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
 	console.log('hakwonMainApp hakwonAdminModifyController call', $scope, $location, $routeParams, hakwonService, CommUtil);
 
-	try {
-		/*	페이지 초기화 호출	*/
-		hakwonCommon.pageInit();
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
 
-		/*	공통 유틸	*/
-		$scope.CommUtil = CommUtil;
+	/*	공통 유틸	*/
+	$scope.CommUtil = CommUtil;
 
-		/*	현재 학원 번호	*/
-		var currentHakwonNo = $routeParams.hakwon_no;
+	/*	현재 학원 번호	*/
+	var currentHakwonNo = $routeParams.hakwon_no;
 
-		/*	목록 이동	*/
-		$scope.goList = function () {
+	/*	목록 이동	*/
+	$scope.goList = function () {
+		$location.path('/hakwon/list');
+	}
+
+	/**
+	 * 지번 검색
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=searchOldAddr]', hakwonService.searchOldAddr);
+	$('#mainNgView').on('keypress', 'input[name=searchOldDong]', function( event ) {
+		if ( event.which == 13 ) {
+			hakwonService.searchOldAddr();
+			event.preventDefault();
+		}
+	});
+
+	/**
+	 * 지번 선택
+	 */
+	$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
+		var addrNo = $(this).attr('data-addr-no');
+		$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
+
+		var addr1 = $(this).find('span').text();
+		$('input[name=oldAddr1]').val(addr1);
+		$('input[name=oldAddr2]').focus();
+
+		$('#mainNgView ul[data-view=oldAddrList]').hide();
+		$('#mainNgView').find('li[data-act=oldAddrLI]').remove();
+	});
+
+	/*	도로명 검색	*/
+	$('#mainNgView').on(clickEvent, 'button[data-act=searchStreetDong]', hakwonService.searchNewAddr);
+	$('#mainNgView').on('keypress', 'input[name=searchStreetDong]', function( event ) {
+		if ( event.which == 13 ) {
+			hakwonService.searchNewAddr();
+			event.preventDefault();
+		}
+	});
+	/**
+	 * 도로명 선택
+	 */
+	$('#mainNgView').on(clickEvent, 'li[data-act=streetAddrLI]', function() {
+		var addr1 = $(this).find('span').text();
+		$('input[name=streetAddr1]').val(addr1);
+		$('input[name=streetAddr2]').focus();
+
+		$('#mainNgView ul[data-view=streetAddrList]').hide();
+		$('#mainNgView').find('li[data-act=streetAddrLI]').remove();
+	});
+
+
+	/**
+	 * 로고 삭제
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=logoDelete]', function() {
+		$('div[data-view=image_preveiw] > img').remove();
+	});
+
+	/**
+	 * 취소
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
+		if (history.length > 1) {
+			window.history.back();
+		} else {
 			$location.path('/hakwon/list');
 		}
+	});
 
-		/**
-		 * 지번 검색
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=searchOldAddr]', hakwonService.searchOldAddr);
-		$('#mainNgView').on('keypress', 'input[name=searchOldDong]', function( event ) {
-			if ( event.which == 13 ) {
-				hakwonService.searchOldAddr();
-				event.preventDefault();
-			}
-		});
+	/**
+	 * 삭제
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=delete]', function() {
+		hakwonService.hakwonAdminDelete(currentHakwonNo);
+	});
 
-		/**
-		 * 지번 선택
-		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
-			var addrNo = $(this).attr('data-addr-no');
-			$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
+	/**
+	 * 수정
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=modify]', function() {
+		hakwonService.hakwonAdminModify(currentHakwonNo);
+	});
 
-			var addr1 = $(this).find('span').text();
-			$('input[name=oldAddr1]').val(addr1);
-			$('input[name=oldAddr2]').focus();
+	$("#wrapper").show();
+	$scope.$on('$viewContentLoaded', function() {
+		console.log('hakwonAdminModifyController $viewContentLoaded call');
 
-			$('#mainNgView ul[data-view=oldAddrList]').hide();
-			$('#mainNgView').find('li[data-act=oldAddrLI]').remove();
-		});
-
-		/*	도로명 검색	*/
-		$('#mainNgView').on(clickEvent, 'button[data-act=searchStreetDong]', hakwonService.searchNewAddr);
-		$('#mainNgView').on('keypress', 'input[name=searchStreetDong]', function( event ) {
-			if ( event.which == 13 ) {
-				hakwonService.searchNewAddr();
-				event.preventDefault();
-			}
-		});
-		/**
-		 * 도로명 선택
-		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=streetAddrLI]', function() {
-			var addr1 = $(this).find('span').text();
-			$('input[name=streetAddr1]').val(addr1);
-			$('input[name=streetAddr2]').focus();
-
-			$('#mainNgView ul[data-view=streetAddrList]').hide();
-			$('#mainNgView').find('li[data-act=streetAddrLI]').remove();
-		});
-
-
-		/**
-		 * 로고 삭제
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=logoDelete]', function() {
-			$('div[data-view=image_preveiw] > img').remove();
-		});
-
-		/**
-		 * 취소
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
-			if (history.length > 1) {
-				window.history.back();
-			} else {
-				$location.path('/hakwon/list');
-			}
-		});
-
-		/**
-		 * 삭제
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=delete]', function() {
-			hakwonService.hakwonAdminDelete(currentHakwonNo);
-		});
-
-		/**
-		 * 수정
-		 */
-		$('#mainNgView').on(clickEvent, 'button[data-act=modify]', function() {
-			hakwonService.hakwonAdminModify(currentHakwonNo);
-		});
-
-		$("#wrapper").show();
-		$scope.$on('$viewContentLoaded', function() {
-			console.log('hakwonAdminModifyController $viewContentLoaded call');
-
-			hakwonService.hakwonModifyInfo(currentHakwonNo);
-		});
-	} catch(ex) {
-		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
-	}
+		hakwonService.hakwonModifyInfo(currentHakwonNo);
+	});
 });
