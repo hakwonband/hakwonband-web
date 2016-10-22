@@ -121,6 +121,7 @@
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
 			a.reg_date desc
+			, a.notice_no desc
 		limit
 			#{start_no}, #{page_scale}
 	]]>
