@@ -160,6 +160,7 @@
 			, date_format(a.reg_date, '%Y-%m-%d %p %h:%i') as reg_date
 			, a.udp_user_no
 			, date_format(a.udp_date, '%Y-%m-%d %p %h:%i') as udp_date
+			, a.is_file_view
 		from
 			tb_notice a
 			, tb_user_info b

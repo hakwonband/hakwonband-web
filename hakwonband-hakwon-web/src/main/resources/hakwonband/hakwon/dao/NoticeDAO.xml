@@ -24,6 +24,7 @@
 			, a.reservation_yn
 			, date_format(a.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
 			, a.reservation_send_date
+			, a.is_file_view
 		from
 			tb_notice a,
 			tb_user_info b
@@ -93,6 +94,7 @@
 			, a.reservation_send_date
 			, a.rel_notice_no
 			, a.share_no
+			, a.is_file_view
 		from
 			tb_notice a
 			, tb_user_info b
@@ -123,6 +125,7 @@
 			, reg_date
 			, reservation_yn
 			, reservation_date
+			, is_file_view
 		) values (
 			#{notice_type}
 			, #{notice_parent_no}
@@ -141,6 +144,7 @@
 		<if test="reservationYn eq 'N'.toString()">
 			, null
 		</if>
+			, #{is_file_view}
 		)
 	<selectKey keyProperty="idx" resultType="long">
 		select last_insert_id()
@@ -175,6 +179,7 @@
 				, reservation_date = null
 			</if>
 	<![CDATA[
+			, is_file_view = #{is_file_view}
 		where
 			notice_no = #{notice_no}
 	]]>

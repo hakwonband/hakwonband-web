@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -407,6 +408,11 @@ public class MasterController extends BaseAction {
 		String content				= request.getParameter("content");
 		String reply_yn				= request.getParameter("reply_yn");
 		String file_no_list			= request.getParameter("file_no_list");
+		int is_file_view			= StringUtil.parseInt(request.getParameter("is_file_view"), 1);
+		if( is_file_view == 1 || is_file_view == 0 ) {
+		} else {
+			is_file_view = 1;
+		}
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -429,6 +435,8 @@ public class MasterController extends BaseAction {
 
 		param.put("reservationDate",	reservationDate);
 		param.put("reservationTime",	reservationTime);
+
+		param.put("is_file_view",		is_file_view);
 
 		/* 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);
@@ -460,6 +468,11 @@ public class MasterController extends BaseAction {
 		String content				= request.getParameter("content");
 		String reply_yn				= request.getParameter("reply_yn");
 		String file_no_list			= request.getParameter("file_no_list");
+		int is_file_view			= StringUtil.parseInt(request.getParameter("is_file_view"), 1);
+		if( is_file_view == 1 || is_file_view == 0 ) {
+		} else {
+			is_file_view = 1;
+		}
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -482,6 +495,8 @@ public class MasterController extends BaseAction {
 
 		param.put("reservationDate",	reservationDate);
 		param.put("reservationTime",	reservationTime);
+
+		param.put("is_file_view",		is_file_view);
 
 		/* 반 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);
@@ -514,6 +529,11 @@ public class MasterController extends BaseAction {
 		String content			= request.getParameter("content");
 		String reply_yn			= request.getParameter("reply_yn");
 		String file_no_list		= request.getParameter("file_no_list");
+		int is_file_view			= StringUtil.parseInt(request.getParameter("is_file_view"), 1);
+		if( is_file_view == 1 || is_file_view == 0 ) {
+		} else {
+			is_file_view = 1;
+		}
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -538,6 +558,8 @@ public class MasterController extends BaseAction {
 
 		param.put("reservationDate",	reservationDate);
 		param.put("reservationTime",	reservationTime);
+
+		param.put("is_file_view",		is_file_view);
 
 		/* 반 공지사항 수정 */
 		sendColData(noticeService.editNotice(param), request, response);

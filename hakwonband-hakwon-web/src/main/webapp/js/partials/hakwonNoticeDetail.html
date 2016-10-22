@@ -16,7 +16,7 @@
 	<div class="ibox-content" id="content_view_div" ng-bind-html="noticeDetail.content | rawHtml">
 
 	</div>
-	<div class="ibox-content">
+	<div class="ibox-content" ng-if="noticeDetail.is_file_view == '1'">
 		<p>
 			<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span> -
 		</p>
