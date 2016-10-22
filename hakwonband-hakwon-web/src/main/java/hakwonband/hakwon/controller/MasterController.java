@@ -139,9 +139,6 @@ public class MasterController extends BaseAction {
 		DataMap param = new DataMap();
 		param.put("userNo",		authUserInfo.getString("user_no"));
 
-		/*	관리자 등록 여부	*/
-		param.put("adminRegYn", "Y");
-
 		String oldAddr1		= StringUtil.replaceNull(request.getParameter("oldAddr1"), "");
 		String oldAddr2		= StringUtil.replaceNull(request.getParameter("oldAddr2"), "");
 		String streetAddr1	= StringUtil.replaceNull(request.getParameter("streetAddr1"), "");
@@ -166,7 +163,10 @@ public class MasterController extends BaseAction {
 		/*	모든 주소 텍스트 더한다.	*/
 		param.put("allAddrText",	oldAddr1+oldAddr2+streetAddr1+streetAddr2);
 
-		/*	학원 등록	*/
+		/**
+		 * 학원 등록
+		 * 미인증 상태로 등록한다.
+		 */
 		long hakwonNo = masterService.insertHakwon(param);
 
 		DataMap colData = new DataMap();

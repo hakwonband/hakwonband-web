@@ -102,7 +102,7 @@
 		insert into tb_hakwon (
 			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, hakwon_status
 		) values(
-			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, '001'
+			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, '002'
 		)
 	]]>
 	<selectKey keyProperty="id" resultType="long">

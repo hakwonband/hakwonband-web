@@ -249,7 +249,7 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 
 
 		if( hakwonInfo.hakwonList.length > 0 ) {
-			if( window.confirm('추가 비용이 발생합니다. 계속 이용 하시겠습니까?') == false ) {
+			if( window.confirm('추가 비용이 발생합니다.\n또한 관리자의 승인 후 학원을 이용 할 수 있습니다.\n계속 이용 하시겠습니까?') == false ) {
 				return ;
 			}
 		}
