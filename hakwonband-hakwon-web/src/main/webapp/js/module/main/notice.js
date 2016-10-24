@@ -105,7 +105,8 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 			tinymce.init(editOptions);
 
 			/*	신규 작성시 스위치 초기화	*/
-			$scope.switchery = new Switchery($scope.elem, { color: '#1AB394' });
+			$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+			$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 			return ;
 		} else if (!$scope.isNewNotice && isNull($scope.noticeNo)) {
 			alert('공지사항 정보가 올바르지 않습니다.');
@@ -153,13 +154,18 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 					tinymce.init(editOptions);
 
 					/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-					if( $scope.elem ) {
+					if( $scope.reply_yn ) {
 						if ($scope.noticeDetail.reply_yn == 'N') {
-							$scope.elem.checked = false;
+							$scope.reply_yn.checked = false;
 						}
-						$scope.switchery = new Switchery($scope.elem, { color: '#1AB394' });
+						$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
 					}
-
+					if( $scope.file_view ) {
+						if ($scope.noticeDetail.is_file_view == '0') {
+							$scope.file_view.checked = false;
+						}
+						$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
+					}
 				} else {
 					commProto.logger({noticeDetailError:data});
 				}
@@ -613,7 +619,8 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			params.content 			= editContent;
 			params.file_no_list 	= fileNoList.toString();
 			params.preview_content 	= params.content.substr(0, 50) + '...';
-			params.reply_yn			= $scope.elem.checked ? 'Y' : 'N' ;
+			params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
+			params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
 
 			params.reservationDate = reservationDate;
 			params.reservationTime = reservationTime;
@@ -778,7 +785,8 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			console.log('noticeEditController $$postDigest');
 
 			/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-			$scope.elem = document.querySelector('.js-switch');
+			$scope.reply_yn = document.querySelector('input[name=reply_yn]');
+			$scope.file_view = document.querySelector('input[name=file_view]');
 
 			/*	학원 공지사항 상세정보조회	*/
 			$scope.getNoticeDetail();

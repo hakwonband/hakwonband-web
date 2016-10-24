@@ -1352,7 +1352,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			console.log('noticeEditController $$postDigest');
 
 			/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-			$scope.elem = document.querySelector('.js-switch');
+			$scope.reply_yn = document.querySelector('input[name=reply_yn]');
+			$scope.file_view = document.querySelector('input[name=file_view]');
 
 			/*	반 공지사항 상세정보조회	*/
 			$scope.getClassNoticeDetail();
@@ -1464,7 +1465,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 				};
 				tinymce.init(editOptions);
 
-				$scope.switchery = new Switchery($scope.elem, { color: '#1AB394' });
+				$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+				$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 				return;
 			}
 			if (!$scope.isNewNotice && isNull($scope.noticeNo)) {
@@ -1522,11 +1524,17 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 						tinymce.init(editOptions);
 
 						/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-						if( $scope.elem ) {
+						if( $scope.reply_yn ) {
 							if ($scope.noticeDetail.reply_yn == 'N') {
-								$scope.elem.checked = false;
+								$scope.reply_yn.checked = false;
 							}
-							$scope.switchery = new Switchery($scope.elem, { color: '#1AB394' });
+							$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+						}
+						if( $scope.file_view ) {
+							if ($scope.noticeDetail.is_file_view == '0') {
+								$scope.file_view.checked = false;
+							}
+							$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 						}
 					} else {
 						commProto.logger({noticeDetailError:data});
@@ -1596,7 +1604,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			params.content 			= editContent;
 			params.file_no_list 	= fileNoList.toString();
 			params.preview_content 	= params.content.substr(0, 50) + '...';
-			params.reply_yn			= $scope.elem.checked ? 'Y' : 'N' ;
+			params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
+			params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
 
 			params.reservationDate = reservationDate;
 			params.reservationTime = reservationTime;

@@ -130,6 +130,7 @@ public class AdminQuestionController extends BaseAction {
 		param.put("reg_user_no", 		authUserInfo.get("user_no"));	// 파일 등록자
 		param.put("file_no_list", 		file_no_list);					// 파일 번호들
 		param.put("hakwon_no",			hakwon_no);						// 학원 번호
+		param.put("is_file_view",		"1");
 
 
 		/* 공지사항 등록 */

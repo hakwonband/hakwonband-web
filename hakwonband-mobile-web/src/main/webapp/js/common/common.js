@@ -66,7 +66,6 @@ var hakwonInfo = {
  */
 //var clickEvent = isMobile.any()?'touchend':'click';
 var clickEvent = undefined;
-
 if( getBrowser().indexOf('ios') == 0 ) {
 	clickEvent = 'touchend';
 } else if( getBrowser().indexOf('android') == 0 ) {
@@ -74,6 +73,7 @@ if( getBrowser().indexOf('ios') == 0 ) {
 } else {
 	clickEvent = 'click';
 }
+console.log('clickEvent : ' + clickEvent);
 
 /**
  * 전체 메뉴의 url 정보

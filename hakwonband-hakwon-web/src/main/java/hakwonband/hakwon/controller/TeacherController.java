@@ -304,6 +304,11 @@ public class TeacherController extends BaseAction {
 		String content				= request.getParameter("content");
 		String reply_yn				= request.getParameter("reply_yn");
 		String file_no_list			= request.getParameter("file_no_list");
+		int is_file_view			= StringUtil.parseInt(request.getParameter("is_file_view"), 1);
+		if( is_file_view == 1 || is_file_view == 0 ) {
+		} else {
+			is_file_view = 1;
+		}
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -326,6 +331,8 @@ public class TeacherController extends BaseAction {
 
 		param.put("reservationDate",	reservationDate);
 		param.put("reservationTime",	reservationTime);
+
+		param.put("is_file_view",		is_file_view);
 
 		/* 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);
@@ -358,6 +365,11 @@ public class TeacherController extends BaseAction {
 		String content			= request.getParameter("content");
 		String reply_yn			= request.getParameter("reply_yn");
 		String file_no_list		= request.getParameter("file_no_list");
+		int is_file_view			= StringUtil.parseInt(request.getParameter("is_file_view"), 1);
+		if( is_file_view == 1 || is_file_view == 0 ) {
+		} else {
+			is_file_view = 1;
+		}
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -382,6 +394,8 @@ public class TeacherController extends BaseAction {
 
 		param.put("reservationDate",	reservationDate);
 		param.put("reservationTime",	reservationTime);
+
+		param.put("is_file_view",		is_file_view);
 
 		/* 반 공지사항 수정 */
 		DataMap colData = noticeService.editNotice(param);
