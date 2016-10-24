@@ -1219,6 +1219,51 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 			title				: ''
 		};
 
+		/**
+		 * 읽은 사용자 보여주는 변수
+		 */
+		$scope.readerAll = false;
+		$scope.readerStudent = false;
+		$scope.readerParent = false;
+		$scope.readerShowHide = function(type) {
+			if( type == 'all' ) {
+				$scope.readerAll = !$scope.readerAll;
+				$scope.readerStudent = false;
+				$scope.readerParent = false;
+			} else if( type == 'student' ) {
+				$scope.readerAll = false;
+				$scope.readerStudent = !$scope.readerStudent;
+				$scope.readerParent = false;
+			} else if( type == 'parent' ) {
+				$scope.readerAll = false;
+				$scope.readerStudent = false;
+				$scope.readerParent = !$scope.readerParent;
+			}
+		}
+		$scope.readerView = function(userInfo) {
+			var rtnFlag = false;
+			if( $scope.readerAll ) {
+				rtnFlag = true;
+			} else if( $scope.readerStudent ) {
+				if( userInfo.user_type == '006' ) {
+					rtnFlag = true;
+				} else {
+					rtnFlag = false;
+				}
+			} else if( $scope.readerParent ) {
+				if( userInfo.user_type == '005' ) {
+					rtnFlag = true;
+				} else {
+					rtnFlag = false;
+				}
+			} else {
+				rtnFlag = false;
+			}
+			//console.log('readerAll['+$scope.readerAll+']  readerStudent['+$scope.readerStudent+']  readerParent['+$scope.readerParent+']  user_type['+userInfo.user_type+'] ' + rtnFlag);
+
+			return rtnFlag;
+		}
+
 		$scope.userAuth = userAuth;
 
 		/*	권한 체크 기능 원장일 경우 true	*/
