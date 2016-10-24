@@ -25,6 +25,7 @@
 			, date_format(a.reservation_date, '%Y.%m.%d %H:%i') as reservation_date
 			, a.reservation_send_date
 			, a.is_file_view
+			, a.target_user
 		from
 			tb_notice a,
 			tb_user_info b
@@ -95,6 +96,7 @@
 			, a.rel_notice_no
 			, a.share_no
 			, a.is_file_view
+			, a.target_user
 		from
 			tb_notice a
 			, tb_user_info b
@@ -126,6 +128,7 @@
 			, reservation_yn
 			, reservation_date
 			, is_file_view
+			, target_user
 		) values (
 			#{notice_type}
 			, #{notice_parent_no}
@@ -145,6 +148,7 @@
 			, null
 		</if>
 			, #{is_file_view}
+			, #{target_user}
 		)
 	<selectKey keyProperty="idx" resultType="long">
 		select last_insert_id()
@@ -180,6 +184,7 @@
 			</if>
 	<![CDATA[
 			, is_file_view = #{is_file_view}
+			, target_user = #{target_user}
 		where
 			notice_no = #{notice_no}
 	]]>

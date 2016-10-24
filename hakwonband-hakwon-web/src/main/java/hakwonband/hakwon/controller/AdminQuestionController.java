@@ -54,6 +54,7 @@ public class AdminQuestionController extends BaseAction {
 
 		DataMap param = new DataMap();
 		param.put("user_no",			authUserInfo.getString("user_no"));
+		param.put("user_type",			authUserInfo.getString("user_type"));
 		param.put("notice_parent_no",	hakwon_no);
 		param.put("notice_type",		"004");
 		param.put("start_no",			(pageNo-1)*pageScale);
@@ -84,6 +85,7 @@ public class AdminQuestionController extends BaseAction {
 
 		DataMap param = new DataMap();
 		param.put("user_no",			authUserInfo.getString("user_no"));
+		param.put("user_type",			authUserInfo.getString("user_type"));
 		param.put("notice_parent_no",	hakwon_no);
 		param.put("notice_type",		"004");
 		param.put("content_type",		"001");//공지는 001이다.
@@ -131,7 +133,7 @@ public class AdminQuestionController extends BaseAction {
 		param.put("file_no_list", 		file_no_list);					// 파일 번호들
 		param.put("hakwon_no",			hakwon_no);						// 학원 번호
 		param.put("is_file_view",		"1");
-
+		param.put("target_user",		"");
 
 		/* 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);

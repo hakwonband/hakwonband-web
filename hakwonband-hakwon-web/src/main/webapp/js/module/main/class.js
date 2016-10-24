@@ -1220,6 +1220,19 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 		};
 
 		/**
+		 * 노출 대상
+		 */
+		$scope.targetUserView = function(userType) {
+			if( userType == '005' ) {
+				return '학부모';
+			} else if( userType == '006' ) {
+				return '학생';
+			} else {
+				return '전체';
+			}
+		}
+
+		/**
 		 * 읽은 사용자 보여주는 변수
 		 */
 		$scope.readerAll = false;
@@ -1361,6 +1374,9 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 		/*	공지사항 작성시, 카테고리 리스트	*/
 		$scope.noticeCateList 		= [];
 		$scope.noticeCateItem 		= '';
+
+		/*	대상	*/
+		$scope.noticeTargetUser 		= '';
 
 		/*	is Mobile	*/
 		$scope.isMobile = isMobile.any();
@@ -1539,6 +1555,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 						$scope.replyList			= colData.replyList;
 						$scope.fileList				= colData.fileList;
 
+						$scope.noticeTargetUser = $scope.noticeDetail.target_user;
+
 						/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 						var editOptions = comm.getEditorOptions();
 						editOptions.setup = function(ed) {
@@ -1651,6 +1669,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			params.preview_content 	= params.content.substr(0, 50) + '...';
 			params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
 			params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
+			params.target_user		= $scope.noticeTargetUser;
 
 			params.reservationDate = reservationDate;
 			params.reservationTime = reservationTime;

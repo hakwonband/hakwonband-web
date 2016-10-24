@@ -45,6 +45,7 @@
 		</div>
 	</div>
 	<div class="ibox-content text-right">
+		노출 대상 : {{targetUserView(noticeDetail.target_user)}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<button type="button" class="btn btn-default" ng-if="checkAuthType()" ng-click="removeNotice()">삭제하기</button>
 		<button type="button" class="btn btn-werning" ng-if="checkAuthType()" ng-click="goNoticeEdit()">수정하기</button>
 		<button type="button" class="btn btn-primary" ng-click="goNoticeList()">목록으로</button>

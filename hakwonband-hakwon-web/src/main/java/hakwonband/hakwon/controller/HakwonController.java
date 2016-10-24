@@ -263,6 +263,7 @@ public class HakwonController extends BaseAction {
 
 		DataMap param = new DataMap();
 		param.put("user_no", 			authUserInfo.get("user_no"));	// 현재 사용자의 공지사항 읽은상태 체크용
+		param.put("user_type",			authUserInfo.getString("user_type"));
 		param.put("notice_type",		"002");							// 공지사항 타입 = 학원 공지
 		param.put("notice_parent_no",	hakwon_no);						// 공지사항 부모 번호 = 학원 번호
 		param.put("start_no",			(page_no-1)*page_scale);
@@ -295,6 +296,7 @@ public class HakwonController extends BaseAction {
 
 		DataMap param = new DataMap();
 		param.put("user_no", 			authUserInfo.get("user_no"));	// 현재 사용자의 공지사항 읽은상태 체크용
+		param.put("user_type",			authUserInfo.getString("user_type"));
 		param.put("notice_type",		"003");							// 공지사항 타입 = 반 공지
 		param.put("notice_parent_no",	class_no);						// 공지사항 부모 번호 = 반 번호
 		param.put("start_no",			(page_no-1)*page_scale);
@@ -330,6 +332,7 @@ public class HakwonController extends BaseAction {
 		param.put("file_parent_type",	CommonConstant.File.TYPE_NOTICE);	// 파일 타입 001 공지
 		param.put("file_parent_no",		notice_no);
 		param.put("user_no", 			authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+		param.put("user_type",			authUserInfo.getString("user_type"));
 
 		/* 공지사항 상세조회, 공지사항 댓글 조회, 공지사항 파일 조회, 읽은상태 등록 */
 		DataMap noticeDetail = noticeService.noticeDetail(param);
