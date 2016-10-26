@@ -220,11 +220,87 @@
 			, b.user_id
 			, b.user_gender
 			, calc_age(b.user_birthday) as user_age
+			, a.user_email
 		from
 			tb_user a
 			, tb_user_info b
 		where
 			a.user_no = b.user_no
+		order by
+			b.user_name asc
+	]]>
+	</select>
+
+	<select id="excelUserStudentParentList" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.excelUserStudentParentList	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, calc_age(b.user_birthday) as user_age
+			, a.user_email
+			, (select group_concat(hakwon.hakwon_name) from tb_hakwon_member hakwon_member, tb_hakwon hakwon where hakwon_member.user_no = a.user_no and hakwon_member.hakwon_no = hakwon.hakwon_no limit 10) as hakwon_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and a.user_type in ('005', '006')
+		order by
+			b.user_name asc
+	]]>
+	</select>
+
+	<select id="excelUserWonjangList" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.excelUserWonjangList	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, calc_age(b.user_birthday) as user_age
+			, a.user_email
+			, case when a.user_type = '003'
+				then (select group_concat(hakwon.hakwon_name) from tb_hakwon hakwon where hakwon.master_user_no = a.user_no)
+				else (select group_concat(hakwon.hakwon_name) from tb_hakwon_teacher hakwon_teacher, tb_hakwon hakwon where hakwon_teacher.user_no = a.user_no and hakwon_teacher.hakwon_no = hakwon.hakwon_no limit 10)
+				end as hakwon_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and a.user_type in ('003', '004')
+		order by
+			b.user_name asc
+	]]>
+	</select>
+
+	<select id="excelUserManagerList" resultType="dataMap">
+	<![CDATA[
+		/*	UserDAO.excelUserManagerList	*/
+		select
+			a.user_no
+			, a.user_type
+			, get_code_name('001', a.user_type) as user_type_name
+			, b.user_name
+			, b.user_id
+			, b.user_gender
+			, calc_age(b.user_birthday) as user_age
+			, a.user_email
+			, (select group_concat(hakwon.hakwon_name) from tb_manager manager, tb_hakwon hakwon where manager.user_no = a.user_no and manager.manager_no = hakwon.manager_no limit 10) as hakwon_name
+		from
+			tb_user a
+			, tb_user_info b
+		where
+			a.user_no = b.user_no
+			and a.user_type = '002'
 		order by
 			b.user_name asc
 	]]>
