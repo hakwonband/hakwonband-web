@@ -34,7 +34,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 	};
 
 	/*	상세 정보 조회	*/
-	eventService.view = function(eventNo) {
+	eventService.view = function(eventNo, student_url) {
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, event_no : eventNo
@@ -52,6 +52,8 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 						return false;
 					}
 					var colData = data.colData;
+					colData.student_url = student_url;
+					console.log('colData', colData);
 					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.event.viewData, colData));
 
 					setTimeout(function(){
@@ -671,6 +673,21 @@ hakwonMainApp.controller('eventViewController', function($scope, $location, $rou
 		return false;
 	}
 
+	var student_url = 'https://m.hakwonband.com/index.do#/hakwon/eventDetail?hakwon_no='+hakwonInfo.hakwon_no+'&event_no='+eventNo;
+	$scope.$$postDigest(function() {
+		setTimeout(function(){
+			if( isFlashInstalled() ) {
+				var clipboard = new ZeroClipboard($('#clipboard_btn'));
+				clipboard.on('aftercopy', function(event) { alert('복사 되었습니다. : '+event.data['text/plain']); });
+			} else {
+				$scope.copy_prompt = function() {
+					prompt("Ctrl+C를 눌러 복사하세요.", $scope.student_url);
+				}
+			}
+		}, 50);
+	});
+
+
 	/*	수정 하기	*/
 	$('#mainNgView').on(clickEvent, 'button[data-act=eventEdit]', function() {
 		window.location.href = PageUrl.event.edit+'?hakwon_no='+hakwonInfo.hakwon_no+'&event_no='+eventNo;
@@ -695,7 +712,7 @@ hakwonMainApp.controller('eventViewController', function($scope, $location, $rou
 		$scope.checkAuthType = comm.checkAuthType;
 
 		/*	이벤트 상세 조회	*/
-		eventService.view(eventNo);
+		eventService.view(eventNo, student_url);
 	});
 
 	$("#wrapper").show();

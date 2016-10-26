@@ -445,6 +445,7 @@ hakwonTmpl.event = {
 		'<div class="ibox m">'
 		, '	<div class="ibox-title">'
 		, '		<h2>{{= eventInfo.event_title}} <small>등록일 : {{= eventInfo.reg_date}} / 등록자 : {{= eventInfo.reg_user_name}}</small></h2>'
+		, '		&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" data-clipboard-text="{{= student_url}}" id="clipboard_btn" ng-click="copy_prompt()">주소 복사</button>'
 		, '	</div>'
 		, '	<div class="ibox-content">이벤트 기간 : {{= eventInfo.begin_date}} ~ {{= eventInfo.end_date}}</div>'
 		, '	<div class="ibox-content" id="content_view_div">{{html eventInfo.event_content}}</div>'
