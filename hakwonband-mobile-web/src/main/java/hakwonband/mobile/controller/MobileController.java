@@ -111,6 +111,7 @@ public class MobileController extends BaseAction {
 		param.put("page_scale",			page_scale);
 		param.put("separatorChar", 		CommonConstant.ChDiv.CH_DEL);
 		param.put("user_no", 			authUserInfo.get("user_no"));
+		param.put("user_type", 			authUserInfo.get("user_type"));
 
 		/* 학원 공지사항 리스트 조회 */
 		List<DataMap> noticeReqList = mobileService.noticeReqList(param);
@@ -148,6 +149,7 @@ public class MobileController extends BaseAction {
 		param.put("page_scale",			page_scale);
 		param.put("separatorChar", 		CommonConstant.ChDiv.CH_DEL);
 		param.put("user_no", 			authUserInfo.get("user_no"));
+		param.put("user_type", 			authUserInfo.get("user_type"));
 
 		/* 반 공지사항 리스트 조회 */
 		List<DataMap> noticeReqList = mobileService.noticeReqList(param);
@@ -183,6 +185,7 @@ public class MobileController extends BaseAction {
 		param.put("file_parent_type",	CommonConstant.File.TYPE_NOTICE);	// 파일 타입 001 공지
 		param.put("file_parent_no",		notice_no);
 		param.put("user_no", 			authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+		param.put("user_type", 			authUserInfo.get("user_type"));
 
 		/* 공지사항 상세조회, 공지사항 댓글 조회, 공지사항 파일 조회, 읽은상태 등록 */
 		DataMap noticeDetail = mobileService.procNoticeDetail(param);

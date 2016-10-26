@@ -3,7 +3,6 @@
 
 <mapper namespace="hakwonband.mobile.dao.NoticeDAO">
 
-
 	<!-- 공지사항 대시보드 리스트 -->
 	<select id="studentNoticeDashList" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[
@@ -22,6 +21,7 @@
 			b.user_no = #{user_no}
 			and a.notice_type = '002'
 			and a.content_status = '001'
+			and a.target_user in ('', '006')
 			and b.hakwon_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		union
@@ -39,6 +39,7 @@
 			b.student_user_no = #{user_no}
 			and a.notice_type = '003'
 			and a.content_status = '001'
+			and a.target_user in ('', '006')
 			and b.class_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
@@ -65,6 +66,7 @@
 			b.user_no = #{user_no}
 			and a.notice_type = '002'
 			and a.content_status = '001'
+			and a.target_user in ('', '005')
 			and b.hakwon_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		union
@@ -86,6 +88,7 @@
 			and c.student_user_no = b.student_user_no
 			and a.notice_type = '003'
 			and a.content_status = '001'
+			and a.target_user in ('', '005')
 			and b.class_no = a.notice_parent_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
@@ -118,6 +121,7 @@
 			a.content_status = '001'
 			and a.notice_parent_no = #{notice_parent_no}
 			and a.notice_type = #{notice_type}
+			and a.target_user in ('', #{user_type})
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
 			a.reg_date desc
@@ -139,6 +143,7 @@
 			a.content_status = '001'
 			and a.notice_parent_no = #{notice_parent_no}
 			and a.notice_type = #{notice_type}
+			and a.target_user in ('', #{user_type})
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 	]]>
 	</select>
@@ -167,6 +172,7 @@
 		where
 			a.notice_no = #{notice_no}
 			and a.content_status = '001'
+			and a.target_user in ('', #{user_type})
 			and a.reg_user_no = b.user_no
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 	]]>
