@@ -227,7 +227,11 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 				CommUtil.locationHref(MENUS.sharpUrls.eventList, {page: $scope.page}, 'hakwon');
 				return false;
 			} else {
-				$window.history.back();
+				if (window.history.length > 1) {
+					$window.history.back();
+				} else {
+					CommUtil.locationHref(MENUS.sharpUrls.eventList, {page: $scope.page}, 'hakwon');
+				}
 				return false;
 			}
 		};
