@@ -87,7 +87,7 @@ public class UserController extends BaseAction {
 		studentHeaderList.add(new ColumnModel("아이디",	"user_id"));
 		studentHeaderList.add(new ColumnModel("나이",	"user_age"));
 		studentHeaderList.add(new ColumnModel("이메일",	"user_email"));
-		studentHeaderList.add(new ColumnModel("학원명",	"hakwon_name"));
+		//studentHeaderList.add(new ColumnModel("학원명",	"hakwon_name"));
 
 		String fileName = excelXlsComponent.convertFileName(request.getHeader("User-Agent"), "학원밴드 사용자 리스트");
 
