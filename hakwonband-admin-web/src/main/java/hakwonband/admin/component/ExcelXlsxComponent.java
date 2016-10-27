@@ -27,40 +27,45 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+/**
+ * xlsx 모듈
+ * @author cb-bumworld
+ *
+ */
 @Component
-public class ExcelComponent {
+public class ExcelXlsxComponent {
 
-	public static final Logger logger = LoggerFactory.getLogger(ExcelComponent.class);
+	public static final Logger logger = LoggerFactory.getLogger(ExcelXlsxComponent.class);
 
 	/**
 	 * 엑셀 저장
 	 * @param response
 	 * @param sheetModel
 	 */
-	public void writeExcel(HttpServletResponse response, SheetModel sheetModel) {
+	public void write(HttpServletResponse response, SheetModel sheetModel) {
 		List<SheetModel> sheetModelList = new ArrayList<SheetModel>();
 		sheetModelList.add(sheetModel);
-		writeExcel(response, sheetModelList, "학원밴드");
+		write(response, sheetModelList, "학원밴드");
 	}
-	public void writeExcel(HttpServletResponse response, SheetModel sheetModel, String fileName) {
+	public void write(HttpServletResponse response, SheetModel sheetModel, String fileName) {
 		List<SheetModel> sheetModelList = new ArrayList<SheetModel>();
 		sheetModelList.add(sheetModel);
-		writeExcel(response, sheetModelList, fileName);
+		write(response, sheetModelList, fileName);
 	}
 	/**
 	 * 엑셀 저장
 	 * @param response
 	 * @param dataList
 	 */
-	public void writeExcel(HttpServletResponse response, List<SheetModel> sheetModelList) {
-		writeExcel(response, sheetModelList, "학원밴드");
+	public void write(HttpServletResponse response, List<SheetModel> sheetModelList) {
+		write(response, sheetModelList, "학원밴드");
 	}
 
 	/**
 	 * 엑셀 저장
 	 * @param response
 	 */
-	public void writeExcel(HttpServletResponse response, List<SheetModel> sheetModelList, String fileName) {
+	public void write(HttpServletResponse response, List<SheetModel> sheetModelList, String fileName) {
 		OutputStream out = null;
 		try {
 

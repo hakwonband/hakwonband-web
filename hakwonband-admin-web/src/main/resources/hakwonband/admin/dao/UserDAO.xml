@@ -231,6 +231,7 @@
 	]]>
 	</select>
 
+	<!-- , (select group_concat(hakwon.hakwon_name) from tb_hakwon_member hakwon_member, tb_hakwon hakwon where hakwon_member.user_no = a.user_no and hakwon_member.hakwon_no = hakwon.hakwon_no limit 10) as hakwon_name -->
 	<select id="excelUserStudentParentList" resultType="dataMap">
 	<![CDATA[
 		/*	UserDAO.excelUserStudentParentList	*/
@@ -243,13 +244,12 @@
 			, b.user_gender
 			, calc_age(b.user_birthday) as user_age
 			, a.user_email
-			, (select group_concat(hakwon.hakwon_name) from tb_hakwon_member hakwon_member, tb_hakwon hakwon where hakwon_member.user_no = a.user_no and hakwon_member.hakwon_no = hakwon.hakwon_no limit 10) as hakwon_name
 		from
 			tb_user a
 			, tb_user_info b
 		where
-			a.user_no = b.user_no
-			and a.user_type in ('005', '006')
+			a.user_type in ('005', '006')
+			and a.user_no = b.user_no
 		order by
 			b.user_name asc
 	]]>
@@ -275,8 +275,8 @@
 			tb_user a
 			, tb_user_info b
 		where
-			a.user_no = b.user_no
-			and a.user_type in ('003', '004')
+			a.user_type in ('003', '004')
+			and a.user_no = b.user_no
 		order by
 			b.user_name asc
 	]]>
@@ -299,8 +299,8 @@
 			tb_user a
 			, tb_user_info b
 		where
-			a.user_no = b.user_no
-			and a.user_type = '002'
+			a.user_type = '002'
+			and a.user_no = b.user_no
 		order by
 			b.user_name asc
 	]]>
