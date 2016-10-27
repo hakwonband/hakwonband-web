@@ -131,6 +131,14 @@ public class MasterService {
 	 */
 	public long insertHakwon(DataMap param) {
 
+		int hakwonAllCount = masterDAO.masterHakwonAllCount(param.getLong("userNo"));
+
+		if( hakwonAllCount == 0 ) {
+			param.put("hakwon_status", "001");
+		} else {
+			param.put("hakwon_status", "002");
+		}
+
 		/*	학원 등록	*/
 		masterDAO.insertHakwon(param);
 		long hakwonNo = param.getLong("id");

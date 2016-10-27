@@ -88,11 +88,9 @@
 			count(1)
 		from
 			tb_hakwon a
-			, tb_hakwon_info b
 		where
 			a.master_user_no = #{master_user_no}
 			and a.hakwon_status = '001'
-			and a.hakwon_no = b.hakwon_no
 	]]>
 	</select>
 
@@ -102,7 +100,7 @@
 		insert into tb_hakwon (
 			master_user_no, hakwon_code, hakwon_name, reg_date, hakwon_cate, hakwon_status
 		) values(
-			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, '002'
+			#{userNo}, #{hakwonCode}, #{hakwonName}, now(), #{hakwonCate}, #{hakwon_status}
 		)
 	]]>
 	<selectKey keyProperty="id" resultType="long">
@@ -572,6 +570,19 @@
 	<select id="checkHakwonMaster" parameterType="dataMap" resultType="int">
 		/* MasterDAO.checkHakwonMaster */
 		select count(1) from tb_hakwon where master_user_no = #{user_no} and hakwon_no = #{hakwon_no}
+	</select>
+
+	<!-- 학원 리스트 카운트-->
+	<select id="masterHakwonAllCount" parameterType="long" resultType="int">
+	<![CDATA[
+		/* MasterDAO.masterHakwonAllCount */
+		select
+			count(1)
+		from
+			tb_hakwon a
+		where
+			a.master_user_no = #{master_user_no}
+	]]>
 	</select>
 
 </mapper>
