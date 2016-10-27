@@ -43,6 +43,24 @@ public class UserService {
 	}
 
 	/**
+	 * 엑셀 사용자 리스트
+	 * @return
+	 */
+	public DataMap excelUserData() {
+		DataMap rtnData = new DataMap();
+
+		List<DataMap> studentParentList = userDAO.excelUserStudentParentList();
+		List<DataMap> wonjangList = userDAO.excelUserWonjangList();
+		List<DataMap> managerList = userDAO.excelUserManagerList();
+
+		rtnData.put("studentParentList",	studentParentList);
+		rtnData.put("wonjangList",			wonjangList);
+		rtnData.put("managerList",			managerList);
+
+		return rtnData;
+	}
+
+	/**
 	 * 사용자 정지 및 활성화
 	 * @param param
 	 * @return

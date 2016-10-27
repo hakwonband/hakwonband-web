@@ -62,7 +62,8 @@ public class UserController extends BaseAction {
 	@RequestMapping("/list/excel")
 	public void listExcel(HttpServletRequest request, HttpServletResponse response) {
 
-		List<DataMap> dataList = userService.excelUserList();
+//		List<DataMap> dataList = userService.excelUserList();
+		DataMap userDataList = userService.excelUserData();
 
 		List<ColumnModel> headerList = new ArrayList<ColumnModel>();
 		headerList.add(new ColumnModel("번호",	"user_no"));
@@ -71,11 +72,29 @@ public class UserController extends BaseAction {
 		headerList.add(new ColumnModel("성별",	"user_gender"));
 		headerList.add(new ColumnModel("아이디",	"user_id"));
 		headerList.add(new ColumnModel("나이",	"user_age"));
+		headerList.add(new ColumnModel("이메일",	"user_email"));
+		headerList.add(new ColumnModel("학원명",	"hakwon_name"));
 
 		String fileName = excelComponent.convertFileName(request.getHeader("User-Agent"), "학원밴드 사용자 리스트");
 
-		SheetModel sheetModel = new SheetModel(dataList, headerList);
-		excelComponent.writeExcel(response, sheetModel, fileName);
+		List<DataMap> studentParentList	= (List<DataMap>)userDataList.get("studentParentList");
+		List<DataMap> wonjangList		= (List<DataMap>)userDataList.get("wonjangList");
+		List<DataMap> managerList		= (List<DataMap>)userDataList.get("managerList");
+
+
+		SheetModel studentParentSheetModel = new SheetModel(studentParentList, headerList);
+		studentParentSheetModel.setSheetName("학생_학부모");
+		SheetModel wonjangSheetModel = new SheetModel(wonjangList, headerList);
+		wonjangSheetModel.setSheetName("원장님_선생님");
+		SheetModel managerSheetModel = new SheetModel(managerList, headerList);
+		managerSheetModel.setSheetName("매니저");
+
+		List<SheetModel> sheetModelList = new ArrayList<SheetModel>();
+		sheetModelList.add(studentParentSheetModel);
+		sheetModelList.add(wonjangSheetModel);
+		sheetModelList.add(managerSheetModel);
+
+		excelComponent.writeExcel(response, sheetModelList,fileName);
 	}
 
 }
