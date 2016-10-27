@@ -1219,6 +1219,64 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 			title				: ''
 		};
 
+		/**
+		 * 노출 대상
+		 */
+		$scope.targetUserView = function(userType) {
+			if( userType == '005' ) {
+				return '학부모';
+			} else if( userType == '006' ) {
+				return '학생';
+			} else {
+				return '전체';
+			}
+		}
+
+		/**
+		 * 읽은 사용자 보여주는 변수
+		 */
+		$scope.readerAll = false;
+		$scope.readerStudent = false;
+		$scope.readerParent = false;
+		$scope.readerShowHide = function(type) {
+			if( type == 'all' ) {
+				$scope.readerAll = !$scope.readerAll;
+				$scope.readerStudent = false;
+				$scope.readerParent = false;
+			} else if( type == 'student' ) {
+				$scope.readerAll = false;
+				$scope.readerStudent = !$scope.readerStudent;
+				$scope.readerParent = false;
+			} else if( type == 'parent' ) {
+				$scope.readerAll = false;
+				$scope.readerStudent = false;
+				$scope.readerParent = !$scope.readerParent;
+			}
+		}
+		$scope.readerView = function(userInfo) {
+			var rtnFlag = false;
+			if( $scope.readerAll ) {
+				rtnFlag = true;
+			} else if( $scope.readerStudent ) {
+				if( userInfo.user_type == '006' ) {
+					rtnFlag = true;
+				} else {
+					rtnFlag = false;
+				}
+			} else if( $scope.readerParent ) {
+				if( userInfo.user_type == '005' ) {
+					rtnFlag = true;
+				} else {
+					rtnFlag = false;
+				}
+			} else {
+				rtnFlag = false;
+			}
+			//console.log('readerAll['+$scope.readerAll+']  readerStudent['+$scope.readerStudent+']  readerParent['+$scope.readerParent+']  user_type['+userInfo.user_type+'] ' + rtnFlag);
+
+			return rtnFlag;
+		}
+
 		$scope.userAuth = userAuth;
 
 		/*	권한 체크 기능 원장일 경우 true	*/
@@ -1316,6 +1374,9 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 		/*	공지사항 작성시, 카테고리 리스트	*/
 		$scope.noticeCateList 		= [];
 		$scope.noticeCateItem 		= '';
+
+		/*	대상	*/
+		$scope.noticeTargetUser 		= '';
 
 		/*	is Mobile	*/
 		$scope.isMobile = isMobile.any();
@@ -1494,6 +1555,8 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 						$scope.replyList			= colData.replyList;
 						$scope.fileList				= colData.fileList;
 
+						$scope.noticeTargetUser = $scope.noticeDetail.target_user;
+
 						/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 						var editOptions = comm.getEditorOptions();
 						editOptions.setup = function(ed) {
@@ -1606,6 +1669,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			params.preview_content 	= params.content.substr(0, 50) + '...';
 			params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
 			params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
+			params.target_user		= $scope.noticeTargetUser;
 
 			params.reservationDate = reservationDate;
 			params.reservationTime = reservationTime;

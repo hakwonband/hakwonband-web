@@ -8,7 +8,7 @@
 				{{ noticeDetail.title }}
 				<small ng-if="noticeDetail.reservation_yn == 'Y' && !noticeDetail.reservation_send_date">[예약] {{ noticeDetail.reservation_date }} / {{ noticeDetail.reg_user_name }}</small>
 				<small ng-if="noticeDetail.reservation_yn == 'N' || noticeDetail.reservation_send_date">{{ noticeDetail.reg_date }} / {{ noticeDetail.reg_user_name }}</small>
-				<button type="button" class="btn btn-primary" data-clipboard-text='{{student_url}}' id="clipboard_btn" ng-click="copy_prompt()">학생 주소 복사</button>
+				<button type="button" class="btn btn-primary" data-clipboard-text='{{student_url}}' id="clipboard_btn" ng-click="copy_prompt()">주소 복사</button>
 			</h2>
 		</div>
 		<div class="ibox-content" id="content_view_div" ng-bind-html="noticeDetail.content | rawHtml"></div>
@@ -42,16 +42,21 @@
 		</div>
 
 		<div class="ibox-content text-right m-t">
-			<a href="#" onclick="return false;" ng-click="reader_show = !reader_show;">
+			노출 대상 : {{targetUserView(noticeDetail.target_user)}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" onclick="return false;" ng-click="readerShowHide('all')">
 				전체 사용자 <strong>{{classNoticeReaderList.length}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+			</a>
+			<a href="#" onclick="return false;" ng-click="readerShowHide('student')">
 				학생 <strong>{{all_student_count}}</strong>명 중 <strong>{{read_student_count}}</strong> 읽음&nbsp;&nbsp;&nbsp;&nbsp;
+			</a>
+			<a href="#" onclick="return false;" ng-click="readerShowHide('parent')">
 				학부모 <strong>{{all_parent_count}}</strong>명 중 <strong>{{read_parent_count}}</strong> 읽음
 			</a>
 		</div>
-		<div class="ibox-content" ng-show="reader_show == true">
+		<div class="ibox-content">
 			<table class="table table-hover table_link">
 				<tbody>
-					<tr ng-repeat="noticeReader in classNoticeReaderList">
+					<tr ng-repeat="noticeReader in classNoticeReaderList" ng-show="readerView(noticeReader)">
 						<td>
 							<img class="img-circle" ng-src="{{ getPhotoFileFullPath(noticeReader.user_photo_path)}}" alt="" width="30" height="30">
 							{{noticeReader.user_type=="006"?"학생":"학부모"}} {{ noticeReader.user_name}} / {{ noticeReader.user_id}} / {{ noticeReader.read_date?noticeReader.read_date:'미확인'}}

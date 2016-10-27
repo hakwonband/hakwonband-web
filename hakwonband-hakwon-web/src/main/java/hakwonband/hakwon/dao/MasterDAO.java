@@ -223,4 +223,11 @@ public interface MasterDAO {
 	 * @return
 	 */
 	public int checkHakwonMaster(DataMap param);
+
+	/**
+	 * 학원 전체 카운트
+	 * @param master_user_no
+	 * @return
+	 */
+	public int masterHakwonAllCount(long master_user_no);
 }

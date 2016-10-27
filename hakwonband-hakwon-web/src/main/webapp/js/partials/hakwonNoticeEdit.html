@@ -17,6 +17,16 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-sm-1 control-label">노출대상</label>
+			<div class="col-sm-11">
+				<select class="form-control m-b" ng-model="noticeTargetUser">
+					<option value="">전체</option>
+					<option value="006">학생</option>
+					<option value="005">학부모</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-sm-1 control-label">제목</label>
 			<div class="col-sm-11">
 				<input type="text" data-view="title" class="form-control" placeholder="20자까지" ng-model="noticeDetail.title">
