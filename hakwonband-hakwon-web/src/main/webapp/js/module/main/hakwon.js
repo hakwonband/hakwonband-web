@@ -978,6 +978,11 @@ hakwonMainApp.controller('hakwonAllListController', function($scope, $location, 
 
 		$("#wrapper").show();
 
+		$scope.unauthorized = function() {
+			alert('인증 대기중입니다. 학원밴드 메니저 또는 학원밴드에 문의하세요.');
+			return false;
+		}
+
 		$scope.$$postDigest(function(){
 			console.log('hakwonViewController $viewContentLoaded call');
 		});
