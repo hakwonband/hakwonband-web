@@ -866,7 +866,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 		/**
 		 * 지번 선택
 		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
+		$('#mainNgView').on('click', 'li[data-act=oldAddrLI]', function() {
 			var addrNo = $(this).attr('data-addr-no');
 			$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
 
