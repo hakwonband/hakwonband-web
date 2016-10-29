@@ -916,7 +916,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 								var fileInfo = resultObj.colData;
 								if (fileInfo.imageYn == 'Y') {
 									$('div[data-view=image_preveiw] > img').remove();
-									$('div[data-view=image_preveiw]').prepend('<img alt="image" width="200" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
+									$('div[data-view=image_preveiw]').prepend('<img alt="image" style="max-width:100%" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
 								} else {
 									alert('이미지 파일이 아닙니다.');
 								}
