@@ -1414,6 +1414,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 
 			/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
 			$scope.reply_yn = document.querySelector('input[name=reply_yn]');
+			$scope.mobile_push_yn = document.querySelector('input[name=mobile_push_yn]');
 			$scope.file_view = document.querySelector('input[name=file_view]');
 
 			/*	반 공지사항 상세정보조회	*/
@@ -1527,6 +1528,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 				tinymce.init(editOptions);
 
 				$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+				$scope.switchery_mobile_push_yn = new Switchery($scope.mobile_push_yn, { color: '#1AB394' });
 				$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 				return;
 			}
@@ -1668,6 +1670,11 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 			params.file_no_list 	= fileNoList.toString();
 			params.preview_content 	= params.content.substr(0, 50) + '...';
 			params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
+
+			if ($scope.isNewNotice) {
+				params.mobile_push_yn	= $scope.mobile_push_yn.checked ? 'Y' : 'N' ;
+			}
+
 			params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
 			params.target_user		= $scope.noticeTargetUser;
 

@@ -414,6 +414,7 @@ public class MasterController extends BaseAction {
 			is_file_view = 1;
 		}
 		String target_user			= StringUtil.replaceNull(request.getParameter("target_user"), "");
+		String mobile_push_yn		= StringUtil.replaceNull(request.getParameter("mobile_push_yn"), "");
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -439,6 +440,7 @@ public class MasterController extends BaseAction {
 
 		param.put("is_file_view",		is_file_view);
 		param.put("target_user",		target_user);
+		param.put("mobile_push_yn",		mobile_push_yn);
 
 		/* 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);
@@ -476,6 +478,7 @@ public class MasterController extends BaseAction {
 			is_file_view = 1;
 		}
 		String target_user			= StringUtil.replaceNull(request.getParameter("target_user"), "");
+		String mobile_push_yn		= StringUtil.replaceNull(request.getParameter("mobile_push_yn"), "");
 
 		/*	예약 전송	*/
 		String reservationDate		= request.getParameter("reservationDate");
@@ -501,6 +504,7 @@ public class MasterController extends BaseAction {
 
 		param.put("is_file_view",		is_file_view);
 		param.put("target_user",		target_user);
+		param.put("mobile_push_yn",		mobile_push_yn);
 
 		/* 반 공지사항 등록 */
 		DevicePushData devicePushData = noticeService.registNotice(param);

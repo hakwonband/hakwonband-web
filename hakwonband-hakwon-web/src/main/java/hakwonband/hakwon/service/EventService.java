@@ -160,8 +160,8 @@ public class EventService {
 			updateFile = fileService.updateFile(param);
 		}
 
-		DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(param);
 		String hakwon_no = param.getString("hakwon_no");
+		DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(hakwon_no);
 
 		/*	시작일	*/
 		String beginDateStr = param.getString("begin_date");
@@ -177,7 +177,7 @@ public class EventService {
 		/*	금일 시작일에 현재 시간이 15:30분 이후면 발송한다. 	*/
 		if( nowDate == beginDate && currentTime > 1530 ) {
 			/*	직접 발송한다.	*/
-			List<UserDevice> deviceList = commonDAO.hakwonMemberDeviceList(param);
+			List<UserDevice> deviceList = commonDAO.hakwonMemberDeviceList(hakwon_no);
 			if( deviceList != null && deviceList.size() > 0 ) {
 				PushMessage pushMessage = new PushMessage();
 				pushMessage.setTicker("학원밴드");

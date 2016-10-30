@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
+import hakwonband.hakwon.common.constant.HakwonConstant;
 import hakwonband.hakwon.dao.CommonDAO;
 import hakwonband.hakwon.dao.FileDAO;
 import hakwonband.hakwon.dao.HakwonDAO;
@@ -167,25 +168,28 @@ public class NoticeService {
 			updateFile = fileService.updateFile(param);
 		}
 
-
 		/**
 		 * 알림 전송
 		 */
-		if( param.equals("notice_type", "002") || param.equals("notice_type", "003") ) {
+		if( param.equals("mobile_push_yn", "Y") && (param.equals("notice_type", "002") || param.equals("notice_type", "003")) ) {
 			/*	002 : 학원, 003 : 클래스	*/
 
 			List<UserDevice> deviceList = null;
 			PushMessage pushMessage = new PushMessage();
 			if( param.equals("notice_type", "002") ) {
 				String hakwonNo	= param.getString("notice_parent_no");
-				DataMap tempMap = new DataMap();
-				tempMap.put("hakwon_no", hakwonNo);
 
 				if( param.equals("reservationYn", "N") ) {
-					deviceList = commonDAO.hakwonMemberDeviceList(tempMap);
+					if( param.isNull("target_user") ) {
+						deviceList = commonDAO.hakwonMemberDeviceList(hakwonNo);
+					} else if( param.equals("target_user", HakwonConstant.UserType.STUDENT) ) {
+						deviceList = commonDAO.hakwonMemberStudentParentDeviceList(hakwonNo, HakwonConstant.UserType.STUDENT);
+					} else if( param.equals("target_user", HakwonConstant.UserType.PARENT) ) {
+						deviceList = commonDAO.hakwonMemberStudentParentDeviceList(hakwonNo, HakwonConstant.UserType.PARENT);
+					}
 				}
 
-				DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(tempMap);
+				DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(hakwonNo);
 				String title = "[전체공지] " + hakwonInfo.getString("hakwon_name")+ " " + param.getString("title");
 
 				pushMessage.setTicker("학원밴드");
@@ -195,30 +199,43 @@ public class NoticeService {
 				pushMessage.setLink_url("https://m.hakwonband.com/notice.do?hakwon_no="+hakwonInfo.getString("hakwon_no")+"&notice_no="+noticeNo);
 			} else if( param.equals("notice_type", "003") ) {
 				String classNo	= param.getString("notice_parent_no");
-				DataMap tempMap = new DataMap();
-				tempMap.put("class_no", classNo);
 
 				if( param.equals("reservationYn", "N") ) {
-					deviceList = commonDAO.classStudentDeviceList(tempMap);
 
-					/**
-					 * 학부모 디바이스 리스트
-					 */
-					List<UserDevice> parentDeviceList = commonDAO.classParentDeviceList(tempMap);
-					if( parentDeviceList != null && parentDeviceList.size() > 0 ) {
-						deviceList.addAll(parentDeviceList);
-					}
+					if( param.isNull("target_user") ) {
+						/*	전체	*/
 
-					/**
-					 * 선생님 리스트
-					 */
-					List<UserDevice> teacherDeviceList = commonDAO.classTeacherDeviceList(tempMap);
-					if( teacherDeviceList != null && teacherDeviceList.size() > 0 ) {
-						deviceList.addAll(teacherDeviceList);
+						/**
+						 * 학생
+						 */
+						deviceList = commonDAO.classStudentDeviceList(classNo);
+
+						/**
+						 * 학부모 디바이스 리스트
+						 */
+						List<UserDevice> parentDeviceList = commonDAO.classParentDeviceList(classNo);
+						if( parentDeviceList != null && parentDeviceList.size() > 0 ) {
+							deviceList.addAll(parentDeviceList);
+						}
+
+						/**
+						 * 선생님 리스트
+						 */
+						List<UserDevice> teacherDeviceList = commonDAO.classTeacherDeviceList(classNo);
+						if( teacherDeviceList != null && teacherDeviceList.size() > 0 ) {
+							deviceList.addAll(teacherDeviceList);
+						}
+
+					} else if( param.equals("target_user", HakwonConstant.UserType.STUDENT) ) {
+						/*	학생	*/
+						deviceList = commonDAO.classStudentDeviceList(classNo);
+					} else if( param.equals("target_user", HakwonConstant.UserType.PARENT) ) {
+						/*	학부모	*/
+						deviceList = commonDAO.classParentDeviceList(classNo);
 					}
 				}
 
-				DataMap classInfo = hakwonDAO.classSimpleDetail(tempMap);
+				DataMap classInfo = hakwonDAO.classSimpleDetail(classNo);
 				String title = "[반공지] " + classInfo.getString("hakwon_name")+" " + param.getString("title");
 
 				pushMessage.setTicker("학원밴드");

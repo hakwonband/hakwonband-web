@@ -191,7 +191,7 @@
 	</select>
 
 	<!-- 반 학생들의 디바이스 리스트 -->
- 	<select id="classStudentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+ 	<select id="classStudentDeviceList" resultType="hakwonband.push.UserDevice">
 	<![CDATA[
 		/* CommonDAO.classStudentDeviceList */
 		select
@@ -235,7 +235,7 @@
 	</select>
 
 	<!-- 반 선생님의 디바이스 리스트 -->
- 	<select id="classTeacherDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+ 	<select id="classTeacherDeviceList" resultType="hakwonband.push.UserDevice">
 	<![CDATA[
 		/* CommonDAO.classTeacherDeviceList */
 		select
@@ -279,6 +279,26 @@
 			a.hakwon_no = #{hakwon_no}
 			and a.approved_yn = 'Y'
 			and a.user_no = x.user_no
+			and x.device_token is not null
+	]]>
+	</select>
+
+	<select id="hakwonMemberStudentParentDeviceList" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/* CommonDAO.hakwonMemberStudentParentDeviceList */
+		select
+			x.device_token
+			, x.device_type
+			, x.is_production
+		from
+			tb_login_hist x
+			, tb_hakwon_member a
+			, tb_user user
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.user_no = user.user_no
+			and user.user_type = #{user_type}
+			and user.user_no = x.user_no
 			and x.device_token is not null
 	]]>
 	</select>

@@ -476,7 +476,7 @@ public class MasterService {
 		String teacherUserNo = param.getString("teacher_user_no");
 
 		/*	학원 정보	*/
-		DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(param);
+		DataMap hakwonInfo = hakwonDAO.hakwonSimpleDetail(param.getString("hakwon_no"));
 
 		/*	메세지 발송	*/
 		String messageContent = param.getString("message");

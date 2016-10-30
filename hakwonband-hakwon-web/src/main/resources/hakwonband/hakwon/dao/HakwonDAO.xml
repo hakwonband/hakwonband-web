@@ -56,7 +56,7 @@
 	</select>
 
 	<!-- 학원심플 상세정보 -->
-	<select id="hakwonSimpleDetail" parameterType="dataMap" resultType="dataMap">
+	<select id="hakwonSimpleDetail" resultType="dataMap">
 	<![CDATA[
 		/*	HakwonDAO.hakwonSimpleDetail	*/
 		select

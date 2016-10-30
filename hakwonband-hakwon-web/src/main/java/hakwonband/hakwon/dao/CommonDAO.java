@@ -2,6 +2,8 @@ package hakwonband.hakwon.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
 
@@ -87,28 +89,35 @@ public interface CommonDAO {
 	 * @param param
 	 * @return
 	 */
-	public List<UserDevice> classStudentDeviceList(DataMap param);
+	public List<UserDevice> classStudentDeviceList(@Param("class_no")String class_no);
 
 	/**
 	 * 반 학생의 학부모 디바이스 리스트
 	 * @param param
 	 * @return
 	 */
-	public List<UserDevice> classParentDeviceList(DataMap param);
+	public List<UserDevice> classParentDeviceList(@Param("class_no")String class_no);
 
 	/**
 	 * 학원 멤버들의 디바이스 리스트
 	 * @param param
 	 * @return
 	 */
-	public List<UserDevice> hakwonMemberDeviceList(DataMap param);
+	public List<UserDevice> hakwonMemberDeviceList(@Param("hakwon_no")String hakwon_no);
+
+	/**
+	 * 학원 학생/부모 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<UserDevice> hakwonMemberStudentParentDeviceList(@Param("hakwon_no")String hakwon_no, @Param("user_type")String user_type);
 
 	/**
 	 * 반 선생님 리스트
 	 * @param param
 	 * @return
 	 */
-	public List<UserDevice> classTeacherDeviceList(DataMap param);
+	public List<UserDevice> classTeacherDeviceList(@Param("class_no")String class_no);
 
 	/**
 	 * 앱 버전 조회
