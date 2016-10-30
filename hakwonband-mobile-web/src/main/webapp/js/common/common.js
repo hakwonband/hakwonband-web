@@ -102,8 +102,8 @@ var MENUS = {
 		eventList 			: '#/hakwon/eventList',
 		eventDetail 		: '#/hakwon/eventDetail',
 		eventJoin 			: '#/hakwon/eventJoin',
-		advertiseList 		: '#/advertiseList',
-		advertiseUcc 		: '#/advertiseUcc',
+		edvertiseList 		: '#/edvertiseList',
+		edvertiseUcc 		: '#/edvertiseUcc',
 		myInfo		 		: '#/myInfo'
 	}
 };
@@ -462,7 +462,7 @@ var HakwonCommon = function() {
 	this.advertBlock = function() {
 		if( hakwonInfo.currentHakwon && hakwonInfo.currentHakwon.hakwon_no ) {
 			$.ajax({
-				url: contextPath+"/mobile/advert/blockList.do",
+				url: contextPath+"/mobile/edvert/blockList.do",
 				type: "post",
 				data: 'hakwon_no='+hakwonInfo.currentHakwon.hakwon_no,
 				dataType: "json",
@@ -517,7 +517,7 @@ var HakwonCommon = function() {
 					if( remainCount == 0 ) blockHtml += hakwonBanner3;
 					if( remainCount == 4 ) blockHtml += hakwonBanner3;
 
-					blockHtml += '				<li><a href="#/advertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" height="74" /></a></li>';
+					blockHtml += '				<li><a href="#/edvertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/assets/images/img_ed_btn.gif" alt="목록" width="74" height="74" /></a></li>';
 					blockHtml += '			</ul>';
 					blockHtml += '		</div>';
 					blockHtml += '	</div>';
