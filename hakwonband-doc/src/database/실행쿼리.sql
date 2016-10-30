@@ -52,3 +52,8 @@ alter table tb_notice add is_file_view int(1) not null default 1 comment '파일
 2016-10-25
 ==========================================================
 alter table tb_notice add target_user varchar(3) default '' comment '대상 사용자';
+
+==========================================================
+2016-10-31
+==========================================================
+alter table tb_advertise_req add redirect_url varchar(1000) comment '이동 url';

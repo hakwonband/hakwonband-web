@@ -430,6 +430,10 @@ hakwonTmpl.adBanner = {
 		, '					<td>{{reqDetailInfo.cancel_yn}}</td>'
 		, '					<td>{{reqDetailInfo.stop_admin_yn}}</td>'
 		, '				</tr>'
+		, '				<tr>'
+		, '					<td>외부 링크</td>'
+		, '					<td colspan="6"><a href="{{reqDetailInfo.redirect_url}}" target="_blank">{{reqDetailInfo.redirect_url}}</a></td>'
+		, '				</tr>'
 		, '			</tbody>'
 		, '		</table>'
 

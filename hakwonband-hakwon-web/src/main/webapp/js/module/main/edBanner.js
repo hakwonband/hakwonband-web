@@ -320,6 +320,9 @@ hakwonMainApp.service('adBannerService', function($http, CommUtil) {
 		}
 		regParam.title = title;
 
+		var redirect_url = $mainNgView.find('input[name=redirect_url]').val();
+		regParam.redirectUrl = redirect_url;
+
 		var sido = $mainNgView.find('select[name=sido] > option:selected').text();
 		if( isNull(sido) ) {
 			alert('시도 지역을 선택해 주세요.');
@@ -755,7 +758,9 @@ hakwonMainApp.controller('adBannerEditController', function($window, $scope, $lo
 				return false;
 			}
 
-			var params = {advertiseReqNo:reqNo, title:$mainNgView.find('input[name=title]').val(), bannerFileNo:bannerFileNo};
+			var redirect_url = $mainNgView.find('input[name=redirect_url]').val();
+
+			var params = {advertiseReqNo:reqNo, title:$mainNgView.find('input[name=title]').val(), redirectUrl:redirect_url, bannerFileNo:bannerFileNo};
 
 			var queryString = $.param(params, true);
 			$.ajax({

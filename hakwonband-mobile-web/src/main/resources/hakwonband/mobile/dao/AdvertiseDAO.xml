@@ -19,6 +19,7 @@
 			, get_cate_name(d.hakwon_cate) as hakwon_cate_name
 			, e.tel_no_1
 			, d.admin_reg_yn
+			, c.redirect_url
 		from
 			tb_hakwon_address a
 			, tb_advertise_local_date b

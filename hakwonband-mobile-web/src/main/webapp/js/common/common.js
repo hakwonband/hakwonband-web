@@ -498,7 +498,11 @@ var HakwonCommon = function() {
 									lineCount = 0;
 								}
 							}
-							blockHtml += '<li><a href="#/hakwon/detail?hakwon_no='+bannerInfo.hakwon_no+'"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							if( isNull(bannerInfo.redirect_url) ) {
+								blockHtml += '<li><a href="#/hakwon/detail?hakwon_no='+bannerInfo.hakwon_no+'"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							} else {
+								blockHtml += '<li><a href="'+bannerInfo.redirect_url+'" target="_blank"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							}
 
 							if( i+1 != maxLen ) {
 								if( blankCount == 1 ) blockHtml += hakwonBanner1;
