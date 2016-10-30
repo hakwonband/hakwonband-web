@@ -462,7 +462,7 @@ var HakwonCommon = function() {
 	this.advertBlock = function() {
 		if( hakwonInfo.currentHakwon && hakwonInfo.currentHakwon.hakwon_no ) {
 			$.ajax({
-				url: contextPath+"/mobile/advert/blockList.do",
+				url: contextPath+"/mobile/edvert/blockList.do",
 				type: "post",
 				data: 'hakwon_no='+hakwonInfo.currentHakwon.hakwon_no,
 				dataType: "json",

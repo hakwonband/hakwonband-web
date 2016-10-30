@@ -11,7 +11,7 @@ hakwonApp.service('advertiseService', function(CommUtil) {
 	 */
 	advertiseService.areaList = function(hakwon_no) {
 		$.ajax({
-			url: contextPath+"/mobile/advert/areaList.do",
+			url: contextPath+"/mobile/edvert/areaList.do",
 			type: "post",
 			data: $.param({hakwon_no:hakwon_no}, true),
 			dataType: "json",

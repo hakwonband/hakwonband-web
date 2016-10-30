@@ -20,7 +20,7 @@ import hakwonband.util.DataMap;
  * @author bumworld
  *
  */
-@RequestMapping("/mobile/advert")
+@RequestMapping("/mobile/edvert")
 @Controller
 public class AdvertiseController extends BaseAction {
 
