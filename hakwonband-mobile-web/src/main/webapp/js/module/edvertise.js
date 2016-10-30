@@ -1,15 +1,15 @@
 /**
  * 광고 서비스
  */
-hakwonApp.service('advertiseService', function(CommUtil) {
-	console.log('hakwonMainApp advertiseService call');
+hakwonApp.service('edvertiseService', function(CommUtil) {
+	console.log('hakwonMainApp edvertiseService call');
 
-	var advertiseService = {};
+	var edvertiseService = {};
 
 	/**
 	 * 지역 광고 리스트
 	 */
-	advertiseService.areaList = function(hakwon_no) {
+	edvertiseService.areaList = function(hakwon_no) {
 		$.ajax({
 			url: contextPath+"/mobile/edvert/areaList.do",
 			type: "post",
@@ -44,12 +44,12 @@ hakwonApp.service('advertiseService', function(CommUtil) {
 		});
 	};
 
-	return advertiseService;
+	return edvertiseService;
 });
 
 /* 광고 리스트  */
-hakwonApp.controller('advertiseListController', function($scope, $window, $routeParams, advertiseService){
-	console.log('advertiseListController call');
+hakwonApp.controller('edvertiseListController', function($scope, $window, $routeParams, edvertiseService){
+	console.log('edvertiseListController call');
 
 	var hakwon_no = $routeParams.hakwon_no;
 
@@ -69,15 +69,15 @@ hakwonApp.controller('advertiseListController', function($scope, $window, $route
 		$window.location.reload();
 	}
 	$scope.$on('$viewContentLoaded', function() {
-		console.log('advertiseListController $viewContentLoaded call');
+		console.log('edvertiseListController $viewContentLoaded call');
 
-		advertiseService.areaList(hakwon_no);
+		edvertiseService.areaList(hakwon_no);
 	});
 });
 
 /* 광고 UCC  */
-hakwonApp.controller('advertiseUccController', function($scope, $window){
-	console.log('advertiseUccController call');
+hakwonApp.controller('edvertiseUccController', function($scope, $window){
+	console.log('edvertiseUccController call');
 
 	/*	헤더 정보 셋팅	*/
 	hakwonHeader.setHeader({viewType:'user'});

@@ -234,7 +234,7 @@ var hakwonTmpl = {
 		, '				<li><img src="/assets/images/img_ad_05.gif" alt="" width="74" /></li>'
 		, '				<li class="clear"><img src="/assets/images/img_ad_06.gif" alt="" width="149" /></li>'
 		, '				<li><img src="/assets/images/img_ad_07.gif" alt="" width="74" /></li>'
-		, '				<li><a href="#/advertiseList?hakwon_no={{= hakwonInfo.currentHakwon.hakwon_no}}"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" /></a></li>'
+		, '				<li><a href="#/edvertiseList?hakwon_no={{= hakwonInfo.currentHakwon.hakwon_no}}"><img src="/assets/images/img_ed_btn.gif" alt="목록" width="74" /></a></li>'
 		, '			</ul>'
 		, '		</div>'
 		, '	</div>'
