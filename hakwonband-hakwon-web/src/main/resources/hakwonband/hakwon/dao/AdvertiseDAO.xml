@@ -8,9 +8,9 @@
 	<![CDATA[
 		/*	AdvertiseDAO.insertAdvertiseReq	*/
 		insert into tb_advertise_req (
-			hakwon_no, title, banner_file_no, banner_size, bank_info, stop_admin_yn, stop_master_yn, reg_user_no, reg_date
+			hakwon_no, title, banner_file_no, banner_size, bank_info, stop_admin_yn, stop_master_yn, reg_user_no, reg_date, redirect_url
 		) values (
-			#{hakwonNo}, #{title}, #{bannerFileNo}, #{bannerSize}, #{bankInfo}, 'N', 'N', #{regUserNo}, now()
+			#{hakwonNo}, #{title}, #{bannerFileNo}, #{bannerSize}, #{bankInfo}, 'N', 'N', #{regUserNo}, now(), #{redirectUrl}
 		)
 	]]>
 	<selectKey keyProperty="id" resultType="long">
@@ -36,6 +36,7 @@
 		/*	AdvertiseDAO.updateAdvertiseReq	*/
 		update tb_advertise_req set
 			title = #{title}
+			, redirect_url = #{redirectUrl}
 			, banner_file_no = #{bannerFileNo}
 		where
 			advertise_req_no = #{advertiseReqNo}
@@ -111,6 +112,7 @@
 			, c.price
 			, b.hakwon_name
 			, (select count(1) from tb_advertise_local_date where advertise_req_no = c.advertise_req_no and date_format(now(), '%Y%m') = view_month) as view_month_count
+			, c.redirect_url
 		from
 			tb_hakwon a
 			, tb_hakwon_info b
@@ -168,6 +170,7 @@
 			, b.deposit_yn
 			, b.price
 			, b.bank_info
+			, b.redirect_url
 		from
 			tb_hakwon a
 			, tb_advertise_req b

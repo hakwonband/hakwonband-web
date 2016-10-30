@@ -363,6 +363,7 @@
 			, a.hakwon_name
 			, a.hakwon_no
 			, b.bank_info
+			, b.redirect_url
 		from
 			tb_hakwon a
 			, tb_advertise_req b

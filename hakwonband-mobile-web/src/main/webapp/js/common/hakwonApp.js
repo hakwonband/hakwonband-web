@@ -95,13 +95,13 @@ hakwonApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/assets/partials/eventJoin.html'
 			, controller: 'eventJoinController'
 		})
-		.when('/advertiseList', {
+		.when('/edvertiseList', {
 			template: hakwonTmpl.advertList
-			, controller: 'advertiseListController'
+			, controller: 'edvertiseListController'
 		})
-		.when('/advertiseUcc', {
-			templateUrl: '/assets/partials/advertiseUcc.html'
-			, controller: 'advertiseUccController'
+		.when('/edvertiseUcc', {
+			templateUrl: '/assets/partials/edvertiseUcc.html'
+			, controller: 'edvertiseUccController'
 		})
 		.otherwise({
 			redirectTo: '/index'

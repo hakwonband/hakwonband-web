@@ -127,7 +127,7 @@
 <script src="/js/module/hakwon/teacher.js"></script>
 <script src="/js/module/hakwon/notice.js"></script>
 <script src="/js/module/hakwon/event.js"></script>
-<script src="/js/module/advertise.js"></script>
+<script src="/js/module/edvertise.js"></script>
 <%
 	}
 %>

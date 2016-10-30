@@ -98,7 +98,7 @@ hakwonMainApp.service('hakwonService', function(CommUtil) {
 					var fileInfo = this.uploadFileArray[i];
 					if (fileInfo.imageYn == 'Y') {
 						$('div[data-view=image_preveiw] > img').remove();
-						$('div[data-view=image_preveiw]').prepend('<img alt="image" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
+						$('div[data-view=image_preveiw]').prepend('<img alt="image" style="max-width:100%" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
 					} else {
 						alert('이미지 파일이 아닙니다.');
 					}
@@ -866,7 +866,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 		/**
 		 * 지번 선택
 		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=oldAddrLI]', function() {
+		$('#mainNgView').on('click', 'li[data-act=oldAddrLI]', function() {
 			var addrNo = $(this).attr('data-addr-no');
 			$('input[name=oldAddr1]').attr('data-addr-no', addrNo);
 
@@ -901,7 +901,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 		$("#wrapper").show();
 
 		$scope.$$postDigest(function(){
-			console.log('hakwonViewController $viewContentLoaded call');
+			console.log('hakwonCreateController $viewContentLoaded call');
 
 			// 파일 업로드 객체 생성
 			if( comm.isAndroidUploader() ) {
@@ -916,7 +916,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 								var fileInfo = resultObj.colData;
 								if (fileInfo.imageYn == 'Y') {
 									$('div[data-view=image_preveiw] > img').remove();
-									$('div[data-view=image_preveiw]').prepend('<img alt="image" width="200" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
+									$('div[data-view=image_preveiw]').prepend('<img alt="image" style="max-width:100%" src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath+'" data-file-no="'+fileInfo.fileNo+'">');
 								} else {
 									alert('이미지 파일이 아닙니다.');
 								}
@@ -977,6 +977,11 @@ hakwonMainApp.controller('hakwonAllListController', function($scope, $location, 
 		}});
 
 		$("#wrapper").show();
+
+		$scope.unauthorized = function() {
+			alert('인증 대기중입니다. 학원밴드 메니저 또는 학원밴드에 문의하세요.');
+			return false;
+		}
 
 		$scope.$$postDigest(function(){
 			console.log('hakwonViewController $viewContentLoaded call');

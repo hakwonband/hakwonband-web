@@ -2,6 +2,8 @@ package hakwonband.hakwon.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import hakwonband.util.DataMap;
 
 /**
@@ -36,14 +38,14 @@ public interface HakwonDAO {
 	 * @param param
 	 * @return
 	 */
-	public DataMap hakwonSimpleDetail(DataMap param);
+	public DataMap hakwonSimpleDetail(@Param("hakwon_no")String hakwon_no);
 
 	/**
 	 * 반 심플 정보
 	 * @param param
 	 * @return
 	 */
-	public DataMap classSimpleDetail(DataMap param);
+	public DataMap classSimpleDetail(@Param("class_no")String class_no);
 
 
 	/**

@@ -84,6 +84,8 @@ public class AdvertiseController extends BaseAction {
 		 */
 		String hakwonNo		= request.getParameter("hakwonNo");
 		String title		= request.getParameter("title");
+		String redirectUrl	= StringUtil.replaceNull(request.getParameter("redirectUrl"), "");
+		redirectUrl = redirectUrl.trim();
 		String bannerFileNo	= request.getParameter("bannerFileNo");
 
 		/**
@@ -100,6 +102,7 @@ public class AdvertiseController extends BaseAction {
 		DataMap param = new DataMap();
 		param.put("hakwonNo",		hakwonNo);
 		param.put("title",			title);
+		param.put("redirectUrl",	redirectUrl);
 		param.put("userNo",			authUserInfo.getString("user_no"));
 		param.put("bannerFileNo",	bannerFileNo);
 		param.put("bannerSize",		bannerSize);
@@ -135,11 +138,14 @@ public class AdvertiseController extends BaseAction {
 		String advertiseReqNo	= request.getParameter("advertiseReqNo");
 		String hakwonNo			= request.getParameter("hakwonNo");
 		String title			= request.getParameter("title");
+		String redirectUrl	= StringUtil.replaceNull(request.getParameter("redirectUrl"), "");
+		redirectUrl = redirectUrl.trim();
 		String bannerFileNo		= request.getParameter("bannerFileNo");
 
 		DataMap param = new DataMap();
 		param.put("hakwonNo",		hakwonNo);
 		param.put("title",			title);
+		param.put("redirectUrl",	redirectUrl);
 		param.put("userNo",			authUserInfo.getString("user_no"));
 		param.put("advertiseReqNo",	advertiseReqNo);
 		param.put("bannerFileNo",	bannerFileNo);

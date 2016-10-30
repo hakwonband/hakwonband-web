@@ -102,8 +102,8 @@ var MENUS = {
 		eventList 			: '#/hakwon/eventList',
 		eventDetail 		: '#/hakwon/eventDetail',
 		eventJoin 			: '#/hakwon/eventJoin',
-		advertiseList 		: '#/advertiseList',
-		advertiseUcc 		: '#/advertiseUcc',
+		edvertiseList 		: '#/edvertiseList',
+		edvertiseUcc 		: '#/edvertiseUcc',
 		myInfo		 		: '#/myInfo'
 	}
 };
@@ -462,7 +462,7 @@ var HakwonCommon = function() {
 	this.advertBlock = function() {
 		if( hakwonInfo.currentHakwon && hakwonInfo.currentHakwon.hakwon_no ) {
 			$.ajax({
-				url: contextPath+"/mobile/advert/blockList.do",
+				url: contextPath+"/mobile/edvert/blockList.do",
 				type: "post",
 				data: 'hakwon_no='+hakwonInfo.currentHakwon.hakwon_no,
 				dataType: "json",
@@ -498,7 +498,11 @@ var HakwonCommon = function() {
 									lineCount = 0;
 								}
 							}
-							blockHtml += '<li><a href="#/hakwon/detail?hakwon_no='+bannerInfo.hakwon_no+'"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							if( isNull(bannerInfo.redirect_url) ) {
+								blockHtml += '<li><a href="#/hakwon/detail?hakwon_no='+bannerInfo.hakwon_no+'"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							} else {
+								blockHtml += '<li><a href="'+bannerInfo.redirect_url+'" target="_blank"><img src="'+HakwonConstant.FileServer.ATTATCH_DOMAIN+bannerInfo.banner_file_path+'" height="74" width="'+(widthVal*bannerInfo.banner_size)+'" /></a></li>';
+							}
 
 							if( i+1 != maxLen ) {
 								if( blankCount == 1 ) blockHtml += hakwonBanner1;
@@ -513,7 +517,7 @@ var HakwonCommon = function() {
 					if( remainCount == 0 ) blockHtml += hakwonBanner3;
 					if( remainCount == 4 ) blockHtml += hakwonBanner3;
 
-					blockHtml += '				<li><a href="#/advertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/assets/images/img_ad_btn.gif" alt="목록" width="74" height="74" /></a></li>';
+					blockHtml += '				<li><a href="#/edvertiseList?hakwon_no='+hakwonInfo.currentHakwon.hakwon_no+'"><img src="/assets/images/img_ed_btn.gif" alt="목록" width="74" height="74" /></a></li>';
 					blockHtml += '			</ul>';
 					blockHtml += '		</div>';
 					blockHtml += '	</div>';
