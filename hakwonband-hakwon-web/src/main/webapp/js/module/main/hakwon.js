@@ -889,7 +889,7 @@ hakwonMainApp.controller('hakwonCreateController', function($scope, $location, $
 		/**
 		 * 도로명 선택
 		 */
-		$('#mainNgView').on(clickEvent, 'li[data-act=streetAddrLI]', function() {
+		$('#mainNgView').on('click', 'li[data-act=streetAddrLI]', function() {
 			var addr1 = $(this).find('span').text();
 			$('input[name=streetAddr1]').val(addr1);
 			$('input[name=streetAddr2]').focus();
