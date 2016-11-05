@@ -132,4 +132,16 @@
 		select last_insert_id()
 	</selectKey>
 	</insert>
+
+	<!-- 알림 데이타 등록 -->
+	<insert id="insertUserAlarm">
+	<![CDATA[
+		/* SignUpDAO.insertUserAlarm */
+		insert into tb_user_alarm (
+			user_no, off_date
+		) values (
+			#{user_no}, null
+		)
+	]]>
+	</insert>
 </mapper>

@@ -137,14 +137,19 @@ public class SignUpService {
 			throw new HKBandException("SignUpDAO.insertUser error");
 		}
 
-		long lastId = param.getLong("idx");
-		param.put("user_no", lastId);
+		long user_no = param.getLong("idx");
+		param.put("user_no", user_no);
 
 		/* tb_user_info 부가 정보 등록 */
 		int resultUserInfo = signupDAO.insertUserInfo(param);
 		if (resultUserInfo != 1) {
 			throw new HKBandException("SignUpDAO.insertUserInfo error");
 		}
+
+		/**
+		 * 알림 데이타 등록
+		 */
+		signupDAO.insertUserAlarm(user_no);
 
 		/*	매니저 등록	*/
 		signupDAO.insertManager(param);

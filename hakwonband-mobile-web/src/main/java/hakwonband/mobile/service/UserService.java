@@ -99,8 +99,8 @@ public class UserService {
 			throw new HKBandException("UserDAO.insertUser error");
 		}
 
-		long lastId = param.getLong("idx");
-		param.put("user_no", lastId);
+		long user_no = param.getLong("idx");
+		param.put("user_no", user_no);
 
 		/* 사용자 부가정보 등록 */
 		int resultUserInfo = userDAO.insertUserInfo(param);
@@ -115,6 +115,9 @@ public class UserService {
 				throw new HKBandException("UserDAO.insertUserSchool error");
 			}
 		}
+
+		/*	사용자 알림 등록	*/
+		userDAO.insertUserAlarm(user_no);
 
 		/* 회원 가입시 학원 등록을 같이 한 경우*/
 		if (param.get("hakwon_codes") != null) {

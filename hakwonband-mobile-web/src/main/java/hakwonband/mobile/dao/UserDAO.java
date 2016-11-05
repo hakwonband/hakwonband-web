@@ -124,4 +124,10 @@ public interface UserDAO {
 	 * @param off_date
 	 */
 	public void insertUserAlarmOff(@Param("user_no")long user_no, @Param("off_date")String off_date);
+
+	/**
+	 * 사용자 알림 등록
+	 * @param user_no
+	 */
+	public void insertUserAlarm(@Param("user_no")long user_no);
 }

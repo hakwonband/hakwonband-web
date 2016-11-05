@@ -120,7 +120,6 @@
 	</if>
 
 		)
-
 	</insert>
 
 	<!-- 학생 회원가입시 학교정보 입력 -->
@@ -142,6 +141,18 @@
 			hakwon_no, user_no, user_type, member_yn, reg_date
 		) values (
 			#{hakwon_no}, #{user_no}, #{user_type}, 'Y', now()
+		)
+	]]>
+	</insert>
+
+	<!-- 알림 등록 -->
+	<insert id="insertUserAlarm">
+	<![CDATA[
+		/* UserDAO.insertUserAlarm */
+		insert into tb_user_alarm (
+			user_no, off_date
+		) values (
+			#{user_no}, null
 		)
 	]]>
 	</insert>

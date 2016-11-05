@@ -17,6 +17,7 @@ import hakwonband.hakwon.dao.FileDAO;
 import hakwonband.hakwon.dao.HakwonDAO;
 import hakwonband.hakwon.dao.ManagerDAO;
 import hakwonband.hakwon.dao.MasterDAO;
+import hakwonband.hakwon.dao.SignUpDAO;
 import hakwonband.hakwon.model.DevicePushData;
 import hakwonband.push.PushMessage;
 import hakwonband.push.UserDevice;
@@ -50,6 +51,11 @@ public class HakwonService {
 
 	@Autowired
 	private ExcelUserDAO excelUserDAO;
+
+	@Autowired
+	private SignUpDAO signUpDAO;
+
+
 
 	/**
 	 * 학원 카테고리 리스트
@@ -485,6 +491,9 @@ public class HakwonService {
 		if (resultUserInfo != 1) {
 			throw new HKBandException("excelUserDAO.insertUserInfo error");
 		}
+
+		/*	사용자 알림 데이타 등록	*/
+		signUpDAO.insertUserAlarm(user_no);
 
 		/* 회원 가입시 학원 등록을 같이 한 경우*/
 		insertUser.put("hakwon_no", hakwonNo);
