@@ -2,6 +2,8 @@ package hakwonband.mobile.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import hakwonband.util.DataMap;
 
 /**
@@ -108,4 +110,18 @@ public interface UserDAO {
 	 * @return
 	 */
 	public DataMap schoolInfo(DataMap param);
+
+	/**
+	 * 사용자 알림 off 시간
+	 * @param user_no
+	 * @return
+	 */
+	public String userAlarmInfo(long user_no);
+
+	/**
+	 * 사용자 알림 off 등록
+	 * @param user_no
+	 * @param off_date
+	 */
+	public void insertUserAlarmOff(@Param("user_no")long user_no, @Param("off_date")String off_date);
 }

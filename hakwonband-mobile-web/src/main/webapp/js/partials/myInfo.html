@@ -26,6 +26,21 @@
 				{{userInfo.schoolInfo.level?" / "+userInfo.schoolInfo.level+"학년":""}}
 			</li>
 			<li ng-if="userInfo.userType == '006' && !userInfo.schoolInfo">학교 정보 미입력</li>
+			<li>
+				알림 일시 중지 {{view_alarm_off_time}}
+			</li>
+			<li>
+				<select ng-model="alarm_off_time" ng-change="alarmOffChange()">
+					<option value="">알림 일시 중지 시간을 선택해 주세요.</option>
+					<option value="0">알림 시작</option>
+					<option value="1">1시간</option>
+					<option value="2">2시간</option>
+					<option value="4">4시간</option>
+					<option value="8">8시간</option>
+					<option value="24">24시간</option>
+					<option value="72">72시간</option>
+				</select>
+			</li>
 		</ul>
 	</div>
 

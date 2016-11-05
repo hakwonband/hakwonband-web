@@ -77,6 +77,7 @@
 			, last_login_date
 			, b.attendance_code
 			, a.use_yn
+			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
 		from
 			tb_user a
 			, tb_user_info b
@@ -146,6 +147,7 @@
 			, b.attendance_code
 			, x.device_token
 			, x.device_type
+			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
 		from
 			tb_login_hist x
 			, tb_user a

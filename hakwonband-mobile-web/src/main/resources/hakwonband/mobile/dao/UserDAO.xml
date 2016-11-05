@@ -110,17 +110,17 @@
 	]]>
 	<if test=" '006' == user_type ">
 		, attendance_code
-	</if>	
-			
+	</if>
+
 		) values (
 			#{user_no}, #{user_id}, #{user_name}, #{user_gender}, #{user_birthday}, #{photo_file_no}, #{tel1_no}, #{tel2_no}, #{user_url}, #{agree01}, #{agree02}
-			
+
 	<if test=" '006' == user_type ">
 		, (select (ifnull(max(x.attendance_code), 10000) + 1) from tb_user_info x )
 	</if>
-	
+
 		)
-	
+
 	</insert>
 
 	<!-- 학생 회원가입시 학교정보 입력 -->
@@ -178,6 +178,18 @@
 		where user_no = #{user_no}
 	]]>
 	</update>
+
+	<!-- 알림 off -->
+	<insert id="insertUserAlarmOff">
+	<![CDATA[
+		/* UserDAO.updateUserAlarmOff */
+		insert into tb_user_alarm (
+			user_no, off_date
+		) values (
+			#{user_no}, #{off_date}
+		) on duplicate key update off_date = #{off_date}
+	]]>
+	</insert>
 
 
 	<!-- 사용자 수정시 학생일 경우, 학교정보 업데이트 -->
@@ -262,6 +274,19 @@
 			tb_student_school
 		where
 			user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 알림 off 정보 -->
+	<select id="userAlarmInfo" parameterType="long" resultType="string">
+	<![CDATA[
+		/* UserDAO.schoolInfo */
+		select
+			date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') as off_date
+		from
+			tb_user_alarm user_alarm
+		where
+			user_alarm.user_no = #{user_no}
 	]]>
 	</select>
 </mapper>

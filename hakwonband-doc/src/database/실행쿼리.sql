@@ -57,3 +57,18 @@ alter table tb_notice add target_user varchar(3) default '' comment '대상 사�
 2016-10-31
 ==========================================================
 alter table tb_advertise_req add redirect_url varchar(1000) comment '이동 url';
+
+
+==========================================================
+2016-11-05
+==========================================================
+drop table if exists tb_user_alarm;
+create table tb_user_alarm (
+	user_no				integer						not null	comment '회원 번호'
+	, off_date			datetime					not null	comment 'off 만료 시간'
+	, primary key (user_no)
+)
+engine = innodb
+character set utf8
+comment = '사용자 알림'
+;
