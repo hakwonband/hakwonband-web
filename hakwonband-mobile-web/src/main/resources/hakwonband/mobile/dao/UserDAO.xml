@@ -191,14 +191,13 @@
 	</update>
 
 	<!-- 알림 off -->
-	<insert id="insertUserAlarmOff">
+	<insert id="updateUserAlarmOff">
 	<![CDATA[
 		/* UserDAO.updateUserAlarmOff */
-		insert into tb_user_alarm (
-			user_no, off_date
-		) values (
-			#{user_no}, #{off_date}
-		) on duplicate key update off_date = #{off_date}
+		update tb_user_alarm set
+			off_date = #{off_date}
+		where
+			user_no = #{user_no}
 	]]>
 	</insert>
 

@@ -233,10 +233,10 @@ public class UserService {
 	}
 
 	/**
-	 * 회원 탈퇴
+	 * 사용자 알림 업데이트
 	 * @param param
 	 */
-	public String insertAlarmOff(long user_no, int alarm_off_time) {
+	public String updateUserAlarmOff(long user_no, int alarm_off_time) {
 
 		String off_date = null;
 		if( alarm_off_time == 0 ) {
@@ -246,7 +246,7 @@ public class UserService {
 			off_date = dateTime.toString("yyyy-MM-dd HH:mm");
 		}
 
-		userDAO.insertUserAlarmOff(user_no, off_date);
+		userDAO.updateUserAlarmOff(user_no, off_date);
 
 		return off_date;
 	}

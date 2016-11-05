@@ -152,7 +152,7 @@ public class UserController extends BaseAction {
 			return ;
 		}
 
-		String offTime = userService.insertAlarmOff(authUserInfo.getLong("user_no"), alarm_off_time);
+		String offTime = userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), alarm_off_time);
 
 		DataMap rtnMap = new DataMap();
 		rtnMap.put("offTime",	offTime);
