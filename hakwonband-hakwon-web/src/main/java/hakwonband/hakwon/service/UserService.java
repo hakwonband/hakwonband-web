@@ -2,6 +2,7 @@ package hakwonband.hakwon.service;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -345,5 +346,24 @@ public class UserService {
 		memberOutDAO.insertOutHist(param);
 
 		return devicePushData;
+	}
+
+	/**
+	 * 사용자 알림 업데이트
+	 * @param param
+	 */
+	public String updateUserAlarmOff(long user_no, int alarm_off_time) {
+
+		String off_date = null;
+		if( alarm_off_time == 0 ) {
+			off_date = null;
+		} else {
+			DateTime dateTime = new DateTime().plusHours(alarm_off_time);
+			off_date = dateTime.toString("yyyy-MM-dd HH:mm");
+		}
+
+		userDAO.updateUserAlarmOff(user_no, off_date);
+
+		return off_date;
 	}
 }

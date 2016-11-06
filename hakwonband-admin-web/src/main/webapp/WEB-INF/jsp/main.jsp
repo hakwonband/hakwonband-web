@@ -140,6 +140,7 @@
 						<li><a href="#/setting/bannerDefaultPrice" data-type="leftMenu">베너 기본 가격</a></li>
 						<li><a href="#/advertise/monthPrice" data-type="leftMenu">베너 월별 가격 설정</a></li>
 						<li><a href="#/setting/advertiseBankInfo" data-type="leftMenu">베너 입금 계좌 정보</a></li>
+						<li><a href="#/setting/alarmOff" data-type="leftMenu">알림 off 설정</a></li>
 					</ul>
 				</li>
 				<li>

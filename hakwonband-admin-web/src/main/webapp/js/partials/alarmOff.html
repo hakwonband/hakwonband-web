@@ -1,0 +1,19 @@
+<div class="ibox m">
+	<div class="ibox-content form-horizontal" data-view="defaultPriceView">
+		<div class="form-group">
+			<label class="col-sm-4 control-label" for="default_bank_info_01">알림 일시 중지 {{view_alarm_off_time}}</label>
+			<div class="col-sm-1">
+				<select ng-model="alarm_off_time" ng-change="alarmOffChange()">
+					<option value="">알림 일시 중지 시간을 선택해 주세요.</option>
+					<option value="0">알림 시작</option>
+					<option value="1">1시간</option>
+					<option value="2">2시간</option>
+					<option value="4">4시간</option>
+					<option value="8">8시간</option>
+					<option value="24">24시간</option>
+					<option value="72">72시간</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>

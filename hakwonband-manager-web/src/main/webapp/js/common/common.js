@@ -226,6 +226,7 @@ var HakwonCommon = function() {
 						colData.authUserInfo.profile_path = '/inspinia/img/p3.jpg';
 					}
 					userAuth.profilePath = colData.authUserInfo.profile_path;
+					userAuth.off_date = colData.authUserInfo.off_date;
 
 					if( window.PLATFORM ) {
 						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {

@@ -74,6 +74,7 @@
 			, a.user_email
 			, a.approved_yn
 			, b.user_name
+			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
 		from
 			tb_user a
 			, tb_user_info b
@@ -128,6 +129,7 @@
 			, get_file_path(b.photo_file_no) as profile_path
 			, x.device_token
 			, x.device_type
+			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
 		from
 			tb_login_hist x
 			, tb_user a
@@ -185,68 +187,6 @@
 	]]>
 	</select>
 
-	<!-- 반 학생들의 디바이스 리스트 -->
- 	<select id="classStudentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
-	<![CDATA[
-		/* CommonDAO.classStudentDeviceList */
-		select
-			x.device_token
-			, x.device_type
-			, x.is_production
-		from
-			tb_login_hist x
-			, tb_hakwon_class_student a
-		where
-			a.class_no = #{class_no}
-			and a.student_user_no = x.user_no
-			and x.device_token is not null
-	]]>
-	</select>
-
-	<!-- 반 학생들의 부모 디바이스 리스트 -->
- 	<select id="classParentDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
-	<![CDATA[
-		/* CommonDAO.classParentDeviceList */
-		select
-			x.device_token
-			, x.device_type
-			, x.is_production
-		from
-			tb_login_hist x
-			, (
-			select
-				distinct b.parent_user_no
-			from
-				tb_hakwon_class_student a
-				, tb_student_parent b
-			where
-				a.class_no = #{class_no}
-				and a.student_user_no = b.student_user_no
-			) y
-		where
-			y.parent_user_no = x.user_no
-			and x.device_token is not null
-	]]>
-	</select>
-
-	<!-- 학원 멤버의 디바이스 리스트 -->
- 	<select id="hakwonMemberDeviceList" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
-	<![CDATA[
-		/* CommonDAO.hakwonMemberDeviceList */
-		select
-			x.device_token
-			, x.device_type
-			, x.is_production
-		from
-			tb_login_hist x
-			, tb_hakwon_member a
-		where
-			a.hakwon_no = #{hakwon_no}
-			and a.user_no = x.user_no
-			and x.device_token is not null
-	]]>
-	</select>
-
 	<!-- 앱 버전 조회 -->
 	<select id="getAppVersion" resultType="dataMap">
 	<![CDATA[
@@ -282,9 +222,12 @@
 			, a.user_no
 		from
 			tb_login_hist a
+			, tb_user_alarm user_alarm
 		where
 			a.user_no = #{receiveUserNo}
 			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and (user_alarm.off_date is null or user_alarm.off_date < now())
 	]]>
 	</select>
 
@@ -299,9 +242,12 @@
 			, a.user_no
 		from
 			tb_login_hist a
+			, tb_user_alarm user_alarm
 		where
 			a.user_no in (1,2,3)
 			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and (user_alarm.off_date is null or user_alarm.off_date < now())
 	]]>
 	</select>
 
@@ -316,9 +262,12 @@
 			, a.user_no
 		from
 			tb_login_hist a
+			, tb_user_alarm user_alarm
 		where
 			a.user_no in ( select user_no from tb_hakwon_member where hakwon_no = #{hakwon_no} )
 			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and (user_alarm.off_date is null or user_alarm.off_date < now())
 	]]>
 	</select>
 

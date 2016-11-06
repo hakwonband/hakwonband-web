@@ -290,7 +290,7 @@
 	<!-- 알림 off 정보 -->
 	<select id="userAlarmInfo" parameterType="long" resultType="string">
 	<![CDATA[
-		/* UserDAO.schoolInfo */
+		/* UserDAO.userAlarmInfo */
 		select
 			date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') as off_date
 		from

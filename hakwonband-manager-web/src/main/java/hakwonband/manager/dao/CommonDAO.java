@@ -76,27 +76,6 @@ public interface CommonDAO {
 	public int deleteLoginHis(DataMap param);
 
 	/**
-	 * 반 학생들의 디바이스 리스트
-	 * @param param
-	 * @return
-	 */
-	public List<UserDevice> classStudentDeviceList(DataMap param);
-
-	/**
-	 * 반 학생의 학부모 디바이스 리스트
-	 * @param param
-	 * @return
-	 */
-	public List<UserDevice> classParentDeviceList(DataMap param);
-
-	/**
-	 * 학원 멤버들의 디바이스 리스트
-	 * @param param
-	 * @return
-	 */
-	public List<UserDevice> hakwonMemberDeviceList(DataMap param);
-
-	/**
 	 * 앱 버전 조회
 	 * @param param
 	 * @return
