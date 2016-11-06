@@ -149,6 +149,36 @@ hakwonMainApp.service('settingService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 알림 off
+	 */
+	settingService.alarmOff = function(offTime, callback) {
+		$.ajax({
+			url: contextPath+"/admin/user/alarmOff.do",
+			type: "post",
+			async : false,
+			dataType: "json",
+			data : {alarm_off_time:offTime},
+			success: function(data) {
+				if( data.error ) {
+					alert('알림 일시 정지를 실패 했습니다.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData && colData.flag == CommonConstant.Flag.success ) {
+					if( callback ) {
+						callback(colData.offTime);
+					}
+				} else {
+					alert('알림 일시 정지를 실패 했습니다.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('알림 일시 정지를 실패 했습니다.');
+			}
+		});
+	};
+
 	return settingService;
 });
 
@@ -156,7 +186,7 @@ hakwonMainApp.service('settingService', function($http, CommUtil) {
  * 베너 기본 가격
  */
 hakwonMainApp.controller('settingBannerDefaultPriceController', function($scope, $location, $routeParams, settingService, CommUtil) {
-	console.log('hakwonMainApp settingBannerDefaultPriceController call', $scope, $location, $routeParams, settingService, CommUtil);
+	console.log('hakwonMainApp settingBannerDefaultPriceController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -188,7 +218,7 @@ hakwonMainApp.controller('settingBannerDefaultPriceController', function($scope,
  * 광고 입금 계좌 정보
  */
 hakwonMainApp.controller('settingAdvertiseBankInfoController', function($scope, $location, $routeParams, settingService, CommUtil) {
-	console.log('hakwonMainApp settingAdvertiseBankInfoController call', $scope, $location, $routeParams, settingService, CommUtil);
+	console.log('hakwonMainApp settingAdvertiseBankInfoController call');
 
 	try {
 		/*	페이지 초기화 호출	*/
@@ -214,4 +244,40 @@ hakwonMainApp.controller('settingAdvertiseBankInfoController', function($scope, 
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
 	}
+});
+
+/**
+ * 알림 off 설정
+ */
+hakwonMainApp.controller('settingAlarmOffController', function($scope, $location, $routeParams, settingService, CommUtil) {
+	console.log('hakwonMainApp settingAlarmOffController call');
+
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
+
+	/*	공통 유틸	*/
+	$scope.CommUtil = CommUtil;
+
+	/*	알림 off 타임	*/
+	$scope.alarm_off_time = '';
+	if( userAuth.off_date ) {
+		$scope.view_alarm_off_time = userAuth.off_date;
+	}
+	/*	알림 off 선택	*/
+	$scope.alarmOffChange = function() {
+		if( $scope.alarm_off_time == '' ) {
+			/*	동작 안함	*/
+		} else {
+			settingService.alarmOff($scope.alarm_off_time, function(offTime) {
+				userAuth.off_date = offTime;
+				$scope.view_alarm_off_time = offTime;
+				$scope.alarm_off_time = '';
+			});
+		}
+	}
+
+	$("#wrapper").show();
+	$scope.$$postDigest(function(){
+		console.log('$$postDigest');
+	});
 });

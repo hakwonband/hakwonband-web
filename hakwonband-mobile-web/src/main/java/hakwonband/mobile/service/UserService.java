@@ -2,6 +2,7 @@ package hakwonband.mobile.service;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +99,8 @@ public class UserService {
 			throw new HKBandException("UserDAO.insertUser error");
 		}
 
-		long lastId = param.getLong("idx");
-		param.put("user_no", lastId);
+		long user_no = param.getLong("idx");
+		param.put("user_no", user_no);
 
 		/* 사용자 부가정보 등록 */
 		int resultUserInfo = userDAO.insertUserInfo(param);
@@ -114,6 +115,9 @@ public class UserService {
 				throw new HKBandException("UserDAO.insertUserSchool error");
 			}
 		}
+
+		/*	사용자 알림 등록	*/
+		userDAO.insertUserAlarm(user_no);
 
 		/* 회원 가입시 학원 등록을 같이 한 경우*/
 		if (param.get("hakwon_codes") != null) {
@@ -226,6 +230,25 @@ public class UserService {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * 사용자 알림 업데이트
+	 * @param param
+	 */
+	public String updateUserAlarmOff(long user_no, int alarm_off_time) {
+
+		String off_date = null;
+		if( alarm_off_time == 0 ) {
+			off_date = null;
+		} else {
+			DateTime dateTime = new DateTime().plusHours(alarm_off_time);
+			off_date = dateTime.toString("yyyy-MM-dd HH:mm");
+		}
+
+		userDAO.updateUserAlarmOff(user_no, off_date);
+
+		return off_date;
 	}
 
 	/**

@@ -155,14 +155,17 @@ public class SignUpService {
 			throw new HKBandException("SignUpDAO.insertUser error");
 		}
 
-		long lastId = param.getLong("idx");
-		param.put("user_no", lastId);
+		long user_no = param.getLong("idx");
+		param.put("user_no", user_no);
 
 		/* tb_user_info 부가 정보 등록 */
 		resultUserInfo = signupDAO.insertUserInfo(param);
 		if (resultUserInfo != 1) {
 			throw new HKBandException("SignUpDAO.insertUserInfo error");
 		}
+
+		/*	사용자 알림 데이타 등록	*/
+		signupDAO.insertUserAlarm(user_no);
 
 		/* 선생님 가입시 tb_hakwon_teacher 학원에 선생님 등록 신청 */
 		if (param.get("user_type").equals("004")) {

@@ -1,5 +1,7 @@
 package hakwonband.manager.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import hakwonband.util.DataMap;
 
 public interface SignUpDAO {
@@ -66,4 +68,11 @@ public interface SignUpDAO {
 	 * @return
 	 */
 	public int insertManager(DataMap param);
+
+	/**
+	 * 사용자 알림 등록
+	 * @param user_no
+	 */
+	public void insertUserAlarm(@Param("user_no")long user_no);
+
 }

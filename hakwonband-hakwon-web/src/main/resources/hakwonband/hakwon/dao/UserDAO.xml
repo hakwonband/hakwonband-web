@@ -323,4 +323,15 @@
 	]]>
 	</update>
 
+	<!-- 알림 off -->
+	<update id="updateUserAlarmOff">
+	<![CDATA[
+		/* UserDAO.updateUserAlarmOff */
+		update tb_user_alarm set
+			off_date = #{off_date}
+		where
+			user_no = #{user_no}
+	]]>
+	</update>
+
 </mapper>

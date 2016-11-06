@@ -15,6 +15,22 @@
 		{{memberObj.tel1_no}}<br>
 		{{memberObj.user_email}}
 	</p>
+
+	<p>
+		알림 일시 중지 {{view_alarm_off_time}}
+	</p>
+	<select ng-model="alarm_off_time" ng-change="alarmOffChange()">
+		<option value="">알림 일시 중지 시간을 선택해 주세요.</option>
+		<option value="0">알림 시작</option>
+		<option value="1">1시간</option>
+		<option value="2">2시간</option>
+		<option value="4">4시간</option>
+		<option value="8">8시간</option>
+		<option value="24">24시간</option>
+		<option value="72">72시간</option>
+	</select>
+	<br />
+
 	<button type="button" class="btn btn-primary btn-block btn-lg m-t-xl" ng-click="goMemberEdit()">개인 정보 변경</button>
 	<button type="button" class="btn btn-info btn-block btn-lg m-t-xl" ng-click="logout()">로그아웃</button>
 	<br />
