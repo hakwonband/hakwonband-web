@@ -355,6 +355,7 @@ var HakwonCommon = function() {
 					userAuth.userType = colData.authUserInfo.user_type;
 					userAuth.userId = colData.authUserInfo.user_id;
 					userAuth.userNo = colData.authUserInfo.user_no;
+					userAuth.off_date = colData.authUserInfo.off_date;
 					if( !colData.authUserInfo.profile_path ) {
 						/**
 						 * 기본 이미지 필요

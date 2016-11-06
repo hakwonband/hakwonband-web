@@ -141,7 +141,7 @@ public class UserController extends BaseAction {
 	 * @param response
 	 */
 	@RequestMapping("/alarmOff")
-	public void alarmOFf(HttpServletRequest request, HttpServletResponse response) {
+	public void alarmOff(HttpServletRequest request, HttpServletResponse response) {
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 

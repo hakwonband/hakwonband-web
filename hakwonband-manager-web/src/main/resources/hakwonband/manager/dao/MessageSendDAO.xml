@@ -135,9 +135,12 @@
 			, a.is_production
 		from
 			tb_login_hist a
+			, tb_user_alarm user_alarm
 		where
 			a.user_no in (${searchHakwonNoArray})
 			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and (user_alarm.off_date is null or user_alarm.off_date < now())
 	]]>
 	</select>
 

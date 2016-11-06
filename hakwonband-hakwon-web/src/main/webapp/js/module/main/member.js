@@ -188,6 +188,37 @@ hakwonMainApp.service('memberService', function() {
 		});
 	};
 
+
+	/**
+	 * 알림 off
+	 */
+	memberService.alarmOff = function(offTime, callback) {
+		$.ajax({
+			url: contextPath+"/hakwon/alarmOff.do",
+			type: "post",
+			async : false,
+			dataType: "json",
+			data : {alarm_off_time:offTime},
+			success: function(data) {
+				if( data.error ) {
+					alert('알림 일시 정지를 실패 했습니다.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData && colData.flag == CommonConstant.Flag.success ) {
+					if( callback ) {
+						callback(colData.offTime);
+					}
+				} else {
+					alert('알림 일시 정지를 실패 했습니다.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('알림 일시 정지를 실패 했습니다.');
+			}
+		});
+	};
+
 	return memberService;
 });
 
@@ -240,6 +271,25 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 			}
 			return false;
 		};
+
+		/*	알림 off 타임	*/
+		$scope.alarm_off_time = '';
+		if( userAuth.off_date ) {
+			$scope.view_alarm_off_time = userAuth.off_date;
+		}
+		/*	알림 off 선택	*/
+		$scope.alarmOffChange = function() {
+			if( $scope.alarm_off_time == '' ) {
+				/*	동작 안함	*/
+			} else {
+				memberService.alarmOff($scope.alarm_off_time, function(offTime) {
+					userAuth.off_date = offTime;
+					$scope.view_alarm_off_time = offTime;
+					$scope.alarm_off_time = '';
+				});
+			}
+		}
+
 
 		/*	로그아웃	*/
 		$scope.logout = function() {

@@ -90,13 +90,6 @@ public interface MessageSendDAO {
 	public List<String> masterTargetUserGroup(DataMap param);
 
 	/**
-	 * 임시 디바이스 토큰
-	 * @param param
-	 * @return
-	 */
-	public List<String> tempDeviceToken(DataMap param);
-
-	/**
 	 * 검색 대상의 디바이스 정보
 	 * @param param
 	 * @return

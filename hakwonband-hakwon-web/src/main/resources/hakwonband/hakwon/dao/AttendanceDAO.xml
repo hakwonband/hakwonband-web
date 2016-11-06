@@ -191,12 +191,15 @@
 			, a.is_production
 		from
 			tb_login_hist a
+			, tb_user_alarm user_alarm
 		where
 			(
 				a.user_no in (select a.parent_user_no from tb_student_parent a where a.student_user_no = #{studentNo})
 				or a.user_no = #{studentNo}
 			)
 			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and (user_alarm.off_date is null or user_alarm.off_date < now())
 		group by
 			a.user_no, a.device_token, a.device_type, a.is_production
 	]]>

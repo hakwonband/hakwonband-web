@@ -162,6 +162,12 @@ hakwonMainApp.config(['$routeProvider', function($routeProvider) {
 			, controller: 'settingAdvertiseBankInfoController'
 		})
 
+		/*	알림 off 설정	*/
+		.when('/setting/alarmOff', {
+			templateUrl: '/js/partials/alarmOff.html'
+			, controller: 'settingAlarmOffController'
+		})
+
 
 		/*	원장	##############################################	*/
 		/*	원장님 리스트	*/

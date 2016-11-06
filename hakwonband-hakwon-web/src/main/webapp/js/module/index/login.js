@@ -62,6 +62,7 @@ hakwonCommonApp.service('loginService', function($rootScope, $location) {
 						userAuth.userType = colData.authUserInfo.user_type;
 						userAuth.userId = colData.authUserInfo.user_id;
 						userAuth.userNo = colData.authUserInfo.user_no;
+						userAuth.off_date = colData.authUserInfo.off_date;
 
 						/*	디바이스 인증 정보	*/
 						if( param.deviceToken && param.deviceType ) {
