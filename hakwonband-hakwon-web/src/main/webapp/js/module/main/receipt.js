@@ -422,7 +422,7 @@ hakwonMainApp.service('receiptService', function(CommUtil) {
 			}
 			var flag = data.colData.flag;
 			if("success" == flag) {
-				window.location.href = PageUrl.receipt.list + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				window.location.href = PageUrl.receipt.list + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else {
 				alert("실패하였습니다.");
 			}
@@ -655,7 +655,7 @@ hakwonMainApp.controller('receiptListController', function($scope, $location, $w
 		 * 수납 등록 이동
 		 */
 		$scope.registMove = function() {
-			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
+			window.location.href = '#/receipt/insert?hakwon_no='+hakwonInfo.hakwon_no;
 		}
 
 		/*	수납 검색 키처리	*/
@@ -769,7 +769,7 @@ hakwonMainApp.controller('receiptYearListController', function($scope, $location
 		 * 수납 등록 이동
 		 */
 		$scope.registMove = function() {
-			window.location.href = '#/receipt/insert?hakwonNo='+hakwonInfo.hakwon_no;
+			window.location.href = '#/receipt/insert?hakwon_no='+hakwonInfo.hakwon_no;
 		}
 
 		/*	수납 검색 키처리	*/

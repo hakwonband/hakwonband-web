@@ -506,7 +506,7 @@ hakwonTmpl.adBanner = {
 		'<ul class="ad_list_box">'
 		, '{{each(i, loopAdvertiseInfo) advertiseReqList}}'
 		, '	<li>'
-		, '		<a href="'+PageUrl.common.edBannerView+'?hakwonNo={{= hakwonInfo.hakwon_no}}&reqNo={{= loopAdvertiseInfo.advertise_req_no}}">'
+		, '		<a href="'+PageUrl.common.edBannerView+'?hakwon_no={{= hakwonInfo.hakwon_no}}&reqNo={{= loopAdvertiseInfo.advertise_req_no}}">'
 		, '			<strong class="ad_size badge-primary" title="광고 배너 사이즈">{{= loopAdvertiseInfo.banner_size}}</strong>'
 		, '			<span class="ad_title">{{= loopAdvertiseInfo.title}}{{= (loopAdvertiseInfo.view_month_count>0&&loopAdvertiseInfo.deposit_yn=="Y")?"(광고 노출 중)":""}}</span>'
 		, '			<span class="ad_size_text">광고 사이즈 : {{= loopAdvertiseInfo.banner_size}}칸 </span>'

@@ -32,6 +32,34 @@ public interface NoticeShareDAO {
 	public int sendListTotCount(DataMap param);
 
 	/**
+	 * 학원 공유 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> hakwonSendList(DataMap param);
+
+	/**
+	 * 학원 공유 리스트 카운트
+	 * @param param
+	 * @return
+	 */
+	public int hakwonSendListTotCount(DataMap param);
+
+	/**
+	 * 학원 반 공유 리스트
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> classSendList(DataMap param);
+
+	/**
+	 * 학원 반 공유 리스트 카운트
+	 * @param param
+	 * @return
+	 */
+	public int classSendListTotCount(DataMap param);
+
+	/**
 	 * 공유 받은 리스트
 	 * @param param
 	 * @return

@@ -598,7 +598,7 @@ hakwonMainApp.controller('adBannerWriteController', function($scope, $location, 
 			if (history.length > 1) {
 				window.history.back();
 			} else {
-				$location.path('/edBanner/list?hakwonNo='+hakwonInfo.hakwon_no);
+				$location.path('/edBanner/list?hakwon_no='+hakwonInfo.hakwon_no);
 			}
 		};
 
@@ -773,7 +773,7 @@ hakwonMainApp.controller('adBannerEditController', function($window, $scope, $lo
 					var colData = data.colData;
 					if( colData ) {
 						if( colData.flag == CommonConstant.Flag.success ) {
-							//$location.path('/edBanner/list?hakwonNo='+hakwonInfo.hakwon_no);
+							//$location.path('/edBanner/list?hakwon_no='+hakwonInfo.hakwon_no);
 							window.history.back();
 						} else {
 							alert('광고 수정을 실패 했습니다.');
