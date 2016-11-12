@@ -105,5 +105,5 @@ public interface UserDAO {
 	 * @param user_no
 	 * @param off_date
 	 */
-	public void updateUserAlarmOff(@Param("user_no")long user_no, @Param("off_date")String off_date);
+	public void updateUserAlarmOff(@Param("user_no")long user_no, @Param("start_time")String start_time, @Param("end_time")String end_time);
 }

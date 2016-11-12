@@ -65,7 +65,22 @@ alter table tb_advertise_req add redirect_url varchar(1000) comment '이동 url'
 drop table if exists tb_user_alarm;
 create table tb_user_alarm (
 	user_no				integer						not null	comment '회원 번호'
-	, off_date			datetime					not null	comment 'off 만료 시간'
+	, off_date			datetime								comment 'off 만료 시간'
+	, primary key (user_no)
+)
+engine = innodb
+character set utf8
+comment = '사용자 알림'
+;
+
+==========================================================
+2016-11-13
+==========================================================
+drop table if exists tb_user_alarm;
+create table tb_user_alarm (
+	user_no				integer						not null	comment '회원 번호'
+	, start_time		time									comment 'off 시작 시간'
+	, end_time			time									comment 'off 종료 시간'
 	, primary key (user_no)
 )
 engine = innodb

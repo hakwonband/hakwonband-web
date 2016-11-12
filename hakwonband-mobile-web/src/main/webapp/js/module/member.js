@@ -265,7 +265,7 @@ hakwonApp.service('memberService', function($http) {
 	/**
 	 * 알림 off
 	 */
-	memberService.alarmOff = function(offTime, callback) {
+	memberService.alarmOff = function(start_time, end_time, callback) {
 		$.ajax({
 			url: contextPath+"/mobile/user/alarmOff.do",
 			type: "post",
@@ -665,9 +665,36 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		};
 
 		/*	알림 off 타임	*/
-		$scope.alarm_off_time = '';
-		if( userAuth.off_date ) {
-			$scope.view_alarm_off_time = userAuth.off_date;
+		$scope.alarm_off_isset = false;
+		$scope.alarm_off_save = false;
+		$scope.start_time = null;
+		$scope.end_time = null;
+		if( userAuth.start_time && userAuth.end_time ) {
+			$scope.alarm_off_isset = true;
+			$scope.start_time = new Date(userAuth.start_time);
+			$scope.end_time = new Date(userAuth.end_time);
+		}
+
+		/**
+		 * 알림 on/off
+		 */
+		$scope.alarmOff = function(type) {
+			if( type == true ) {
+				$scope.start_time = new Date();
+				$scope.end_time = new Date();
+				$scope.alarm_off_isset = true;
+				$scope.alarm_off_save = true;
+			} else {
+				$scope.alarm_off_isset = false;
+				$scope.alarm_off_save = false;
+				$scope.start_time = null;
+				$scope.end_time = null;
+			}
+		}
+
+		/*	알림 off 설정	*/
+		$scope.alarmOffSave = function() {
+
 		}
 
 		/*	알림 off 선택	*/

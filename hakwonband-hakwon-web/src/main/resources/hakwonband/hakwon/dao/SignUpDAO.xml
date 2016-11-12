@@ -154,9 +154,9 @@
 	<![CDATA[
 		/* SignUpDAO.insertUserAlarm */
 		insert into tb_user_alarm (
-			user_no, off_date
+			user_no, start_time, end_time
 		) values (
-			#{user_no}, null
+			#{user_no}, null, null
 		)
 	]]>
 	</insert>

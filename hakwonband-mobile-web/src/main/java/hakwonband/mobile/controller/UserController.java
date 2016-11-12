@@ -145,17 +145,12 @@ public class UserController extends BaseAction {
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		int alarm_off_time = NumberUtils.toInt(request.getParameter("alarm_off_time"));
-		if( alarm_off_time == 0 || alarm_off_time == 1 || alarm_off_time == 2 || alarm_off_time == 4 || alarm_off_time == 8 || alarm_off_time == 24 || alarm_off_time == 72 ) {
-		} else {
-			sendFlag(CommonConstant.Flag.fail, request, response);
-			return ;
-		}
+		String start_date	= request.getParameter("start_date");
+		String end_date	= request.getParameter("end_date");
 
-		String offTime = userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), alarm_off_time);
+		userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), start_date, end_date);
 
 		DataMap rtnMap = new DataMap();
-		rtnMap.put("offTime",	offTime);
 		rtnMap.put("flag",	CommonConstant.Flag.success);
 
 		sendColData(rtnMap, request, response);
