@@ -335,7 +335,7 @@ public class TeacherController extends BaseAction {
 		param.put("reservationTime",	reservationTime);
 
 		param.put("is_file_view",		is_file_view);
-		param.put("is_file_view",		target_user);
+		param.put("target_user",		target_user);
 		param.put("mobile_push_yn",		mobile_push_yn);
 
 		/* 공지사항 등록 */
