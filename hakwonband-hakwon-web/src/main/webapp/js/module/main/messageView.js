@@ -7,13 +7,14 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 	var messageViewService = {};
 
 	/*	받은 메세지 리스트	*/
-	messageViewService.receiveMessageList = function(pageNo, hakwon_no) {
+	messageViewService.receiveMessageList = function(pageNo, hakwon_no, searchType) {
 		var searchText = $('#mainNgView input[name=searchText]').val();
 		if( !pageNo ) pageNo = 1;
 
 		var param = {
 			pageNo : pageNo
 			, searchText : searchText
+			, searchType : searchType
 		};
 		if( hakwon_no ) {
 			param.hakwon_no = hakwon_no;
@@ -692,20 +693,31 @@ hakwonMainApp.controller('receiveMessageListController', function($scope, $locat
 		/*	공통 유틸	*/
 		$scope.CommUtil = CommUtil;
 
+		var pageNo = $routeParams.pageNo;
+		if( !pageNo ) pageNo = 1;
+
+		var hakwon_no = $routeParams.hakwon_no;
+
+		var searchText = $routeParams.searchText;
+		if( !searchText ) searchText = '';
+
+		var searchType = $routeParams.searchType;
+		if( !searchType ) searchType = 'all';
+
+
 		$("#wrapper").show();
+		$('#mainNgView').on(clickEvent, 'button[data-act=typeSelect]', function() {
+			var dataType = $(this).attr('data-type');
+			window.location.href = PageUrl.message.receiveMessageList+'?hakwon_no='+hakwon_no+'&searchType='+dataType;
+		});
+
+
 
 		$scope.$$postDigest(function() {
-
-			var pageNo = $routeParams.pageNo;
-			if( !pageNo ) pageNo = 1;
-
-			var hakwon_no = $routeParams.hakwon_no;
-
-			var searchText = $routeParams.searchText;
-			if( !searchText ) searchText = '';
 			$('#mainNgView input[name=searchText]').val(searchText);
+			$('#mainNgView div[data-view=receiveMessageType] > button[data-type='+searchType+']').addClass('btn-primary');
 
-			messageViewService.receiveMessageList(pageNo, hakwon_no);
+			messageViewService.receiveMessageList(pageNo, hakwon_no, searchType);
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

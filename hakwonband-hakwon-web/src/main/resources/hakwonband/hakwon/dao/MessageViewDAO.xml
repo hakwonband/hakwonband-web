@@ -238,6 +238,9 @@
 		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_no )">
 			and (a.hakwon_no = #{hakwon_no} or a.hakwon_no = -1)
 		</if>
+		<if test="search_type == 'not_read'">
+			and a.receive_date is null
+		</if>
 	<![CDATA[
 			and a.message_no = b.message_no
 		order by
@@ -260,6 +263,9 @@
 	]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( hakwon_no )">
 			and (a.hakwon_no = #{hakwon_no} or a.hakwon_no = -1)
+		</if>
+		<if test="search_type == 'not_read'">
+			and a.receive_date is null
 		</if>
 	</select>
 
