@@ -121,6 +121,8 @@
 <script src="/js/module/signUp.js"></script>
 <script src="/js/module/userMain.js"></script>
 <script src="/js/module/member.js"></script>
+<script src="/js/module/myInfo.js"></script>
+<script src="/js/module/find.js"></script>
 <script src="/js/module/message.js"></script>
 <script src="/js/module/attendanceList.js"></script>
 <script src="/js/module/hakwon/hakwon.js"></script>

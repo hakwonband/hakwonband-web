@@ -27,13 +27,14 @@
 			</li>
 			<li ng-if="userInfo.userType == '006' && !userInfo.schoolInfo">학교 정보 미입력</li>
 			<li>
-				<button type="button" ng-if="alarm_off_isset == false" ng-click="alarmOff(true)" class="btn btn_style_submit btn_block btn_bold mb_10">알림 일시 정지 설정</button>
-				<button type="button" ng-if="alarm_off_isset == true" ng-click="alarmOff(false)" class="btn btn_style_cancel btn_block btn_bold">알림 활성화</button>
+				<div class="ez-chkbox"><input type="checkbox" value="Y" class="ez-hide" ng-checked="alarm_off_isset"></div>
+				<label for="login_keep">알림 차단시간 설정</label>
+				<input type="time" ng-model="start_time" ng-readonly="!alarm_modify"> ~ <input type="time" ng-model="end_time" ng-readonly="!alarm_modify">
 			</li>
 			<li>
-				<input type="time" ng-if="alarm_off_isset == true" min="2016-11-01" max="2026-12-31" ng-model="start_date">
-				<input type="time" ng-if="alarm_off_isset == true" min="2016-11-01" max="2026-12-31" ng-model="end_date">
-				<button type="button" ng-if="alarm_off_save == true" ng-click="alarmOffSave()" class="btn btn_style_submit btn_block btn_bold mb_10">알림 off 저장</button>
+				<button type="button" ng-if="alarm_modify == false" ng-click="alarm_modify_fun(true)" class="btn btn_style_submit btn_block btn_bold mb_10">알림 수정</button>
+				<button type="button" ng-if="alarm_modify == true" ng-click="" class="btn btn_style_submit btn_block btn_bold mb_10">저장</button>
+				<button type="button" ng-if="alarm_modify == true" ng-click="alarm_modify_fun(false)" class="btn btn_style_cancel btn_block btn_bold">수정 취소</button>
 			</li>
 		</ul>
 	</div>

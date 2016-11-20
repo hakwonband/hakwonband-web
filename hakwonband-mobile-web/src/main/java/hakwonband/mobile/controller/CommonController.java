@@ -19,10 +19,13 @@ import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.model.ErrorObj;
 import hakwonband.mobile.common.constant.HakwonConstant;
+import hakwonband.mobile.model.DevicePushData;
 import hakwonband.mobile.service.AsyncService;
 import hakwonband.mobile.service.CommonService;
 import hakwonband.mobile.service.HakwonService;
 import hakwonband.mobile.service.UserService;
+import hakwonband.push.PushMessage;
+import hakwonband.push.UserDevice;
 import hakwonband.util.CookieUtils;
 import hakwonband.util.DataMap;
 import hakwonband.util.HKBandUtil;
@@ -533,7 +536,12 @@ public class CommonController extends BaseAction {
 	public void testFun(HttpServletRequest request, HttpServletResponse response) {
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
-/*
+
+	/**
+	 * 모바일 디버그 모드에서 사용한다.
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping("/testMsg")
 	public void testMsg(HttpServletRequest request, HttpServletResponse response) {
 
@@ -556,7 +564,6 @@ public class CommonController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
-*/
 
 	/**
 	 * 앱 푸시키 저장
