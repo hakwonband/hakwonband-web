@@ -239,7 +239,7 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 	};
 
 	/*	받은 메세지 상세	*/
-	messageViewService.receiveMessageDetail = function(receiveNo, messageNo) {
+	messageViewService.receiveMessageDetail = function(receiveNo, messageNo, callback) {
 		var param = {receiveNo : receiveNo, messageNo:messageNo};
 		$.ajax({
 			url: contextPath+"/hakwon/message/receiveMessageDetail.do",
@@ -253,13 +253,7 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 						alert('메세지 상세 조회를 실패 했습니다.');
 						return false;
 					}
-					var colData = data.colData;
-
-					colData.messageDetail.send_user_info = comm.userInfoParse(colData.messageDetail.send_user_info);
-					$('div[data-view=data-view]').html($.tmpl(hakwonTmpl.messageView.receiveMessageView, colData));
-
-					/*	리플 리스트 조회	*/
-					messageViewService.replyList(receiveNo);
+					callback(data);
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}
@@ -763,7 +757,17 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 
 		$scope.$$postDigest(function() {
 			/*	개별메세지 상세	*/
-			messageViewService.receiveMessageDetail(receiveNo, messageNo);
+			messageViewService.receiveMessageDetail(receiveNo, messageNo, function(data) {
+				var colData = data.colData;
+
+				receiveNo = colData.messageDetail.receive_no;
+
+				colData.messageDetail.send_user_info = comm.userInfoParse(colData.messageDetail.send_user_info);
+				$('div[data-view=data-view]').html($.tmpl(hakwonTmpl.messageView.receiveMessageView, colData));
+
+				/*	리플 리스트 조회	*/
+				messageViewService.replyList(receiveNo);
+			});
 		});
 	} catch(ex) {
 		commProto.errorDump({errorObj:ex, customData:{'location':$location}});

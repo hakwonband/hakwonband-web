@@ -188,6 +188,7 @@
 			, date_format(e.receive_date, '%Y-%m-%d %p %h:%i') as receive_date
 			, get_user_info(a.send_user_no) as send_user_info
 			, get_user_info(e.receive_user_no) as receive_user_info
+			, e.receive_no
 		from
 			tb_message a
 			, tb_message_receiver e

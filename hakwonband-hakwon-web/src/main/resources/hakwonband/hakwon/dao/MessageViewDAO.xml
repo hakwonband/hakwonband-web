@@ -297,6 +297,7 @@
 			, get_user_info(c.send_user_no) as send_user_info
 			, get_user_info(d.receive_user_no) as receive_user_info
 			, c.group_yn
+			, d.receive_no
 		from
 			tb_message c
 			, tb_message_receiver d
