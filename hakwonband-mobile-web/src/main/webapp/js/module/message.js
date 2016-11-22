@@ -468,7 +468,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		 * 댓글 등록
 		 */
 		$scope.registReply = function() {
-			if (_.isEmpty($scope.replyInfo.content_parent_no)) {
+			if ( $scope.replyInfo.content_parent_no <= 0 ) {
 				alert('메세지 정보가 올바르지 않습니다.');
 				return ;
 			}
