@@ -240,7 +240,7 @@ hakwonMainApp.service('messageViewService', function($http, CommUtil) {
 
 	/*	받은 메세지 상세	*/
 	messageViewService.receiveMessageDetail = function(receiveNo, messageNo, callback) {
-		var param = {messageNo:messageNo};
+		var param = {receiveNo : receiveNo, messageNo:messageNo};
 		$.ajax({
 			url: contextPath+"/hakwon/message/receiveMessageDetail.do",
 			type: "post",
@@ -757,7 +757,7 @@ hakwonMainApp.controller('receiveMessageDetailController', function($scope, $loc
 
 		$scope.$$postDigest(function() {
 			/*	개별메세지 상세	*/
-			messageViewService.receiveMessageDetail(messageNo, function(data) {
+			messageViewService.receiveMessageDetail(receiveNo, messageNo, function(data) {
 				var colData = data.colData;
 
 				receiveNo = colData.messageDetail.receive_no;
