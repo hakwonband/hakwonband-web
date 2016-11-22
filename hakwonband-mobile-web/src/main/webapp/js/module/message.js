@@ -102,6 +102,7 @@ hakwonApp.service('messageService', function($window, CommUtil) {
 					$scope.messageDetail.receive_user_info = comm.userInfoParse(colData.messageDetail.receive_user_info);
 					$scope.replyList			= colData.replyList;
 					$scope.fileList				= colData.fileList;
+					$scope.receive_no			= $scope.messageDetail.receive_no;
 
 					CommUtil.initFileTypeArray($scope);
 				} else {
