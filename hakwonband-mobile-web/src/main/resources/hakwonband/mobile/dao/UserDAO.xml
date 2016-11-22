@@ -190,18 +190,6 @@
 	]]>
 	</update>
 
-	<!-- 알림 off -->
-	<insert id="updateUserAlarmOff">
-	<![CDATA[
-		/* UserDAO.updateUserAlarmOff */
-		update tb_user_alarm set
-			start_time = #{start_time}
-			, end_time = #{end_time}
-		where
-			user_no = #{user_no}
-	]]>
-	</insert>
-
 
 	<!-- 사용자 수정시 학생일 경우, 학교정보 업데이트 -->
 	<update id="updateUserSchool" parameterType="dataMap">
@@ -301,4 +289,16 @@
 			user_alarm.user_no = #{user_no}
 	]]>
 	</select>
+
+	<!-- 사용자 알림 업데이트 -->
+	<update id="userAlarmUpdate">
+	<![CDATA[
+		/* UserDAO.userAlarmUpdate */
+		update tb_user_alarm set
+			start_time = #{start_time}
+			, end_time = #{end_time}
+		where
+		user_no = #{user_no}
+	]]>
+	</update>
 </mapper>

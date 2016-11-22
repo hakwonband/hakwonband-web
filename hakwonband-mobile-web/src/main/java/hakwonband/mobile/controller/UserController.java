@@ -19,6 +19,7 @@ import hakwonband.mobile.service.UserService;
 import hakwonband.util.DataMap;
 import hakwonband.util.SecuUtil;
 import hakwonband.util.StringUtil;
+import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
 /**
  * 회원 컨트롤러
@@ -136,23 +137,28 @@ public class UserController extends BaseAction {
 	}
 
 	/**
-	 * 알림 off
+	 * 알림 저장
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/alarmOff")
-	public void alarmOff(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/alarmSave")
+	public void alarmSave(HttpServletRequest request, HttpServletResponse response) {
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		String start_date	= request.getParameter("start_date");
-		String end_date	= request.getParameter("end_date");
+		String alarm_type	= request.getParameter("alarm_type");
+		String start_time	= request.getParameter("start_time");
+		String end_time		= request.getParameter("end_time");
 
-		userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), start_date, end_date);
+		if( "Y".equals(alarm_type) && (StringUtils.isBlank(start_time) || StringUtils.isBlank(end_time)) ) {
+			sendFlag(CommonConstant.Flag.fail, request, response);
+		} else {
+			userService.updateAlarm(authUserInfo.getLong("user_no"), alarm_type, start_time, end_time);
 
-		DataMap rtnMap = new DataMap();
-		rtnMap.put("flag",	CommonConstant.Flag.success);
+			DataMap rtnMap = new DataMap();
+			rtnMap.put("flag",	CommonConstant.Flag.success);
 
-		sendColData(rtnMap, request, response);
+			sendColData(rtnMap, request, response);
+		}
 	}
 }

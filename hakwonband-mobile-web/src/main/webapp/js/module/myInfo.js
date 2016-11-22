@@ -63,6 +63,36 @@ hakwonApp.service('myInfoService', function($http) {
 		});
 	};
 
+	/**
+	 * 알림 저장
+	 */
+	myInfoService.alarmSave = function(param, callback) {
+		$.ajax({
+			url: contextPath+"/mobile/user/alarmSave.do",
+			type: "post",
+			async : false,
+			dataType: "json",
+			data : param,
+			success: function(data) {
+				if( data.error ) {
+					alert('알림 일시 정지를 실패 했습니다.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData && colData.flag == CommonConstant.Flag.success ) {
+					if( callback ) {
+						callback(colData);
+					}
+				} else {
+					alert('알림 일시 정지를 실패 했습니다.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('알림 일시 정지를 실패 했습니다.');
+			}
+		});
+	}
+
 	myInfoService.getMobileAuthKey = function() {
 		var browserVal = getBrowser();
 		if( browserVal == 'iosApp' ) {
@@ -116,6 +146,11 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 	/*	헤더 정보 셋팅	*/
 	hakwonHeader.setHeader({viewType:'user', headerTitle:'내정보'});
 
+	$scope.start_h = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09' ,'10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+	$scope.end_h = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09' ,'10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+	$scope.start_m = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45' ,'50', '55'];
+	$scope.end_m = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45' ,'50', '55'];
+
 	$scope.reloadRoute = function() {
 		$window.location.reload();
 	};
@@ -134,30 +169,21 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 	$scope.alarm_modify = false;
 	$scope.alarm_off_isset = false;
 	$scope.alarm_off_save = false;
-	$scope.start_time = null;
-	$scope.end_time = null;
+	$scope.start_time_h = null;
+	$scope.start_time_m = null;
+	$scope.end_time_h = null;
+	$scope.end_time_m = null;
 	if( userAuth.start_time && userAuth.end_time ) {
 		$scope.alarm_off_isset = true;
-		$scope.start_time = new Date(userAuth.start_time);
-		$scope.end_time = new Date(userAuth.end_time);
+		$scope.start_time_h = null;
+		$scope.start_time_m = null;
+		$scope.end_time_h = null;
+		$scope.end_time_m = null;
 	}
-
-	/**
-	 * 알림 on/off
-	 */
-	$scope.alarmOff = function(type) {
-		if( type == true ) {
-			$scope.start_time = new Date();
-			$scope.end_time = new Date();
-			$scope.alarm_off_isset = true;
-			$scope.alarm_off_save = true;
-		} else {
-			$scope.alarm_off_isset = false;
-			$scope.alarm_off_save = false;
-			$scope.start_time = null;
-			$scope.end_time = null;
-		}
-	}
+	$scope.start_time_h = '00';
+	$scope.start_time_m = '05';
+	$scope.end_time_h = '00';
+	$scope.end_time_m = '10';
 
 	$scope.alarm_modify_fun = function(flag) {
 		if( flag == true ) {
@@ -168,25 +194,24 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		}
 	}
 
-	/*	알림 off 설정	*/
-	$scope.alarmOffSave = function() {
-
-	}
-
-	/*	알림 off 선택	*/
-	$scope.alarmOffChange = function() {
-		if( $scope.alarm_off_time == '' ) {
-			/*	동작 안함	*/
+	/**
+	 * 알림 저장
+	 */
+	$scope.alarm_save_fun = function() {
+		var param = {
+			alarm_type : '',
+			start_time : '21:00',
+			end_time : '22:00'
+		};
+		if( $scope.alarm_type ) {
+			param.alarm_type = 'Y';
 		} else {
-			myInfoService.alarmOff($scope.alarm_off_time, function(offTime) {
-				userAuth.off_date = offTime;
-				$scope.view_alarm_off_time = offTime;
-				$scope.alarm_off_time = '';
-			});
+			param.alarm_type = 'N';
 		}
+		myInfoService.alarmSave(param, function(colData) {
+
+		});
 	}
-
-
 
 	/*	로그 아웃	*/
 	$scope.logout = function() {

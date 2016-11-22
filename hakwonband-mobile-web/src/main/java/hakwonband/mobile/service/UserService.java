@@ -233,14 +233,6 @@ public class UserService {
 	}
 
 	/**
-	 * 사용자 알림 업데이트
-	 * @param param
-	 */
-	public void updateUserAlarmOff(long user_no, String start_date, String end_date) {
-		userDAO.updateUserAlarmOff(user_no, start_date, end_date);
-	}
-
-	/**
 	 * 회원 탈퇴
 	 * @param param
 	 */
@@ -351,5 +343,19 @@ public class UserService {
 		 * 탈퇴 이력 등록
 		 */
 		memberOutDAO.insertOutHist(param);
+	}
+
+	/**
+	 * 알림 업데이트
+	 * @param user_no
+	 * @param start_time
+	 * @param end_time
+	 */
+	public void updateAlarm(long user_no, String alarm_type, String start_time, String end_time) {
+		if( "N".equals(alarm_type) ) {
+			start_time = null;
+			end_time = null;
+		}
+		userDAO.userAlarmUpdate(user_no, start_time, end_time);
 	}
 }
