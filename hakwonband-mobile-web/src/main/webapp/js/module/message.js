@@ -445,7 +445,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 			}
 			var params = {};
 			params.content_type = '002';
-			params.content_parent_no = $routeParams.receive_no;
+			params.content_parent_no = $scope.receive_no;
 			params.reply_no = replyNo;
 			CommUtil.ajax({url:contextPath+'/mobile/reply/newReplyList.do', param:params, successFun:function(data) {
 				try {
