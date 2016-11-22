@@ -430,7 +430,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		/*	메세지 상세조회 호출 	*/
 		$scope.getMessage = function() {
 			var params = {receive_no: $routeParams.receive_no, message_no: $routeParams.message_no, type: $routeParams.type};
-			messageService.getMessageDetail(params, $scope);
+			messageService.getMessageDetail(params, $scope);	//$scope.receive_no 셋팅
 		};
 
 		/**
@@ -438,7 +438,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		 * @param replyNo
 		 */
 		$scope.getNewReplyList = function(replyNo) {
-			if (isNull($routeParams.receive_no)) {
+			if (isNull($scope.receive_no)) {
 				alert('메세지 정보가 올바르지 않습니다.');
 				return ;
 			}
