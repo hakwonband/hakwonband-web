@@ -102,6 +102,8 @@ hakwonApp.service('messageService', function($window, CommUtil) {
 					$scope.messageDetail.receive_user_info = comm.userInfoParse(colData.messageDetail.receive_user_info);
 					$scope.replyList			= colData.replyList;
 					$scope.fileList				= colData.fileList;
+					$scope.receive_no			= $scope.messageDetail.receive_no;
+					$scope.replyInfo.content_parent_no	= $scope.messageDetail.receive_no;
 
 					CommUtil.initFileTypeArray($scope);
 				} else {
@@ -429,7 +431,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		/*	메세지 상세조회 호출 	*/
 		$scope.getMessage = function() {
 			var params = {receive_no: $routeParams.receive_no, message_no: $routeParams.message_no, type: $routeParams.type};
-			messageService.getMessageDetail(params, $scope);
+			messageService.getMessageDetail(params, $scope);	//$scope.receive_no 셋팅
 		};
 
 		/**
@@ -437,13 +439,13 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		 * @param replyNo
 		 */
 		$scope.getNewReplyList = function(replyNo) {
-			if (isNull($routeParams.receive_no)) {
+			if (isNull($scope.receive_no)) {
 				alert('메세지 정보가 올바르지 않습니다.');
 				return ;
 			}
 			var params = {};
 			params.content_type = '002';
-			params.content_parent_no = $routeParams.receive_no;
+			params.content_parent_no = $scope.receive_no;
 			params.reply_no = replyNo;
 			CommUtil.ajax({url:contextPath+'/mobile/reply/newReplyList.do', param:params, successFun:function(data) {
 				try {
@@ -466,7 +468,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 		 * 댓글 등록
 		 */
 		$scope.registReply = function() {
-			if (_.isEmpty($scope.replyInfo.content_parent_no)) {
+			if ( $scope.replyInfo.content_parent_no <= 0 ) {
 				alert('메세지 정보가 올바르지 않습니다.');
 				return ;
 			}
