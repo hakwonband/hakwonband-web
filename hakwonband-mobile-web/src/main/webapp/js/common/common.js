@@ -735,8 +735,8 @@ var HakwonCommon = function() {
 					userAuth.tel1No		= colData.authUserInfo.tel1_no;
 					userAuth.userBirthday	= colData.authUserInfo.user_birthday;
 					userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
-					userAuth.start_date	= colData.authUserInfo.start_date;
-					userAuth.end_date	= colData.authUserInfo.end_date;
+					userAuth.start_time	= colData.authUserInfo.start_time;
+					userAuth.end_time	= colData.authUserInfo.end_time;
 
 					userAuth.familyList 	= colData.familyList;
 					userAuth.schoolInfo 	= colData.schoolInfo;
@@ -802,8 +802,8 @@ var HakwonCommon = function() {
 					userAuth.tel1No 	= colData.authUserInfo.tel1_no;
 					userAuth.userBirthday 	= colData.authUserInfo.user_birthday;
 					userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
-					userAuth.start_date	= colData.authUserInfo.start_date;
-					userAuth.end_date	= colData.authUserInfo.end_date;
+					userAuth.start_time	= colData.authUserInfo.start_time;
+					userAuth.end_time	= colData.authUserInfo.end_time;
 
 					userAuth.familyList 	= colData.familyList;
 					userAuth.schoolInfo 	= colData.schoolInfo;

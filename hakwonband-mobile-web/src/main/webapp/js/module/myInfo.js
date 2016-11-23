@@ -175,15 +175,23 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 	$scope.end_time_m = null;
 	if( userAuth.start_time && userAuth.end_time ) {
 		$scope.alarm_off_isset = true;
-		$scope.start_time_h = null;
-		$scope.start_time_m = null;
-		$scope.end_time_h = null;
-		$scope.end_time_m = null;
+		$scope.alarm_type = true;
+
+		var start_time_array = userAuth.start_time.split(':');
+		var end_time_array = userAuth.end_time.split(':');
+
+		$scope.start_time_h = start_time_array[0];
+		$scope.start_time_m = start_time_array[1];
+		$scope.end_time_h = end_time_array[0];
+		$scope.end_time_m = end_time_array[0];
+	} else {
+		$scope.alarm_type = false;
+
+		$scope.start_time_h = '00';
+		$scope.start_time_m = '05';
+		$scope.end_time_h = '00';
+		$scope.end_time_m = '10';
 	}
-	$scope.start_time_h = '00';
-	$scope.start_time_m = '05';
-	$scope.end_time_h = '00';
-	$scope.end_time_m = '10';
 
 	$scope.alarm_modify_fun = function(flag) {
 		if( flag == true ) {
@@ -200,16 +208,36 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 	$scope.alarm_save_fun = function() {
 		var param = {
 			alarm_type : '',
-			start_time : '21:00',
-			end_time : '22:00'
+			start_time : '',
+			end_time : ''
 		};
 		if( $scope.alarm_type ) {
 			param.alarm_type = 'Y';
+			param.start_time = $scope.start_time_h+':'+$scope.start_time_m;
+			param.end_time = $scope.end_time_h+':'+$scope.end_time_m;
 		} else {
 			param.alarm_type = 'N';
+			param.start_time = null;
+			param.end_time = null;
 		}
 		myInfoService.alarmSave(param, function(colData) {
+			if( colData.flag == 'success' ) {
+				$scope.alarm_modify = false;
 
+				if( $scope.alarm_type ) {
+					$scope.start_time_h = '';
+					$scope.start_time_m = '';
+					$scope.end_time_h = '';
+					$scope.end_time_m = '';
+				} else {
+					$scope.start_time_h = '';
+					$scope.start_time_m = '';
+					$scope.end_time_h = '';
+					$scope.end_time_m = '';
+				}
+			} else {
+				alert('알림 저장을 실패 했습니다.');
+			}
 		});
 	}
 

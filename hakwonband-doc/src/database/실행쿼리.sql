@@ -79,11 +79,13 @@ comment = '사용자 알림'
 drop table if exists tb_user_alarm;
 create table tb_user_alarm (
 	user_no				integer						not null	comment '회원 번호'
-	, start_time		time									comment 'off 시작 시간'
-	, end_time			time									comment 'off 종료 시간'
+	, start_time		char(5)									comment 'off 시작 시간'
+	, end_time			char(5)									comment 'off 종료 시간'
 	, primary key (user_no)
 )
 engine = innodb
 character set utf8
 comment = '사용자 알림'
 ;
+
+insert tb_user_alarm(user_no) select user_no from tb_user;
