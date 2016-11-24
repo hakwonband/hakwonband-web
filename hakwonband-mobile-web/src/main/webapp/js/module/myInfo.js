@@ -183,14 +183,14 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 		$scope.start_time_h = start_time_array[0];
 		$scope.start_time_m = start_time_array[1];
 		$scope.end_time_h = end_time_array[0];
-		$scope.end_time_m = end_time_array[0];
+		$scope.end_time_m = end_time_array[1];
 	} else {
 		$scope.alarm_type = false;
 
 		$scope.start_time_h = '00';
-		$scope.start_time_m = '05';
+		$scope.start_time_m = '00';
 		$scope.end_time_h = '00';
-		$scope.end_time_m = '10';
+		$scope.end_time_m = '00';
 	}
 
 	$scope.alarm_modify_fun = function(flag) {
@@ -212,9 +212,18 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 			end_time : ''
 		};
 		if( $scope.alarm_type ) {
+			if( isNull($scope.start_time_h) || isNull($scope.start_time_m) || isNull($scope.end_time_h) || isNull($scope.end_time_m) ) {
+				alert('시간을 빠짐없이 입력해 주세요.');
+				return ;
+			}
 			param.alarm_type = 'Y';
 			param.start_time = $scope.start_time_h+':'+$scope.start_time_m;
 			param.end_time = $scope.end_time_h+':'+$scope.end_time_m;
+
+			if( param.start_time == param.end_time ) {
+				alert('시작시간과 종료 시간을 다르게 설정해 주세요.');
+				return ;
+			}
 		} else {
 			param.alarm_type = 'N';
 			param.start_time = null;
@@ -225,11 +234,9 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 				$scope.alarm_modify = false;
 
 				if( $scope.alarm_type ) {
-					$scope.start_time_h = '';
-					$scope.start_time_m = '';
-					$scope.end_time_h = '';
-					$scope.end_time_m = '';
+					$scope.alarm_off_isset = true;
 				} else {
+					$scope.alarm_off_isset = false;
 					$scope.start_time_h = '';
 					$scope.start_time_m = '';
 					$scope.end_time_h = '';
