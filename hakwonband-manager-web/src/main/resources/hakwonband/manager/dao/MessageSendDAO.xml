@@ -140,7 +140,7 @@
 			a.user_no in (${searchHakwonNoArray})
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 

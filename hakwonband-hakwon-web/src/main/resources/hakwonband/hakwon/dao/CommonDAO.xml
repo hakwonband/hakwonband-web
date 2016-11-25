@@ -215,7 +215,7 @@
 			and a.student_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -244,7 +244,7 @@
 			y.parent_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -265,7 +265,7 @@
 			and a.teacher_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -286,7 +286,7 @@
 			and a.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 		union all
 		select
 			x.device_token
@@ -302,7 +302,7 @@
 			and a.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -325,7 +325,7 @@
 			and user.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -369,7 +369,7 @@
 			a.user_no = #{receiveUserNo}
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -389,7 +389,7 @@
 			a.user_no in (1,2,3)
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -409,7 +409,7 @@
 			a.user_no in ( select user_no from tb_hakwon_member where hakwon_no = #{hakwon_no} )
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 

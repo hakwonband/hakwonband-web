@@ -143,3 +143,27 @@ begin
 	return v_days;
 end ;
 $$
+
+
+-- 알림 off 시간 체크
+-- dbeaver로 넣을때는 CHARACTER SET UTF8 빼고 넣으면 된다.
+DELIMITER $$
+drop function if exists check_alarm_off;
+create function check_alarm_off(v_start_time varchar(5), v_end_time varchar(5)) returns integer
+begin
+	declare v_val integer default 1;
+	select
+		case
+			when v_start_time is null or v_end_time is null or v_start_time = '' or v_end_time = '' then
+				0
+			when v_start_time > v_end_time and CURRENT_TIME() > v_end_time then
+				now() BETWEEN concat(curdate(), ' ', v_start_time) and concat(DATE_ADD(CURDATE(), INTERVAL+1 DAY), ' ', v_end_time)
+			when v_start_time > v_end_time and CURRENT_TIME() < v_end_time then
+				now() BETWEEN concat(DATE_ADD(CURDATE(), INTERVAL -1 DAY), ' ', v_start_time) and concat(CURDATE(), ' ', v_end_time)
+			else
+				now() BETWEEN concat(CURDATE(), ' ', v_start_time) and concat(CURDATE(), ' ', v_end_time)
+		end into v_val
+		;
+	return v_val;
+end ;
+$$
