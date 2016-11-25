@@ -3,9 +3,9 @@
  */
 package hakwonband.admin.util;
 
-import hakwonband.util.StringUtil;
-
 import java.util.regex.Pattern;
+
+import hakwonband.util.StringUtil;
 
 /**
  * @author bumworld

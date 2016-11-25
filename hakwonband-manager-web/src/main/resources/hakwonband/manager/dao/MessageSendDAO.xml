@@ -144,6 +144,26 @@
 	]]>
 	</select>
 
+	<select id="hakwonMasterUserDeviceToken" parameterType="dataMap" resultType="hakwonband.push.UserDevice">
+	<![CDATA[
+		/*	MessageSendDAO.hakwonMasterUserDeviceToken	*/
+		select
+			a.device_token
+			, a.device_type
+			, a.is_production
+		from
+			tb_hakwon hakwon
+			, tb_login_hist a
+			, tb_user_alarm user_alarm
+		where
+			hakwon.manager_no = #{manager_no}
+			and hakwon.master_user_no = a.user_no
+			and a.device_token is not null
+			and a.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
+	]]>
+	</select>
+
 	<!-- 메세지 발송 사용자 검색 -->
 	<select id="targetUserList" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[

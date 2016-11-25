@@ -1,12 +1,5 @@
 package hakwonband.admin.common.interceptor;
 
-import hakwonband.admin.common.constant.HakwonConstant;
-import hakwonband.admin.service.CommonService;
-import hakwonband.common.constant.CommonConstant;
-import hakwonband.util.CookieUtils;
-import hakwonband.util.DataMap;
-import hakwonband.util.StringUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import hakwonband.admin.common.constant.HakwonConstant;
+import hakwonband.admin.service.CommonService;
+import hakwonband.common.constant.CommonConstant;
+import hakwonband.util.CookieUtils;
+import hakwonband.util.DataMap;
+import hakwonband.util.StringUtil;
 
 /**
  * 인증 체크
