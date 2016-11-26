@@ -28,14 +28,14 @@
 				end as class_name
 			, (
 				select
-					concat(device_token, '|', device_type, '|', is_production)
+					concat(login_hist.device_token, '|', login_hist.device_type, '|', login_hist.is_production)
 				from
-					tb_login_hist
+					tb_login_hist login_hist
 					, tb_user_alarm user_alarm
 				where
-					user_no = a.reg_user_no
-					and device_token is not null
-					and user_no = user_alarm.user_no
+					login_hist.user_no = a.reg_user_no
+					and login_hist.device_token is not null
+					and login_hist.user_no = user_alarm.user_no
 					and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 				order by login_date desc
 				limit 1
