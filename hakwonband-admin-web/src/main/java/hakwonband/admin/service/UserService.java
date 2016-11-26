@@ -109,7 +109,7 @@ public class UserService {
 	 * 사용자 알림 업데이트
 	 * @param param
 	 */
-	public void updateUserAlarmOff(long user_no, String start_date, String end_date) {
-		userDAO.updateUserAlarmOff(user_no, start_date, end_date);
+	public void updateUserAlarmOff(long user_no, String start_time, String end_time) {
+		userDAO.updateUserAlarmOff(user_no, start_time, end_time);
 	}
 }

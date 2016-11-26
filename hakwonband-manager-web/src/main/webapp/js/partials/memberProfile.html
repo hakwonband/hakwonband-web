@@ -12,20 +12,35 @@
 		{{memberObj.tel1_no}}<br>
 		{{memberObj.user_email}}
 	</p>
-	<p>
-		알림 일시 중지 {{view_alarm_off_time}}
-	</p>
-	<select ng-model="alarm_off_time" ng-change="alarmOffChange()">
-		<option value="">알림 일시 중지 시간을 선택해 주세요.</option>
-		<option value="0">알림 시작</option>
-		<option value="1">1시간</option>
-		<option value="2">2시간</option>
-		<option value="4">4시간</option>
-		<option value="8">8시간</option>
-		<option value="24">24시간</option>
-		<option value="72">72시간</option>
-	</select>
-	<br />
+	<div>
+		<div class="form-group">
+			<button type="button" class="btn btn-rounded btn-rounded" ng-click="alarm_type = !alarm_type" ng-class="alarm_type?'btn-primary':''" ng-disabled="!alarm_modify">알림 off</button>
+			<button type="button" ng-if="alarm_modify == false" ng-click="alarm_modify_fun(true)" class="btn btn_style_submit btn_block btn_bold mb_10">알림 수정</button>
+		</div>
+		<div ng-show="alarm_off_isset && !alarm_modify" class="form-group">
+			{{start_time_h}}:{{start_time_m}} ~ {{end_time_h}}:{{end_time_m}}
+		</div>
+		<div ng-show="alarm_modify" class="form-group">
+			<select ng-model="start_time_h" class="select_time_h_left">
+				<option ng-repeat="option in start_h" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+			</select>
+			<select ng-model="start_time_m" class="select_time_m_left">
+				<option ng-repeat="option in start_m" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+			</select> ~
+
+			<select ng-model="end_time_h" class="select_time_h_right">
+				<option ng-repeat="option in end_h" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+			</select>
+			<select ng-model="end_time_m" class="select_time_m_right">
+				<option ng-repeat="option in end_m" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<button type="button" ng-if="alarm_modify == true" ng-click="alarm_save_fun()" class="btn btn_style_submit btn_block btn_bold mb_10">저장</button>
+			<button type="button" ng-if="alarm_modify == true" ng-click="alarm_modify_fun(false)" class="btn btn_style_cancel btn_block btn_bold">수정 취소</button>
+		</div>
+	</div>
 
 	<button type="button" class="btn btn-primary btn-block btn-lg m-t-xl" ng-click="goMemberEdit()">개인 정보 변경</button>
 	<button type="button" class="btn btn-info btn-block btn-lg m-t-xl" ng-click="logout()">로그아웃</button>

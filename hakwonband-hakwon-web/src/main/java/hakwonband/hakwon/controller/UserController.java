@@ -3,7 +3,6 @@ package hakwonband.hakwon.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import hakwonband.util.StringUtil;
  * @author jrlim
  *
  */
-@RequestMapping("/hakwon")
+@RequestMapping("/hakwon/user")
 @Controller
 public class UserController extends BaseAction {
 
@@ -93,15 +92,21 @@ public class UserController extends BaseAction {
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/alarmOff")
-	public void alarmOff(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/alarmSave")
+	public void alarmSave(HttpServletRequest request, HttpServletResponse response) {
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		String start_date	= request.getParameter("start_date");
-		String end_date	= request.getParameter("end_date");
+		String alarm_type	= request.getParameter("alarm_type");
+		String start_time	= request.getParameter("start_time");
+		String end_time		= request.getParameter("end_time");
 
-		userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), start_date, end_date);
+		if( "Y".equals(alarm_type) == false ) {
+			start_time = null;
+			end_time = null;
+		}
+
+		userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), start_time, end_time);
 
 		DataMap rtnMap = new DataMap();
 		rtnMap.put("flag",	CommonConstant.Flag.success);

@@ -168,7 +168,6 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 	/*	알림 off 타임	*/
 	$scope.alarm_modify = false;
 	$scope.alarm_off_isset = false;
-	$scope.alarm_off_save = false;
 	$scope.start_time_h = null;
 	$scope.start_time_m = null;
 	$scope.end_time_h = null;
