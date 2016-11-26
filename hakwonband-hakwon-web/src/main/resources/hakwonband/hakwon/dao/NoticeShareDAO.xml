@@ -34,6 +34,121 @@
 			, a.reg_date
 			, a.udp_date
 			, b.hakwon_name
+			, '학원공지' as class_title
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
+				else 'N' end as use_yn
+		from
+			tb_notice_share a
+			, tb_hakwon b
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+			and a.notice_type = '002'
+			and a.receive_hakwon_no = b.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.hakwon_name like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
+		union all
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
+			, a.reg_date
+			, a.udp_date
+			, b.hakwon_name
+			, hakwon_class.class_title as class_title
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
+				else 'N' end as use_yn
+		from
+			tb_notice_share a
+			, tb_hakwon b
+			, tb_hakwon_class hakwon_class
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+			and a.notice_type = '003'
+			and a.receive_hakwon_no = b.hakwon_no
+			and b.hakwon_no = hakwon_class.hakwon_no
+			and a.parent_no = hakwon_class.class_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or hakwon_class.class_title like concat('%', #{searchText}, '%')
+			)
+		</if>
+		limit
+			#{start_no}, #{page_scale}
+	</select>
+
+	<!-- 공유한 리스트 카운트 -->
+	<select id="sendListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	NoticeShareDAO.sendListTotCount	*/
+		select sum(tot.cnt)
+		from (
+			select
+				count(1) as cnt
+			from
+				tb_notice_share a
+				, tb_hakwon b
+			where
+				a.send_hakwon_no = #{hakwon_no}
+				and a.reg_user_no = #{user_no}
+				and a.notice_type = '002'
+				and a.receive_hakwon_no = b.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.hakwon_name like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
+			union all
+			select
+				count(1) as cnt
+			from
+				tb_notice_share a
+				, tb_hakwon b
+				, tb_hakwon_class hakwon_class
+			where
+				a.send_hakwon_no = #{hakwon_no}
+				and a.reg_user_no = #{user_no}
+				and a.notice_type = '003'
+				and a.receive_hakwon_no = b.hakwon_no
+				and b.hakwon_no = hakwon_class.hakwon_no
+				and a.parent_no = hakwon_class.class_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+				and (
+					b.hakwon_name like concat('%', #{searchText}, '%')
+					or hakwon_class.class_title like concat('%', #{searchText}, '%')
+				)
+		</if>
+		) tot
+	</select>
+
+	<!-- 학원 공유한 리스트 -->
+	<select id="hakwonSendList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.hakwonSendList	*/
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
+			, a.reg_date
+			, a.udp_date
+			, b.hakwon_name
 			, case when a.notice_type = '002' then '학원공지'
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.parent_no)
 				else '' end class_title
@@ -45,16 +160,21 @@
 		where
 			a.send_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.notice_type = '002'
 			and a.receive_hakwon_no = b.hakwon_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.hakwon_name like concat('%', #{searchText}, '%')
+		</if>
+	<![CDATA[
 		limit
 			#{start_no}, #{page_scale}
 	]]>
 	</select>
 
-	<!-- 공유한 리스트 카운트 -->
-	<select id="sendListTotCount" parameterType="dataMap" resultType="int">
+	<select id="hakwonSendListTotCount" parameterType="dataMap" resultType="int">
 	<![CDATA[
-		/*	NoticeShareDAO.sendListTotCount	*/
+		/*	NoticeShareDAO.hakwonSendListTotCount	*/
 		select
 			count(1)
 		from
@@ -63,8 +183,80 @@
 		where
 			a.send_hakwon_no = #{hakwon_no}
 			and a.reg_user_no = #{user_no}
+			and a.notice_type = '002'
 			and a.receive_hakwon_no = b.hakwon_no
 	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and b.hakwon_name like concat('%', #{searchText}, '%')
+		</if>
+	</select>
+
+	<!-- 학원 반 공유한 리스트 -->
+	<select id="classSendList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/*	NoticeShareDAO.classSendList	*/
+		select
+			a.share_no
+			, a.send_hakwon_no
+			, a.reg_user_no
+			, a.notice_type
+			, a.parent_no
+			, a.receive_hakwon_no
+			, date_format(a.start_date,'%Y-%m-%d') as start_date
+			, date_format(a.end_date,'%Y-%m-%d') as end_date
+			, a.reg_date
+			, a.udp_date
+			, b.hakwon_name
+			, hakwon_class.class_title as class_title
+			, case when date(now()) between date(a.start_date) and date(a.end_date) then 'Y'
+				else 'N' end as use_yn
+		from
+			tb_notice_share a
+			, tb_hakwon b
+			, tb_hakwon_class hakwon_class
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+			and a.notice_type = '003'
+			and a.receive_hakwon_no = b.hakwon_no
+			and b.hakwon_no = hakwon_class.hakwon_no
+			and a.parent_no = hakwon_class.class_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or hakwon_class.class_title like concat('%', #{searchText}, '%')
+			)
+		</if>
+	<![CDATA[
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<select id="classSendListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/*	NoticeShareDAO.classSendListTotCount	*/
+		select
+			count(1)
+		from
+			tb_notice_share a
+			, tb_hakwon b
+			, tb_hakwon_class hakwon_class
+		where
+			a.send_hakwon_no = #{hakwon_no}
+			and a.reg_user_no = #{user_no}
+			and a.notice_type = '003'
+			and a.receive_hakwon_no = b.hakwon_no
+			and b.hakwon_no = hakwon_class.hakwon_no
+			and a.parent_no = hakwon_class.class_no
+	]]>
+		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
+			and (
+				b.hakwon_name like concat('%', #{searchText}, '%')
+				or hakwon_class.class_title like concat('%', #{searchText}, '%')
+			)
+		</if>
 	</select>
 
 	<!-- 공유 받은 리스트 -->

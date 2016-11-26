@@ -1,11 +1,5 @@
 package hakwonband.admin.controller;
 
-import hakwonband.admin.common.constant.HakwonConstant;
-import hakwonband.admin.service.ConfigService;
-import hakwonband.common.BaseAction;
-import hakwonband.common.constant.CommonConstant;
-import hakwonband.util.DataMap;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import hakwonband.admin.common.constant.HakwonConstant;
+import hakwonband.admin.service.ConfigService;
+import hakwonband.common.BaseAction;
+import hakwonband.common.constant.CommonConstant;
+import hakwonband.util.DataMap;
 
 /**
  * 설정 컨트롤러

@@ -127,7 +127,7 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 		$scope.isMobile = isMobile.any();
 
 		/*	학원 번호	*/
-		$scope.hakwon_no = $routeParams.hakwonNo;
+		$scope.hakwon_no = $routeParams.hakwon_no;
 
 		/*	학원 검색어	*/
 		$scope.search_text = '';
@@ -249,7 +249,7 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 		$scope.page_no = 1;
 
 		/*	학원 번호	*/
-		$scope.hakwon_no = $routeParams.hakwonNo;
+		$scope.hakwon_no = $routeParams.hakwon_no;
 
 		/**
 		 * 보낸 리스트
@@ -263,6 +263,13 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 				$scope.share_list = colData.shareList;
 				$scope.page_info = CommUtil.getPagenationInfo(colData.totCount, colData.page_scale, DefaultInfo.pageScale, page_no);
 			});
+		}
+
+		/**
+		 * 검색
+		 */
+		$scope.searchText = function() {
+
 		}
 
 		/*	페이지네이션 페이지 이동	*/
@@ -317,7 +324,7 @@ hakwonMainApp.controller('noticeShareReceiveListController', function($scope, $l
 		$scope.page_no = 1;
 
 		/*	학원 번호	*/
-		$scope.hakwon_no = $routeParams.hakwonNo;
+		$scope.hakwon_no = $routeParams.hakwon_no;
 
 		/**
 		 * 보낸 리스트

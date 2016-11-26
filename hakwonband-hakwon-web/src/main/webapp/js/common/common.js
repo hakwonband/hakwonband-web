@@ -355,7 +355,8 @@ var HakwonCommon = function() {
 					userAuth.userType = colData.authUserInfo.user_type;
 					userAuth.userId = colData.authUserInfo.user_id;
 					userAuth.userNo = colData.authUserInfo.user_no;
-					userAuth.off_date = colData.authUserInfo.off_date;
+					userAuth.start_time	= colData.authUserInfo.start_time;
+					userAuth.end_time	= colData.authUserInfo.end_time;
 					if( !colData.authUserInfo.profile_path ) {
 						/**
 						 * 기본 이미지 필요
@@ -386,7 +387,7 @@ var HakwonCommon = function() {
 	 */
 	this.hakwonList = function(asyncFlag, callBackFun) {
 		$.ajax({
-			url: contextPath+"/hakwon/userHakwonList.do",
+			url: contextPath+"/hakwon/user/userHakwonList.do",
 			type: "post",
 			data: '',
 			async : !asyncFlag,

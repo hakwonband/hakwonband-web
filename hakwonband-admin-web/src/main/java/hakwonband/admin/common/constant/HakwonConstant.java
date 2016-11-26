@@ -1,9 +1,9 @@
 package hakwonband.admin.common.constant;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import hakwonband.util.CommonConfig;
 import hakwonband.util.DataMap;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class HakwonConstant {

@@ -44,10 +44,13 @@
 		from
 			tb_login_hist x
 			, tb_hakwon_member a
+			, tb_user_alarm user_alarm
 		where
 			a.hakwon_no = #{hakwon_no}
 			and a.user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 

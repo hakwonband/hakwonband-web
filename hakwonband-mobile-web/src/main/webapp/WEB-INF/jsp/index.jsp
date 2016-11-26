@@ -121,6 +121,8 @@
 <script src="/js/module/signUp.js"></script>
 <script src="/js/module/userMain.js"></script>
 <script src="/js/module/member.js"></script>
+<script src="/js/module/myInfo.js"></script>
+<script src="/js/module/find.js"></script>
 <script src="/js/module/message.js"></script>
 <script src="/js/module/attendanceList.js"></script>
 <script src="/js/module/hakwon/hakwon.js"></script>
@@ -153,7 +155,7 @@ $('body').on("selectstart", function(event){ return false; });
 $('body').on("dragstart", function(event){ return false; });
 <%
 	}
-	if( isMobile == false ) {
+	if( isMobile == false && isLive == true ) {
 %>
 document.oncontextmenu = function (e) {
 	return false;
@@ -256,7 +258,6 @@ window.locationCallBack = function(latitude, longitude) {
 
 if( window.PLATFORM && comm.getAppVersion() >= 601 ) {
 	var gps_check = window.PLATFORM.gpsCheck();
-	console.log('gps_check : ' + gps_check);
 	if( gps_check == "true" ) {
 		window.PLATFORM.getLocation();
 	}

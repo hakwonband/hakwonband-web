@@ -27,19 +27,32 @@
 			</li>
 			<li ng-if="userInfo.userType == '006' && !userInfo.schoolInfo">학교 정보 미입력</li>
 			<li>
-				알림 일시 중지 {{view_alarm_off_time}}
+				<div class="ez-chkbox"><input type="checkbox" value="Y" class="ez-hide" ng-model="alarm_type" ng-checked="alarm_off_isset" ng-disabled="!alarm_modify"></div>
+				<label for="login_keep">알림 차단시간 설정
+					<span ng-show="alarm_off_isset && !alarm_modify">
+						{{start_time_h}}:{{start_time_m}} ~ {{end_time_h}}:{{end_time_m}}
+					</span>
+				</label>
+				<div ng-show="alarm_modify">
+					<select ng-model="start_time_h" class="select_time_h_left">
+						<option ng-repeat="option in start_h" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+					</select>
+					<select ng-model="start_time_m" class="select_time_m_left">
+						<option ng-repeat="option in start_m" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+					</select> ~
+
+					<select ng-model="end_time_m" class="select_time_m_right">
+						<option ng-repeat="option in end_m" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+					</select>
+					<select ng-model="end_time_h" class="select_time_h_right">
+						<option ng-repeat="option in end_h" value="{{option}}" ng-disabled="!alarm_modify">{{option}}</option>
+					</select>
+				</div>
 			</li>
 			<li>
-				<select ng-model="alarm_off_time" ng-change="alarmOffChange()">
-					<option value="">알림 일시 중지 시간을 선택해 주세요.</option>
-					<option value="0">알림 시작</option>
-					<option value="1">1시간</option>
-					<option value="2">2시간</option>
-					<option value="4">4시간</option>
-					<option value="8">8시간</option>
-					<option value="24">24시간</option>
-					<option value="72">72시간</option>
-				</select>
+				<button type="button" ng-if="alarm_modify == false" ng-click="alarm_modify_fun(true)" class="btn btn_style_submit btn_block btn_bold mb_10">알림 수정</button>
+				<button type="button" ng-if="alarm_modify == true" ng-click="alarm_save_fun()" class="btn btn_style_submit btn_block btn_bold mb_10">저장</button>
+				<button type="button" ng-if="alarm_modify == true" ng-click="alarm_modify_fun(false)" class="btn btn_style_cancel btn_block btn_bold">수정 취소</button>
 			</li>
 		</ul>
 	</div>

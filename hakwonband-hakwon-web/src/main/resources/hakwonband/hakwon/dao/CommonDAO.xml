@@ -71,16 +71,19 @@
 			, a.approved_yn
 			, b.user_name
 			, a.use_yn
-			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
+			, user_alarm.start_time
+			, user_alarm.end_time
 		from
 			tb_user a
 			, tb_user_info b
+			, tb_user_alarm user_alarm
 		where
 			a.user_id = #{userId}
 			and a.user_password = #{userPass}
 			and a.user_no = b.user_no
 			and a.use_yn in ('Y', 'S')
 			and a.user_type in ('003', '004')
+			and a.user_no = user_alarm.user_no
 	]]>
 	</select>
 
@@ -125,11 +128,13 @@
 			, get_file_path(b.photo_file_no) as profile_path
 			, x.device_token
 			, x.device_type
-			, (select date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') from tb_user_alarm user_alarm where user_alarm.user_no = a.user_no) as off_date
+			, user_alarm.start_time
+			, user_alarm.end_time
 		from
 			tb_login_hist x
 			, tb_user a
 			, tb_user_info b
+			, tb_user_alarm user_alarm
 		where
 			x.auth_key = #{authKey}
 			and x.logout_yn is null
@@ -138,6 +143,7 @@
 			and x.user_no = b.user_no
 			and a.approved_yn = 'Y'
 			and a.use_yn = 'Y'
+			and a.user_no = user_alarm.user_no
 	]]>
 	</select>
 
@@ -209,7 +215,7 @@
 			and a.student_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -238,7 +244,7 @@
 			y.parent_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -259,7 +265,7 @@
 			and a.teacher_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -280,7 +286,7 @@
 			and a.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 		union all
 		select
 			x.device_token
@@ -296,7 +302,7 @@
 			and a.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -319,7 +325,7 @@
 			and user.user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -363,7 +369,7 @@
 			a.user_no = #{receiveUserNo}
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -383,7 +389,7 @@
 			a.user_no in (1,2,3)
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -403,7 +409,7 @@
 			a.user_no in ( select user_no from tb_hakwon_member where hakwon_no = #{hakwon_no} )
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 

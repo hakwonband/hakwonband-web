@@ -150,9 +150,9 @@
 	<![CDATA[
 		/* UserDAO.insertUserAlarm */
 		insert into tb_user_alarm (
-			user_no, off_date
+			user_no, start_time, end_time
 		) values (
-			#{user_no}, null
+			#{user_no}, null, null
 		)
 	]]>
 	</insert>
@@ -189,17 +189,6 @@
 		where user_no = #{user_no}
 	]]>
 	</update>
-
-	<!-- 알림 off -->
-	<insert id="updateUserAlarmOff">
-	<![CDATA[
-		/* UserDAO.updateUserAlarmOff */
-		update tb_user_alarm set
-			off_date = #{off_date}
-		where
-			user_no = #{user_no}
-	]]>
-	</insert>
 
 
 	<!-- 사용자 수정시 학생일 경우, 학교정보 업데이트 -->
@@ -288,15 +277,28 @@
 	</select>
 
 	<!-- 알림 off 정보 -->
-	<select id="userAlarmInfo" parameterType="long" resultType="string">
+	<select id="userAlarmInfo" parameterType="long" resultType="dataMap">
 	<![CDATA[
 		/* UserDAO.userAlarmInfo */
 		select
-			date_format(user_alarm.off_date, '%Y-%m-%d %H:%i') as off_date
+			user_alarm.start_time
+			, user_alarm.end_time
 		from
 			tb_user_alarm user_alarm
 		where
 			user_alarm.user_no = #{user_no}
 	]]>
 	</select>
+
+	<!-- 사용자 알림 업데이트 -->
+	<update id="userAlarmUpdate">
+	<![CDATA[
+		/* UserDAO.userAlarmUpdate */
+		update tb_user_alarm set
+			start_time = #{start_time}
+			, end_time = #{end_time}
+		where
+		user_no = #{user_no}
+	]]>
+	</update>
 </mapper>

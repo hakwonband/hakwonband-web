@@ -179,6 +179,36 @@ hakwonMainApp.service('settingService', function($http, CommUtil) {
 		});
 	};
 
+	/**
+	 * 알림 저장
+	 */
+	settingService.alarmSave = function(param, callback) {
+		$.ajax({
+			url: contextPath+"/admin/user/alarmSave.do",
+			type: "post",
+			async : false,
+			dataType: "json",
+			data : param,
+			success: function(data) {
+				if( data.error ) {
+					alert('알림 일시 정지를 실패 했습니다.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData && colData.flag == CommonConstant.Flag.success ) {
+					if( callback ) {
+						callback(colData);
+					}
+				} else {
+					alert('알림 일시 정지를 실패 했습니다.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('알림 일시 정지를 실패 했습니다.');
+			}
+		});
+	};
+
 	return settingService;
 });
 
@@ -258,23 +288,99 @@ hakwonMainApp.controller('settingAlarmOffController', function($scope, $location
 	/*	공통 유틸	*/
 	$scope.CommUtil = CommUtil;
 
+	/**
+	 * 알림 설정
+	 */
+	$scope.start_h = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09' ,'10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+	$scope.end_h = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09' ,'10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+	$scope.start_m = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45' ,'50', '55'];
+	$scope.end_m = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45' ,'50', '55'];
+
 	/*	알림 off 타임	*/
-	$scope.alarm_off_time = '';
-	if( userAuth.off_date ) {
-		$scope.view_alarm_off_time = userAuth.off_date;
+	$scope.alarm_modify = false;
+	$scope.alarm_off_isset = false;
+	$scope.start_time_h = null;
+	$scope.start_time_m = null;
+	$scope.end_time_h = null;
+	$scope.end_time_m = null;
+	if( userAuth.start_time && userAuth.end_time ) {
+		$scope.alarm_off_isset = true;
+		$scope.alarm_type = true;
+
+		var start_time_array = userAuth.start_time.split(':');
+		var end_time_array = userAuth.end_time.split(':');
+
+		$scope.start_time_h = start_time_array[0];
+		$scope.start_time_m = start_time_array[1];
+		$scope.end_time_h = end_time_array[0];
+		$scope.end_time_m = end_time_array[1];
+	} else {
+		$scope.alarm_type = false;
+
+		$scope.start_time_h = '00';
+		$scope.start_time_m = '00';
+		$scope.end_time_h = '00';
+		$scope.end_time_m = '00';
 	}
-	/*	알림 off 선택	*/
-	$scope.alarmOffChange = function() {
-		if( $scope.alarm_off_time == '' ) {
-			/*	동작 안함	*/
+
+	$scope.alarm_modify_fun = function(flag) {
+		if( flag == true ) {
+			$scope.alarm_modify = true;
 		} else {
-			settingService.alarmOff($scope.alarm_off_time, function(offTime) {
-				userAuth.off_date = offTime;
-				$scope.view_alarm_off_time = offTime;
-				$scope.alarm_off_time = '';
-			});
+			/*	취소	*/
+			$scope.alarm_modify = false;
+			$scope.alarm_type = $scope.alarm_off_isset;
 		}
 	}
+
+	/**
+	 * 알림 저장
+	 */
+	$scope.alarm_save_fun = function() {
+		var param = {
+			alarm_type : '',
+			start_time : '',
+			end_time : ''
+		};
+		if( $scope.alarm_type ) {
+			if( isNull($scope.start_time_h) || isNull($scope.start_time_m) || isNull($scope.end_time_h) || isNull($scope.end_time_m) ) {
+				alert('시간을 빠짐없이 입력해 주세요.');
+				return ;
+			}
+			param.alarm_type = 'Y';
+			param.start_time = $scope.start_time_h+':'+$scope.start_time_m;
+			param.end_time = $scope.end_time_h+':'+$scope.end_time_m;
+
+			if( param.start_time == param.end_time ) {
+				alert('시작시간과 종료 시간을 다르게 설정해 주세요.');
+				return ;
+			}
+		} else {
+			param.alarm_type = 'N';
+			param.start_time = null;
+			param.end_time = null;
+		}
+		settingService.alarmSave(param, function(colData) {
+			if( colData.flag == 'success' ) {
+				$scope.alarm_modify = false;
+
+				if( $scope.alarm_type ) {
+					$scope.alarm_off_isset = true;
+					userAuth.start_time = param.start_time;
+					userAuth.end_time = param.end_time;
+				} else {
+					$scope.alarm_off_isset = false;
+					$scope.start_time_h = '';
+					$scope.start_time_m = '';
+					$scope.end_time_h = '';
+					$scope.end_time_m = '';
+				}
+			} else {
+				alert('알림 저장을 실패 했습니다.');
+			}
+		});
+	}
+
 
 	$("#wrapper").show();
 	$scope.$$postDigest(function(){

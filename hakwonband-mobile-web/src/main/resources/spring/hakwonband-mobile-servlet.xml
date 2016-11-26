@@ -75,8 +75,9 @@
 			<mvc:exclude-mapping path="/mobile/hakwon/hakwonDetail.do"/><!-- 학원 상세 -->
 			<mvc:exclude-mapping path="/mobile/main/hakwonDetail.do"/><!-- 학원 상세 -->
 			<mvc:exclude-mapping path="/mobile/main/hakwonIntroduction.do"/><!-- 학원 소개 -->
-			<mvc:exclude-mapping path="/mobile/advert/blockList.do"/><!-- 광고 조회 -->
-			<mvc:exclude-mapping path="/mobile/advert/areaList.do"/><!-- 광고 조회 -->
+			<mvc:exclude-mapping path="/mobile/edvert/blockList.do"/><!-- 광고 조회 -->
+			<mvc:exclude-mapping path="/mobile/edvert/areaList.do"/><!-- 광고 조회 -->
+			<mvc:exclude-mapping path="/mobile/edvert/blockList"/><!-- 광고 조회 -->
 
 			<mvc:exclude-mapping path="/mobile/event/hakwonEventList.do"/><!-- 이벤트 리스트 -->
 			<mvc:exclude-mapping path="/mobile/event/hakwonEventDetail.do"/><!-- 이벤트 상세 -->

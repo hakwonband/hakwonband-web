@@ -116,18 +116,17 @@ public interface UserDAO {
 	 * @param user_no
 	 * @return
 	 */
-	public String userAlarmInfo(long user_no);
-
-	/**
-	 * 사용자 알림 off 등록
-	 * @param user_no
-	 * @param off_date
-	 */
-	public void updateUserAlarmOff(@Param("user_no")long user_no, @Param("off_date")String off_date);
+	public DataMap userAlarmInfo(long user_no);
 
 	/**
 	 * 사용자 알림 등록
 	 * @param user_no
 	 */
 	public void insertUserAlarm(@Param("user_no")long user_no);
+
+	/**
+	 * 사용자 알림 업데이트
+	 * @param user_no
+	 */
+	public void userAlarmUpdate(@Param("user_no")long user_no, @Param("start_time")String start_time, @Param("end_time")String end_time);
 }

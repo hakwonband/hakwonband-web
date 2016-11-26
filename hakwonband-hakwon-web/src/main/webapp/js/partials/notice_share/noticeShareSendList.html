@@ -5,6 +5,20 @@
 				<h5>공유한 학원 리스트</h5>
 			</div>
 			<div class="ibox-content">
+				<div class="col-md-2">
+					<select name="noticeType" class="form-control">
+						<option value="">전체</option>
+						<option value="002">학원공지</option>
+						<option value="003">반공지</option>
+					</select>
+				</div>
+				<div class="col-md-4 input-group">
+					<input type="text" class="form-control" placeholder="검색어 입력" ng-keydown="searchText($event)" name="searchText">
+					<span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="counselSearch">검색</button> </span>
+				</div>
+			</div>
+
+			<div class="ibox-content">
 
 				<div class="dataTables_wrapper form-inline">
 					<table class="table table-bordered table-hover dataTable dtr-inline">

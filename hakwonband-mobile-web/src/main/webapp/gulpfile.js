@@ -33,6 +33,8 @@ var merge		= require('merge-stream'),
 			, './js/module/signUp.js'
 			, './js/module/userMain.js'
 			, './js/module/member.js'
+			, './js/module/myInfo.js'
+			, './js/module/find.js'
 			, './js/module/message.js'
 			, './js/module/attendanceList.js'
 			, './js/module/hakwon/hakwon.js'

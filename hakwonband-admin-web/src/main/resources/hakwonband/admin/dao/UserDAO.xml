@@ -311,7 +311,8 @@
 	<![CDATA[
 		/* UserDAO.updateUserAlarmOff */
 		update tb_user_alarm set
-			off_date = #{off_date}
+			start_time = #{start_time}
+			, end_time = #{end_time}
 		where
 			user_no = #{user_no}
 	]]>

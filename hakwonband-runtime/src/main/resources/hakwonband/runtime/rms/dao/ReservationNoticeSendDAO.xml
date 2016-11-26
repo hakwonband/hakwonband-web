@@ -26,7 +26,20 @@
 			, case when a.notice_type = '002' then ''
 				when a.notice_type = '003' then (select class_title from tb_hakwon_class where class_no = a.notice_parent_no)
 				end as class_name
-			, (select concat(device_token, '|', device_type, '|', is_production) from tb_login_hist where user_no = a.reg_user_no and device_token is not null order by login_date desc limit 1) as send_user_device
+			, (
+				select
+					concat(login_hist.device_token, '|', login_hist.device_type, '|', login_hist.is_production)
+				from
+					tb_login_hist login_hist
+					, tb_user_alarm user_alarm
+				where
+					login_hist.user_no = a.reg_user_no
+					and login_hist.device_token is not null
+					and login_hist.user_no = user_alarm.user_no
+					and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
+				order by login_date desc
+				limit 1
+			) as send_user_device
 		from
 			tb_notice a
 			, tb_user_info b
@@ -54,10 +67,13 @@
 		from
 			tb_message_receiver b
 			, tb_login_hist c
+			, tb_user_alarm user_alarm
 		where
 			b.message_no = #{message_no}
 			and b.receive_user_no = c.user_no
 			and c.device_token is not null
+			and c.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 		order by
 			c.device_type
 	]]>
@@ -85,10 +101,13 @@
 		from
 			tb_login_hist x
 			, tb_hakwon_member a
+			, tb_user_alarm user_alarm
 		where
 			a.hakwon_no = #{hakwon_no}
 			and a.user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 		union all
 		select
 			x.device_token
@@ -97,11 +116,14 @@
 		from
 			tb_login_hist x
 			, tb_hakwon_teacher a
+			, tb_user_alarm user_alarm
 		where
 			a.hakwon_no = #{hakwon_no}
 			and a.approved_yn = 'Y'
 			and a.user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -116,10 +138,13 @@
 		from
 			tb_login_hist x
 			, tb_hakwon_class_student a
+			, tb_user_alarm user_alarm
 		where
 			a.class_no = #{class_no}
 			and a.student_user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -143,9 +168,12 @@
 				a.class_no = #{class_no}
 				and a.student_user_no = b.student_user_no
 			) y
+			, tb_user_alarm user_alarm
 		where
 			y.parent_user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -160,10 +188,13 @@
 		from
 			tb_login_hist x
 			, tb_hakwon_class_teacher a
+			, tb_user_alarm user_alarm
 		where
 			a.class_no = #{class_no}
 			and a.teacher_user_no = x.user_no
 			and x.device_token is not null
+			and x.user_no = user_alarm.user_no
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 </mapper>

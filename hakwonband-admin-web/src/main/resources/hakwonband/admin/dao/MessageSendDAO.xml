@@ -429,7 +429,7 @@
 			x.user_no = y.receive_user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date <![CDATA[ < ]]> now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	</select>
 
 	<!-- 학원 그룹의 디바이스 정보 -->
@@ -505,7 +505,7 @@
 			x.user_no = y.receive_user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date <![CDATA[ < ]]> now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	</select>
 
 	<!-- 검색 대상의 디바이스 정보 -->
@@ -523,7 +523,7 @@
 			a.user_no in (${searchUserNoArray})
 			and a.device_token is not null
 			and a.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -565,7 +565,7 @@
 			x.user_no = y.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -621,7 +621,7 @@
 			x.user_no = y.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -649,7 +649,7 @@
 			a.student_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 
@@ -676,7 +676,7 @@
 			a.student_user_no = x.user_no
 			and x.device_token is not null
 			and x.user_no = user_alarm.user_no
-			and (user_alarm.off_date is null or user_alarm.off_date < now())
+			and check_alarm_off(user_alarm.start_time, user_alarm.end_time) = 0
 	]]>
 	</select>
 </mapper>

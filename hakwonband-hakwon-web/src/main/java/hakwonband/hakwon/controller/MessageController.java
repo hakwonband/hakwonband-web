@@ -402,6 +402,7 @@ public class MessageController extends BaseAction {
 		DataMap authUserInfo = (DataMap) request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
 		String hakwon_no	= request.getParameter("hakwon_no");
+		String searchType	= request.getParameter("searchType");
 		int page_no			= StringUtil.parseInt(request.getParameter("pageNo"), 1);
 		int page_scale		= HakwonConstant.PageScale.MESSAGE_REQ;
 
@@ -410,6 +411,7 @@ public class MessageController extends BaseAction {
 		param.put("receive_user_no",	authUserInfo.get("user_no"));
 		param.put("start_no",			(page_no-1)*page_scale);
 		param.put("page_scale",			page_scale);
+		param.put("search_type",		searchType);
 
 		/* 전체 받은 메세지 리스트 조회 */
 		List<DataMap> receiveMessageReqList = messageService.receiveMessageList(param);

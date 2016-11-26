@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,22 +122,23 @@ public class UserController extends BaseAction {
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/alarmOff")
-	public void alarmOff(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/alarmSave")
+	public void alarmSave(HttpServletRequest request, HttpServletResponse response) {
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
 
-		int alarm_off_time = NumberUtils.toInt(request.getParameter("alarm_off_time"));
-		if( alarm_off_time == 0 || alarm_off_time == 1 || alarm_off_time == 2 || alarm_off_time == 4 || alarm_off_time == 8 || alarm_off_time == 24 || alarm_off_time == 72 ) {
-		} else {
-			sendFlag(CommonConstant.Flag.fail, request, response);
-			return ;
+		String alarm_type	= request.getParameter("alarm_type");
+		String start_time	= request.getParameter("start_time");
+		String end_time		= request.getParameter("end_time");
+
+		if( "Y".equals(alarm_type) == false ) {
+			start_time = null;
+			end_time = null;
 		}
 
-		String offTime = userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), alarm_off_time);
+		userService.updateUserAlarmOff(authUserInfo.getLong("user_no"), start_time, end_time);
 
 		DataMap rtnMap = new DataMap();
-		rtnMap.put("offTime",	offTime);
 		rtnMap.put("flag",	CommonConstant.Flag.success);
 
 		sendColData(rtnMap, request, response);

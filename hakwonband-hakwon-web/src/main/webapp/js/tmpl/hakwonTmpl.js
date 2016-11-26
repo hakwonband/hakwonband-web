@@ -506,7 +506,7 @@ hakwonTmpl.adBanner = {
 		'<ul class="ad_list_box">'
 		, '{{each(i, loopAdvertiseInfo) advertiseReqList}}'
 		, '	<li>'
-		, '		<a href="'+PageUrl.common.edBannerView+'?hakwonNo={{= hakwonInfo.hakwon_no}}&reqNo={{= loopAdvertiseInfo.advertise_req_no}}">'
+		, '		<a href="'+PageUrl.common.edBannerView+'?hakwon_no={{= hakwonInfo.hakwon_no}}&reqNo={{= loopAdvertiseInfo.advertise_req_no}}">'
 		, '			<strong class="ad_size badge-primary" title="광고 배너 사이즈">{{= loopAdvertiseInfo.banner_size}}</strong>'
 		, '			<span class="ad_title">{{= loopAdvertiseInfo.title}}{{= (loopAdvertiseInfo.view_month_count>0&&loopAdvertiseInfo.deposit_yn=="Y")?"(광고 노출 중)":""}}</span>'
 		, '			<span class="ad_size_text">광고 사이즈 : {{= loopAdvertiseInfo.banner_size}}칸 </span>'
@@ -1286,17 +1286,18 @@ hakwonTmpl.messageView = {
 	/*	보낸 메세지 그룹 리스트 폼	*/
 	, sendMessageGroupListForm : [
 		'<div class="ibox float-e-margins">'
-		, '	<div class="ibox-content message_page" data-view="data-view">'
-		, '	</div>'
+		, '	<div class="ibox-content message_page" data-view="data-view"></div>'
 		, '	<div class="text-center m-b-xl m-t-xl" data-view="pagination"></div>'
 		, '</div>'
 	].join('')
 	/*	받은 메세지 리스트 폼	*/
 	, receiveMessageListForm : [
 		'<div class="ibox float-e-margins">'
-		, '	<div class="ibox-title" style="display:none;" data-view="receiveMessageListTitle"></div>'
-		, '	<div class="ibox-content message_page" data-view="data-view">'
+		, '	<div class="ibox-title" data-view="receiveMessageType">'
+		, '		<button type="button" class="btn" data-act="typeSelect" data-type="all">전체</button> / <button type="button" class="btn" data-act="typeSelect" data-type="not_read">안읽은 메세지</button>'
 		, '	</div>'
+		, '	<div class="ibox-title" style="display:none;" data-view="receiveMessageListTitle"></div>'
+		, '	<div class="ibox-content message_page" data-view="data-view"></div>'
 		, '	<div class="text-center m-b-xl m-t-xl" data-view="pagination"></div>'
 		, '</div>'
 	].join('')

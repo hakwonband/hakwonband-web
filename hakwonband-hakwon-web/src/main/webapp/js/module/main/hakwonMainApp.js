@@ -543,7 +543,7 @@ var HakwonCommon = function() {
 				moveLeftLocation = PageUrl.attendance.make + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendanceWeekList' ) {
 				/*	주간 출결 리스트	*/
-				moveLeftLocation = PageUrl.attendance.weekList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.attendance.weekList + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'attendanceStart' ) {
 				/*	등원	*/
 				moveLeftLocation = PageUrl.attendance.start + '?hakwonNo=' + hakwonInfo.hakwon_no;
@@ -552,46 +552,46 @@ var HakwonCommon = function() {
 				if( window.PLATFORM && comm.getAppVersion() >= 1321 ) {
 					window.location = '/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no;
 				} else {
-					window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');					
+					window.open('/hakwon/attendance/popup.do?popupType=attend&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
 				}
 			} else if( dataAct == 'attendanceBusPop' ) {
 				/*	승차,하차 팝업	*/
 				if( window.PLATFORM && comm.getAppVersion() >= 1321 ) {
 					window.location = '/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no;
 				} else {
-					window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');					
+					window.open('/hakwon/attendance/popup.do?popupType=bus&hakwonNo=' + hakwonInfo.hakwon_no, 'window', 'toolbar=no,location=no,status=no,menubar=no');
 				}
 			} else if( dataAct == 'attendanceEnd' ) {
 				/*	하원	*/
 				moveLeftLocation = PageUrl.attendance.end + '?hakwonNo=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptInsert' ) {
 				/*	수납 등록	*/
-				moveLeftLocation = PageUrl.receipt.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.insert + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptList' ) {
 				/*	기간별 수납 리스트	*/
-				moveLeftLocation = PageUrl.receipt.list + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.list + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receiptYearList' ) {
 				/*	학생별 수납 리스트	*/
-				moveLeftLocation = PageUrl.receipt.listYear + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.receipt.listYear + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'counselInsert' ) {
 				/*	상담 등록	*/
-				moveLeftLocation = PageUrl.counsel.insert + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.counsel.insert + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'counselListSt' ) {
 				/*	학생 상담 리스트	*/
-				moveLeftLocation = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=006';
+				moveLeftLocation = PageUrl.counsel.list + '?hakwon_no=' + hakwonInfo.hakwon_no + '&type=006';
 			} else if( dataAct == 'counselListPa' ) {
 				/*	학부모 상담 리스트	*/
-				moveLeftLocation = PageUrl.counsel.list + '?hakwonNo=' + hakwonInfo.hakwon_no + '&type=005';
+				moveLeftLocation = PageUrl.counsel.list + '?hakwon_no=' + hakwonInfo.hakwon_no + '&type=005';
 
 			} else if( dataAct == 'send_notice_share_list' ) {
 				/*	공지 공유 리스트	*/
-				moveLeftLocation = PageUrl.notice_share.sendList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.sendList + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'receive_notice_share_list' ) {
 				/*	받은 공유 공지 리스트	*/
-				moveLeftLocation = PageUrl.notice_share.receiveList + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.receiveList + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			} else if( dataAct == 'send_notice_share' ) {
 				/*	공지 공유	*/
-				moveLeftLocation = PageUrl.notice_share.send + '?hakwonNo=' + hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.notice_share.send + '?hakwon_no=' + hakwonInfo.hakwon_no;
 			}
 
 			console.debug('left move moveLeftLocation : ' + moveLeftLocation);

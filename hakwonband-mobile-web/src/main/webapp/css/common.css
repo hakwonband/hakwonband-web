@@ -329,7 +329,6 @@ button.btn_letter {position:absolute; right:10px; top:17px; display:inline-block
 .ez-checked { background-position: -193px -234px}
 /*// ### 체크박스 이미지  */
 
-
 /* 공지사항, 알림, 이벤트 */
 /* 12px */
 .notice_tit {display:inline-block;font-size:15px;  color:#000; margin-bottom:5px}
@@ -512,6 +511,13 @@ button.btn_letter {position:absolute; right:10px; top:17px; display:inline-block
 .attandance_list li .point_text_01{border:solid 1px #0094a2; background:#14b0bf;}
 .attandance_list li .point_text_02{border:solid 1px #749804; background:#95bf14;}
 .attandance_list li .point_text_03{border:solid 1px #707070; background:#808080;}
+
+/* 시간선택 select style */
+.select_time_h_right, .select_time_m_right, .select_time_h_left, .select_time_m_left{width:23%;}
+.select_time_h_right, .select_time_m_right{float:right;}
+.select_time_h_left, .select_time_m_left{float:left;}
+.select_time_h_left{margin-right:5px;}
+.select_time_m_right{margin-left:5px;}
 
 /* common */
 .sec_loading {position:absolute; top:10px; left:15px; width:32px; height:32px; overflow:hidden;}
