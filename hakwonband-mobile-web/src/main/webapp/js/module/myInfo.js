@@ -234,6 +234,8 @@ hakwonApp.controller('myInfoController', function($scope, $location, $routeParam
 
 				if( $scope.alarm_type ) {
 					$scope.alarm_off_isset = true;
+					userAuth.start_time = param.start_time;
+					userAuth.end_time = param.end_time;
 				} else {
 					$scope.alarm_off_isset = false;
 					$scope.start_time_h = '';
