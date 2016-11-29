@@ -24,7 +24,7 @@
 
 -->
 <!DOCTYPE html>
-<html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonCommonApp">
+<html lang="ko" ng-app="hakwonCommonApp">
 
 <head>
 	<meta charset="utf-8">
