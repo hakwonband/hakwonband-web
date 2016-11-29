@@ -17,7 +17,7 @@
 %>
 
 <!DOCTYPE html>
-<html manifest="<%=cacheManifest%>" ng-app="hakwonApp">
+<html ng-app="hakwonApp">
 <head>
 	<title>학원밴드</title>
 
