@@ -5,7 +5,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="ko" manifest="<%=cacheManifest%>" ng-app="hakwonMainApp" ng-controller="baseController">
+<html lang="ko" ng-app="hakwonMainApp" ng-controller="baseController">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -219,7 +219,7 @@ $(document).ready(function () {
 			console.log('768 보다 작다');
 			if( $('body').hasClass('mini-navbar') == false ) {
 				console.log('min-navbar 없다.');
-				$('#page-wrapper').css('min-height', '700px');				
+				$('#page-wrapper').css('min-height', '700px');
 			} else {
 				console.log('min-navbar 있다.');
 			}
@@ -227,7 +227,7 @@ $(document).ready(function () {
 			console.log('768 보다 크다');
 		}
 	});
-	
+
 	if( commProto.isResponsiveCheck() ) {
 		if( $('body').hasClass('body-small') == false ) {
 			$('body').addClass('body-small');
