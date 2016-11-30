@@ -105,7 +105,7 @@ public class HakwonService {
 		 * 멤버 탈퇴
 		 */
 		int memberDelCount	= hakwonDAO.deleteHakwonMember(param);
-		if( memberDelCount != 1 ) {
+		if( memberDelCount > 1 ) {
 			throw new HKBandException("memberDelCount Error["+memberDelCount+"]");
 		}
 		return CommonConstant.Flag.success;

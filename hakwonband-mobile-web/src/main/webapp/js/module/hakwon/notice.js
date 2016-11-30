@@ -311,8 +311,10 @@ hakwonApp.controller('noticeDetailController', function($scope, $window, $locati
 				var class_no = $routeParams.class_no;
 				if( class_no ) {
 					params.class_no = class_no;
+					CommUtil.locationHref(MENUS.sharpUrls.hakwonClass, params ,'hakwon');
+				} else {
+					CommUtil.locationHref(MENUS.sharpUrls.noticeList, params ,'hakwon');
 				}
-				CommUtil.locationHref(MENUS.sharpUrls.noticeList, params ,'hakwon');
 			} else {
 				$window.history.back();
 			}

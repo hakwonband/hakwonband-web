@@ -156,6 +156,13 @@
 			a.notice_no
 			, a.notice_type
 			, a.notice_parent_no
+			, case
+				when a.notice_type = '002' then a.notice_parent_no
+				when a.notice_type = '003' then (select hakwon_no from tb_hakwon_class where class_no = a.notice_parent_no)
+				else -1 end as hakwon_no
+			, case
+				when a.notice_type = '003' then (select count(1) from tb_hakwon_class_student where class_no = a.notice_parent_no and student_user_no = #{user_no})
+				else 0 end as is_class_member
 			, a.title
 			, a.preview_content
 			, a.content

@@ -603,25 +603,6 @@ comment = '공통 파일'
 ;
 
 
-drop table if exists tb_noti;
-create table tb_noti (
-	noti_no				integer			not null auto_increment comment '노티 번호'
-	, message			varchar(200)	not null 				comment '노티 메시지'
-	, redirect_url		varchar(200)	not null 				comment '리다이렉트 url'
-	, device_token		varchar(200)	not null 				comment '단말기 아이디'
-	, service_type		char(3)			not null 				comment '서비스 타입(006)'
-	, req_date			datetime		not null				comment '요청 시간'
-	, req_user_no		integer			not null				comment '요청자'
-	, send_date			datetime								comment '전송 시간'
-	, send_yn			char(1)			not null				comment '전송 YN'
-	, fail_count		integer			not null				comment '실패 카운트'
-	, primary key (noti_no)
-)
-engine = innodb
-character set utf8
-comment = '노티'
-;
-
 /*
 drop table if exists tb_user_device_token;
 create table tb_user_device_token (
