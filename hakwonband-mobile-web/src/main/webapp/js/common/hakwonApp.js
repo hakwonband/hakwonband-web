@@ -143,6 +143,10 @@ var HakwonHeader = function() {
 		/* 오른쪽 메뉴 페이지 링크 */
 		$rightMenu.on('click', 'a[data-act=changeUrlBtn]', self.changeUrlRightBtn);
 		$rightMenu.on('click', 'a[data-act=selectClassBtn]', self.selectClassBtn);
+
+		$leftMenu.on('click', 'button[data-act=searchContent]', self.searchContent);
+
+		$leftMenu.on('keypress', 'input[name=g_search_text]', self.searchContent);
 	};
 
 	/**
@@ -268,6 +272,23 @@ var HakwonHeader = function() {
 		window.location.href =  MENUS.sharpUrls.hakwonDetail + '?hakwon_no=' + hakwonNo;
 		return false;
 	};
+
+	/**
+	 * 컨텐츠 검색
+	 */
+	this.searchContent = function(e) {
+		if( e && e.currentTarget ) {
+			if( e.currentTarget.nodeName == 'INPUT' ) {
+				if( e.which == 13 ) {
+					var search_text = $('input[name=g_search_text]').val();
+					comm.searchContent(search_text);
+				}
+			} else if( e.currentTarget.nodeName == 'BUTTON' ) {
+				var search_text = $('input[name=g_search_text]').val();
+				comm.searchContent(search_text);
+			}
+		}
+	}
 
 	/**
 	 * 오른쪽 메뉴

@@ -166,6 +166,84 @@ public class CommonController extends BaseAction {
 	}
 
 	/**
+	 * 글 오픈
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/searchContent")
+	public void searchContent(HttpServletRequest request, HttpServletResponse response) {
+
+		String num = request.getParameter("num");
+		if( StringUtils.isBlank(num) ) {
+			sendFlag(CommonConstant.Flag.fail, request, response);
+			return ;
+		}
+
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap colData = new DataMap();
+		if( num.startsWith("e:") ) {
+			/*	이벤트	*/
+			num = num.split(":")[1];
+			if( NumberUtils.isNumber(num) ) {
+				DataMap param = new DataMap();
+
+				mobileService.procEventDetail(param);
+			} else {
+				colData.put("flag", CommonConstant.Flag.fail);
+			}
+		} else {
+			/*	공지	*/
+			if( NumberUtils.isNumber(num) ) {
+				String notice_no = num;
+
+				DataMap param = new DataMap();
+				param.put("notice_no",			notice_no);
+				param.put("content_type", 		"001");								// 댓글 컨텐츠 타입 001 공지
+				param.put("content_parent_no",	notice_no);
+				param.put("file_parent_type",	CommonConstant.File.TYPE_NOTICE);	// 파일 타입 001 공지
+				param.put("file_parent_no",		notice_no);
+				if( authUserInfo != null ) {
+					param.put("user_no", 			authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+					param.put("user_type", 			authUserInfo.get("user_type"));
+				}
+
+				DataMap noticeInfo = mobileService.procNoticeDetail(param);
+				DataMap noticeDetail = (DataMap)noticeInfo.get("noticeDetail");
+				if( "002".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 학원 공지
+					 * 학원 멤버 인지 확인해야 한다.
+					 */
+					String redirect_url = "#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&notice_no="+noticeDetail.getString("notice_no");
+					colData.put("redirect_url", redirect_url);
+					colData.put("flag", CommonConstant.Flag.success);
+				} else if( "003".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 반 공지
+					 * 반 멤버 인지 확인해야 한다.
+					 */
+					if( noticeDetail.getInt("is_class_member") > 0 ) {
+						String redirect_url = "#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&class_no="+noticeDetail.getString("notice_parent_no")+"&notice_no="+noticeDetail.getString("notice_no");
+						colData.put("redirect_url", redirect_url);
+						colData.put("flag", CommonConstant.Flag.success);
+					} else {
+						colData.put("flag", CommonConstant.Flag.fail);
+					}
+				} else {
+					colData.put("flag", CommonConstant.Flag.fail);
+				}
+			} else {
+				colData.put("flag", CommonConstant.Flag.fail);
+			}
+		}
+
+		sendColData(colData, request, response);
+	}
+
+	/**
 	 * 로그인
 	 *
 	 * @param request
