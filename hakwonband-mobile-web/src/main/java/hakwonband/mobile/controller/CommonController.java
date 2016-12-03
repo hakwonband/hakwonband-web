@@ -115,8 +115,21 @@ public class CommonController extends BaseAction {
 			num = num.split(":")[1];
 			if( NumberUtils.isNumber(num) ) {
 				DataMap param = new DataMap();
+				param.put("event_no",			num);
+				param.put("file_parent_type",	"003");					// 파일타입 002 이벤트
+				param.put("file_parent_no",		num);
 
-				mobileService.procEventDetail(param);
+				param.put("content_type",		"003");					// 읽은상태 등록시 사용
+				param.put("content_parent_no",	num);
+
+				DataMap eventMap = mobileService.procEventDetail(param);
+				if( eventMap != null ) {
+					DataMap eventDetail = (DataMap)eventMap.get("eventDetail");
+					String redirect_url = "#/hakwon/eventDetail?event_no="+eventDetail.getString("event_no")+"&page=1&hakwon_no="+eventDetail.getString("hakwon_no");
+					return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+redirect_url);
+				} else {
+					return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+				}
 			} else {
 				return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
 			}
@@ -161,8 +174,6 @@ public class CommonController extends BaseAction {
 				return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
 			}
 		}
-
-		return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"/#/receiveMessageList");
 	}
 
 	/**
@@ -189,8 +200,20 @@ public class CommonController extends BaseAction {
 			num = num.split(":")[1];
 			if( NumberUtils.isNumber(num) ) {
 				DataMap param = new DataMap();
+				param.put("event_no",			num);
+				param.put("file_parent_type",	"003");					// 파일타입 002 이벤트
+				param.put("file_parent_no",		num);
 
-				mobileService.procEventDetail(param);
+				param.put("content_type",		"003");					// 읽은상태 등록시 사용
+				param.put("content_parent_no",	num);
+
+				DataMap eventMap = mobileService.procEventDetail(param);
+				if( eventMap != null ) {
+					DataMap eventDetail = (DataMap)eventMap.get("eventDetail");
+					String redirect_url = "#/hakwon/eventDetail?event_no="+eventDetail.getString("event_no")+"&page=1&hakwon_no="+eventDetail.getString("hakwon_no");
+					colData.put("redirect_url", redirect_url);
+					colData.put("flag", CommonConstant.Flag.success);
+				}
 			} else {
 				colData.put("flag", CommonConstant.Flag.fail);
 			}
