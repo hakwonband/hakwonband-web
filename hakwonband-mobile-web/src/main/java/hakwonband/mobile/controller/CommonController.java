@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import hakwonband.mobile.model.DevicePushData;
 import hakwonband.mobile.service.AsyncService;
 import hakwonband.mobile.service.CommonService;
 import hakwonband.mobile.service.HakwonService;
+import hakwonband.mobile.service.MobileService;
 import hakwonband.mobile.service.UserService;
 import hakwonband.push.PushMessage;
 import hakwonband.push.UserDevice;
@@ -57,6 +59,9 @@ public class CommonController extends BaseAction {
 	private UserService userService;
 
 	@Autowired
+	private MobileService mobileService;
+
+	@Autowired
 	private AsyncService asyncService;
 
 	private static final UserAgentStringParser uaParser = UADetectorServiceFactory.getResourceModuleParser();
@@ -86,6 +91,179 @@ public class CommonController extends BaseAction {
 		}
 
 		return new ModelAndView("/index");
+	}
+
+	/**
+	 * 글 오픈
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/content")
+	public ModelAndView content(HttpServletRequest request, HttpServletResponse response) {
+
+		String num = request.getParameter("num");
+		if( StringUtils.isBlank(num) ) {
+			return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+		}
+
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		if( num.startsWith("e:") ) {
+			/*	이벤트	*/
+			num = num.split(":")[1];
+			if( NumberUtils.isNumber(num) ) {
+				DataMap param = new DataMap();
+				param.put("event_no",			num);
+				param.put("file_parent_type",	"003");					// 파일타입 002 이벤트
+				param.put("file_parent_no",		num);
+
+				param.put("content_type",		"003");					// 읽은상태 등록시 사용
+				param.put("content_parent_no",	num);
+
+				DataMap eventMap = mobileService.procEventDetail(param);
+				if( eventMap != null ) {
+					DataMap eventDetail = (DataMap)eventMap.get("eventDetail");
+					String redirect_url = "#/hakwon/eventDetail?event_no="+eventDetail.getString("event_no")+"&page=1&hakwon_no="+eventDetail.getString("hakwon_no");
+					return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+redirect_url);
+				} else {
+					return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+				}
+			} else {
+				return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+			}
+		} else {
+			/*	공지	*/
+			if( NumberUtils.isNumber(num) ) {
+				String notice_no = num;
+
+				DataMap param = new DataMap();
+				param.put("notice_no",			notice_no);
+				param.put("content_type", 		"001");								// 댓글 컨텐츠 타입 001 공지
+				param.put("content_parent_no",	notice_no);
+				param.put("file_parent_type",	CommonConstant.File.TYPE_NOTICE);	// 파일 타입 001 공지
+				param.put("file_parent_no",		notice_no);
+				if( authUserInfo != null ) {
+					param.put("user_no", 			authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+					param.put("user_type", 			authUserInfo.get("user_type"));
+				}
+
+				DataMap noticeInfo = mobileService.procNoticeDetail(param);
+				DataMap noticeDetail = (DataMap)noticeInfo.get("noticeDetail");
+				if( "002".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 학원 공지
+					 * 학원 멤버 인지 확인해야 한다.
+					 */
+					return new ModelAndView("redirect:#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&notice_no="+noticeDetail.getString("notice_no"));
+				} else if( "003".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 반 공지
+					 * 반 멤버 인지 확인해야 한다.
+					 */
+					if( noticeDetail.getInt("is_class_member") > 0 ) {
+						return new ModelAndView("redirect:#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&class_no="+noticeDetail.getString("notice_parent_no")+"&notice_no="+noticeDetail.getString("notice_no"));
+					} else {
+						return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+					}
+				} else {
+					return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+				}
+			} else {
+				return new ModelAndView("redirect:/index.do?"+System.currentTimeMillis()+"#/userMain");
+			}
+		}
+	}
+
+	/**
+	 * 글 오픈
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/searchContent")
+	public void searchContent(HttpServletRequest request, HttpServletResponse response) {
+
+		String num = request.getParameter("num");
+		if( StringUtils.isBlank(num) ) {
+			sendFlag(CommonConstant.Flag.fail, request, response);
+			return ;
+		}
+
+		/* 인증 정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+
+		DataMap colData = new DataMap();
+		if( num.startsWith("e:") ) {
+			/*	이벤트	*/
+			num = num.split(":")[1];
+			if( NumberUtils.isNumber(num) ) {
+				DataMap param = new DataMap();
+				param.put("event_no",			num);
+				param.put("file_parent_type",	"003");					// 파일타입 002 이벤트
+				param.put("file_parent_no",		num);
+
+				param.put("content_type",		"003");					// 읽은상태 등록시 사용
+				param.put("content_parent_no",	num);
+
+				DataMap eventMap = mobileService.procEventDetail(param);
+				if( eventMap != null ) {
+					DataMap eventDetail = (DataMap)eventMap.get("eventDetail");
+					String redirect_url = "#/hakwon/eventDetail?event_no="+eventDetail.getString("event_no")+"&page=1&hakwon_no="+eventDetail.getString("hakwon_no");
+					colData.put("redirect_url", redirect_url);
+					colData.put("flag", CommonConstant.Flag.success);
+				}
+			} else {
+				colData.put("flag", CommonConstant.Flag.fail);
+			}
+		} else {
+			/*	공지	*/
+			if( NumberUtils.isNumber(num) ) {
+				String notice_no = num;
+
+				DataMap param = new DataMap();
+				param.put("notice_no",			notice_no);
+				param.put("content_type", 		"001");								// 댓글 컨텐츠 타입 001 공지
+				param.put("content_parent_no",	notice_no);
+				param.put("file_parent_type",	CommonConstant.File.TYPE_NOTICE);	// 파일 타입 001 공지
+				param.put("file_parent_no",		notice_no);
+				if( authUserInfo != null ) {
+					param.put("user_no", 			authUserInfo.get("user_no"));		// 읽은상태 등록시 사용
+					param.put("user_type", 			authUserInfo.get("user_type"));
+				}
+
+				DataMap noticeInfo = mobileService.procNoticeDetail(param);
+				DataMap noticeDetail = (DataMap)noticeInfo.get("noticeDetail");
+				if( "002".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 학원 공지
+					 * 학원 멤버 인지 확인해야 한다.
+					 */
+					String redirect_url = "#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&notice_no="+noticeDetail.getString("notice_no");
+					colData.put("redirect_url", redirect_url);
+					colData.put("flag", CommonConstant.Flag.success);
+				} else if( "003".equals(noticeDetail.getString("notice_type")) ) {
+					/**
+					 * 반 공지
+					 * 반 멤버 인지 확인해야 한다.
+					 */
+					if( noticeDetail.getInt("is_class_member") > 0 ) {
+						String redirect_url = "#/hakwon/noticeDetail?hakwon_no="+noticeDetail.getString("hakwon_no")+"&class_no="+noticeDetail.getString("notice_parent_no")+"&notice_no="+noticeDetail.getString("notice_no");
+						colData.put("redirect_url", redirect_url);
+						colData.put("flag", CommonConstant.Flag.success);
+					} else {
+						colData.put("flag", CommonConstant.Flag.fail);
+					}
+				} else {
+					colData.put("flag", CommonConstant.Flag.fail);
+				}
+			} else {
+				colData.put("flag", CommonConstant.Flag.fail);
+			}
+		}
+
+		sendColData(colData, request, response);
 	}
 
 	/**
@@ -314,7 +492,6 @@ public class CommonController extends BaseAction {
 			String hakwonNo		= request.getParameter("hakwonNo");
 			String messageNo	= request.getParameter("messageNo");
 			String userType		= authUserInfo.getString("user_type");
-			logger.info("\n!!!!!!!!!!!!message hakwonNo["+hakwonNo+"] messageNo["+messageNo+"] userType["+userType+"]");
 
 			if( HakwonConstant.UserType.STUDENT.equals(userType) || HakwonConstant.UserType.PARENT.equals(userType) ) {
 				if( StringUtils.isBlank(messageNo) ) {

@@ -58,6 +58,7 @@ var hakwonTmpl = {
 			, '{{/each}}'
 			, '		</div>'
 			, '{{/if}}'
+			, '		<div class="menu_search_box"><input type="text" title="검색" placeholder="검색" name="g_search_text"><button type="button" data-act="searchContent">이동</button></div>'
 			, '		<ul class="mn_list">'
 			, '			<li><a href="#" onclick="return false;" data-act="changeUrlBtn" data-url="userMain" class="mn_01">홈</a></li>'
 			, '			<li><a href="#" onclick="return false;" data-act="changeUrlBtn" data-url="hakwonSearch" class="mn_02">학원검색</a></li>'

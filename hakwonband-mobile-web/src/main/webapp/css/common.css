@@ -102,6 +102,11 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 #mypage ul.mn_list li a.mn_07 {background-position:0px -290px}
 #mypage ul.mn_list li a.mn_08 {background-position:0px -340px}
 
+/* 2016-12-2 수정 */
+.menu_search_box{overflow:hidden; float:none; padding:5px;}
+.menu_search_box input{float:left; width:79%; margin:0;}
+.menu_search_box button{float:right; width:20%; background:#14b0bf; border:solid 1px #0094a2; padding:0 10px; font-size:small; height:30px; color:#fff; border-radius:4px;}
+
 /* mn area 학원정보  2014-12-18 수정*/
 #mypage_academy {position:absolute; z-index:9999; right:0; top:0; width:250px; height:100%; background:#31353b; border-left:solid 1px #000; overflow:auto; overflow-x:hidden}
 #mypage_academy > .tit {height:36px; padding:0 10px; border-bottom:solid 1px #0b72ad;  background:#1691d8; overflow:hidden}

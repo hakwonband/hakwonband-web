@@ -456,6 +456,39 @@ var HakwonCommon = function() {
 	};
 
 	/**
+	 * 컨텐츠 검색
+	 */
+	this.searchContent = function(content_num) {
+		if( isNull(content_num) ) {
+			alert('글 번호를 입력해 주세요.');
+			return ;
+		}
+		$.ajax({
+			url: contextPath+"/searchContent.do",
+			type: "post",
+			data: 'num='+content_num,
+			dataType: "json",
+			success: function(data) {
+				if( data.error ) {
+					alert('글번호를 정확히 입력해 주세요.');
+					return false;
+				}
+				var colData = data.colData;
+				if( colData.flag == CommonConstant.Flag.success ) {
+					hakwonHeader.menuClose();
+					window.location = colData.redirect_url;
+				} else {
+					alert('글번호를 정확히 입력해 주세요.');
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('글번호를 정확히 입력해 주세요.');
+			}
+		});
+
+	}
+
+	/**
 	 * 학원 관련 광고 보여준다.
 	 * comm.advertBlock();
 	 */
