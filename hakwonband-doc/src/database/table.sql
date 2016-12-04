@@ -557,6 +557,7 @@ create table tb_event (
 	, begin_date			date									comment '시작일'
 	, end_date				date									comment '종료일'
 	, push_send_yn			char(1)									comment '푸시 전송 YN'
+	, recommend_yn			char(1)				default 'N'			comment '추천 여부'
 	, primary key (event_no)
 )
 engine = innodb
@@ -568,6 +569,7 @@ drop table if exists tb_event_user;
 create table tb_event_user (
 	event_no			integer				not null			comment 'event 번호'
 	, user_no			integer				not null			comment '신청자 번호'
+	, recommend_user_no	integer									comment '추천자 번호'
 	, reg_date			datetime			not null			comment '등록 일자'
 	, primary key (event_no, user_no)
 )
