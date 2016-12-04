@@ -16,6 +16,13 @@
 	}
 %>
 
+<!--
+############################################################
+############################################################
+# 2016-12-05 01
+############################################################
+############################################################
+-->
 <!DOCTYPE html>
 <html ng-app="hakwonApp">
 <head>
@@ -137,17 +144,19 @@
 
 <script type="text/javascript">
 
-var loadingImg = $('#loadingImg');
-var screenHeight = $( document ).height();
-var screenWidth = $( document ).width();
-var imgHeight = ((screenHeight-42)/2)-loadingImg.height()/2;
-var imgWidth = (screenWidth/2)-loadingImg.width()/2;
+try {
+	var loadingImg = $('#loadingImg');
+	var screenHeight = $( document ).height();
+	var screenWidth = $( document ).width();
+	var imgHeight = ((screenHeight-42)/2)-loadingImg.height()/2;
+	var imgWidth = (screenWidth/2)-loadingImg.width()/2;
 
-loadingImg.css('margin-left',	imgWidth);
-loadingImg.css('margin-top',	imgHeight);
-loadingImg.show();
+	loadingImg.css('margin-left',	imgWidth);
+	loadingImg.css('margin-top',	imgHeight);
+	loadingImg.show();
+} catch(e) {
 
-
+}
 <%
 	if( isLive == true ) {
 %>
