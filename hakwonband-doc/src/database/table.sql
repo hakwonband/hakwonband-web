@@ -570,6 +570,7 @@ create table tb_event_user (
 	event_no			integer				not null			comment 'event 번호'
 	, user_no			integer				not null			comment '신청자 번호'
 	, recommend_user_no	integer									comment '추천자 번호'
+	, user_info			varchar(1000)							comment '사용자 정보'
 	, reg_date			datetime			not null			comment '등록 일자'
 	, primary key (event_no, user_no)
 )

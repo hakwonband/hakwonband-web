@@ -250,6 +250,9 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			fileArray.push(fileNo);
 		});
 
+		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
+		var add_info_yn		= $mainNgView.find('select[name=add_info_yn]').val();
+
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, event_title : title
@@ -257,6 +260,8 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, end_date : endDate
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
+			, recommend_yn : recommend_yn
+			, add_info_yn : add_info_yn
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/registEvent.do",
@@ -322,6 +327,9 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			fileArray.push(fileNo);
 		});
 
+		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
+		var add_info_yn		= $mainNgView.find('select[name=add_info_yn]').val();
+
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, event_no : eventNo
@@ -330,6 +338,8 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, end_date : endDate
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
+			, recommend_yn : recommend_yn
+			, add_info_yn : add_info_yn
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/editEvent.do",

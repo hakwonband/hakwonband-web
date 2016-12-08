@@ -63,6 +63,8 @@
 			, date_format(a.udp_date, '%Y년%m월%d일 %H:%i') as udp_date
 			, date_format(a.begin_date, '%Y-%m-%d') as begin_date
 			, date_format(a.end_date, '%Y-%m-%d') as end_date
+			, a.recommend_yn
+			, a.add_info_yn
 		from
 			tb_event a
 			, tb_user_info b
@@ -113,6 +115,8 @@
 			, reg_date
 			, begin_date
 			, end_date
+			, recommend_yn
+			, add_info_yn
 		) values (
 			#{hakwon_no}
 			, #{event_title}
@@ -122,6 +126,8 @@
 			, now()
 			, #{begin_date}
 			, #{end_date}
+			, #{recommend_yn}
+			, #{add_info_yn}
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
@@ -140,6 +146,8 @@
 			, event_content = #{event_content}
 			, begin_date = #{begin_date}
 			, end_date = #{end_date}
+			, recommend_yn = #{recommend_yn}
+			, add_info_yn = #{add_info_yn}
 		where
 			event_no = #{event_no}
 			and event_status = '001'
