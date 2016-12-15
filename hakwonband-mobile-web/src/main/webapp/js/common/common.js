@@ -706,7 +706,11 @@ var HakwonCommon = function() {
 			window.location = url;
 		} else if( shareObj.type == 'line' ) {
 			var lineShareUrl = encodeURIComponent(shareObj.title)+'%0A'+encodeURIComponent(shareObj.url);
-			window.location = 'http://line.me/R/msg/text/'+lineShareUrl;
+			if(getBrowser() == 'iosApp') {
+				window.location = 'line://msg/text/'+lineShareUrl;
+			} else {
+				window.location = 'http://line.me/R/msg/text/'+lineShareUrl;
+			}
 		} else {
 			console.error('shareSns invalid type', shareObj);
 		}
