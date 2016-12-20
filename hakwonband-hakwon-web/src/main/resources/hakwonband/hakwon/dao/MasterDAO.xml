@@ -380,7 +380,10 @@
 			and c.approved_yn = 'Y'
 	]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
-			and b.user_name like concat('%', #{searchText}, '%')
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or c.user_id like concat('%', #{searchText}, '%')
+			)
 		</if>
 	<![CDATA[
 		order by
@@ -406,7 +409,10 @@
 			and c.approved_yn = 'Y'
 	 ]]>
 	 	<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
-			and b.user_name like concat('%', #{searchText}, '%')
+			and (
+				b.user_name like concat('%', #{searchText}, '%')
+				or c.user_id like concat('%', #{searchText}, '%')
+			)
 		</if>
 	</select>
 

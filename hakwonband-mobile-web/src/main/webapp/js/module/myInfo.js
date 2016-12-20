@@ -96,8 +96,8 @@ hakwonApp.service('myInfoService', function($http) {
 	myInfoService.getMobileAuthKey = function() {
 		var browserVal = getBrowser();
 		if( browserVal == 'iosApp' ) {
-			alert('아이폰 앱에서 푸시키를 다시 요청 합니다.(작업중)');
-			//window.location = 'hakwonband://notification/getToken';
+			alert('아이폰 앱에서 푸시키를 다시 요청 합니다.');
+			window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
 		} else if( browserVal == 'androidApp' ) {
 			alert('안드로이드 앱에서 푸시키를 다시 요청 합니다.');
 			var newKey = window.PLATFORM.getGcmKey();
