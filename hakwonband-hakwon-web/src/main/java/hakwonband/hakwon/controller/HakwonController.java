@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -600,6 +601,9 @@ public class HakwonController extends BaseAction {
 						//셀이 빈값일경우를 위한 널체크
 						if( cell==null ) {
 						} else {
+							cell.setCellType(Cell.CELL_TYPE_STRING);
+							value = cell.getStringCellValue();
+							/*
 							//타입별로 내용 읽기
 							switch (cell.getCellType()){
 								case HSSFCell.CELL_TYPE_FORMULA:
@@ -618,6 +622,7 @@ public class HakwonController extends BaseAction {
 									value=cell.getErrorCellValue()+"";
 									break;
 							}
+							*/
 						}
 
 						if( columnindex == 0 ) {
@@ -690,6 +695,9 @@ public class HakwonController extends BaseAction {
 						//셀이 빈값일경우를 위한 널체크
 						if( cell==null ) {
 						} else {
+							cell.setCellType(Cell.CELL_TYPE_STRING);
+							value = cell.getStringCellValue();
+							/*
 							//타입별로 내용 읽기
 							switch (cell.getCellType()){
 								case HSSFCell.CELL_TYPE_FORMULA:
@@ -708,6 +716,7 @@ public class HakwonController extends BaseAction {
 									value=cell.getErrorCellValue()+"";
 									break;
 							}
+							*/
 						}
 
 						if( columnindex == 0 ) {

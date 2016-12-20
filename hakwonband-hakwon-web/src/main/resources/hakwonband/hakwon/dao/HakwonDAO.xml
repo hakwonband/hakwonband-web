@@ -220,6 +220,7 @@
 			, calc_age(c.user_birthday) as age
 			, c.photo_file_no
 			, get_file_path(c.photo_file_no) as photo_file_path
+			, c.user_id
 		from
 			tb_hakwon_class_teacher a
 			, tb_hakwon_teacher b
