@@ -163,12 +163,23 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 					}
 
 					$scope.eventObj = data.colData;
+
+					$scope.eventObj.eventDetail.recommend_user_id = '';
+					$scope.eventObj.eventDetail.add_info = '';
+
 					/*	참여 여부	*/
-					if( data.colData.eventDetail.eventJoinCount > 0 ) {
+					if( data.colData.eventDetail.event_join_count > 0 ) {
 						$scope.eventObj.eventDetail.isJoinEvent = true;
 					} else {
 						$scope.eventObj.eventDetail.isJoinEvent = false;
 					}
+
+					if ( !isNull($scope.eventObj.eventDetail.add_info_title) ) {
+						$scope.eventObj.eventDetail.add_info_yn = 'Y';
+					} else {
+						$scope.eventObj.eventDetail.add_info_yn = 'N';
+					}
+
 					eventService.checkEndDateEvent($scope);
 
 					/*	video html replace	*/
@@ -194,7 +205,15 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 			}
 
 			var idx = parseInt($(e.currentTarget).data('idx')),
-				params = {event_no: idx};
+				params = {
+					event_no: idx
+					, recommend_user_id : $scope.eventObj.eventDetail.recommend_user_id
+					, add_info : $scope.eventObj.eventDetail.add_info
+				};
+			if ( !isNull($scope.eventObj.eventDetail.add_info_title) && isNull($scope.eventObj.eventDetail.add_info) ) {
+				alert($scope.eventObj.eventDetail.add_info_title + ' 입력해 주세요.');
+				return false;
+			}
 
 			CommUtil.ajax({url:contextPath+"/mobile/event/joinEvent.do", param:params, successFun:function(data) {
 				try {

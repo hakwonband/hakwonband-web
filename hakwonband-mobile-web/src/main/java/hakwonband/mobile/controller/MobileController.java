@@ -262,10 +262,14 @@ public class MobileController extends BaseAction {
 
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
-		String event_no = request.getParameter("event_no");
+		String event_no				= request.getParameter("event_no");
+		String recommend_user_id	= request.getParameter("recommend_user_id");
+		String add_info				= request.getParameter("add_info");
 
 		DataMap param = new DataMap();
 		param.put("event_no",			event_no);
+		param.put("recommend_user_id",	recommend_user_id);
+		param.put("add_info",			add_info);
 		param.put("user_no",			authUserInfo.get("user_no"));
 
 		/* 이벤트 참여 */

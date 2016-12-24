@@ -67,14 +67,14 @@ public class EventController extends BaseAction {
 
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
-		
+
 		String event_no	= request.getParameter("event_no");
 
 		DataMap param = new DataMap();
 		param.put("event_no",			event_no);
 		/*	읽은 컨텐츠 처리	*/
 		param.put("content_type", 		"003");					// 이벤트 컨텐츠 타입 : 003 이벤트
-		param.put("content_parent_no",	event_no);	
+		param.put("content_parent_no",	event_no);
 		param.put("user_no",	authUserInfo.get("user_no"));
 
 		DataMap colData = eventService.eventInfo(param);

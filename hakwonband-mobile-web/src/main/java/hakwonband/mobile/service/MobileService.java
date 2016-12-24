@@ -242,6 +242,20 @@ public class MobileService {
 
 		DataMap resultObj = new DataMap();
 
+		long recommend_user_no = 0;
+		if( param.isNotNull("recommend_user_id") ) {
+			DataMap checkParam = new DataMap();
+			checkParam.put("user_id", param.getString("recommend_user_id"));
+			DataMap recommendUserInfo = userDAO.checkUserId(checkParam);
+
+			if( recommendUserInfo == null || recommendUserInfo.getLong("user_no") < 1 ) {
+				resultObj.put("resultJoinEvent",		"recommend_fail");
+				return resultObj;
+			} else {
+				recommend_user_no = recommendUserInfo.getLong("user_no");
+			}
+		}
+
 		/* 기존 이벤트 참여 확인 */
 		int checkUser = eventDAO.eventUserCheck(param);
 
@@ -252,6 +266,9 @@ public class MobileService {
 		}
 
 		/* 이벤트 참여 신청 */
+		if( recommend_user_no > 0 ) {
+			param.put("recommend_user_no",	recommend_user_no);
+		}
 		int resultUser = eventDAO.insertEventUser(param);
 		if (resultUser != 1) {
 			throw new HKBandException("eventDAO.insertEventUser error");

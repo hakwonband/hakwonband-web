@@ -64,7 +64,7 @@
 			, date_format(a.begin_date, '%Y-%m-%d') as begin_date
 			, date_format(a.end_date, '%Y-%m-%d') as end_date
 			, a.recommend_yn
-			, a.add_info_yn
+			, a.add_info_title
 		from
 			tb_event a
 			, tb_user_info b
@@ -116,7 +116,7 @@
 			, begin_date
 			, end_date
 			, recommend_yn
-			, add_info_yn
+			, add_info_title
 		) values (
 			#{hakwon_no}
 			, #{event_title}
@@ -127,7 +127,7 @@
 			, #{begin_date}
 			, #{end_date}
 			, #{recommend_yn}
-			, #{add_info_yn}
+			, #{add_info_title}
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
@@ -147,7 +147,7 @@
 			, begin_date = #{begin_date}
 			, end_date = #{end_date}
 			, recommend_yn = #{recommend_yn}
-			, add_info_yn = #{add_info_yn}
+			, add_info_title = #{add_info_title}
 		where
 			event_no = #{event_no}
 			and event_status = '001'

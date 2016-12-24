@@ -251,7 +251,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 		});
 
 		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
-		var add_info_yn		= $mainNgView.find('select[name=add_info_yn]').val();
+		var add_info_title	= $mainNgView.find('input[name=add_info_title]').val();
 
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
@@ -261,7 +261,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
 			, recommend_yn : recommend_yn
-			, add_info_yn : add_info_yn
+			, add_info_title : add_info_title
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/registEvent.do",
@@ -328,7 +328,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 		});
 
 		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
-		var add_info_yn		= $mainNgView.find('select[name=add_info_yn]').val();
+		var add_info_title	= $mainNgView.find('input[name=add_info_title]').val();
 
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
@@ -339,7 +339,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
 			, recommend_yn : recommend_yn
-			, add_info_yn : add_info_yn
+			, add_info_title : add_info_title
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/editEvent.do",
