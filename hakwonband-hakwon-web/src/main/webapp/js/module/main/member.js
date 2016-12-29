@@ -415,13 +415,19 @@ hakwonMainApp.controller('memberProfileController', function($scope, $location, 
 
 		/*	로그아웃	*/
 		$scope.logout = function() {
-			var promptVal = window.prompt("로그아웃 하시려면'logout'를 입력해주세요.\ntype the phrase 'logout' to sign out");
-			if( promptVal == 'logout'  ) {
-				window.location = '/logout.do';
-			} else if( promptVal == '' ) {
-				return false;
+
+			var current_browser = getBrowser();
+			if( current_browser.indexOf('App') > 0 ) {
+				var promptVal = window.prompt("로그아웃 하시려면'logout'를 입력해주세요.\ntype the phrase 'logout' to sign out");
+				if( promptVal == 'logout'  ) {
+					window.location = '/logout.do';
+				} else if( promptVal == '' ) {
+					return false;
+				} else {
+					alert('정확하게 입력해 주세요.');
+				}
 			} else {
-				alert('정확하게 입력해 주세요.');
+				window.location = '/logout.do';
 			}
 			return false;
 		};
