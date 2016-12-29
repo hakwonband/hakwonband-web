@@ -1,7 +1,7 @@
 <div class="ibox m m-t-xl">
 	<div class="ibox-content">
 		<div class="col-md-8 col-md-offset-2" data-view="data-view">
-			<div class="widget-head-color-box red-bg p-lg text-center">'
+			<div class="widget-head-color-box red-bg p-lg text-center">
 				<h2 class="font-bold">{{parentInfo.user_name?parentInfo.user_name:parentInfo.user_id}}</h2>
 				<img ng-src="{{hakwonCommon.createFilePullPath(parentInfo.photo_file_path, 'photo')}}" class="circle-border m-md img-responsive" alt="{{parentInfo.user_name}}" width="300" height="300">
 				<p>{{parentInfo.user_gender_name}} / {{!parentInfo.user_age||parentInfo.user_age==0?"생일 미입력":parentInfo.user_age+"세"}}</p>
