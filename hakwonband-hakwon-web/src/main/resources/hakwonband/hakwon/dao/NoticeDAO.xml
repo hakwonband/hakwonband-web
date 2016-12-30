@@ -214,7 +214,7 @@
 	<![CDATA[
 		/* noticeDAO.classNoticeReaderList */
 		select
-			a.student_user_no
+			a.student_user_no as reader_user_no
 			, a.hakwon_no
 			, a.class_no
 			, get_file_path(b.photo_file_no) as user_photo_path
@@ -231,7 +231,7 @@
 			and a.student_user_no = b.user_no
 		union
 		select
-			distinct b.parent_user_no
+			distinct b.parent_user_no as reader_user_no
 			, a.hakwon_no
 			, a.class_no
 			, get_file_path(c.photo_file_no) as user_photo_path

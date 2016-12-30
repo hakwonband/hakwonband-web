@@ -1339,6 +1339,18 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 			classService.replyDelete(replyNo, $scope);
 		};
 
+		/*	글 상세	*/
+		$scope.moveUserDetail = function(noticeReader) {
+			console.log(noticeReader);
+			if( noticeReader.user_type == "005" ) {
+				/*	학부모	*/
+				window.location = '#/parent/view?hakwon_no='+noticeReader.hakwon_no+'&parentUserNo='+noticeReader.reader_user_no;
+			} else if( noticeReader.user_type == "006" ) {
+				/*	학생	*/
+				window.location = '#/student/view?hakwon_no='+noticeReader.hakwon_no+'&studentUserNo='+noticeReader.reader_user_no;
+			}
+		}
+
 		/*	반 공지사항 상세정보조회	*/
 		$scope.getClassNoticeDetail();
 

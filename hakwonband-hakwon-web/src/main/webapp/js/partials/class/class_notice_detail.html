@@ -61,9 +61,11 @@
 				<tbody>
 					<tr ng-repeat="noticeReader in classNoticeReaderList" ng-show="readerView(noticeReader)">
 						<td>
-							<img class="img-circle" ng-src="{{ getPhotoFileFullPath(noticeReader.user_photo_path)}}" alt="" width="30" height="30">
-							{{noticeReader.user_type=="006"?"학생":"학부모"}} {{ noticeReader.user_name}} / {{ noticeReader.user_id}} / {{ noticeReader.read_date?noticeReader.read_date:'미확인'}}
-							{{noticeReader.user_type=="005"?" / "+noticeReader.child_list:""}}
+							<a href="" ng-click="moveUserDetail(noticeReader)">
+								<img class="img-circle" ng-src="{{ getPhotoFileFullPath(noticeReader.user_photo_path)}}" alt="" width="30" height="30">
+								{{noticeReader.user_type=="006"?"학생":"학부모"}} {{ noticeReader.user_name}} / {{ noticeReader.user_id}} / {{ noticeReader.read_date?noticeReader.read_date:'미확인'}}
+								{{noticeReader.user_type=="005"?" / "+noticeReader.child_list:""}}
+							</a>
 						</td>
 					</tr>
 				</tbody>
