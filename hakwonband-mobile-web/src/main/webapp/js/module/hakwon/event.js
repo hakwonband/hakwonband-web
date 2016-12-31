@@ -164,7 +164,9 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 
 					$scope.eventObj = data.colData;
 
-					$scope.eventObj.eventDetail.recommend_user_id = '';
+					if( !$scope.eventObj.eventDetail.recommend_user_id ) {
+						$scope.eventObj.eventDetail.recommend_user_id = '';
+					}
 					$scope.eventObj.eventDetail.add_info = '';
 
 					/*	참여 여부	*/
@@ -227,7 +229,8 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 						alert('이벤트에 참여되었습니다.');
 						$scope.getEvent();
 					} else if (colData.resultJoinEvent == 'exist') {
-						alert('이미 참여하셨습니다.');
+					} else if (colData.resultJoinEvent == 'recommend_fail') {
+						alert('추천인 정보가 올바르지 않습니다.');
 					} else {
 						commProto.logger({eventDetailError:colData});
 					}

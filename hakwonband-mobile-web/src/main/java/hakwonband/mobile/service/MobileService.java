@@ -198,6 +198,23 @@ public class MobileService {
 	}
 
 	/**
+	 * 이벤트 추천 받은 리스트
+	 * @param param
+	 * @return
+	 */
+	public DataMap eventRecommandList(DataMap param) {
+		DataMap eventData = new DataMap();
+
+		List<DataMap> eventList = eventDAO.eventRecommandList(param);
+		int eventListTotCount = eventDAO.eventRecommandListTotCount(param);
+
+		eventData.put("eventList", eventList);
+		eventData.put("eventListTotCount", eventListTotCount);
+
+		return eventData;
+	}
+
+	/**
 	 * 학원 이벤트 상세정보
 	 * @param param
 	 * @return

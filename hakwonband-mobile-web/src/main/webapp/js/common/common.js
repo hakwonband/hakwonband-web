@@ -102,6 +102,7 @@ var MENUS = {
 		eventList 			: '#/hakwon/eventList',
 		eventDetail 		: '#/hakwon/eventDetail',
 		eventJoin 			: '#/hakwon/eventJoin',
+		eventRecommand		: '#/hakwon/eventRecommand',
 		edvertiseList 		: '#/edvertiseList',
 		edvertiseUcc 		: '#/edvertiseUcc',
 		myInfo		 		: '#/myInfo'

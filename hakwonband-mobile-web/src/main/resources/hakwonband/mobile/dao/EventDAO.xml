@@ -99,7 +99,7 @@
 			, event_user.recommend_user_no
 			, case when event_user.recommend_user_no  > 0 then (select user_id from tb_user where user_no = event_user.recommend_user_no)
 				end  as recommend_user_id
-			, event_user.user_info
+			, event_user.user_info as add_user_info
 			, count(event_user.user_no) as event_join_count
 		from
 			tb_event a left join tb_event_user event_user on a.event_no = event_user.event_no and event_user.user_no = #{user_no}
@@ -186,4 +186,57 @@
 	]]>
 	</select>
 
+	<!-- 이벤트 추천받은 리스트 -->
+	<select id="eventRecommandList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventRecommandList */
+		select
+			event_user.event_no
+			, event_user.user_no
+			, get_user_name(event_user.user_no) as user_name
+			, event_user.reg_date
+			, event.event_no
+			, event.hakwon_no
+			, event.event_title
+			, event.event_content
+			, event.reg_user_no
+			, date_format(event.reg_date, '%Y.%m.%d') as reg_date
+			, date_format(event.udp_date, '%Y.%m.%d') as udp_date
+			, date_format(event.begin_date, '%Y.%m.%d') as begin_date
+			, date_format(event.end_date, '%Y.%m.%d') as end_date
+			, event.recommend_yn
+			, event.add_info_title
+
+			, hakwon_info.hakwon_name
+			, hakwon_info.logo_file_no
+			, get_file_path(hakwon_info.logo_file_no) as logo_file_path
+		from
+			tb_event_user event_user
+			, tb_event event
+			, tb_hakwon_info hakwon_info
+		where
+			event_user.recommend_user_no = #{user_no}
+			and event_user.event_no = event.event_no
+			and event.hakwon_no = hakwon_info.hakwon_no
+		order by
+			event_user.reg_date desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<!-- 이벤트 추천받은 카운트 -->
+	<select id="eventRecommandListTotCount" parameterType="dataMap" resultType="int">
+	<![CDATA[
+		/* eventDAO.eventRecommandListTotCount */
+		select
+			count(1)
+		from
+			tb_event_user event_user
+			, tb_event event
+		where
+			event_user.recommend_user_no = #{user_no}
+			and event_user.event_no = event.event_no
+	]]>
+	</select>
 </mapper>

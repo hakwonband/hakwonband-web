@@ -715,6 +715,14 @@ hakwonMainApp.controller('eventViewController', function($scope, $location, $rou
 		}
 	});
 
+	/**
+	 * 이벤트 참여자 메세지 보내기
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=eventUserMessage]', function() {
+		var user_no = $(this).data('user-no');
+		window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&msg_user_no_array='+user_no;
+	});
+
 	$scope.$on('$viewContentLoaded', function() {
 		console.log('eventViewController $viewContentLoaded');
 

@@ -33,6 +33,21 @@ public interface EventDAO {
 	public int eventListTotCount(DataMap param);
 
 	/**
+	 * 이벤트 추천받은 조회
+	 * @param param
+	 * @return
+	 */
+	public List<DataMap> eventRecommandList(DataMap param);
+
+
+	/**
+	 * 이벤트 추천 받은 확인
+	 * @param param
+	 * @return
+	 */
+	public int eventRecommandListTotCount(DataMap param);
+
+	/**
 	 * 이벤트 상세
 	 * @param param
 	 * @return

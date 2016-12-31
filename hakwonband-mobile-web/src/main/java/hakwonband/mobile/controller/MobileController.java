@@ -310,6 +310,32 @@ public class MobileController extends BaseAction {
 		sendColData(colData, request, response);
 	}
 
+	/**
+	 * 이벤트 추천 받은 리스트
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/event/eventRecommandList")
+	public void eventRecommandList(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증정보 */
+		DataMap authUserInfo	= (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		int page_no				= StringUtil.parseInt(request.getParameter("page_no"), 1);
+		int page_scale			= HakwonConstant.PageScale.EVENT_REQ;
+
+		DataMap param = new DataMap();
+		param.put("user_no", 	authUserInfo.get("user_no"));
+		param.put("start_no",	(page_no-1)*page_scale);
+		param.put("page_scale",	page_scale);
+
+		/* 참여한 이벤트 리스트 조회 */
+		DataMap colData = mobileService.eventRecommandList(param);
+		colData.put("pageScale",	 			page_scale);
+
+		sendColData(colData, request, response);
+	}
+
+
 
 	/**
 	 * 학원 가입 학생 첫 화면

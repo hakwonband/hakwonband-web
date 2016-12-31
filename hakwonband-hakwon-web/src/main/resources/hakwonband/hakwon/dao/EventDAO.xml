@@ -89,6 +89,10 @@
 			, get_file_path(c.photo_file_no) as photo_file_path
 			, get_code_name('001', b.user_type) as user_type_name
 			, calc_age(c.user_birthday) as user_age
+			, a.recommend_user_no
+			, case when a.recommend_user_no  > 0 then (select user_id from tb_user where user_no = a.recommend_user_no)
+				end  as recommend_user_id
+			, a.user_info
 		from
 			tb_event_user a
 			, tb_user b

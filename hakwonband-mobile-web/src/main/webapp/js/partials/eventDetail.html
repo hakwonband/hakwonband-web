@@ -10,12 +10,18 @@
 		<div class="view_cont" ng-bind-html="eventObj.eventDetail.event_content | rawHtml"></div>
 		<div class="btn_box" ng-if="eventObj.eventDetail.isJoinEvent == false && eventObj.eventDetail.isExpireEvent == false">
 			<div class="event_info_input">
-				<input type="text" ng-model="eventObj.eventDetail.recommend_user_id" placeholder="추천인을 입력해주세요" ng-show="eventObj.eventDetail.recommend_yn == 'Y'" ng-readonly="data.colData.eventDetail.event_join_count > 0">
+				<input type="text" ng-model="eventObj.eventDetail.recommend_user_id" placeholder="추천인 아이디를 입력해주세요" ng-show="eventObj.eventDetail.recommend_yn == 'Y'" ng-readonly="data.colData.eventDetail.event_join_count > 0">
+				<input type="text" ng-model="eventObj.eventDetail.add_info" placeholder="{{eventObj.eventDetail.add_info_title}}" ng-show="eventObj.eventDetail.add_info_yn == 'Y'" ng-model="eventObj.eventDetail.add_info" ng-readonly="data.colData.eventDetail.event_join_count > 0">
+<!--
 				<textarea title="내용 입력" placeholder="{{eventObj.eventDetail.add_info_title}}" ng-show="eventObj.eventDetail.add_info_yn == 'Y'" ng-model="eventObj.eventDetail.add_info" class="" rows="5" ng-readonly="data.colData.eventDetail.event_join_count > 0"></textarea>
+-->
 			</div>
 			<button type="button" class="btn btn_style_submit btn_block btn_bold" ng-click="joinEvent($event)" data-idx="{{eventObj.eventDetail.event_no}}">이벤트 참여하기</button>
 		</div>
-
+		<div class="view_data" ng-if="eventObj.eventDetail.isJoinEvent == true">
+			<span class="att" ng-if="eventObj.eventDetail.recommend_yn == 'Y'">추천인 : {{eventObj.eventDetail.recommend_user_id}}</span><br/>
+			<div ng-if="eventObj.eventDetail.add_info_yn == 'Y'">{{eventObj.eventDetail.add_user_info}}</div>
+		</div>
 	</div>
 
 	<!--버튼 영역-->
