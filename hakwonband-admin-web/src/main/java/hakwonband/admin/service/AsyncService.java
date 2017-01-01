@@ -1,5 +1,7 @@
 package hakwonband.admin.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 
 import hakwonband.admin.model.DevicePushData;
@@ -8,6 +10,8 @@ import hakwonband.api.PushSend;
 
 public class AsyncService {
 
+	public static final Logger logger = LoggerFactory.getLogger(AsyncService.class);
+
 	/**
 	 * 모바일 푸시
 	 * @param devicePushData
@@ -15,6 +19,7 @@ public class AsyncService {
 	@Async
 	public void pushMobileDevice(DevicePushData devicePushData) {
 		if( devicePushData == null ) {
+			logger.info("devicePushData is null");
 			return ;
 		}
 		if( devicePushData.getDeviceList() == null ) {

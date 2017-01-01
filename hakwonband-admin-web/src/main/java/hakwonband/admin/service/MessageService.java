@@ -349,7 +349,7 @@ public class MessageService {
 		/**
 		 * 메세지 발송 처리
 		 */
-		logger.info("executeTeacherMessageSend deviceList["+deviceList+"]");
+		logger.info("executeMessageSend deviceList["+deviceList.size()+"]");
 		if( deviceList != null && deviceList.size() > 0 ) {
 			PushMessage pushMessage = new PushMessage();
 			pushMessage.setTicker("학원밴드 입니다.");
