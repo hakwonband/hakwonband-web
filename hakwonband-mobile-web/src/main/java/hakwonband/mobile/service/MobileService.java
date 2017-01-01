@@ -206,10 +206,14 @@ public class MobileService {
 		DataMap eventData = new DataMap();
 
 		List<DataMap> eventList = eventDAO.eventRecommendList(param);
-		int eventListTotCount = eventDAO.eventRecommendListTotCount(param);
+		Integer eventListTotCount = eventDAO.eventRecommendListTotCount(param);
 
 		eventData.put("eventList", eventList);
-		eventData.put("eventListTotCount", eventListTotCount);
+		if( eventListTotCount == null ) {
+			eventData.put("eventListTotCount", 0);
+		} else {
+			eventData.put("eventListTotCount", eventListTotCount);
+		}
 
 		return eventData;
 	}
