@@ -41,6 +41,7 @@ var merge		= require('merge-stream'),
 			, './js/module/hakwon/teacher.js'
 			, './js/module/hakwon/notice.js'
 			, './js/module/hakwon/event.js'
+			, './js/module/hakwon/eventRecommend.js'
 			, './js/module/edvertise.js'
 		]
 		, css_markup: './css/**/*'

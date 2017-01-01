@@ -63,6 +63,8 @@
 			, date_format(a.udp_date, '%Y년%m월%d일 %H:%i') as udp_date
 			, date_format(a.begin_date, '%Y-%m-%d') as begin_date
 			, date_format(a.end_date, '%Y-%m-%d') as end_date
+			, a.recommend_yn
+			, a.add_info_title
 		from
 			tb_event a
 			, tb_user_info b
@@ -87,6 +89,10 @@
 			, get_file_path(c.photo_file_no) as photo_file_path
 			, get_code_name('001', b.user_type) as user_type_name
 			, calc_age(c.user_birthday) as user_age
+			, a.recommend_user_no
+			, case when a.recommend_user_no  > 0 then (select user_id from tb_user where user_no = a.recommend_user_no)
+				end  as recommend_user_id
+			, a.user_info
 		from
 			tb_event_user a
 			, tb_user b
@@ -113,6 +119,8 @@
 			, reg_date
 			, begin_date
 			, end_date
+			, recommend_yn
+			, add_info_title
 		) values (
 			#{hakwon_no}
 			, #{event_title}
@@ -122,6 +130,8 @@
 			, now()
 			, #{begin_date}
 			, #{end_date}
+			, #{recommend_yn}
+			, #{add_info_title}
 		)
 	]]>
 	<selectKey keyProperty="idx" resultType="long">
@@ -140,6 +150,8 @@
 			, event_content = #{event_content}
 			, begin_date = #{begin_date}
 			, end_date = #{end_date}
+			, recommend_yn = #{recommend_yn}
+			, add_info_title = #{add_info_title}
 		where
 			event_no = #{event_no}
 			and event_status = '001'
@@ -235,4 +247,36 @@
 			event_no = #{event_no}
 	]]>
 	</update>
+
+	<!-- 이벤트 추천 받은 리스트 -->
+	<select id="eventRecommendList" parameterType="long" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventRecommendList */
+		select
+			user_info.user_no
+			, recommend_user.recommend_count
+			, user.user_type
+			, user_info.user_id
+			, user_info.user_name
+			, case when user_info.user_gender = 'M' then '남' else '여' end as user_gender_name
+			, user_info.tel1_no
+			, get_file_path(user_info.photo_file_no) as photo_file_path
+			, get_code_name('001', user.user_type) as user_type_name
+			, calc_age(user_info.user_birthday) as user_age
+		from
+			tb_user_info user_info,
+			tb_user user,
+			(
+				select
+					event_user.recommend_user_no as user_no
+					, count(event_user.recommend_user_no) as recommend_count
+				from tb_event_user event_user
+				where event_no = #{event_no}
+				group by event_user.recommend_user_no
+			) recommend_user
+		WHERE
+			user_info.user_no = recommend_user.user_no
+			and user_info.user_no = user.user_no
+	]]>
+	</select>
 </mapper>

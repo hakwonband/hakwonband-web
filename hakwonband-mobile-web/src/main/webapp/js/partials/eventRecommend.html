@@ -1,22 +1,22 @@
 <section>
 	<div class="sec_title">
-		<h2 class="tit hide">참여한 이벤트</h2>
+		<h2 class="tit hide">추천 받은 이벤트</h2>
 	</div>
 
 	<div class="sec_blk">
 		<!-- 참여한 이벤트 없음 -->
-		<div class="sec_con_02" ng-if="eventMyJoinList.length <= 0">
+		<div class="sec_con_02" ng-if="eventList.length <= 0">
 			<div class="data_none">
-				참여한 이벤트가 없습니다.
+				추천 받은 이벤트가 없습니다.
 			</div>
 		</div>
 
 		<div class="sec_tab_m">
-			<a href="#/hakwon/eventJoin" class="on" style="width:50%;">참여한 이벤트</a>
-			<a href="#/hakwon/eventRecommend" style="width:50%;">추천받은 이벤트</a>
+			<a href="#/hakwon/eventJoin" style="width:50%;">참여한 이벤트</a>
+			<a href="#/hakwon/eventRecommend" class="on" style="width:50%;">추천받은 이벤트</a>
 		</div>
 
-		<div class="sec_con_02" ng-if="eventMyJoinList.length > 0" ng-repeat="item in eventMyJoinList">
+		<div class="sec_con_02" ng-if="eventList.length > 0" ng-repeat="item in eventList">
 			<div class="alarm_cont">
 				<a href="" data-idx="{{item.event_no}}" ng-click="goEventDetail(item)">
 					{{item.event_title}}
@@ -28,8 +28,7 @@
 				</span>
 				<span class="att">{{item.hakwon_name}}</span>
 				<span class="date">
-					<em>신청일 : {{item.join_date}}</em>
-					<em>종료일 : {{item.end_date}}</em>
+					<em>추천인수 : {{item.recommend_count}}</em>
 				</span>
 			</div>
 		</div>

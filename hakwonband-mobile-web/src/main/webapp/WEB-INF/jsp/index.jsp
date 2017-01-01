@@ -22,6 +22,12 @@
 # 2016-12-05 01
 ############################################################
 ############################################################
+
+############################################################
+############################################################
+# 2017-01-01 01
+############################################################
+############################################################
 -->
 <!DOCTYPE html>
 <html ng-app="hakwonApp">
@@ -136,6 +142,7 @@
 <script src="/js/module/hakwon/teacher.js"></script>
 <script src="/js/module/hakwon/notice.js"></script>
 <script src="/js/module/hakwon/event.js"></script>
+<script src="/js/module/hakwon/eventRecommend.js"></script>
 <script src="/js/module/edvertise.js"></script>
 <%
 	}

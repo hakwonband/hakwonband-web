@@ -95,4 +95,11 @@ public interface EventDAO {
 	 * @return
 	 */
 	public int eventPushSendUpdate(DataMap param);
+
+	/**
+	 * 추천 받은 리스트
+	 * @param event_no
+	 * @return
+	 */
+	public List<DataMap> eventRecommendList(long event_no);
 }

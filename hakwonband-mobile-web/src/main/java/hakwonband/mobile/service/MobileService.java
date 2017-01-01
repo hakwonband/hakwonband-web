@@ -198,6 +198,27 @@ public class MobileService {
 	}
 
 	/**
+	 * 이벤트 추천 받은 리스트
+	 * @param param
+	 * @return
+	 */
+	public DataMap eventRecommendList(DataMap param) {
+		DataMap eventData = new DataMap();
+
+		List<DataMap> eventList = eventDAO.eventRecommendList(param);
+		Integer eventListTotCount = eventDAO.eventRecommendListTotCount(param);
+
+		eventData.put("eventList", eventList);
+		if( eventListTotCount == null ) {
+			eventData.put("eventListTotCount", 0);
+		} else {
+			eventData.put("eventListTotCount", eventListTotCount);
+		}
+
+		return eventData;
+	}
+
+	/**
 	 * 학원 이벤트 상세정보
 	 * @param param
 	 * @return
@@ -211,6 +232,9 @@ public class MobileService {
 		/* 이벤트 관련 파일 리스트 및 카운트 */
 		List<DataMap> fileList 	= fileDAO.fileList(param);
 
+
+		DataMap resultObj = new DataMap();
+
 		if( param.isNotNull("user_no") ) {
 			/* 상세확인시, 기존 읽은상태정보 체크 */
 			int resultReadCount = readDAO.contentReadCount(param);
@@ -223,9 +247,11 @@ public class MobileService {
 					throw new HKBandException("ReadDAO.insertContentRead error");
 				}
 			}
+
+			List<DataMap> recommendUserList = eventDAO.eventRecommendUserList(param);
+			resultObj.put("recommendUserList",		recommendUserList);
 		}
 
-		DataMap resultObj = new DataMap();
 		resultObj.put("eventDetail",				eventDetail);
 		resultObj.put("fileList",					fileList);
 
@@ -242,6 +268,20 @@ public class MobileService {
 
 		DataMap resultObj = new DataMap();
 
+		long recommend_user_no = 0;
+		if( param.isNotNull("recommend_user_id") ) {
+			DataMap checkParam = new DataMap();
+			checkParam.put("user_id", param.getString("recommend_user_id"));
+			DataMap recommendUserInfo = userDAO.checkUserId(checkParam);
+
+			if( recommendUserInfo == null || recommendUserInfo.getLong("user_no") < 1 ) {
+				resultObj.put("resultJoinEvent",		"recommend_fail");
+				return resultObj;
+			} else {
+				recommend_user_no = recommendUserInfo.getLong("user_no");
+			}
+		}
+
 		/* 기존 이벤트 참여 확인 */
 		int checkUser = eventDAO.eventUserCheck(param);
 
@@ -252,6 +292,9 @@ public class MobileService {
 		}
 
 		/* 이벤트 참여 신청 */
+		if( recommend_user_no > 0 ) {
+			param.put("recommend_user_no",	recommend_user_no);
+		}
 		int resultUser = eventDAO.insertEventUser(param);
 		if (resultUser != 1) {
 			throw new HKBandException("eventDAO.insertEventUser error");

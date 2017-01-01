@@ -524,6 +524,9 @@ button.btn_letter {position:absolute; right:10px; top:17px; display:inline-block
 .select_time_h_left{margin-right:5px;}
 .select_time_m_right{margin-left:5px;}
 
+.event_info_input input{display:block; margin-bottom:5px;}
+.event_info_input textarea{width:100%; margin-bottom:5px;}
+
 /* common */
 .sec_loading {position:absolute; top:10px; left:15px; width:32px; height:32px; overflow:hidden;}
 .txt_cont {line-height:140%}

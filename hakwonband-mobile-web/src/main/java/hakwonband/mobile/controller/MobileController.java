@@ -262,10 +262,14 @@ public class MobileController extends BaseAction {
 
 		/* 인증정보 */
 		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
-		String event_no = request.getParameter("event_no");
+		String event_no				= request.getParameter("event_no");
+		String recommend_user_id	= request.getParameter("recommend_user_id");
+		String add_info				= request.getParameter("add_info");
 
 		DataMap param = new DataMap();
 		param.put("event_no",			event_no);
+		param.put("recommend_user_id",	recommend_user_id);
+		param.put("add_info",			add_info);
 		param.put("user_no",			authUserInfo.get("user_no"));
 
 		/* 이벤트 참여 */
@@ -305,6 +309,32 @@ public class MobileController extends BaseAction {
 
 		sendColData(colData, request, response);
 	}
+
+	/**
+	 * 이벤트 추천 받은 리스트
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/event/eventRecommendList")
+	public void eventRecommendList(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증정보 */
+		DataMap authUserInfo	= (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		int page_no				= StringUtil.parseInt(request.getParameter("page_no"), 1);
+		int page_scale			= HakwonConstant.PageScale.EVENT_REQ;
+
+		DataMap param = new DataMap();
+		param.put("user_no", 	authUserInfo.get("user_no"));
+		param.put("start_no",	(page_no-1)*page_scale);
+		param.put("page_scale",	page_scale);
+
+		/* 참여한 이벤트 리스트 조회 */
+		DataMap colData = mobileService.eventRecommendList(param);
+		colData.put("pageScale",	 			page_scale);
+
+		sendColData(colData, request, response);
+	}
+
 
 
 	/**

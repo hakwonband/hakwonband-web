@@ -614,6 +614,10 @@ public class MasterController extends BaseAction {
 		String begin_date		= request.getParameter("begin_date");
 		String end_date			= request.getParameter("end_date");
 		String file_no_list		= request.getParameter("file_no_list");
+		String recommend_yn		= request.getParameter("recommend_yn");
+		String add_info_title	= request.getParameter("add_info_title");
+
+		if( "Y".equals(recommend_yn) == false ) recommend_yn = "N";
 
 		DataMap param = new DataMap();
 		param.put("hakwon_no",		hakwon_no);
@@ -623,6 +627,8 @@ public class MasterController extends BaseAction {
 		param.put("end_date",		end_date);
 		param.put("file_no_list",	file_no_list);
 		param.put("reg_user_no",	authUserInfo.get("user_no"));
+		param.put("recommend_yn",	recommend_yn);
+		param.put("add_info_title",	add_info_title);
 
 		DataMap colData = eventService.registHakwonEvent(param);
 
@@ -677,6 +683,11 @@ public class MasterController extends BaseAction {
 		String end_date			= request.getParameter("end_date");
 		String file_no_list		= request.getParameter("file_no_list");
 
+		String recommend_yn		= request.getParameter("recommend_yn");
+		String add_info_title	= request.getParameter("add_info_title");
+
+		if( "Y".equals(recommend_yn) == false ) recommend_yn = "N";
+
 		DataMap param = new DataMap();
 		param.put("hakwon_no",		hakwon_no);
 		param.put("event_title",	event_title);
@@ -686,6 +697,8 @@ public class MasterController extends BaseAction {
 		param.put("event_no",		event_no);
 		param.put("file_no_list",	file_no_list);
 		param.put("user_no",		authUserInfo.get("user_no"));
+		param.put("recommend_yn",	recommend_yn);
+		param.put("add_info_title",	add_info_title);
 
 		DataMap colData = eventService.editHakwonEvent(param);
 

@@ -52,6 +52,13 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 						return false;
 					}
 					var colData = data.colData;
+
+					if( colData.eventInfo.recommend_yn == 'Y' ) {
+						if( !colData.recommendList ) {
+							colData.recommendList = [];
+						}
+					}
+
 					colData.student_url = student_url;
 					console.log('colData', colData);
 					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.event.viewData, colData));
@@ -250,6 +257,9 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			fileArray.push(fileNo);
 		});
 
+		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
+		var add_info_title	= $mainNgView.find('input[name=add_info_title]').val();
+
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, event_title : title
@@ -257,6 +267,8 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, end_date : endDate
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
+			, recommend_yn : recommend_yn
+			, add_info_title : add_info_title
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/registEvent.do",
@@ -322,6 +334,9 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			fileArray.push(fileNo);
 		});
 
+		var recommend_yn	= $mainNgView.find('select[name=recommend_yn]').val();
+		var add_info_title	= $mainNgView.find('input[name=add_info_title]').val();
+
 		var param = {
 			hakwon_no : hakwonInfo.hakwon_no
 			, event_no : eventNo
@@ -330,6 +345,8 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 			, end_date : endDate
 			, event_content : eventContent
 			, file_no_list : fileArray.toString()
+			, recommend_yn : recommend_yn
+			, add_info_title : add_info_title
 		};
 		$.ajax({
 			url: contextPath+"/hakwon/master/editEvent.do",
@@ -703,6 +720,14 @@ hakwonMainApp.controller('eventViewController', function($scope, $location, $rou
 		if( window.confirm('이벤트를 삭제 하시겠습니까?') ) {
 			eventService.eventDel(eventNo);
 		}
+	});
+
+	/**
+	 * 이벤트 참여자 메세지 보내기
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=eventUserMessage]', function() {
+		var user_no = $(this).data('user-no');
+		window.location.href = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&msg_user_no_array='+user_no;
 	});
 
 	$scope.$on('$viewContentLoaded', function() {

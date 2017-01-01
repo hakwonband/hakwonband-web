@@ -14,7 +14,6 @@
 	<version>0.0.1-mobile-20140920</version>
 	<packaging>war</packaging>
 	<name>hakwonband-mobile-web Maven Webapp</name>
-	<url>http://maven.apache.org</url>
 
 	<build>
 		<finalName>mobile-web</finalName>

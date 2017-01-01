@@ -89,3 +89,14 @@ comment = '사용자 알림'
 ;
 
 insert tb_user_alarm(user_no) select user_no from tb_user;
+
+
+==========================================================
+2016-12-05
+==========================================================
+alter table tb_event add recommend_yn char(1) default 'N' comment '추천 여부';
+alter table tb_event add add_info_title varchar(100) comment '정보 입력 타이틀';
+
+alter table tb_event_user add recommend_user_no integer	comment '추천자 번호';
+
+alter table tb_event_user add user_info varchar(1000)	comment '사용자 정보';
