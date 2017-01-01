@@ -202,11 +202,11 @@ public class MobileService {
 	 * @param param
 	 * @return
 	 */
-	public DataMap eventRecommandList(DataMap param) {
+	public DataMap eventRecommendList(DataMap param) {
 		DataMap eventData = new DataMap();
 
-		List<DataMap> eventList = eventDAO.eventRecommandList(param);
-		int eventListTotCount = eventDAO.eventRecommandListTotCount(param);
+		List<DataMap> eventList = eventDAO.eventRecommendList(param);
+		int eventListTotCount = eventDAO.eventRecommendListTotCount(param);
 
 		eventData.put("eventList", eventList);
 		eventData.put("eventListTotCount", eventListTotCount);
@@ -228,6 +228,9 @@ public class MobileService {
 		/* 이벤트 관련 파일 리스트 및 카운트 */
 		List<DataMap> fileList 	= fileDAO.fileList(param);
 
+
+		DataMap resultObj = new DataMap();
+
 		if( param.isNotNull("user_no") ) {
 			/* 상세확인시, 기존 읽은상태정보 체크 */
 			int resultReadCount = readDAO.contentReadCount(param);
@@ -240,9 +243,11 @@ public class MobileService {
 					throw new HKBandException("ReadDAO.insertContentRead error");
 				}
 			}
+
+			List<DataMap> recommendUserList = eventDAO.eventRecommendUserList(param);
+			resultObj.put("recommendUserList",		recommendUserList);
 		}
 
-		DataMap resultObj = new DataMap();
 		resultObj.put("eventDetail",				eventDetail);
 		resultObj.put("fileList",					fileList);
 

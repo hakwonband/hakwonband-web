@@ -94,6 +94,14 @@ public class EventService {
 		colData.put("eventMemberList", eventMemberList);
 
 
+		/**
+		 * 이벤트 추천받은 리스트
+		 */
+		if( eventInfo.equals("recommend_yn", "Y") ) {
+			List<DataMap> recommend_list = eventDAO.eventRecommendList(param.getLong("event_no"));
+			colData.put("recommendList", 	recommend_list);
+		}
+
 		/* 상세확인시, 기존 읽은상태정보 체크 */
 		int resultReadCount = readDAO.contentReadCount(param);
 		int resultInsert = 0;

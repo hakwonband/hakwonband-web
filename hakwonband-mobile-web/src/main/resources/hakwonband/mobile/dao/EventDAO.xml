@@ -112,6 +112,26 @@
 	</select>
 
 	<!-- 기존 이벤트 참여 검증 -->
+	<select id="eventRecommendUserList" parameterType="dataMap" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventRecommendUserList */
+		select
+			user_info.user_id
+			, user_info.user_no
+			, user_info.user_name
+		from
+			tb_event_user event_user
+			, tb_user_info user_info
+		where
+			event_user.event_no = #{event_no}
+			and event_user.recommend_user_no = #{user_no}
+			and event_user.user_no = user_info.user_no
+		order by
+			event_user.reg_date desc
+	]]>
+	</select>
+
+	<!-- 기존 이벤트 참여 검증 -->
 	<select id="eventUserCheck" parameterType="dataMap" resultType="int">
 	<![CDATA[
 		/* eventDAO.eventUserCheck */
@@ -187,9 +207,9 @@
 	</select>
 
 	<!-- 이벤트 추천받은 리스트 -->
-	<select id="eventRecommandList" parameterType="dataMap" resultType="dataMap">
+	<select id="eventRecommendList" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[
-		/* eventDAO.eventRecommandList */
+		/* eventDAO.eventRecommendList */
 		select
 			event_user.event_no
 			, event_user.user_no
@@ -206,7 +226,6 @@
 			, date_format(event.end_date, '%Y.%m.%d') as end_date
 			, event.recommend_yn
 			, event.add_info_title
-
 			, hakwon_info.hakwon_name
 			, hakwon_info.logo_file_no
 			, get_file_path(hakwon_info.logo_file_no) as logo_file_path
@@ -226,9 +245,9 @@
 	</select>
 
 	<!-- 이벤트 추천받은 카운트 -->
-	<select id="eventRecommandListTotCount" parameterType="dataMap" resultType="int">
+	<select id="eventRecommendListTotCount" parameterType="dataMap" resultType="int">
 	<![CDATA[
-		/* eventDAO.eventRecommandListTotCount */
+		/* eventDAO.eventRecommendListTotCount */
 		select
 			count(1)
 		from

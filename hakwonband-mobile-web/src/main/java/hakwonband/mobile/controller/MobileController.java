@@ -315,8 +315,8 @@ public class MobileController extends BaseAction {
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/event/eventRecommandList")
-	public void eventRecommandList(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/event/eventRecommendList")
+	public void eventRecommendList(HttpServletRequest request, HttpServletResponse response) {
 
 		/* 인증정보 */
 		DataMap authUserInfo	= (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
@@ -329,7 +329,7 @@ public class MobileController extends BaseAction {
 		param.put("page_scale",	page_scale);
 
 		/* 참여한 이벤트 리스트 조회 */
-		DataMap colData = mobileService.eventRecommandList(param);
+		DataMap colData = mobileService.eventRecommendList(param);
 		colData.put("pageScale",	 			page_scale);
 
 		sendColData(colData, request, response);

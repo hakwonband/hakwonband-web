@@ -95,9 +95,9 @@ hakwonApp.config(['$routeProvider', function($routeProvider) {
 			templateUrl: '/assets/partials/eventJoin.html'
 			, controller: 'eventJoinController'
 		})
-		.when('/hakwon/eventRecommand', {
-			templateUrl: '/assets/partials/eventRecommand.html'
-				, controller: 'eventRecommandController'
+		.when('/hakwon/eventRecommend', {
+			templateUrl: '/assets/partials/eventRecommend.html'
+				, controller: 'eventRecommendController'
 		})
 		.when('/edvertiseList', {
 			template: hakwonTmpl.advertList

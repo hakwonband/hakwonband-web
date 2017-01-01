@@ -52,6 +52,13 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 						return false;
 					}
 					var colData = data.colData;
+
+					if( colData.eventInfo.recommend_yn == 'Y' ) {
+						if( !colData.recommendList ) {
+							colData.recommendList = [];
+						}
+					}
+
 					colData.student_url = student_url;
 					console.log('colData', colData);
 					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.event.viewData, colData));

@@ -2,8 +2,8 @@
 /**
  * 이벤트 추천받은 서비스
  */
-hakwonApp.service('eventRecommandService', function() {
-	console.log('eventRecommandService call');
+hakwonApp.service('eventRecommendService', function() {
+	console.log('eventRecommendService call');
 
 	var Service = {};
 
@@ -11,8 +11,8 @@ hakwonApp.service('eventRecommandService', function() {
 });
 
 /* 이벤트 참여내역 컨트롤러 */
-hakwonApp.controller('eventRecommandController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommandService, $http){
-	console.log('eventRecommandController call');
+hakwonApp.controller('eventRecommendController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommendService, $http){
+	console.log('eventRecommendController call');
 
 	try {
 		/*  인증 정보 체크  */
@@ -25,7 +25,7 @@ hakwonApp.controller('eventRecommandController', function($scope, $window, $loca
 
 		/*	초기화	*/
 		$scope.$on('$viewContentLoaded', function() {
-			console.log('eventRecommandController $viewContentLoaded');
+			console.log('eventRecommendController $viewContentLoaded');
 
 			/*	데이터 초기화	*/
 			$scope.eventMyJoinList	= [];
@@ -47,7 +47,7 @@ hakwonApp.controller('eventRecommandController', function($scope, $window, $loca
 			$http({
 				withCredentials: false,
 				method: 'post',
-				url: contextPath + '/mobile/event/eventRecommandList.do',
+				url: contextPath + '/mobile/event/eventRecommendList.do',
 				headers: angularHeaders,
 				data: $.param(params, true)
 			}).success(function(data, status) {

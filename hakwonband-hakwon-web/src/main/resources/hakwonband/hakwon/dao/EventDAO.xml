@@ -247,4 +247,36 @@
 			event_no = #{event_no}
 	]]>
 	</update>
+
+	<!-- 이벤트 추천 받은 리스트 -->
+	<select id="eventRecommendList" parameterType="long" resultType="dataMap">
+	<![CDATA[
+		/* eventDAO.eventRecommendList */
+		select
+			user_info.user_no
+			, recommend_user.recommend_count
+			, user.user_type
+			, user_info.user_id
+			, user_info.user_name
+			, case when user_info.user_gender = 'M' then '남' else '여' end as user_gender_name
+			, user_info.tel1_no
+			, get_file_path(user_info.photo_file_no) as photo_file_path
+			, get_code_name('001', user.user_type) as user_type_name
+			, calc_age(user_info.user_birthday) as user_age
+		from
+			tb_user_info user_info,
+			tb_user user,
+			(
+				select
+					event_user.recommend_user_no as user_no
+					, count(event_user.recommend_user_no) as recommend_count
+				from tb_event_user event_user
+				where event_no = #{event_no}
+				group by event_user.recommend_user_no
+			) recommend_user
+		WHERE
+			user_info.user_no = recommend_user.user_no
+			and user_info.user_no = user.user_no
+	]]>
+	</select>
 </mapper>

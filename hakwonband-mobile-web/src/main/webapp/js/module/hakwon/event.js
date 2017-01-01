@@ -164,6 +164,10 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 
 					$scope.eventObj = data.colData;
 
+					if( !$scope.eventObj.recommendUserList ) {
+						$scope.eventObj.recommendUserList = [];
+					}
+
 					if( !$scope.eventObj.eventDetail.recommend_user_id ) {
 						$scope.eventObj.eventDetail.recommend_user_id = '';
 					}
