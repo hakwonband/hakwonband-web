@@ -232,7 +232,8 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 					if( colData.resultJoinEvent == CommonConstant.Flag.success ) {
 						alert('이벤트에 참여되었습니다.');
 						$scope.getEvent();
-					} else if (colData.resultJoinEvent == 'exist') {
+					} else if (colData.resultJoinEvent == 'timeover') {
+						alert('참여 기간이 아닙니다.');
 					} else if (colData.resultJoinEvent == 'recommend_fail') {
 						alert('추천인 정보가 올바르지 않습니다.');
 					} else {

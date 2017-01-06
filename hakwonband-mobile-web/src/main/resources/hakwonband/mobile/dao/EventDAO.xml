@@ -101,6 +101,9 @@
 				end  as recommend_user_id
 			, event_user.user_info as add_user_info
 			, count(event_user.user_no) as event_join_count
+			, case when
+				now() BETWEEN begin_date and end_date then 1
+				else 0 end as is_expire
 		from
 			tb_event a left join tb_event_user event_user on a.event_no = event_user.event_no and event_user.user_no = #{user_no}
 			, tb_user_info b

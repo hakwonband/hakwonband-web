@@ -282,6 +282,13 @@ public class MobileService {
 			}
 		}
 
+		/* 이벤트 상세정보 */
+		DataMap eventDetail = eventDAO.eventDetail(param);
+		if( eventDetail.getInt("is_expire") == 0 ) {
+			resultObj.put("resultJoinEvent",		"timeover");
+			return resultObj;
+		}
+
 		/* 이벤트 참여 신청 */
 		if( recommend_user_no > 0 ) {
 			param.put("recommend_user_no",	recommend_user_no);
@@ -312,6 +319,13 @@ public class MobileService {
 	 * @return
 	 */
 	public void deleteJoinEvent(DataMap param) {
+
+		/* 이벤트 상세정보 */
+		DataMap eventDetail = eventDAO.eventDetail(param);
+		if( eventDetail.getInt("is_expire") == 0 ) {
+			throw new HKBandException();
+		}
+
 		eventDAO.deleteEventUser(param);
 	}
 
