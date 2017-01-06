@@ -157,6 +157,32 @@
 	]]>
 	</insert>
 
+	<!-- 이벤트 참여자 수정 -->
+	<update id="updateEventUser" parameterType="dataMap">
+	<![CDATA[
+		/* eventDAO.updateEventUser */
+		update tb_event_user set
+			upd_date = now()
+			, recommend_user_no = #{recommend_user_no}
+			, user_info = #{add_info}
+		where
+			event_no = #{event_no}
+			and user_no = #{user_no}
+	]]>
+	</update>
+
+	<!-- 이벤트 참여자 삭제 -->
+	<delete id="deleteEventUser" parameterType="dataMap">
+	<![CDATA[
+		/* eventDAO.deleteEventUser */
+		delete from tb_event_user
+		where
+			event_no = #{event_no}
+			and user_no = #{user_no}
+	]]>
+	</delete>
+
+
 	<!-- 참여한 이벤트 리스트 -->
 	<select id="eventMyJoinList" parameterType="dataMap" resultType="dataMap">
 	<![CDATA[

@@ -176,6 +176,7 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 					/*	참여 여부	*/
 					if( data.colData.eventDetail.event_join_count > 0 ) {
 						$scope.eventObj.eventDetail.isJoinEvent = true;
+						$scope.eventObj.eventDetail.add_info = $scope.eventObj.eventDetail.add_user_info;
 					} else {
 						$scope.eventObj.eventDetail.isJoinEvent = false;
 					}
@@ -210,12 +211,11 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 				return false;
 			}
 
-			var idx = parseInt($(e.currentTarget).data('idx')),
-				params = {
-					event_no: idx
-					, recommend_user_id : $scope.eventObj.eventDetail.recommend_user_id
-					, add_info : $scope.eventObj.eventDetail.add_info
-				};
+			var params = {
+				event_no: $routeParams.event_no
+				, recommend_user_id : $scope.eventObj.eventDetail.recommend_user_id
+				, add_info : $scope.eventObj.eventDetail.add_info
+			};
 			if ( !isNull($scope.eventObj.eventDetail.add_info_title) && isNull($scope.eventObj.eventDetail.add_info) ) {
 				alert($scope.eventObj.eventDetail.add_info_title + ' 입력해 주세요.');
 				return false;
@@ -235,6 +235,47 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 					} else if (colData.resultJoinEvent == 'exist') {
 					} else if (colData.resultJoinEvent == 'recommend_fail') {
 						alert('추천인 정보가 올바르지 않습니다.');
+					} else {
+						commProto.logger({eventDetailError:colData});
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			}});
+		};
+
+		/* 이벤트 참여 취소 */
+		$scope.joinCancelEvent = function(e) {
+			if( comm.isLogin() === false ) {
+				alert('가입 하고 이용해 주세요.');
+				window.location.href = MENUS.sharpUrls.login;
+				return false;
+			}
+
+			if( window.confirm('참여한 이벤트를 취소 하시겠습니까?') == false ) {
+				return false;
+			}
+
+			if( userAuth.userType == HakwonConstant.UserType.STUDENT || userAuth.userType == HakwonConstant.UserType.PARENT ) {
+			} else {
+				alert('학생 및 학부모님만 이용할수 있는 메뉴 입니다.');
+				return false;
+			}
+
+			var params = {
+				event_no: $routeParams.event_no
+			};
+			CommUtil.ajax({url:contextPath+"/mobile/event/deleteJoinEvent.do", param:params, successFun:function(data) {
+				try {
+					if( data.error ) {
+						alert('이벤트 참여 취소를 실패 했습니다.');
+						return ;
+					}
+
+					var colData = data.colData;
+					if( colData.flag == CommonConstant.Flag.success ) {
+						alert('이벤트 참여를 취소 했습니다.');
+						$scope.getEvent();
 					} else {
 						commProto.logger({eventDetailError:colData});
 					}

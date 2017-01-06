@@ -282,6 +282,63 @@ public class MobileService {
 			}
 		}
 
+		/* 이벤트 참여 신청 */
+		if( recommend_user_no > 0 ) {
+			param.put("recommend_user_no",	recommend_user_no);
+		}
+
+		/* 기존 이벤트 참여 확인 */
+		int checkUser = eventDAO.eventUserCheck(param);
+
+		if (checkUser != 0) {
+			int resultUser = eventDAO.updateEventUser(param);
+			if (resultUser != 1) {
+				throw new HKBandException("eventDAO.insertEventUser error");
+			}
+		} else {
+			int resultUser = eventDAO.insertEventUser(param);
+			if (resultUser != 1) {
+				throw new HKBandException("eventDAO.insertEventUser error");
+			}
+		}
+
+		resultObj.put("resultJoinEvent",		CommonConstant.Flag.success);
+		return resultObj;
+	}
+
+	/**
+	 * 학원 이벤트 삭제
+	 * @param param
+	 * @return
+	 */
+	public void deleteJoinEvent(DataMap param) {
+		eventDAO.deleteEventUser(param);
+	}
+
+	/**
+	 * 학원 이벤트 수정
+	 * @param param
+	 * @return
+	 */
+	public DataMap updateJoinEvent(DataMap param) {
+		logger.debug("updateJoinEvent param["+param+"]");
+
+		DataMap resultObj = new DataMap();
+
+		long recommend_user_no = 0;
+		if( param.isNotNull("recommend_user_id") ) {
+			DataMap checkParam = new DataMap();
+			checkParam.put("user_id", param.getString("recommend_user_id"));
+			DataMap recommendUserInfo = userDAO.checkUserId(checkParam);
+
+			if( recommendUserInfo == null || recommendUserInfo.getLong("user_no") < 1 ) {
+				resultObj.put("resultJoinEvent",		"recommend_fail");
+				return resultObj;
+			} else {
+				recommend_user_no = recommendUserInfo.getLong("user_no");
+			}
+		}
+
 		/* 기존 이벤트 참여 확인 */
 		int checkUser = eventDAO.eventUserCheck(param);
 
