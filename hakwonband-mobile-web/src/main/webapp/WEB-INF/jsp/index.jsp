@@ -65,6 +65,9 @@
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/common.css" />
 
+	<!-- 공통 js -->
+	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
+
 	<!-- 공통 모듈 -->
 	<script src="/assets/js/common.lib.min.js"></script>
 
@@ -116,10 +119,6 @@
 <!-- class="student, parent" -->
 <div id="mypage" style="display:none;"></div>
 <div id="mypage_academy" style="display:none;"></div>
-
-
-<!-- 공통 js -->
-<script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
 <%
 	if( isLive ) {
