@@ -64,6 +64,10 @@
 
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/common.css" />
+
+	<!-- 공통 모듈 -->
+	<script src="/assets/js/common.lib.min.js"></script>
+
 <%
 	if( isMobile == false ) {
 %>
@@ -117,8 +121,6 @@
 <!-- 공통 js -->
 <script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
-<!-- 공통 모듈 -->
-<script src="/assets/js/common.lib.min.js"></script>
 <%
 	if( isLive ) {
 %>
