@@ -68,6 +68,11 @@
 	<!-- 공통 js -->
 	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
+	<script type="text/javascript" src="/assets/js/angular/angular.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular/angular-route.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="/assets/js/angular/angular-touch.min.js"></script>
+
 	<!-- 공통 모듈 -->
 	<script src="/assets/js/common.lib.min.js"></script>
 
