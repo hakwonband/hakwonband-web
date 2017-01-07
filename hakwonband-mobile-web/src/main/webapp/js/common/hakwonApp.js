@@ -1,6 +1,4 @@
-var hakwonApp = angular.module('hakwonApp', ['ngRoute', 'ngTouch']);
-
-hakwonApp.config(['$routeProvider', function($routeProvider) {
+angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', function($routeProvider) {
 	console.log('hakwonApp.config');
 	$routeProvider
 		.when('/index', {

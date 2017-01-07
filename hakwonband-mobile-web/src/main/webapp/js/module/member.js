@@ -1,7 +1,7 @@
 /**
  * 회원정보 서비스
  */
-hakwonApp.service('memberService', function($http) {
+angular.module('hakwonApp').service('memberService', function($http) {
 	console.log('memberService call');
 
 	var memberService = {};
@@ -195,7 +195,7 @@ hakwonApp.service('memberService', function($http) {
 });
 
 /*	내정보 변경 컨트롤러  */
-hakwonApp.controller('memberModifyController', function($scope, $window, $location, $routeParams, memberService, CommUtil) {
+angular.module('hakwonApp').controller('memberModifyController', function($scope, $window, $location, $routeParams, memberService, CommUtil) {
 	console.log('memberModifyController call');
 
 	try {

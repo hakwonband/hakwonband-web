@@ -30,6 +30,10 @@
 ############################################################
 -->
 <!DOCTYPE html>
+<!--
+<html ng-app="hakwonApp">
+<html>
+-->
 <html ng-app="hakwonApp">
 <head>
 	<title>학원밴드</title>
@@ -82,7 +86,7 @@
 %>
 </head>
 
-<body>
+<body id="hakwon_body">
 <div class="progress top_progress" style="display:none;">
     <div style="width:0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar">
         <span class="sr-only">0% Complete (success)</span>

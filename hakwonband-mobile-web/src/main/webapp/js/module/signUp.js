@@ -1,5 +1,5 @@
 /*	회원가입	*/
-hakwonApp.controller('signUpController', function($scope, $window, $location, $routeParams, memberService, CommUtil){
+angular.module('hakwonApp').controller('signUpController', function($scope, $window, $location, $routeParams, memberService, CommUtil){
 	try {
 		/*	헤더 정보 셋팅	*/
 		hakwonHeader.setHeader({headerTitle:'학원 밴드 가입'});

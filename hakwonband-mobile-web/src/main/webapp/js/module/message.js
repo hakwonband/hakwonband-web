@@ -1,7 +1,7 @@
 /**
  * 메세지 서비스
  */
-hakwonApp.service('messageService', function($window, CommUtil) {
+angular.module('hakwonApp').service('messageService', function($window, CommUtil) {
 	console.log('messageService call');
 
 	var messageService = {};
@@ -214,7 +214,7 @@ hakwonApp.service('messageService', function($window, CommUtil) {
 
 
 /* 보낸 메세지 리스트 컨트롤러 */
-hakwonApp.controller('sendMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
+angular.module('hakwonApp').controller('sendMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
 	console.log('sendMessageListController call');
 
 	try {
@@ -290,7 +290,7 @@ hakwonApp.controller('sendMessageListController', function($scope, $location, $r
 
 
 /* 받은 메세지 리스트 컨트롤러 */
-hakwonApp.controller('receiveMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
+angular.module('hakwonApp').controller('receiveMessageListController', function($scope, $location, $routeParams, CommUtil, messageService) {
 	console.log('receiveMessageListController call');
 
 	try {
@@ -370,7 +370,7 @@ hakwonApp.controller('receiveMessageListController', function($scope, $location,
 
 
 /* 메세지 상세보기 컨트롤러  */
-hakwonApp.controller('messageDetailController', function($scope, $window, $location, $routeParams, CommUtil, messageService) {
+angular.module('hakwonApp').controller('messageDetailController', function($scope, $window, $location, $routeParams, CommUtil, messageService) {
 	console.log('messageDetailController call');
 
 	try {
@@ -522,7 +522,7 @@ hakwonApp.controller('messageDetailController', function($scope, $window, $locat
 
 
 /* 메세지 보내기 컨트롤러  */
-hakwonApp.controller('messageWriteController', function($scope, $location, $window, $routeParams, $timeout, CommUtil, messageService) {
+angular.module('hakwonApp').controller('messageWriteController', function($scope, $location, $window, $routeParams, $timeout, CommUtil, messageService) {
 
 	try {
 		/*  인증 정보 체크  */

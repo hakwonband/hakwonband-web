@@ -1,7 +1,7 @@
 /**
  * 광고 서비스
  */
-hakwonApp.service('edvertiseService', function(CommUtil) {
+angular.module('hakwonApp').service('edvertiseService', function(CommUtil) {
 	console.log('hakwonMainApp edvertiseService call');
 
 	var edvertiseService = {};
@@ -48,7 +48,7 @@ hakwonApp.service('edvertiseService', function(CommUtil) {
 });
 
 /* 광고 리스트  */
-hakwonApp.controller('edvertiseListController', function($scope, $window, $routeParams, edvertiseService){
+angular.module('hakwonApp').controller('edvertiseListController', function($scope, $window, $routeParams, edvertiseService){
 	console.log('edvertiseListController call');
 
 	var hakwon_no = $routeParams.hakwon_no;
@@ -76,7 +76,7 @@ hakwonApp.controller('edvertiseListController', function($scope, $window, $route
 });
 
 /* 광고 UCC  */
-hakwonApp.controller('edvertiseUccController', function($scope, $window){
+angular.module('hakwonApp').controller('edvertiseUccController', function($scope, $window){
 	console.log('edvertiseUccController call');
 
 	/*	헤더 정보 셋팅	*/

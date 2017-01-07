@@ -1,5 +1,5 @@
 /*	index	*/
-hakwonApp.controller('indexController', function($scope, $location){
+angular.module('hakwonApp').controller('indexController', function($scope, $location){
 	console.log('indexController call');
 
 	$scope.$on("$routeChangeStart", function (event, current, previous, rejection) {
