@@ -8,23 +8,20 @@ hakwonApp.service('memberService', function($http) {
 
 	/* 내정보 조회 */
 	memberService.getMyInfo = function (callback) {
-		$http(
-		{
+		$http({
 			withCredentials: false,
 			method: 'post',
 			url: contextPath+'/mobile/user/myInfoReqDetail.do',
 			headers: angularHeaders
-		}).
-		success(function(data, status) {
-			console.log(data, status);
-			var colData = data.colData;
+		}).then(function(res) {
+			var colData = res.data.colData;
 			if( colData ) {
 				callback(colData);
 			} else {
 				commProto.logger({getMyInfoError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -137,12 +134,12 @@ hakwonApp.service('memberService', function($http) {
 			url: contextPath+'/mobile/user/editMyInfo.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			if( data.error ) {
+		}).then(function(res) {
+			if( res.data.error ) {
 				alert('사용자 정보 수정을 실패 했습니다.');
 				return ;
 			} else {
-				var colData = data.colData;
+				var colData = res.data.colData;
 				if( colData.result == CommonConstant.Flag.success ) {
 
 					/*	사용자 정보 재조회	*/
@@ -153,8 +150,8 @@ hakwonApp.service('memberService', function($http) {
 					commProto.logger({editMyInfoError:colData});
 				}
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 

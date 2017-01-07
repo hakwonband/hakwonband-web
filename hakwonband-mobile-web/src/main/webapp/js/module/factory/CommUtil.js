@@ -76,8 +76,15 @@ hakwonApp.factory('CommUtil', function($http, $window) {
 			url: httpObj.url,
 			headers: angularHeaders,
 			data: httpObj.queryString
-		}).
-			success(httpObj.successFun).error(httpObj.errorFun);
+		}).then(function(res) {
+			if( httpObj.successFun ) {
+				httpObj.successFun(res.data);
+			}
+		}, function (res) {
+			if( httpObj.errorFun ) {
+				httpObj.errorFun(res.data);
+			}
+		});
 	};
 
 	/**

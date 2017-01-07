@@ -14,15 +14,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/hakwonDetail.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -34,15 +34,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/insertHakwonMember.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -54,15 +54,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/hakwonIntroduction.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -74,15 +74,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/classDetail.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -92,15 +92,15 @@ hakwonApp.service('hakwonService', function($http) {
 			method: 'post',
 			url: contextPath + '/mobile/main/getHakwon_cate.do',
 			headers: angularHeaders
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -110,15 +110,15 @@ hakwonApp.service('hakwonService', function($http) {
 			method: 'post',
 			url: contextPath + '/hakwon/address/sidoList.do',
 			headers: angularHeaders
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -130,15 +130,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/hakwon/address/gugunList.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -150,17 +150,16 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/hakwon/searchHakwonList.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
-
 	};
 
 	return hakwonService;

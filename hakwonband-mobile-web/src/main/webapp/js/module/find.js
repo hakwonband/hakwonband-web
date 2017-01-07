@@ -14,15 +14,15 @@ hakwonApp.service('findService', function($http) {
 			url: contextPath + '/findIdSearch.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -34,16 +34,16 @@ hakwonApp.service('findService', function($http) {
 			url: contextPath + '/passwordReplacement.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				alert('아이디 검색 문제가 발생했습니다.\n다시 시도해 주세요.');
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 

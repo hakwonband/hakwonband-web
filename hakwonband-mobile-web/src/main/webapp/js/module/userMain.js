@@ -16,18 +16,16 @@ hakwonApp.service('userMainService', function($http, $window) {
 			url: contextPath + '/mobile/main/firstView.do',
 			headers: angularHeaders,
 			data: queryString
-		}).
-		success(function(data, status) {
-			var colData = data.colData;
+		}).then(function(res) {
+			var colData = res.data.colData;
 			if( colData ) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
-
 	};
 
 	userMainService.editApproved = function(params, callback) {
@@ -38,15 +36,15 @@ hakwonApp.service('userMainService', function($http, $window) {
 			url: contextPath + '/mobile/main/editApproved.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -58,18 +56,17 @@ hakwonApp.service('userMainService', function($http, $window) {
 			url: contextPath + '/mobile/main/searchStudent.do',
 			headers: angularHeaders,
 			data: queryString
-		}).
-		success(function(data, status) {
-			if (status === 200) {
-				var colData = data && data.colData;
+		}).then(function(res) {
+			if (res.status === 200) {
+				var colData = res.data && res.data.colData;
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
 
 			callback(colData);
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -81,15 +78,15 @@ hakwonApp.service('userMainService', function($http, $window) {
 			url: contextPath + '/mobile/main/putApproved.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -146,7 +143,7 @@ hakwonApp.controller('userMainController', function($scope, $location, $window, 
 					, link : 'https://lms.hakwonband.com'
 				};
 				$scope.hakwonList.unshift(lmsObj);
-				
+
 				$scope.messageList	= colData.messageList;
 				$scope.noticeList	= colData.notisList;
 				$scope.eventList	= colData.eventList;
