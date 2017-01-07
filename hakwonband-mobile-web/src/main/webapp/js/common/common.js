@@ -828,7 +828,6 @@ var HakwonCommon = function() {
 						/*	디바이스 정보가 있고.	*/
 						setTimeout(function(){
 							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
-							console.log('hakwonband://auth/login');
 						}, 500);
 					}
 
