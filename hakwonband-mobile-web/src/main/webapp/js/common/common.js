@@ -826,7 +826,7 @@ var HakwonCommon = function() {
 
 					if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
 						/*	디바이스 정보가 있고.	*/
-						window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
+						// window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
 					}
 
 					userAuth.userName 	= colData.authUserInfo.user_name;

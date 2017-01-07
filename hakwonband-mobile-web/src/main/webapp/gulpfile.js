@@ -18,8 +18,8 @@ var merge		= require('merge-stream'),
 			, './js/lib/underscore-1.7.0/underscore-min.js'
 			, './js/lib/moment.js'
 			, './bower_components/angular/angular.min.js'
-			, './bower_components/angular-sanitize/angular-sanitize.min.js'
 			, './bower_components/angular-route/angular-route.min.js'
+			, './bower_components/angular-sanitize/angular-sanitize.min.js'
 			, './bower_components/angular-touch/angular-touch.min.js'
 			, './js/common/common.prototype.js'
 			, './js/common/common.js'
@@ -27,8 +27,8 @@ var merge		= require('merge-stream'),
 		]
 		, angular_lib_js : [
 			'./bower_components/angular/angular.min.js'
-			, './bower_components/angular-sanitize/angular-sanitize.min.js'
 			, './bower_components/angular-route/angular-route.min.js'
+			, './bower_components/angular-sanitize/angular-sanitize.min.js'
 			, './bower_components/angular-touch/angular-touch.min.js'
 		]
 		, module_js : [
