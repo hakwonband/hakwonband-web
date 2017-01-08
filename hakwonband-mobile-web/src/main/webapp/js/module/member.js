@@ -215,6 +215,8 @@ angular.module('hakwonApp').controller('memberModifyController', function($scope
 		$scope.photoFile 	= '';
 		$scope.isStudent 	= false;
 
+		$scope.is_pwd_change = false;
+
 		$scope.schoolLevel = [
 			{LEVEL : '001', NAME: '초'},
 			{LEVEL : '002', NAME: '중'},
@@ -288,6 +290,15 @@ angular.module('hakwonApp').controller('memberModifyController', function($scope
 					commProto.errorDump({errorObj:ex});
 				}
 			}});
+		};
+
+		/**
+		 * 비번 변경 취소
+		 */
+		$scope.pwdChangeCancel = function() {
+			$scope.is_pwd_change = false;
+			$scope.authUserInfo.user_password = '';
+			$scope.authUserInfo.chk_password ='';
 		};
 
 		/*	취소	*/

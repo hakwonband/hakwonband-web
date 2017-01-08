@@ -109,7 +109,10 @@ angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', fu
 		.otherwise({
 			redirectTo: '/index'
 		});
+}]);
 
+angular.module('hakwonApp').config(['$locationProvider', function($locationProvider) {
+	$locationProvider.hashPrefix('');
 }]);
 
 /**
