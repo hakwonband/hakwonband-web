@@ -69,6 +69,20 @@ public interface EventDAO {
 	public int insertEventUser(DataMap param);
 
 	/**
+	 * 사용자 이벤트 참여수정
+	 * @param param
+	 * @return
+	 */
+	public int updateEventUser(DataMap param);
+
+	/**
+	 * 사용자 이벤트 참여 취소
+	 * @param param
+	 * @return
+	 */
+	public int deleteEventUser(DataMap param);
+
+	/**
 	 * 사용자 참여한 이벤트 리스트
 	 * @param param
 	 * @return

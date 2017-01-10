@@ -2,7 +2,7 @@
 /**
  * 이벤트 추천받은 서비스
  */
-hakwonApp.service('eventRecommendService', function() {
+angular.module('hakwonApp').service('eventRecommendService', function() {
 	console.log('eventRecommendService call');
 
 	var Service = {};
@@ -11,7 +11,7 @@ hakwonApp.service('eventRecommendService', function() {
 });
 
 /* 이벤트 참여내역 컨트롤러 */
-hakwonApp.controller('eventRecommendController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommendService, $http){
+angular.module('hakwonApp').controller('eventRecommendController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommendService, $http){
 	console.log('eventRecommendController call');
 
 	try {
@@ -43,23 +43,22 @@ hakwonApp.controller('eventRecommendController', function($scope, $window, $loca
 		/*	참여한 이벤트 리스트 호출 	*/
 		$scope.getJoinList = function(pageNo) {
 			var params = {page_no: !isNull(pageNo) ? pageNo : '1'};
-//			CommUtil.ajax({url:contextPath+"/mobile/event/eventMyJoinList.do", param:params, successFun:function(data) {
 			$http({
 				withCredentials: false,
 				method: 'post',
 				url: contextPath + '/mobile/event/eventRecommendList.do',
 				headers: angularHeaders,
 				data: $.param(params, true)
-			}).success(function(data, status) {
-				var colData = data.colData;
-				if (status === 200 && colData) {
+			}).then(function(res) {
+				var colData = res.data.colData;
+				if (res.status === 200 && colData) {
 					$scope.eventList = colData.eventList;
 					$scope.pageInfo = CommUtil.getPagenationInfo(colData.eventListTotCount, colData.pageScale, 10, $scope.page);
 				} else {
 					commProto.logger({loginError:colData});
 				}
-			}).error(function(xhr, textStatus, errorThrown) {
-
+			}, function(res) {
+				console.log('error', res);
 			});
 		};
 

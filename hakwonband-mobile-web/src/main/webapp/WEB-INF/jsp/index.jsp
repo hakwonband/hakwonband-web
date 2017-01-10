@@ -28,8 +28,19 @@
 # 2017-01-01 01
 ############################################################
 ############################################################
+
+############################################################
+############################################################
+# 2017-01-10 01
+############################################################
+############################################################
+
 -->
 <!DOCTYPE html>
+<!--
+<html ng-app="hakwonApp">
+<html>
+-->
 <html ng-app="hakwonApp">
 <head>
 	<title>학원밴드</title>
@@ -64,6 +75,13 @@
 
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/common.css" />
+
+	<!-- 공통 js -->
+	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
+
+	<!-- 공통 모듈 -->
+	<script src="/assets/js/common.lib.min.js"></script>
+
 <%
 	if( isMobile == false ) {
 %>
@@ -75,7 +93,7 @@
 %>
 </head>
 
-<body>
+<body id="hakwon_body">
 <div class="progress top_progress" style="display:none;">
     <div style="width:0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar">
         <span class="sr-only">0% Complete (success)</span>
@@ -113,12 +131,6 @@
 <div id="mypage" style="display:none;"></div>
 <div id="mypage_academy" style="display:none;"></div>
 
-
-<!-- 공통 js -->
-<script type="text/javascript" src="/js/constants/constant.jsp"></script>
-
-<!-- 공통 모듈 -->
-<script src="/assets/js/common.lib.min.js"></script>
 <%
 	if( isLive ) {
 %>

@@ -1,7 +1,7 @@
 /**
  * 공통 서비스
  */
-hakwonApp.service('commonService', function($http, $window) {
+angular.module('hakwonApp').service('commonService', function($http, $window) {
 	console.log('commonService call');
 
 	this.locationHref = function (href, params) {

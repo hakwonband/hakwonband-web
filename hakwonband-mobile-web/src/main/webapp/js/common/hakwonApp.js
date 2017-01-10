@@ -1,5 +1,4 @@
-var hakwonApp = angular.module('hakwonApp', ['ngRoute', 'ngTouch']);
-hakwonApp.config(['$routeProvider', function($routeProvider) {
+angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', function($routeProvider) {
 	console.log('hakwonApp.config');
 	$routeProvider
 		.when('/index', {
@@ -110,7 +109,10 @@ hakwonApp.config(['$routeProvider', function($routeProvider) {
 		.otherwise({
 			redirectTo: '/index'
 		});
+}]);
 
+angular.module('hakwonApp').config(['$locationProvider', function($locationProvider) {
+	$locationProvider.hashPrefix('');
 }]);
 
 /**

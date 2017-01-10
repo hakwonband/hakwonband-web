@@ -279,6 +279,28 @@ public class MobileController extends BaseAction {
 	}
 
 	/**
+	 * 사용자 학원 이벤트 삭제
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/event/deleteJoinEvent")
+	public void deleteJoinEvent(HttpServletRequest request, HttpServletResponse response) {
+
+		/* 인증정보 */
+		DataMap authUserInfo = (DataMap)request.getAttribute(HakwonConstant.RequestKey.AUTH_USER_INFO);
+		String event_no				= request.getParameter("event_no");
+
+		DataMap param = new DataMap();
+		param.put("event_no",			event_no);
+		param.put("user_no",			authUserInfo.get("user_no"));
+
+		/* 이벤트 참여 */
+		mobileService.deleteJoinEvent(param);
+
+		sendFlag(CommonConstant.Flag.success, request, response);
+	}
+
+	/**
 	 * 사용자 참여한 이벤트 리스트
 	 * @param request
 	 * @param response
