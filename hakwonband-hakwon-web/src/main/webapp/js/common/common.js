@@ -343,7 +343,9 @@ var HakwonCommon = function() {
 
 					if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
 						/*	디바이스 정보가 있고.	*/
-						window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
+						setTimeout(function(){
+							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
+						}, 500);
 					}
 
 					if( colData.authUserInfo.user_type == HakwonConstant.UserType.STUDENT || colData.authUserInfo.user_type == HakwonConstant.UserType.PARENT ) {

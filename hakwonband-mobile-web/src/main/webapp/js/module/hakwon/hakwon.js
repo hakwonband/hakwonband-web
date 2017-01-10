@@ -1,7 +1,7 @@
 /**
  * 학원 서비스
  */
-hakwonApp.service('hakwonService', function($http) {
+angular.module('hakwonApp').service('hakwonService', function($http) {
 	console.log('hakwonService call');
 
 	var hakwonService = {};
@@ -167,7 +167,7 @@ hakwonApp.service('hakwonService', function($http) {
 
 
 /*	학원소개 컨트롤러  */
-hakwonApp.controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil){
+angular.module('hakwonApp').controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil){
 	console.log('hakwonIntroController call');
 
 	try {
@@ -228,7 +228,7 @@ hakwonApp.controller('hakwonIntroController', function($scope, $location, $route
 });
 
 /*	학원 상세정보  */
-hakwonApp.controller('hakwonDetailController', function($scope, $location, $routeParams, hakwonService, CommUtil){
+angular.module('hakwonApp').controller('hakwonDetailController', function($scope, $location, $routeParams, hakwonService, CommUtil){
 	console.log('hakwonDetailController call');
 
 	/*  학원 번호 체크  */
@@ -333,7 +333,7 @@ hakwonApp.controller('hakwonDetailController', function($scope, $location, $rout
 
 
 /*	학원 검색  */
-hakwonApp.controller('hakwonSearchController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
+angular.module('hakwonApp').controller('hakwonSearchController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
 	console.log('hakwonSearchController call');
 
 	/*  인증 정보 체크  */
@@ -518,7 +518,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 
 
 /*	학원 반정보  */
-hakwonApp.controller('hakwonClassController', function($scope, $location, $routeParams, hakwonService, CommUtil, noticeService){
+angular.module('hakwonApp').controller('hakwonClassController', function($scope, $location, $routeParams, hakwonService, CommUtil, noticeService){
 	/*  인증 정보 체크  */
 	if( comm.authCheckFilter() === false ) {
 		return ;

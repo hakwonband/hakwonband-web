@@ -2,7 +2,7 @@
 /**
  * 이벤트 서비스
  */
-hakwonApp.service('eventService', function() {
+angular.module('hakwonApp').service('eventService', function() {
 	console.log('eventService call');
 
 	var EventService = {};
@@ -23,7 +23,7 @@ hakwonApp.service('eventService', function() {
 /**
  * 이벤트 리스트 컨트롤러
  */
-hakwonApp.controller('eventListController', function($scope, $location, $window, $routeParams, CommUtil, eventService){
+angular.module('hakwonApp').controller('eventListController', function($scope, $location, $window, $routeParams, CommUtil, eventService){
 	console.log('eventListController call');
 
 	try {
@@ -106,7 +106,7 @@ hakwonApp.controller('eventListController', function($scope, $location, $window,
 
 
 /* 이벤트 상세보기  */
-hakwonApp.controller('eventDetailController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
+angular.module('hakwonApp').controller('eventDetailController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
 	console.log('eventDetailController call');
 
 	try {
@@ -309,7 +309,7 @@ hakwonApp.controller('eventDetailController', function($scope, $window, $locatio
 
 
 /* 이벤트 참여내역 컨트롤러 */
-hakwonApp.controller('eventJoinController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
+angular.module('hakwonApp').controller('eventJoinController', function($scope, $window, $location, $routeParams, CommUtil, eventService){
 	console.log('eventJoinController call');
 
 	try {

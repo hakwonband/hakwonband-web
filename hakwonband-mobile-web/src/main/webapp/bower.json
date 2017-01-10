@@ -10,17 +10,13 @@
 		, "jquery-ui": "1.11.4"
 		, "jquery.cookie" : "1.4.1"
 
-		, "angular": "1.5.9"
-		, "angular-route": "1.5.9"
-		, "angular-resource": "1.5.9"
-		, "angular-sanitize": "1.5.9"
-		, "angular-animate": "1.5.9"
-		, "angular-i18n": "1.5.9"
-		, "angular-touch": "1.5.9"
+		, "angular": "1.6.1"
+		, "angular-route": "1.6.1"
+		, "angular-sanitize": "1.6.1"
+		, "angular-animate": "1.6.1"
+		, "angular-i18n": "1.6.1"
+		, "angular-touch": "1.6.1"
 
-		, "angular-ui-router" : "0.2.15"
-		, "angular-translate" : "2.7.2"
-		, "angular-bootstrap" : "0.13.3"
 		, "angular-cookies": "1.4.5"
 		, "angular-moment": "0.10.2"
 
@@ -34,6 +30,6 @@
 	}
 	, "resolutions": {
 		"jquery": "2.1.1"
-		, "angular": "1.5.9"
+		, "angular": "1.6.1"
 	}
 }

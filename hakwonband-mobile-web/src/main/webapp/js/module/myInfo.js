@@ -1,7 +1,7 @@
 /**
  * 회원정보 서비스
  */
-hakwonApp.service('myInfoService', function($http) {
+angular.module('hakwonApp').service('myInfoService', function($http) {
 	console.log('myInfoService call');
 
 	var myInfoService = {};
@@ -137,7 +137,7 @@ hakwonApp.service('myInfoService', function($http) {
 
 
 /*	내정보 */
-hakwonApp.controller('myInfoController', function($scope, $location, $routeParams, myInfoService, CommUtil, $timeout){
+angular.module('hakwonApp').controller('myInfoController', function($scope, $location, $routeParams, myInfoService, CommUtil, $timeout){
 	console.log('myInfoController call - myInfo.html');
 
 	/*  인증 정보 체크  */
