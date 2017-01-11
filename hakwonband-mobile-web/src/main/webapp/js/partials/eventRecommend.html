@@ -4,16 +4,16 @@
 	</div>
 
 	<div class="sec_blk">
+		<div class="sec_tab_m">
+			<a href="#/hakwon/eventJoin" style="width:50%;">참여한 이벤트</a>
+			<a href="#/hakwon/eventRecommend" class="on" style="width:50%;">추천받은 이벤트</a>
+		</div>
+
 		<!-- 참여한 이벤트 없음 -->
 		<div class="sec_con_02" ng-if="eventList.length <= 0">
 			<div class="data_none">
 				추천 받은 이벤트가 없습니다.
 			</div>
-		</div>
-
-		<div class="sec_tab_m">
-			<a href="#/hakwon/eventJoin" style="width:50%;">참여한 이벤트</a>
-			<a href="#/hakwon/eventRecommend" class="on" style="width:50%;">추천받은 이벤트</a>
 		</div>
 
 		<div class="sec_con_02" ng-if="eventList.length > 0" ng-repeat="item in eventList">
