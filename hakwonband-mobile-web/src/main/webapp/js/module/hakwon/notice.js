@@ -1,7 +1,7 @@
 /**
  * 공지사항 리스트 서비스
  */
-hakwonApp.service('noticeService', function($http, CommUtil) {
+angular.module('hakwonApp').service('noticeService', function($http, CommUtil) {
 
 	/*  학원 or 반 공지사항 리스트 조회  */
 
@@ -43,7 +43,7 @@ hakwonApp.service('noticeService', function($http, CommUtil) {
 });
 
 /* 공지사항 리스트 컨트롤러 */
-hakwonApp.controller('noticeListController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
+angular.module('hakwonApp').controller('noticeListController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
 	console.log('noticeListController call');
 
 	try {
@@ -135,7 +135,7 @@ hakwonApp.controller('noticeListController', function($scope, $window, $location
 
 
 /*	공지사항 상세보기  */
-hakwonApp.controller('noticeDetailController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
+angular.module('hakwonApp').controller('noticeDetailController', function($scope, $window, $location, $routeParams, CommUtil, noticeService){
 	console.log('noticeDetailController call');
 
 	try {

@@ -1,7 +1,7 @@
 /**
  * 로그인 서비스
  */
-hakwonApp.service('loginService', function() {
+angular.module('hakwonApp').service('loginService', function() {
 	console.log('loginService call');
 
 	var loginService = {};
@@ -124,7 +124,7 @@ hakwonApp.service('loginService', function() {
 /**
  * 로그인 컨트롤러
  */
-hakwonApp.controller('loginController', function($scope, $location, loginService) {
+angular.module('hakwonApp').controller('loginController', function($scope, $location, loginService) {
 	console.log('loginController call');
 
 	try {

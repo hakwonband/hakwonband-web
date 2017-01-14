@@ -2,7 +2,7 @@
  * HTML 필터링
  * 예제 : <div ng-bind-html="hakwonObj.introduction | rawHtml"></div>
  */
-//hakwonApp.filter('rawHtml', ['$sce', function($sce){
+//angular.module('hakwonApp').filter('rawHtml', ['$sce', function($sce){
 //	return function(val) {
 //		return $sce.trustAsHtml(val);
 //	};
@@ -21,13 +21,13 @@ ngFilter.rawHtml = function ($sce) {
  * HTML 필터링
  * 예제 : <div ng-bind-html="hakwonObj.introduction | rawHtml"></div>
  */
-hakwonApp.filter('rawHtml', ngFilter.rawHtml);
+angular.module('hakwonApp').filter('rawHtml', ngFilter.rawHtml);
 
 
 /**
  * 모바일 공통 앵귤러 모듈
  */
-hakwonApp.factory('CommUtil', function($http, $window) {
+angular.module('hakwonApp').factory('CommUtil', function($http, $window) {
 
 	var CommUtil = {};
 
@@ -76,8 +76,15 @@ hakwonApp.factory('CommUtil', function($http, $window) {
 			url: httpObj.url,
 			headers: angularHeaders,
 			data: httpObj.queryString
-		}).
-			success(httpObj.successFun).error(httpObj.errorFun);
+		}).then(function(res) {
+			if( httpObj.successFun ) {
+				httpObj.successFun(res.data);
+			}
+		}, function (res) {
+			if( httpObj.errorFun ) {
+				httpObj.errorFun(res.data);
+			}
+		});
 	};
 
 	/**

@@ -1,7 +1,7 @@
 /**
  * 메세지 서비스
  */
-hakwonApp.service('attendanceListService', function($window, CommUtil) {
+angular.module('hakwonApp').service('attendanceListService', function($window, CommUtil) {
 	console.log('attendanceListService call');
 
 	var attendanceListService = {};
@@ -51,7 +51,7 @@ hakwonApp.service('attendanceListService', function($window, CommUtil) {
 
 
 /* 출결 리스트 컨트롤러 */
-hakwonApp.controller('attendanceListController', function($scope, $location, $routeParams, CommUtil, attendanceListService) {
+angular.module('hakwonApp').controller('attendanceListController', function($scope, $location, $routeParams, CommUtil, attendanceListService) {
 	console.log('attendanceListController call');
 
 	try {

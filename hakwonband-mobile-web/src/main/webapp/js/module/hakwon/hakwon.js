@@ -1,7 +1,7 @@
 /**
  * 학원 서비스
  */
-hakwonApp.service('hakwonService', function($http) {
+angular.module('hakwonApp').service('hakwonService', function($http) {
 	console.log('hakwonService call');
 
 	var hakwonService = {};
@@ -14,15 +14,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/hakwonDetail.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -34,15 +34,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/insertHakwonMember.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -54,15 +54,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/hakwonIntroduction.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -74,15 +74,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/main/classDetail.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -92,15 +92,15 @@ hakwonApp.service('hakwonService', function($http) {
 			method: 'post',
 			url: contextPath + '/mobile/main/getHakwon_cate.do',
 			headers: angularHeaders
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -110,15 +110,15 @@ hakwonApp.service('hakwonService', function($http) {
 			method: 'post',
 			url: contextPath + '/hakwon/address/sidoList.do',
 			headers: angularHeaders
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -130,15 +130,15 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/hakwon/address/gugunList.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
 	};
 
@@ -150,17 +150,16 @@ hakwonApp.service('hakwonService', function($http) {
 			url: contextPath + '/mobile/hakwon/searchHakwonList.do',
 			headers: angularHeaders,
 			data: queryString
-		}).success(function(data, status) {
-			var colData = data.colData;
-			if (status === 200 && colData) {
+		}).then(function(res) {
+			var colData = res.data.colData;
+			if (res.status === 200 && colData) {
 				callback(colData);
 			} else {
 				commProto.logger({loginError:colData});
 			}
-		}).error(function(xhr, textStatus, errorThrown) {
-
+		}, function(res) {
+			console.error('fail', res);
 		});
-
 	};
 
 	return hakwonService;
@@ -168,7 +167,7 @@ hakwonApp.service('hakwonService', function($http) {
 
 
 /*	학원소개 컨트롤러  */
-hakwonApp.controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil){
+angular.module('hakwonApp').controller('hakwonIntroController', function($scope, $location, $routeParams, hakwonService, CommUtil){
 	console.log('hakwonIntroController call');
 
 	try {
@@ -229,7 +228,7 @@ hakwonApp.controller('hakwonIntroController', function($scope, $location, $route
 });
 
 /*	학원 상세정보  */
-hakwonApp.controller('hakwonDetailController', function($scope, $location, $routeParams, hakwonService, CommUtil){
+angular.module('hakwonApp').controller('hakwonDetailController', function($scope, $location, $routeParams, hakwonService, CommUtil){
 	console.log('hakwonDetailController call');
 
 	/*  학원 번호 체크  */
@@ -334,7 +333,7 @@ hakwonApp.controller('hakwonDetailController', function($scope, $location, $rout
 
 
 /*	학원 검색  */
-hakwonApp.controller('hakwonSearchController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
+angular.module('hakwonApp').controller('hakwonSearchController', function($scope, $location, $routeParams, hakwonService, CommUtil) {
 	console.log('hakwonSearchController call');
 
 	/*  인증 정보 체크  */
@@ -519,7 +518,7 @@ hakwonApp.controller('hakwonSearchController', function($scope, $location, $rout
 
 
 /*	학원 반정보  */
-hakwonApp.controller('hakwonClassController', function($scope, $location, $routeParams, hakwonService, CommUtil, noticeService){
+angular.module('hakwonApp').controller('hakwonClassController', function($scope, $location, $routeParams, hakwonService, CommUtil, noticeService){
 	/*  인증 정보 체크  */
 	if( comm.authCheckFilter() === false ) {
 		return ;
