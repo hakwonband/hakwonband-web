@@ -1,7 +1,7 @@
 /**
  * 회원정보 서비스
  */
-hakwonApp.service('memberService', function($http) {
+angular.module('hakwonApp').service('memberService', function($http) {
 	console.log('memberService call');
 
 	var memberService = {};
@@ -195,7 +195,7 @@ hakwonApp.service('memberService', function($http) {
 });
 
 /*	내정보 변경 컨트롤러  */
-hakwonApp.controller('memberModifyController', function($scope, $window, $location, $routeParams, memberService, CommUtil) {
+angular.module('hakwonApp').controller('memberModifyController', function($scope, $window, $location, $routeParams, memberService, CommUtil) {
 	console.log('memberModifyController call');
 
 	try {
@@ -214,6 +214,8 @@ hakwonApp.controller('memberModifyController', function($scope, $window, $locati
 		$scope.authUserInfo = {};
 		$scope.photoFile 	= '';
 		$scope.isStudent 	= false;
+
+		$scope.is_pwd_change = false;
 
 		$scope.schoolLevel = [
 			{LEVEL : '001', NAME: '초'},
@@ -288,6 +290,15 @@ hakwonApp.controller('memberModifyController', function($scope, $window, $locati
 					commProto.errorDump({errorObj:ex});
 				}
 			}});
+		};
+
+		/**
+		 * 비번 변경 취소
+		 */
+		$scope.pwdChangeCancel = function() {
+			$scope.is_pwd_change = false;
+			$scope.authUserInfo.user_password = '';
+			$scope.authUserInfo.chk_password ='';
 		};
 
 		/*	취소	*/

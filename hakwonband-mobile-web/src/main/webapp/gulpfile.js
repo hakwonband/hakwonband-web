@@ -19,10 +19,17 @@ var merge		= require('merge-stream'),
 			, './js/lib/moment.js'
 			, './bower_components/angular/angular.min.js'
 			, './bower_components/angular-route/angular-route.min.js'
+			, './bower_components/angular-sanitize/angular-sanitize.min.js'
 			, './bower_components/angular-touch/angular-touch.min.js'
 			, './js/common/common.prototype.js'
 			, './js/common/common.js'
 			, './js/common/bumworld.html5.upload.js'
+		]
+		, angular_lib_js : [
+			'./bower_components/angular/angular.min.js'
+			, './bower_components/angular-route/angular-route.min.js'
+			, './bower_components/angular-sanitize/angular-sanitize.min.js'
+			, './bower_components/angular-touch/angular-touch.min.js'
 		]
 		, module_js : [
 			'./js/common/hakwonApp.js'
@@ -95,6 +102,12 @@ gulp.task('common_lib_js', function() {
 //		.pipe(uglify({mangle:false}))
 		.pipe(gulp.dest('./assets/js'));
 });
+
+gulp.task('angular_lib_js', function() {
+	return gulp.src(paths.angular_lib_js)
+		.pipe(gulp.dest('./assets/js/angular'));
+});
+
 gulp.task('module_js', function() {
 	return gulp.src(paths.module_js)
 		.pipe(concat('module.min.js'))
@@ -108,6 +121,7 @@ gulp.task('module_js', function() {
 gulp.task('watch', function() {
 	gulp.watch(paths.partials.concat(paths.root), ['partials']);
 	gulp.watch(paths.common_lib_js, ['common_lib_js']);
+	gulp.watch(paths.common_lib_js, ['angular_lib_js']);
 	gulp.watch(paths.module_js, ['module_js']);
 	gulp.watch(paths.images, ['images']);
 	gulp.watch(paths.css_markup, ['css_markup']);
@@ -121,9 +135,9 @@ gulp.task('default', ['clean', 'build:development'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
+	gulp.start('images', 'common_lib_js', 'angular_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
 });
 
 gulp.task('build:development', ['clean'], function() {
-	gulp.start('images', 'common_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
+	gulp.start('images', 'common_lib_js', 'angular_lib_js', 'module_js', 'css_markup', 'tinymce_lib', 'partials');
 });

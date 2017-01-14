@@ -24,8 +24,14 @@
 		<div class="sec_input mb_0" data-area="memberModifyArea">
 
 			<input type="text" name="userName" title="이름 입력" placeholder="{{ userAuth.userType=='006'?'이름':'홍길동 학부모' }}" ng-model="authUserInfo.user_name"/>
-			<input type="password" name="userPassword" title="비밀번호 입력" placeholder="변경 할때만 비밀번호를 입력해 주세요." ng-model="authUserInfo.user_password"/>
-			<input type="password" name="userCheckPassword" title="비밀번호 확인 입력" placeholder="비밀번호 확인" ng-model="authUserInfo.chk_password"/>
+
+			<button type="button" ng-show="is_pwd_change == false" class="btn btn_style_submit btn_block" ng-click="is_pwd_change = true">비밀번호 변경</button>
+			<button type="button" ng-show="is_pwd_change == true" class="btn btn_style_submit btn_block" ng-click="pwdChangeCancel()">비밀번호 변경 취소</button>
+			<br/><br/>
+			<input ng-show="is_pwd_change == true" type="password" name="userPassword" title="비밀번호 입력" placeholder="변경 할때만 비밀번호를 입력해 주세요." ng-model="authUserInfo.user_password"/>
+			<input ng-show="is_pwd_change == true" type="password" name="userCheckPassword" title="비밀번호 확인 입력" placeholder="비밀번호 확인" ng-model="authUserInfo.chk_password"/>
+
+			<br/><br/>
 			<div class="select_chk three">
 				<input type="number" name="birthdayYear" title="생년 입력 예){{userAuth.userType=='006'?'2006':'1980'}}" onkeydown="commProto.onlyNumber(event)" onkeypress="commProto.onlyNumber(event)" placeholder="생년 입력 예){{userAuth.userType=='006'?'2006':'1980'}}" />
 				<select name="birthdayMonth" title="월 선택" >

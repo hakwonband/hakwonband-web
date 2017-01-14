@@ -1,7 +1,7 @@
 /**
  * 회원정보 서비스
  */
-hakwonApp.service('findService', function($http) {
+angular.module('hakwonApp').service('findService', function($http) {
 	console.log('findService call');
 
 	var findService = {};
@@ -52,7 +52,7 @@ hakwonApp.service('findService', function($http) {
 
 
 /*	아이디 찾기 */
-hakwonApp.controller('findIdController', function($scope, $location, $routeParams, findService, CommUtil){
+angular.module('hakwonApp').controller('findIdController', function($scope, $location, $routeParams, findService, CommUtil){
 	console.log('findIdController call');
 
 	try {
@@ -98,7 +98,7 @@ hakwonApp.controller('findIdController', function($scope, $location, $routeParam
 
 
 /*	비밀번호 찾기 */
-hakwonApp.controller('findPwController', function($scope, $location, $routeParams, findService, CommUtil){
+angular.module('hakwonApp').controller('findPwController', function($scope, $location, $routeParams, findService, CommUtil){
 	console.log('findPwController call');
 
 	try {

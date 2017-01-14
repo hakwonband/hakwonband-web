@@ -2,7 +2,7 @@
 /**
  * 이벤트 추천받은 서비스
  */
-hakwonApp.service('eventRecommendService', function() {
+angular.module('hakwonApp').service('eventRecommendService', function() {
 	console.log('eventRecommendService call');
 
 	var Service = {};
@@ -11,7 +11,7 @@ hakwonApp.service('eventRecommendService', function() {
 });
 
 /* 이벤트 참여내역 컨트롤러 */
-hakwonApp.controller('eventRecommendController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommendService, $http){
+angular.module('hakwonApp').controller('eventRecommendController', function($scope, $window, $location, $routeParams, CommUtil, eventRecommendService, $http){
 	console.log('eventRecommendController call');
 
 	try {

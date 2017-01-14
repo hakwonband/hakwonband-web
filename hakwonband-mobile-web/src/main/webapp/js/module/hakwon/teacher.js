@@ -2,12 +2,12 @@
 /**
  * 학원 선생님 서비스
  */
-hakwonApp.service('teahcerListService', function() {
+angular.module('hakwonApp').service('teahcerListService', function() {
 	console.log('teahcerListService call');
 });
 
 /* 학원 선생님 리스트  */
-hakwonApp.controller('teacherListController', function($scope, $location, $routeParams, CommUtil, teahcerListService){
+angular.module('hakwonApp').controller('teacherListController', function($scope, $location, $routeParams, CommUtil, teahcerListService){
 	console.log('teacherListController call');
 
 	try {
