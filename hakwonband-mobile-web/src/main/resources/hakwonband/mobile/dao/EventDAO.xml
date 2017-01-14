@@ -278,10 +278,12 @@
 	<select id="eventRecommendListTotCount" parameterType="dataMap" resultType="integer">
 	<![CDATA[
 		/* eventDAO.eventRecommendListTotCount */
-		select count(1)
-		from tb_event_user event_user
-		where event_user.recommend_user_no = #{user_no}
-		group by event_user.event_no
+		select count(1) from (
+			select event_user.event_no
+			from tb_event_user event_user
+			where event_user.recommend_user_no = #{user_no}
+			group by event_user.event_no
+		) x
 	]]>
 	</select>
 </mapper>
