@@ -85,6 +85,7 @@ var PageUrl = {
 	, class : {
 		teacherList : '#/class/teacherList'
 		, noticeEdit : '#/class/noticeEdit'
+		, noticeEditMobile : '#/class/noticeEdit/mobile'
 	}
 	, teacher : {
 		hakwonRegist : '#/teacher/hakwonRegist'

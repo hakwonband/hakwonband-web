@@ -137,6 +137,10 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			templateUrl: '/assets/partials/class/class_notice_edit.html'
 			, controller: 'classNoticeEditController'
 		})
+		.when('/class/noticeEdit/mobile', {
+			templateUrl: '/assets/partials/class/class_notice_edit_mobile.html'
+			, controller: 'classNoticeEditMobileController'
+		})
 		/*	반 - 학생 리스트 	*/
 		.when('/class/studentList', {
 			templateUrl: '/assets/partials/class/class_student_list.html'

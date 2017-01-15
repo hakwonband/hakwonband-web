@@ -1138,7 +1138,15 @@ hakwonMainApp.controller('classNoticeListController', function($scope, $location
 
 		/*	반 공지사항 등록 이동		*/
 		$scope.goClassNoticeEdit = function() {
-			CommUtil.locationHref(PageUrl.class.noticeEdit, {class_no: $scope.classNo}, 'hakwon');
+			if( isMobile.any() ) {
+				if( userAuth.userId == 'bumwonjang' || userAuth.userId == 'icheoneduk' ) {
+					CommUtil.locationHref(PageUrl.class.noticeEditMobile, {class_no: $scope.classNo}, 'hakwon');
+				} else {
+					CommUtil.locationHref(PageUrl.class.noticeEdit, {class_no: $scope.classNo}, 'hakwon');
+				}
+			} else {
+				CommUtil.locationHref(PageUrl.class.noticeEdit, {class_no: $scope.classNo}, 'hakwon');
+			}
 			return false;
 		};
 
@@ -1318,7 +1326,15 @@ hakwonMainApp.controller('classNoticeDetailController', function($scope, $window
 
 		/*	공지사항 수정으로 이동	*/
 		$scope.goClassNoticeEdit = function() {
-			CommUtil.locationHref(PageUrl.class.noticeEdit, {notice_no: $routeParams.notice_no, class_no:$routeParams.class_no}, 'hakwon');
+			if( isMobile.any() ) {
+				if( userAuth.userId == 'bumwonjang' || userAuth.userId == 'icheoneduk' ) {
+					CommUtil.locationHref(PageUrl.class.noticeEditMobile, {notice_no: $routeParams.notice_no, class_no:$routeParams.class_no}, 'hakwon');
+				} else {
+					CommUtil.locationHref(PageUrl.class.noticeEdit, {notice_no: $routeParams.notice_no, class_no:$routeParams.class_no}, 'hakwon');
+				}
+			} else {
+				CommUtil.locationHref(PageUrl.class.noticeEdit, {notice_no: $routeParams.notice_no, class_no:$routeParams.class_no}, 'hakwon');
+			}
 			return false;
 		};
 

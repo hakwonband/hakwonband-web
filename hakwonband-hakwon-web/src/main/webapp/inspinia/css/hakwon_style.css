@@ -397,6 +397,10 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .class_list_pc li img{width:50px; height:50px; position:absolute; top:10px; left:10px;}
 .class_list_pc li p, .class_list_pc li strong{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 
+.mo_row_check_list{border:1px solid #e5e6e7; height:40px;}
+.mo_row_check_list label{display:block; padding:0 5px 0 0; text-align:center;}
+.mo_row_check_list input{vertical-align:middle; line-height:20px; margin:0;}
+
 @media (max-width: 768px) {
 	.file-box{width:86px;}
 	.file-box .file{margin-right:5px;}
