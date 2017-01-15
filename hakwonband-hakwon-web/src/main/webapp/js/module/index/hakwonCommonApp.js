@@ -28,6 +28,10 @@ hakwonCommonApp.config(['$routeProvider', function($routeProvider) {
 		});
 }]);
 
+angular.module('hakwonCommonApp').config(['$locationProvider', function($locationProvider) {
+	$locationProvider.hashPrefix('');
+}]);
+
 
 /**
  * 학원 공통 앵귤러 모듈
@@ -74,8 +78,15 @@ hakwonCommonApp.factory('CommUtil', function($http) {
 				url: httpObj.url,
 				headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With':'XMLHttpRequest', hakwonNo:hakwonInfo.hakwon_no},
 				data: httpObj.queryString
-			}).
-				success(httpObj.successFun).error(httpObj.errorFun);
+			}).then(function(res) {
+				if( res.data ) {
+					httpObj.successFun(res.data);
+				} else {
+					httpObj.errorFun();
+				}
+			}, function(res) {
+				httpObj.errorFun();
+			});
 		}
 
 		/**

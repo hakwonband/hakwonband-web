@@ -77,6 +77,7 @@ var merge		= require('merge-stream'),
 			, './js/module/main/messageView.js'
 			, './js/module/main/class.js'
 			, './js/module/main/notice.js'
+			, './js/module/main/noticeEditMobile.js'
 			, './js/module/main/parent.js'
 			, './js/module/main/student.js'
 			, './js/module/main/teacher.js'

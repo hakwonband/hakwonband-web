@@ -145,7 +145,8 @@ var PageUrl = {
 		, adminQuestionRegist : '#/adminQuestion/regist'
 	}
 	, notice : {
-		edit  : '#/notice/edit'
+		edit  : '#/notice/edit',
+		editMobile  : '#/notice/edit/mobile'
 	}
 	, guide : {
 		map : '#/guide/map'
