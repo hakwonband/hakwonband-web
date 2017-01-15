@@ -160,9 +160,13 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 					if( isMobile == true ) {
 						if ($scope.noticeDetail.reply_yn == 'Y') {
 							$scope.reply_yn = true;
+						} else {
+							$scope.reply_yn = false;
 						}
 						if ($scope.noticeDetail.is_file_view == '1') {
 							$scope.file_view = true;
+						} else {
+							$scope.file_view = false;
 						}
 					} else {
 						if( $scope.reply_yn ) {
