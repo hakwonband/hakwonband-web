@@ -251,11 +251,18 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 		/*	학원 번호	*/
 		$scope.hakwon_no = $routeParams.hakwon_no;
 
+		$scope.searchText = '';
+
 		/**
 		 * 보낸 리스트
 		 */
 		var sendList = function(page_no) {
 			var param = {page_no:page_no, hakwon_no : $scope.hakwon_no};
+
+			var search_text = ($scope.searchText||'').trim();
+			if( search_text ) {
+				param.search_text = search_text;
+			}
 
 			/*	조회	*/
 			noticeShareService.sendList(param, function(data) {
@@ -268,8 +275,11 @@ hakwonMainApp.controller('noticeShareSendListController', function($scope, $loca
 		/**
 		 * 검색
 		 */
-		$scope.searchText = function() {
-
+		$scope.searchList = function(e) {
+			if (e && e.type === 'keydown' && e.keyCode !== 13) {
+				return;
+			}
+			sendList(1);
 		}
 
 		/*	페이지네이션 페이지 이동	*/
