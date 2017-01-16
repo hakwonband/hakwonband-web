@@ -183,7 +183,9 @@
 	<script type="text/javascript" src="/js/module/main/messageSendTeacher.js"></script>
 	<script type="text/javascript" src="/js/module/main/messageView.js"></script>
 	<script type="text/javascript" src="/js/module/main/class.js"></script>
+	<script type="text/javascript" src="/js/module/main/classNoticeMobile.js"></script>
 	<script type="text/javascript" src="/js/module/main/notice.js"></script>
+	<script type="text/javascript" src="/js/module/main/noticeEditMobile.js"></script>
 	<script type="text/javascript" src="/js/module/main/parent.js"></script>
 	<script type="text/javascript" src="/js/module/main/student.js"></script>
 	<script type="text/javascript" src="/js/module/main/teacher.js"></script>

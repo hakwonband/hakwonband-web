@@ -13,8 +13,8 @@
 					</select>
 				</div>
 				<div class="col-md-4 input-group">
-					<input type="text" class="form-control" placeholder="검색어 입력" ng-keydown="searchText($event)" name="searchText">
-					<span class="input-group-btn"> <button type="button" class="btn btn-primary" data-act="counselSearch">검색</button> </span>
+					<input type="text" class="form-control" placeholder="검색어 입력" ng-keydown="searchList($event)" ng-model="searchText" name="searchText">
+					<span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="searchList()">검색</button> </span>
 				</div>
 			</div>
 

@@ -137,6 +137,10 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			templateUrl: '/assets/partials/class/class_notice_edit.html'
 			, controller: 'classNoticeEditController'
 		})
+		.when('/class/noticeEdit/mobile', {
+			templateUrl: '/assets/partials/class/class_notice_edit_mobile.html'
+			, controller: 'classNoticeEditMobileController'
+		})
 		/*	반 - 학생 리스트 	*/
 		.when('/class/studentList', {
 			templateUrl: '/assets/partials/class/class_student_list.html'
@@ -171,6 +175,11 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		.when('/notice/edit', {
 			templateUrl: '/assets/partials/hakwonNoticeEdit.html'
 			, controller: 'noticeEditController'
+		})
+		/*	학원 공지사항 등록 모바일	*/
+		.when('/notice/edit/mobile', {
+			templateUrl: '/assets/partials/hakwonNoticeEditMobile.html'
+			, controller: 'noticeEditMobileController'
 		})
 
 		/*	공지 공유 리스트	*/
@@ -397,7 +406,9 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			redirectTo: '/index'
 		});
 });
-
+angular.module('hakwonMainApp').config(['$locationProvider', function($locationProvider) {
+	$locationProvider.hashPrefix('');
+}]);
 
 /*
  angular.module('CommonFormatters', []).
