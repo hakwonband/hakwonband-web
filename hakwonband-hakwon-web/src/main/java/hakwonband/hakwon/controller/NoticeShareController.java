@@ -45,12 +45,14 @@ public class NoticeShareController extends BaseAction {
 		int page_no			= StringUtil.parseInt(request.getParameter("page_no"), 1);
 		int page_scale		= HakwonConstant.PageScale.SHARE_LIST;
 		String hakwon_no	= request.getParameter("hakwon_no");
+		String searchText	= request.getParameter("search_text");
 
 		DataMap param = new DataMap();
 		param.put("user_no", 			authUserInfo.get("user_no"));	// 현재 사용자의 공지사항 읽은상태 체크용
 		param.put("start_no",			(page_no-1)*page_scale);
 		param.put("page_scale",			page_scale);
 		param.put("hakwon_no",			hakwon_no);
+		param.put("searchText",			searchText);
 
 		DataMap colData = noticeShareService.sendList(param);
 		colData.put("page_scale",	page_scale);

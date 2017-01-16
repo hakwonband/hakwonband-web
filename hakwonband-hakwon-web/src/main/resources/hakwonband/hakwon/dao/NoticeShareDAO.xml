@@ -110,16 +110,13 @@
 			select
 				count(1) as cnt
 			from
-				tb_notice_share a
+				tb_notice_share a left join tb_hakwon_class hakwon_class on a.parent_no = hakwon_class.class_no
 				, tb_hakwon b
-				, tb_hakwon_class hakwon_class
 			where
 				a.send_hakwon_no = #{hakwon_no}
 				and a.reg_user_no = #{user_no}
 				and a.notice_type = '003'
 				and a.receive_hakwon_no = b.hakwon_no
-				and b.hakwon_no = hakwon_class.hakwon_no
-				and a.parent_no = hakwon_class.class_no
 	]]>
 		<if test="@hakwonband.util.StringUtil@isNotNull( searchText )">
 				and (

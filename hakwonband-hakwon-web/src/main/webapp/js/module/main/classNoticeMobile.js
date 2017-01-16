@@ -24,6 +24,10 @@ hakwonMainApp.controller('classNoticeEditMobileController', function($scope, $lo
 	$scope.noticeCateList 		= [];
 	$scope.noticeCateItem 		= '';
 
+	$scope.reply_yn = true;
+	$scope.file_view = true;
+	$scope.mobile_push_yn = true;
+
 	/*	대상	*/
 	$scope.noticeTargetUser 		= '';
 
@@ -222,10 +226,14 @@ hakwonMainApp.controller('classNoticeEditMobileController', function($scope, $lo
 				/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
 				if ($scope.noticeDetail.reply_yn == 'Y') {
 					$scope.reply_yn = true;
+				} else {
+					$scope.reply_yn = false;
 				}
 
 				if ($scope.noticeDetail.is_file_view == '1') {
 					$scope.file_view = true;
+				} else {
+					$scope.file_view = false;
 				}
 			} else {
 				commProto.logger({noticeDetailError:data});

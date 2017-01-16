@@ -29,6 +29,10 @@ hakwonMainApp.controller('noticeEditMobileController', function($scope, $locatio
 		$scope.noticeCateList 		= [];
 		$scope.noticeCateItem 		= '';
 
+		$scope.reply_yn = true;
+		$scope.file_view = true;
+		$scope.mobile_push_yn = true;
+
 		/*	대상	*/
 		$scope.noticeTargetUser 		= '';
 
