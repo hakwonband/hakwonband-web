@@ -24,6 +24,7 @@
 					<table class="table table-bordered table-hover dataTable dtr-inline">
 						<thead>
 							<tr role="row">
+								<th style="width: 65px;">공유 번호</th>
 								<th style="width: 165px;">공유받은 학원</th>
 								<th style="width: 224px;">공유된 반 공지</th>
 								<th style="width: 209px;">일정</th>
@@ -32,6 +33,7 @@
 						</thead>
 						<tbody>
 							<tr role="row" ng-repeat="item in share_list">
+								<td>{{item.share_no}}</td>
 								<td class="sorting_1">{{item.hakwon_name}}</td>
 								<td>{{item.class_title}}</td>
 								<td>{{item.start_date}} ~ {{item.end_date}}</td>
