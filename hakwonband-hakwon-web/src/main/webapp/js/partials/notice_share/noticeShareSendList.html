@@ -36,7 +36,13 @@
 								<td>{{item.share_no}}</td>
 								<td class="sorting_1">{{item.hakwon_name}}</td>
 								<td>{{item.class_title}}</td>
-								<td>{{item.start_date}} ~ {{item.end_date}}</td>
+								<td ng-show="item.modify == true">
+									<input type="date" name="start_date" ng-model="item.start_date_modify" min="2015-12-01" max="2050-12-31"> ~
+									<input type="date" name="end_date" ng-model="item.end_date_modify" min="2015-01-01" max="2050-12-31">
+									<button class="btn btn-white" type="button" ng-click="item.modify = false;">취소</button>
+									<button class="btn btn-primary" type="button" ng-click="updateShareData(item)">저장</button>
+								</td>
+								<td ng-show="item.modify != true">{{item.start_date}} ~ {{item.end_date}}</td>
 								<td>
 									<button class="btn btn-white" type="button" ng-click="deleteShare(item)">삭제</button>
 									<button class="btn btn-primary" type="button" ng-click="updateShare(item)">수정</button>
