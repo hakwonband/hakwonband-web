@@ -231,85 +231,95 @@ hakwonMainApp.controller('noticeShareSendController', function($scope, $location
 hakwonMainApp.controller('noticeShareSendListController', function($scope, $location, $window, $routeParams, noticeShareService, CommUtil) {
 	console.log('hakwonMainApp noticeShareSendListController call');
 
-	try {
-		/*	페이지 초기화 호출	*/
-		hakwonCommon.pageInit();
+	/*	페이지 초기화 호출	*/
+	hakwonCommon.pageInit();
 
-		$("#wrapper").show();
+	$("#wrapper").show();
 
-		/*	헤더 셋팅	*/
-		comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'공유'}]);
+	/*	헤더 셋팅	*/
+	comm.setHeader([{url:PageUrl.main, title:'홈'}, {url:'#', title:'공유'}]);
 
-		/*	is Mobile	*/
-		$scope.isMobile = isMobile.any();
+	/*	is Mobile	*/
+	$scope.isMobile = isMobile.any();
 
-		/**
-		 * 페이지 번호
-		 */
-		$scope.page_no = 1;
+	/**
+	 * 페이지 번호
+	 */
+	$scope.page_no = 1;
 
-		/*	학원 번호	*/
-		$scope.hakwon_no = $routeParams.hakwon_no;
+	/*	학원 번호	*/
+	$scope.hakwon_no = $routeParams.hakwon_no;
 
-		$scope.searchText = '';
+	$scope.searchText = '';
 
-		/**
-		 * 보낸 리스트
-		 */
-		var sendList = function(page_no) {
-			var param = {page_no:page_no, hakwon_no : $scope.hakwon_no};
+	/**
+	 * 보낸 리스트
+	 */
+	var sendList = function(page_no) {
+		var param = {page_no:page_no, hakwon_no : $scope.hakwon_no};
 
-			var search_text = ($scope.searchText||'').trim();
-			if( search_text ) {
-				param.search_text = search_text;
-			}
+		var search_text = ($scope.searchText||'').trim();
+		if( search_text ) {
+			param.search_text = search_text;
+		}
 
-			/*	조회	*/
-			noticeShareService.sendList(param, function(data) {
-				var colData = data.colData;
-				$scope.share_list = colData.shareList;
-				$scope.page_info = CommUtil.getPagenationInfo(colData.totCount, colData.page_scale, DefaultInfo.pageScale, page_no);
+		/*	조회	*/
+		noticeShareService.sendList(param, function(data) {
+			var colData = data.colData;
+			$scope.share_list = colData.shareList;
+			$scope.page_info = CommUtil.getPagenationInfo(colData.totCount, colData.page_scale, DefaultInfo.pageScale, page_no);
+		});
+	}
+
+	/**
+	 * 검색
+	 */
+	$scope.searchList = function(e) {
+		if (e && e.type === 'keydown' && e.keyCode !== 13) {
+			return;
+		}
+		sendList(1);
+	}
+
+	/*	페이지네이션 페이지 이동	*/
+	$scope.movePage = function(page_no) {
+		if ($scope.page_no === page_no) {
+			return;
+		}
+		$scope.page_no = page_no;
+		sendList(page_no);
+	};
+
+	/*	수정	*/
+	$scope.updateShare = function(shareInfo) {
+		shareInfo.start_date_modify = new Date(shareInfo.start_date);
+		shareInfo.end_date_modify = new Date(shareInfo.end_date);
+
+		shareInfo.modify = true;
+	};
+
+	/*	수정	*/
+	$scope.updateShareData = function(shareInfo) {
+		var start_date = moment(shareInfo.start_date_modify).format('YYYY-MM-DD');
+		var end_date = moment(shareInfo.end_date_modify).format('YYYY-MM-DD');
+
+		noticeShareService.updateShare({share_no:shareInfo.share_no, start_date:start_date, end_date:end_date}, function() {
+			shareInfo.start_date = start_date;
+			shareInfo.end_date = end_date;
+			shareInfo.modify = false;
+		});
+	};
+
+	/*	삭제	*/
+	$scope.deleteShare = function(shareInfo) {
+		if( window.confirm('공유를 정말 삭제 하시겠습니까?') ) {
+			noticeShareService.deleteShare({share_no:shareInfo.share_no, del_type:'send'}, function() {
+				$scope.share_list = _.without($scope.share_list, shareInfo);
 			});
 		}
+	};
 
-		/**
-		 * 검색
-		 */
-		$scope.searchList = function(e) {
-			if (e && e.type === 'keydown' && e.keyCode !== 13) {
-				return;
-			}
-			sendList(1);
-		}
-
-		/*	페이지네이션 페이지 이동	*/
-		$scope.movePage = function(page_no) {
-			if ($scope.page_no === page_no) {
-				return;
-			}
-			$scope.page_no = page_no;
-			sendList(page_no);
-		};
-
-		/*	수정	*/
-		$scope.updateShare = function(shareInfo) {
-			alert('준비 중 입니다.');
-		};
-
-		/*	삭제	*/
-		$scope.deleteShare = function(shareInfo) {
-			if( window.confirm('공유를 정말 삭제 하시겠습니까?') ) {
-				noticeShareService.deleteShare({share_no:shareInfo.share_no, del_type:'send'}, function() {
-					$scope.share_list = _.without($scope.share_list, shareInfo);
-				});
-			}
-		};
-
-
-		sendList($scope.page_no);
-	} catch(ex) {
-		commProto.errorDump({errorObj:ex, customData:{'location':$location}});
-	}
+	sendList($scope.page_no);
 });
 
 /**
