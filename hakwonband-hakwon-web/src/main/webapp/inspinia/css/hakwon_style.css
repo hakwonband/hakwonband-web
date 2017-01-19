@@ -398,8 +398,19 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .class_list_pc li p, .class_list_pc li strong{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 
 .mo_row_check_list{border:1px solid #e5e6e7; height:40px;}
-.mo_row_check_list label{display:block; padding:0 5px 0 0; text-align:center;}
+.mo_row_check_list label{display:block; padding:5px 0; text-align:center;}
 .mo_row_check_list input{vertical-align:middle; line-height:20px; margin:0;}
+
+.new_mo_title{min-height:40px; position:fixed; top:0; left:0; right:0; background:#efefef; z-index:99; border:0; border-bottom:1px solid #e7eaec;}
+.new_mo_title h1{text-align:center; float:none; font-size:16px !important; margin-bottom:0;}
+.new_mo_title .title_btn_cancel{position:absolute; top:2px; left:2px;}
+.new_mo_title .title_btn_submit{position:absolute; top:2px; right:2px;}
+.new_mo_content{margin-top:40px; z-index:1; border:0; padding:5px 2px 0 2px !important; overflow:hidden;}
+.mo_row_select{overflow:hidden; float:none; box-sizing:border-box;}
+.mo_row_select select{float:left;}
+.new_mo_content .input-daterange{margin:5px auto; width:100%;}
+.mo_row_time{overflow:hidden; float:none;}
+.mo_row_time input{float:left; width:42%; margin-right:5px;}
 
 @media (max-width: 768px) {
 	.file-box{width:86px;}

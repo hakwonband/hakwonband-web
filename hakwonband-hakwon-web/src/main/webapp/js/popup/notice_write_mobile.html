@@ -1,35 +1,26 @@
-
-
 <!DOCTYPE html>
 <html>
-<!--
-카테고리 선택 > 카테고리
-노출대상 선택 > 노출대상
------------------
-한줄로
-
-첨부파일 Label은 삭제하고 파일 업로드 버튼하고 X개 파일 첨부 영역을 한줄로
-
-댓글 여부는 취소/등록 버튼하고 한줄로
--->
 <head>
-
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>학원밴드 - 학원관리자</title>
 
-	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/animate.css" rel="stylesheet">
+	<link href="/assets/css/font_style.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
 
-	<link href="../assets/css/animate.css" rel="stylesheet">
-	<link href="../assets/css/font_style.css" rel="stylesheet">
-	<link href="../assets/css/style.css" rel="stylesheet">
-	<link href="../assets/css/hakwon_style.css" rel="stylesheet">
-	<link href="../assets/css/plugins/switchery/switchery.css" rel="stylesheet">
+	<!-- 공통 js -->
+	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
 
+	<script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
+
+	<!-- 외부 lib js -->
+	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
 </head>
-<!-- 원장님일 경우 body class="skin-1 pace-done", 선생님일 경우 body class="skin-3 pace-done"  -->
 <body class="skin-1 pace-done">
 	<div class="ibox-title new_mo_title">
 		<h1>공지사항 등록</h1>
@@ -37,7 +28,7 @@
 		<button type="button" class="btn title_btn_cancel">X</button>
 	</div>
 	<div class="ibox-content new_mo_content">
-		<div class="mo_row_select">
+		<div class="mo_row_select m-b-xs">
 			<select class="form-control" style="width:50%;">
 				<option>카테고리</option>
 				<option>선생님</option>
@@ -51,10 +42,10 @@
 				<option>학생</option>
 			</select>
 		</div>
-		<div class="row m-r m-l-n-xs">
-			<div class="col-xs-7"><input type="date" class="form-control" placeholder="예약발송일"></div>
-			<div class="col-xs-4"><input type="time" class="form-control" placeholder="예약발송시간"></div>
-			<div class="col-xs-1" style="text-align:right;"><button type="button" class="btn btn-primary">X</button></div>
+		<div class="mo_row_time m-b-xs">
+			<input type="date" class="form-control" placeholder="예약발송일">
+			<input type="time" class="form-control" placeholder="예약발송시간">
+			<button type="button" class="btn btn-primary">X</button>
 		</div>
 		<input type="text" class="form-control m-b-xs" placeholder="제목 - 20자까지">
 		<div><textarea cols="140" rows="10" class="form-control"></textarea></div>
@@ -217,24 +208,6 @@
 	</div>
 
 	</div>
-
-	<!-- Mainly scripts -->
-	<script src="../assets/js/jquery-2.1.1.min.js"></script>
-	<script src="../assets/js/plugins/slimscroll/jquery.slimscroll.js"></script>
-	<script src="../assets/js/bootstrap.min.js"></script>
-	<script src="../assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
-	<!-- Custom and plugin javascript -->
-	<script src="../assets/js/inspinia.js"></script>
-
-	<!-- Switchery -->
-	<script src="../assets/js/plugins/switchery/switchery.js"></script>
-	<script>
-		$(document).ready(function () {
-			var elem = document.querySelector('.js-switch');
-			var switchery = new Switchery(elem, { color: '#1AB394' });
-		});
-	</script>
 </body>
 
 </html>

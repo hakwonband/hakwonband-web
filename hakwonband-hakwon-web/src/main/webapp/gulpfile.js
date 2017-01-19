@@ -121,6 +121,9 @@ var merge		= require('merge-stream'),
  			, './inspinia/css/animate.css'
  			, './inspinia/css/style.min.css'
  		]
+		, popup: [
+			'./js/popup/**/*'
+		]
 		, partials: [
 			'./js/partials/**/*'
 		]
@@ -213,6 +216,11 @@ gulp.task('common_lib_js', function() {
 		.pipe(gulp.dest('./assets/js'));
 });
 
+gulp.task('popup', function() {
+	return gulp.src(paths.popup)
+	.pipe(gulp.dest('./assets/js/popup'));
+});
+
 gulp.task('attendance_lib_js', function() {
 	return gulp.src(paths.attendance_lib_js)
 		.pipe(concat('attendance.lib.min.js'))
@@ -282,9 +290,9 @@ gulp.task('default', ['clean', 'build:development'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
+	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'popup', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_live', 'main_lib_css_live', 'partials', 'index_module_live', 'main_module_live');
 });
 
 gulp.task('build:development', ['clean'], function() {
-	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
+	gulp.start('images', 'fonts', 'font_awesome', 'zeroClipboard', 'popup', 'common_lib_js', 'attendance_lib_js', 'inspinia_css', 'tinymce_lib', 'index_lib_css_development', 'main_lib_css_development', 'partials', 'index_module_development', 'main_module_development');
 });
