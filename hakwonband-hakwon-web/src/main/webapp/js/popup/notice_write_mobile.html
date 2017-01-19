@@ -20,6 +20,14 @@
 
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
+
+	@@if (SERVER_TYPE == 'live' ) {
+  	<!-- live -->
+  	}
+  	@@if (SERVER_TYPE == 'local' ) {
+	<!-- dev -->
+  	}
+
 </head>
 <body class="skin-1 pace-done">
 	<div class="ibox-title new_mo_title">

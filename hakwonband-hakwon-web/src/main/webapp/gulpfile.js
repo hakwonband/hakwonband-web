@@ -1,3 +1,27 @@
+var argv = require('yargs').argv;
+var plugins = require('gulp-load-plugins')();
+
+var buildData = require('./gulp-build-config')(argv);
+var env = {
+  isDev: argv.build ? argv.build == 'dev' : buildData.IS_DEV,
+  vars: {
+    SERVER_TYPE: buildData.SERVER
+  }
+};
+for (var key in buildData) {
+  env.vars[key] = buildData[key];
+  console.log('################ env.vars['+key+'] ', env.vars[key]);
+}
+
+var pipes = {};
+
+//변수 치환
+pipes.builtReplaceVars = function () {
+  return plugins.replace(/\@@([A-Z0-9_]+)/g, function (val, key) {
+    return env.vars[key] || '';
+  });
+};
+
 var merge		= require('merge-stream'),
 	gulp		= require('gulp'),
 	concat		= require('gulp-concat'),
@@ -218,6 +242,13 @@ gulp.task('common_lib_js', function() {
 
 gulp.task('popup', function() {
 	return gulp.src(paths.popup)
+	.pipe(plugins.fileInclude({
+      prefix: '@@',
+      context: {
+        SERVER_TYPE: buildData.SERVER
+      }
+    }))
+	.pipe(pipes.builtReplaceVars())
 	.pipe(gulp.dest('./assets/js/popup'));
 });
 
