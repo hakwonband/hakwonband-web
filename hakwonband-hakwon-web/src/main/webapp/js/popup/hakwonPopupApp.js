@@ -6,11 +6,11 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 	$httpProvider.defaults.headers.post  = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
 
 	$routeProvider
-		.when('noticeWrite/hakwon', {
+		.when('/noticeWrite/hakwon', {
 			templateUrl: '/assets/js/popup/hakwonNoticeWriteMobile.html'
 			, controller: 'hakwonNoticeWriteController'
 		})
-		.when('noticeWrite/hakwonClass', {
+		.when('/noticeWrite/hakwonClass', {
 			templateUrl: '/assets/js/popup/hakwonClassNoticeWriteMobile.html'
 			, controller: 'hakwonClassNoticeWriteController'
 		})
