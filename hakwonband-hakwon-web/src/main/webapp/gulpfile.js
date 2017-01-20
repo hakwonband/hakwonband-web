@@ -311,6 +311,7 @@ gulp.task('watch', function() {
 	gulp.watch(paths.main_lib_js, ['main_lib_js']);
 	gulp.watch(paths.main_lib_css, ['main_lib_css_development']);
 	gulp.watch(paths.main_module, ['main_module_development']);
+	gulp.watch(paths.popup, ['popup']);
 });
 
 
