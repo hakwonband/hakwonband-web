@@ -227,6 +227,7 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
  * 학원 공지 쓰기
  */
 hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $location, $routeParams, $filter, $window, CommUtil, noticeService) {
+	console.log('hakwonNoticeWriteController call~~~');
 
 	$scope.CommUtil = CommUtil;
 
@@ -513,6 +514,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 			});
 		} else {
 			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(noticeService.getFileUploadOptions($scope));
+			console.log('$scope.fileUploadObj', $scope.fileUploadObj);
 		}
 	});
 });

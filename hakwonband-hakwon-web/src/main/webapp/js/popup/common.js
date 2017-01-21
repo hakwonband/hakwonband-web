@@ -75,6 +75,9 @@ var HakwonCommon = function() {
 	/*	프로그래스바	*/
 	var $progress = $('div.progress.top_progress');
 
+	this.progress = function(perVal) {
+	}
+
 	this.onload = function() {
 		console.log('HakwonCommon onload');
 
