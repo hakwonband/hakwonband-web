@@ -21,6 +21,9 @@
 	<!-- 외부 lib js -->
 	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
 
+</head>
+<body id="mainNgView" class="skin-1 pace-done" ng-view></body>
+
 	@@if (SERVER_TYPE == 'live' ) {
   	<!-- live -->
   	<script type="text/javascript" src="/assets/js/popup.module.min.js"></script>
@@ -42,10 +45,5 @@
 	<script type="text/javascript" src="/js/popup/hakwonClassNoticeWriteMobile.js"></script>
 	<script type="text/javascript" src="/js/popup/sample.js"></script>
   	}
-
-</head>
-<body class="skin-1 pace-done" ng-view>
-
-</body>
 
 </html>

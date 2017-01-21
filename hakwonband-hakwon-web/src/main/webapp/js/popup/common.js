@@ -90,6 +90,10 @@ var HakwonCommon = function() {
 		}
 	};
 
+	this.checkAuthType = function() {
+		return userAuth.userType == HakwonConstant.UserType.WONJANG;
+	};
+
 	/**
 	 * 에디터 옵션 생성
 	 */
@@ -150,7 +154,7 @@ var HakwonCommon = function() {
 			async : false,
 			dataType: "json",
 			success: function(data) {
-				console.log('인증 성공');
+				console.log('인증 조회');
 
 				var colData = data.colData;
 				console.log('colData', colData);
@@ -163,7 +167,9 @@ var HakwonCommon = function() {
 					userAuth.start_time	= colData.authUserInfo.start_time;
 					userAuth.end_time	= colData.authUserInfo.end_time;
 				} else {
+					console.error('인증 데이타 없음');
 					userAuth = {};
+					window.close();
 				}
 			},
 			error: function(xhr, textStatus, errorThrown) {
