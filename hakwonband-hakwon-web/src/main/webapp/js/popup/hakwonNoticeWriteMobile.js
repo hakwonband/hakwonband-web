@@ -268,7 +268,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 
 		if( isNull($routeParams.hakwon_no) ) {
 			if( window.PLATFORM ) {
-				window.PLATFORM.attendanceClose();
+				window.history.back();
 			} else {
 				window.close();
 			}
@@ -422,7 +422,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		if ($scope.isNewNotice) {
 			window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
 			if( window.PLATFORM ) {
-				window.PLATFORM.attendanceClose();
+				window.history.back();
 			} else {
 				window.close();
 			}
@@ -430,7 +430,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		} else {
 			window.opener.location.hash = '#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
 			if( window.PLATFORM ) {
-				window.PLATFORM.attendanceClose();
+				window.history.back();
 			} else {
 				window.close();
 			}
@@ -442,7 +442,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 	$scope.goNoticeList = function() {
 		window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
 		if( window.PLATFORM ) {
-			window.PLATFORM.attendanceClose();
+			window.history.back();
 		} else {
 			window.close();
 		}
