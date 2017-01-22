@@ -210,7 +210,6 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 				if( colData.result == CommonConstant.Flag.success ) {
 					$scope.noticeCateList = colData.noticeCateList;
 				} else {
-					alert('Server Response Error : ' + data.status);
 					commProto.logger({noticeCateListError:data});
 				}
 			} catch(ex) {

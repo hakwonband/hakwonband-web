@@ -411,6 +411,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .new_mo_content .input-daterange{margin:5px auto; width:100%;}
 .mo_row_time{overflow:hidden; float:none;}
 .mo_row_time input{float:left; width:42%; margin-right:5px;}
+.mo_right_file_btn input{right:2px; top:5px; left:inherit;}
 
 @media (max-width: 768px) {
 	.file-box{width:86px;}
