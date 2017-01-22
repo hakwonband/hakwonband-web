@@ -148,6 +148,17 @@ var merge		= require('merge-stream'),
 		, popup: [
 			'./js/popup/**/*'
 		]
+		, popup_module : [
+			'./js/common/common.prototype.js'
+			, './js/popup/common.js'
+			, './assets/js/main_module/bumworld.html5.upload.js'
+			, './js/popup/hakwonPopupApp.js'
+			, './js/module/factories/CommUtil.js'
+			, './js/popup/base.js'
+			, './js/popup/hakwonNoticeWriteMobile.js'
+			, './js/popup/hakwonClassNoticeWriteMobile.js'
+			, './js/popup/sample.js'
+		]
 		, partials: [
 			'./js/partials/**/*'
 		]
