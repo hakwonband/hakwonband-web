@@ -267,7 +267,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		};
 
 		if( isNull($routeParams.hakwon_no) ) {
-			window.close();
+			if( window.PLATFORM ) {
+				window.PLATFORM.attendanceClose();
+			} else {
+				window.close();
+			}
 			return ;
 		}
 		$scope.hakwonNo = $routeParams.hakwon_no;
@@ -417,11 +421,19 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 	$scope.editCancel = function() {
 		if ($scope.isNewNotice) {
 			window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
-			window.close();
+			if( window.PLATFORM ) {
+				window.PLATFORM.attendanceClose();
+			} else {
+				window.close();
+			}
 			return false;
 		} else {
 			window.opener.location.hash = '#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
-			window.close();
+			if( window.PLATFORM ) {
+				window.PLATFORM.attendanceClose();
+			} else {
+				window.close();
+			}
 			return false;
 		}
 	};
@@ -429,7 +441,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 	/*	공지사항 목록이동	*/
 	$scope.goNoticeList = function() {
 		window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
-		window.close();
+		if( window.PLATFORM ) {
+			window.PLATFORM.attendanceClose();
+		} else {
+			window.close();
+		}
 		return false;
 	};
 
