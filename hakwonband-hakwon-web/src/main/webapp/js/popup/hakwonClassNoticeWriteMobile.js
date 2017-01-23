@@ -206,7 +206,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 
 	if( isNull($routeParams.hakwon_no) || isNull($routeParams.class_no) ) {
 		if( window.PLATFORM ) {
-			window.history.back();
+			window.history.back(-2);
 		} else {
 			window.close();
 		}
@@ -589,7 +589,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 		if ($scope.isNewNotice) {
 			window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 			if( window.PLATFORM ) {
-				window.history.back();
+				window.history.back(-2);
 			} else {
 				window.close();
 			}
@@ -597,7 +597,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 		} else {
 			window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 			if( window.PLATFORM ) {
-				window.history.back();
+				window.history.back(-2);
 			} else {
 				window.close();
 			}
