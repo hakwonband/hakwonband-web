@@ -587,18 +587,20 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	/*	공지사항 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
 		if ($scope.isNewNotice) {
-			window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 			if( window.PLATFORM ) {
 				window.history.back(-2);
+				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 			} else {
+				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 				window.close();
 			}
 			return false;
 		} else {
-			window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 			if( window.PLATFORM ) {
 				window.history.back(-2);
+				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 			} else {
+				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 				window.close();
 			}
 			return false;
