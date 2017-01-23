@@ -420,33 +420,24 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 	/*	공지사항 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
 		if ($scope.isNewNotice) {
-			window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
 			if( window.PLATFORM ) {
 				window.history.back(-2);
+				window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
 			} else {
+				window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
 				window.close();
 			}
 			return false;
 		} else {
-			window.opener.location.hash = '#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
 			if( window.PLATFORM ) {
 				window.history.back(-2);
+				window.opener.location.hash = '#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
 			} else {
+				window.opener.location.hash = '#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
 				window.close();
 			}
 			return false;
 		}
-	};
-
-	/*	공지사항 목록이동	*/
-	$scope.goNoticeList = function() {
-		window.opener.location.hash = '#/notice/list?hakwon_no=' + $scope.hakwonNo;
-		if( window.PLATFORM ) {
-			window.history.back(-2);
-		} else {
-			window.close();
-		}
-		return false;
 	};
 
 	/*	youtube 삽입	*/
