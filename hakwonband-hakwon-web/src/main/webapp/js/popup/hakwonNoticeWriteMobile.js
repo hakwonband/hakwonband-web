@@ -82,8 +82,10 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 			/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 			var editOptions = comm.getEditorOptions();
 			editOptions.setup = function(ed) {
-				ed.on("init", function(ed) {
+				ed.on("init", function() {
+					console.log('init call~~~');
 					tinymce.activeEditor.setContent(' ');
+
 				}).on('KeyDown', function(e) {
 					var thisEditor = this;
 					var keyCode = undefined;
@@ -99,7 +101,14 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 
 						return tinymce.dom.Event.cancel(e);
 					}
+				});
 
+				ed.addButton('hakwonupload', {
+					text: 'upload',
+					icon: false,
+					onclick: function () {
+						angular.element("input[data-act=file_upload]").trigger('click');
+					}
 				});
 			};
 			tinymce.init(editOptions);
@@ -152,6 +161,14 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 								return tinymce.dom.Event.cancel(e);
 							}
 
+						});
+
+						ed.addButton('hakwonupload', {
+							text: 'upload',
+							icon: false,
+							onclick: function () {
+								angular.element("input[data-act=file_upload]").trigger('click');
+							}
 						});
 					};
 					tinymce.init(editOptions);

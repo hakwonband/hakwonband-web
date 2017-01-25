@@ -329,7 +329,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 			/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 			var editOptions = comm.getEditorOptions();
 			editOptions.setup = function (ed) {
-				ed.on("init", function (ed) {
+				ed.on("init", function () {
 					tinymce.activeEditor.setContent(' ');
 				}).on('KeyDown', function(e) {
 					var thisEditor = this;
@@ -346,7 +346,14 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 
 						return tinymce.dom.Event.cancel(e);
 					}
+				});
 
+				ed.addButton('hakwonupload', {
+					text: 'upload',
+					icon: false,
+					onclick: function () {
+						angular.element("input[data-act=file_upload]").trigger('click');
+					}
 				});
 			};
 			tinymce.init(editOptions);
@@ -386,7 +393,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 					/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 					var editOptions = comm.getEditorOptions();
 					editOptions.setup = function(ed) {
-						ed.on("init", function(ed) {
+						ed.on("init", function() {
 							if (!_.isUndefined(colData.noticeDetail.content) && colData.noticeDetail.content) {
 								tinymce.activeEditor.setContent(colData.noticeDetail.content);
 							} else {
@@ -407,7 +414,14 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 
 								return tinymce.dom.Event.cancel(e);
 							}
+						});
 
+						ed.addButton('hakwonupload', {
+							text: 'upload',
+							icon: false,
+							onclick: function () {
+								angular.element("input[data-act=file_upload]").trigger('click');
+							}
 						});
 					};
 					tinymce.init(editOptions);
