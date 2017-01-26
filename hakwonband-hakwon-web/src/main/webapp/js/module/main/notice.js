@@ -58,9 +58,9 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 
 						if( isMobile.any() ) {
 							var editWidth = $('[data-lib=editor]').width();
-							var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 						} else {
-							var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 						}
 						tinymce.activeEditor.insertContent(strImage);
 					}
@@ -701,12 +701,11 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 
 			if( isMobile.any() ) {
 				var editWidth = $('[data-lib=editor]').width();
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 			} else {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 			}
 			tinymce.activeEditor.insertContent(strImage);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		};
 
@@ -715,16 +714,14 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			var fileUrl = $(this).attr('data-file-url');
 			var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 			tinymce.activeEditor.insertContent(videoHtml);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
 		/*	오디오 삽입	*/
 		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
 			var fileUrl = $(this).attr('data-file-url');
-			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p>';
+			var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
 			tinymce.activeEditor.insertContent(audioHtml);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
@@ -756,9 +753,8 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 		$('#mainNgView').on(clickEvent, 'button[data-act=youtubeInsert]', function() {
 			var youtubeID = $('#mainNgView').find('input[name=youtubeID]').val();
 
-			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
+			var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
@@ -864,9 +860,9 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 
 									if( isMobile.any() ) {
 										var editWidth = $('[data-lib=editor]').width();
-										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 									} else {
-										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 									}
 									tinymce.activeEditor.insertContent(strImage);
 								}

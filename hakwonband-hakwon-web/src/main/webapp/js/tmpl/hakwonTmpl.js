@@ -29,9 +29,9 @@ var hakwonTmpl = {
 			, '{{/if}}'
 		].join('')
 		, videoHtml : [
-			'<video width="320" height="240" controls>'
+			'<p><video width="320" height="240" controls>'
 			, '	<source src="{{=videoUrl}}" type="video/mp4">'
-			, '</video>'
+			, '</video></p><p>&nbsp;</p>'
 		].join('')
 	}
 };

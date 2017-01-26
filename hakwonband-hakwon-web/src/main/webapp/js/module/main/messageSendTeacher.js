@@ -307,20 +307,18 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 			if( fileType == 'img' ) {
 				if( isMobile.any() ) {
 					var editWidth = $('[data-lib=editor]').width();
-					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
+					var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
 				} else {
-					var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a>';
+					var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
 				}
 				tinymce.activeEditor.insertContent(strImage);
-				tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			} else if( fileType == 'audio' ) {
-				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><br/>';
+				var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
 				tinymce.activeEditor.insertContent(audioHtml);
 			} else if( fileType == 'video' ) {
 				var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
 				tinymce.activeEditor.insertContent(videoHtml);
 			}
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
@@ -438,9 +436,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 
 										if( isMobile.any() ) {
 											var editWidth = $('[data-lib=editor]').width();
-											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+											var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 										} else {
-											var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+											var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 										}
 										tinymce.activeEditor.insertContent(strImage);
 									}
@@ -481,9 +479,9 @@ hakwonMainApp.controller('messageTeacherSendController', function($scope, $locat
 
 									if( isMobile.any() ) {
 										var editWidth = $('[data-lib=editor]').width();
-										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p>';
 									} else {
-										var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p>';
 									}
 									tinymce.activeEditor.insertContent(strImage);
 								}
