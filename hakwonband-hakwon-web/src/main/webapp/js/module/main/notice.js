@@ -330,11 +330,7 @@ hakwonMainApp.controller('noticeListController', function($scope, $location, $wi
 		/*	공지사항 등록 이동	*/
 		$scope.goNoticeEdit = function() {
 			if( isMobile.any() ) {
-				if( userAuth.userId == 'bumwonjang' || userAuth.userId == 'icheoneduk' ) {
-					window.open('/assets/js/popup/popupIndex.html#/noticeWrite/hakwon?hakwon_no=' + $scope.hakwonNo+'&t='+new Date().getTime(), 'window', 'toolbar=no,location=no,status=no,menubar=no');
-				} else {
-					$window.location.href = PageUrl.notice.edit+'?hakwon_no=' + $scope.hakwonNo;
-				}
+				window.open('/assets/js/popup/popupIndex.html#/noticeWrite/hakwon?hakwon_no=' + $scope.hakwonNo+'&t='+new Date().getTime(), 'window', 'toolbar=no,location=no,status=no,menubar=no');
 			} else {
 				$window.location.href = PageUrl.notice.edit+'?hakwon_no=' + $scope.hakwonNo;
 			}
@@ -559,11 +555,7 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 		/*	공지사항 수정하기 이동	*/
 		$scope.goNoticeEdit = function() {
 			if( isMobile.any() ) {
-				if( userAuth.userId == 'bumwonjang' || userAuth.userId == 'icheoneduk' ) {
-					window.open('/assets/js/popup/popupIndex.html#/noticeWrite/hakwon?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo+'&t='+new Date().getTime(), 'window', 'toolbar=no,location=no,status=no,menubar=no');
-				} else {
-					$window.location.href = PageUrl.notice.edit+'?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
-				}
+				window.open('/assets/js/popup/popupIndex.html#/noticeWrite/hakwon?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo+'&t='+new Date().getTime(), 'window', 'toolbar=no,location=no,status=no,menubar=no');
 			} else {
 				$window.location.href = PageUrl.notice.edit+'?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
 			}
