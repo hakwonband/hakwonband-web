@@ -1,0 +1,80 @@
+<div class="ibox-title new_mo_title">
+	<h1>공지사항 등록</h1>
+	<button type="button" class="btn btn-primary title_btn_submit" ng-click="editConfirm()">등록</button>
+	<button type="button" class="btn title_btn_cancel" ng-click="editCancel()">X</button>
+</div>
+<div class="ibox-content new_mo_content">
+	<div class="mo_row_select m-b-xs">
+		<select class="form-control" style="width:50%;"
+			ng-change="changeNoticeCate()"
+			ng-model="noticeCateItem"
+			ng-options="item.cate_name for item in noticeCateList">
+			<option value="">카테고리</option>
+		</select>
+		<select class="form-control" style="width:50%;" ng-model="noticeTargetUser">
+			<option value="">전체대상</option>
+			<option value="006">학생</option>
+			<option value="005">학부모</option>
+		</select>
+	</div>
+	<div class="mo_row_time m-b-xs">
+		<input type="date" name="reservationDate" ng-model="noticeDetail.reservation_date_1" class="form-control" placeholder="예약발송일">
+		<input type="time" name="reservationTime" ng-model="noticeDetail.reservation_date_2" class="form-control" placeholder="예약발송시간">
+		<button type="button" class="btn btn-primary" ng-click="reservationCancel()">X</button>
+	</div>
+	<input type="text" class="form-control m-b-xs" placeholder="제목 - 20자까지" ng-model="noticeDetail.title">
+	<div><textarea cols="140" rows="10" class="form-control" data-lib="editor">{{noticeDetail.content}}</textarea></div>
+	<div class="m-t m-b-xs">
+		<div class="input-group">
+			<input type="text" ng-model="youtubeID" class="form-control" placeholder="youtube 동영상 첨부">
+			<span class="input-group-btn"> <button type="button" ng-click="youtubeInsert()" class="btn btn-primary">삽입</button> </span>
+		</div>
+	</div>
+	<div class="form-group mo_row_check_list">
+		<div class="col-xs-4">
+			<label for="check_01">댓글 <input id="check_01" type="checkbox" name="reply_yn" ng-model="reply_yn"/></label>
+		</div>
+		<div class="col-xs-4">
+			<label for="check_02">알림 <input id="check_02" type="checkbox" name="mobile_push_yn" ng-model="mobile_push_yn"/></label>
+		</div>
+		<div class="col-xs-4">
+			<label for="check_03">파일노출 <input id="check_03" type="checkbox" name="file_view" ng-model="file_view"/></label>
+		</div>
+	</div>
+	<div class="row" style="padding:10px;">
+		<div class="col-xs-7" style="padding-top:10px;">
+			<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개파일 첨부</span>
+		</div>
+		<div class="col-xs-5 mo_right_file_btn" style="text-align:right;">
+			<span class="btn btn-primary">파일 업로드</span>
+			<input type="file" class="input_file" data-act="file_upload" multiple>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-11">
+			<div class="attachment" ng-if="fileList.length > 0">
+				<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
+					<div class="file">
+						<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video'">
+							<i class="fa fa-file"></i>
+						</div>
+						<div class="icon" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
+							<i class="fa fa-file"></i>
+						</div>
+						<div class="icon" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'file'">
+							<i class="fa fa-file"></i>
+						</div>
+						<div class="image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'img'">
+							<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
+						</div>
+						<div class="file-name">
+							<p>{{item.file_name}}</p>
+						</div>
+						<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html ng-app="hakwonMainApp" ng-controller="baseController">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>학원밴드 - 학원관리자</title>
+
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="/assets/css/animate.css" rel="stylesheet">
+	<link href="/assets/css/font_style.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+	<link href="/assets/css/hakwon_style.css" rel="stylesheet">
+
+	<!-- 공통 js -->
+	<script type="text/javascript" src="/js/constants/constant.jsp"></script>
+
+	<script type="text/javascript" src="/js/lib/tinymce-4.1.7/tinymce.min.js"></script>
+
+	<!-- 외부 lib js -->
+	<script type="text/javascript" src="/assets/js/common.lib.min.js"></script>
+
+</head>
+<body id="mainNgView" class="skin-1 pace-done" ng-view></body>
+
+	@@if (SERVER_TYPE == 'live' ) {
+  	<!-- live -->
+  	<!--
+  	<script type="text/javascript" src="/assets/js/popup.module.min.js"></script>
+  	-->
+  	<script type="text/javascript" src="/js/common/common.prototype.js"></script>
+	<script type="text/javascript" src="/js/popup/common.js"></script>
+	<script type="text/javascript" src="/js/common/bumworld.html5.upload.js"></script>
+
+	<!-- angularJS hakwonApp 모듈선언 -->
+	<script type="text/javascript" src="/js/popup/hakwonPopupApp.js"></script>
+
+	<!-- 팩토리 공통기능 start -->
+	<script type="text/javascript" src="/js/module/factories/CommUtil.js"></script>
+	<script type="text/javascript" src="/js/popup/base.js"></script>
+
+	<script type="text/javascript" src="/js/popup/hakwonNoticeWriteMobile.js"></script>
+	<script type="text/javascript" src="/js/popup/hakwonClassNoticeWriteMobile.js"></script>
+  	}
+  	@@if (SERVER_TYPE == 'local' ) {
+	<!-- dev -->
+	<script type="text/javascript" src="/js/common/common.prototype.js"></script>
+	<script type="text/javascript" src="/js/popup/common.js"></script>
+	<script type="text/javascript" src="/js/common/bumworld.html5.upload.js"></script>
+
+	<!-- angularJS hakwonApp 모듈선언 -->
+	<script type="text/javascript" src="/js/popup/hakwonPopupApp.js"></script>
+
+	<!-- 팩토리 공통기능 start -->
+	<script type="text/javascript" src="/js/module/factories/CommUtil.js"></script>
+	<script type="text/javascript" src="/js/popup/base.js"></script>
+
+	<script type="text/javascript" src="/js/popup/hakwonNoticeWriteMobile.js"></script>
+	<script type="text/javascript" src="/js/popup/hakwonClassNoticeWriteMobile.js"></script>
+  	}
+
+</html>
