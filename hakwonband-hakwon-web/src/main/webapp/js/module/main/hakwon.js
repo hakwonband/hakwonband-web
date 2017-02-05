@@ -452,8 +452,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			var mapHtml = $('#mainNgView').find('input[name=mapHtml]').val();
 			var $mapHtml = $(mapHtml).css('margin', '10px auto').attr('data-type', 'frameMap');
 			$('#mainNgView').find('input[name=mapHtml]').val('');
-			tinymce.activeEditor.insertContent($mapHtml.prop('outerHTML'));
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.insertContent('<p>'+$mapHtml.prop('outerHTML')+'</p><p>&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 		$('#mainNgView').on(clickEvent, 'button[data-act=daumMapInsert]', function() {
@@ -465,8 +464,7 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 			var mapDataHtml = $('#temp_map_div').find('div:eq(1)').html();
 			$('#temp_map_div').remove();
 
-			tinymce.activeEditor.insertContent(mapDataHtml);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
+			tinymce.activeEditor.insertContent('<p>'+mapDataHtml+'</p><p>&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
@@ -474,9 +472,8 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		$('#mainNgView').on(clickEvent, 'button[data-act=youtubeInsert]', function() {
 			var youtubeID = $('#mainNgView').find('input[name=youtubeID]').val();
 
-			var youtubeHtml = '<a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a>';
+			var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'" target="_blank"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
 			tinymce.activeEditor.insertContent(youtubeHtml);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		});
 
@@ -646,9 +643,8 @@ hakwonMainApp.controller('hakwonIntroEditController', function($scope, $location
 		/*	이미지 클릭시 에디터에 이미지 첨부	*/
 		$scope.insertImageToEditor = function(filePath, fileNo) {
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
-			var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 			tinymce.activeEditor.insertContent(strImage);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		};
 

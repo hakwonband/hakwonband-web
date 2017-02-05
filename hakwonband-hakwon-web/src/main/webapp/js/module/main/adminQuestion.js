@@ -482,12 +482,11 @@ hakwonMainApp.controller('registQuestionController', function($scope, $location,
 			var fullFilePath = $scope.getAttachFileFullPath(filePath);
 			if( isMobile.any() ) {
 				var editWidth = $('[data-lib=editor]').width();
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 			} else {
-				var strImage = '<a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a>';
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 			}
 			tinymce.activeEditor.insertContent(strImage);
-			tinymce.activeEditor.insertContent('<p><br />&nbsp;</p>');
 			tinymce.activeEditor.focus();
 		};
 

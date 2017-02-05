@@ -121,6 +121,8 @@ var HakwonCommon = function() {
 
 			});
 		};
+		tinymceConstInitOptios.statusbar = false;
+		tinymceConstInitOptios.toolbar1 += ' hakwonupload';
 		return tinymceConstInitOptios;
 	};
 

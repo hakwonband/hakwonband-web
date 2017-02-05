@@ -651,13 +651,7 @@
 	/*	팝업 종료	*/
 	function popupClose() {
 		if( window.PLATFORM ) {
-			var currentVersion = window.PLATFORM.version();
-			currentVersion = currentVersion.replace(/\./gi, '');
-			if( currentVersion >= 1338 ) {
-				window.PLATFORM.attendanceClose();
-			} else {
-				window.history.back();
-			}
+			window.PLATFORM.attendanceClose();
 		} else {
 			window.close();
 		}

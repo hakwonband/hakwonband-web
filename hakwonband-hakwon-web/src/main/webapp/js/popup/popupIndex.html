@@ -26,13 +26,12 @@
 
 	@@if (SERVER_TYPE == 'live' ) {
   	<!-- live -->
+  	<!--
   	<script type="text/javascript" src="/assets/js/popup.module.min.js"></script>
-  	}
-  	@@if (SERVER_TYPE == 'local' ) {
-	<!-- dev -->
-	<script type="text/javascript" src="/js/common/common.prototype.js"></script>
+  	-->
+  	<script type="text/javascript" src="/js/common/common.prototype.js"></script>
 	<script type="text/javascript" src="/js/popup/common.js"></script>
-	<script type="text/javascript" src="/assets/js/main_module/bumworld.html5.upload.js"></script>
+	<script type="text/javascript" src="/js/common/bumworld.html5.upload.js"></script>
 
 	<!-- angularJS hakwonApp 모듈선언 -->
 	<script type="text/javascript" src="/js/popup/hakwonPopupApp.js"></script>
@@ -43,7 +42,22 @@
 
 	<script type="text/javascript" src="/js/popup/hakwonNoticeWriteMobile.js"></script>
 	<script type="text/javascript" src="/js/popup/hakwonClassNoticeWriteMobile.js"></script>
-	<script type="text/javascript" src="/js/popup/sample.js"></script>
+  	}
+  	@@if (SERVER_TYPE == 'local' ) {
+	<!-- dev -->
+	<script type="text/javascript" src="/js/common/common.prototype.js"></script>
+	<script type="text/javascript" src="/js/popup/common.js"></script>
+	<script type="text/javascript" src="/js/common/bumworld.html5.upload.js"></script>
+
+	<!-- angularJS hakwonApp 모듈선언 -->
+	<script type="text/javascript" src="/js/popup/hakwonPopupApp.js"></script>
+
+	<!-- 팩토리 공통기능 start -->
+	<script type="text/javascript" src="/js/module/factories/CommUtil.js"></script>
+	<script type="text/javascript" src="/js/popup/base.js"></script>
+
+	<script type="text/javascript" src="/js/popup/hakwonNoticeWriteMobile.js"></script>
+	<script type="text/javascript" src="/js/popup/hakwonClassNoticeWriteMobile.js"></script>
   	}
 
 </html>
