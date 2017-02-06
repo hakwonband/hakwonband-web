@@ -81,8 +81,7 @@ public class UploadVideo {
 	private static Credential authorize(List<String> scopes) throws Exception {
 
 		// Load client secrets.
-		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-				UploadVideo.class.getResourceAsStream("/client_secrets.json"));
+		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(UploadVideo.class.getResourceAsStream("/client_secrets.json")));
 
 		// Checks that the defaults have been replaced (Default = "Enter X
 		// here").
@@ -94,12 +93,10 @@ public class UploadVideo {
 		}
 
 		// Set up file credential store.
-		FileCredentialStore credentialStore = new FileCredentialStore(
-				new File(System.getProperty("user.home"), ".credentials/youtube-api-uploadvideo.json"), JSON_FACTORY);
+		FileCredentialStore credentialStore = new FileCredentialStore( new File(System.getProperty("user.home"), ".credentials/youtube-api-uploadvideo.json"), JSON_FACTORY);
 
 		// Set up authorization code flow.
-		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-				clientSecrets, scopes).setCredentialStore(credentialStore).build();
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes).setCredentialStore(credentialStore).build();
 
 		// Build the local server and bind it to port 9000
 		LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
