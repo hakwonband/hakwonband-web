@@ -252,7 +252,7 @@ public class UploadVideo {
 	 */
 	private static File[] getLocalVideoFiles() throws IOException {
 
-		File currentDirectory = new File(".");
+		File currentDirectory = new File("./resources");
 		System.out.println("Video files from " + currentDirectory.getAbsolutePath() + ":");
 
 		// Filters out video files. This list of video extensions is not
