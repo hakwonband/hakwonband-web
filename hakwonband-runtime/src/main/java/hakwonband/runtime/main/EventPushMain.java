@@ -1,10 +1,10 @@
 package hakwonband.runtime.main;
 
+import org.apache.commons.lang.StringUtils;
+
 import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.eventPush.service.EventPushService;
 import hakwonband.util.HKBandUtil;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 금일 이벤트 푸시

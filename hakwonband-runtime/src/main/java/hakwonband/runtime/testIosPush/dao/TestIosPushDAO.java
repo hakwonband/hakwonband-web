@@ -1,9 +1,9 @@
 package hakwonband.runtime.testIosPush.dao;
 
+import java.util.List;
+
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
-
-import java.util.List;
 
 public interface TestIosPushDAO {
 

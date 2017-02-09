@@ -14,15 +14,21 @@
 
 package com.google.api.services.samples.youtube.cmdline.data;
 
+import java.util.Calendar;
+import java.util.List;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.samples.youtube.cmdline.Auth;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.*;
+import com.google.api.services.youtube.model.Activity;
+import com.google.api.services.youtube.model.ActivityContentDetails;
+import com.google.api.services.youtube.model.ActivityContentDetailsBulletin;
+import com.google.api.services.youtube.model.ActivitySnippet;
+import com.google.api.services.youtube.model.Channel;
+import com.google.api.services.youtube.model.ChannelListResponse;
+import com.google.api.services.youtube.model.ResourceId;
 import com.google.common.collect.Lists;
-
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * Create a video bulletin that is posted to the user's channel feed.

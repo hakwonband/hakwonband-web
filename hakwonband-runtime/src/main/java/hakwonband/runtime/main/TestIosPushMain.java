@@ -1,11 +1,11 @@
 package hakwonband.runtime.main;
 
+import org.apache.commons.lang.StringUtils;
+
 import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.testIosPush.service.TestIosPushService;
 import hakwonband.util.DataMap;
 import hakwonband.util.HKBandUtil;
-
-import org.apache.commons.lang.StringUtils;
 
 public class TestIosPushMain extends HakwonRuntime {
 

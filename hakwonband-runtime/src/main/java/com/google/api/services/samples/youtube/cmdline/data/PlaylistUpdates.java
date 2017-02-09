@@ -14,16 +14,21 @@
 
 package com.google.api.services.samples.youtube.cmdline.data;
 
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.samples.youtube.cmdline.Auth;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.*;
+import com.google.api.services.youtube.model.Playlist;
+import com.google.api.services.youtube.model.PlaylistItem;
+import com.google.api.services.youtube.model.PlaylistItemSnippet;
+import com.google.api.services.youtube.model.PlaylistSnippet;
+import com.google.api.services.youtube.model.PlaylistStatus;
+import com.google.api.services.youtube.model.ResourceId;
 import com.google.common.collect.Lists;
-
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * Creates a new, private playlist in the authorized user's channel and add

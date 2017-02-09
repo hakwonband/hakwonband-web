@@ -1,10 +1,10 @@
 package hakwonband.runtime.main;
 
+import org.apache.commons.lang.StringUtils;
+
 import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.fileClean.service.FileCleanService;
 import hakwonband.util.HKBandUtil;
-
-import org.apache.commons.lang.StringUtils;
 
 public class FileCleanMain extends HakwonRuntime {
 

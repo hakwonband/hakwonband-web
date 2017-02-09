@@ -281,4 +281,18 @@
 	]]>
 	</update>
 
+	<!-- 구글 인증 업데이트 -->
+	<update id="googleAuthUpdate" parameterType="hakwonband.admin.model.GoogleAuthModel">
+	<![CDATA[
+		/*	CommonDAO.googleAuthUpdate	*/
+		update tb_google_auth set
+			access_token = #{access_token}
+			, refresh_token = #{refresh_token}
+			, token_expire_time = FROM_UNIXTIME(#{token_expire_time})
+			, upd_date = now()
+		where
+			email_addr = #{email_addr}
+	]]>
+	</update>
+
 </mapper>

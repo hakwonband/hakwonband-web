@@ -100,3 +100,24 @@ alter table tb_event add add_info_title varchar(100) comment '정보 입력 타�
 alter table tb_event_user add recommend_user_no integer	comment '추천자 번호';
 
 alter table tb_event_user add user_info varchar(1000)	comment '사용자 정보';
+
+
+==========================================================
+2017-02-07
+==========================================================
+drop table tb_google_auth;
+create table tb_google_auth (
+	email_addr				varchar(50)				not null				comment '이메일 주소'
+	, access_token			varchar(200)			not null				comment '인증 토큰'
+	, refresh_token			varchar(200)			not null				comment 'refresh_token'
+	, token_expire_time		datetime				not null				comment 'token_expire_time'
+	, reg_date				datetime 				not null				comment '등록 일자'
+	, upd_date				datetime 				not null				comment '수정 일자'
+	, primary key (email_addr)
+)
+engine = innodb
+character set utf8mb4
+comment ='구글 인증 정보'
+;
+insert into tb_google_auth(email_addr, access_token, refresh_token, token_expire_time, reg_date, upd_date)
+values('hakwonband@gmail.com', '', '', now(), now(), now());

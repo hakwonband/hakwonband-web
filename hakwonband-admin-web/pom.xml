@@ -33,20 +33,11 @@
     		<version>3.14</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-google -->
 		<dependency>
 		    <groupId>org.springframework.social</groupId>
 		    <artifactId>spring-social-google</artifactId>
 		    <version>1.0.0.RELEASE</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-		<dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>1.16.12</version>
-		</dependency>
-
 
 	</dependencies>
 

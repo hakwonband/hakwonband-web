@@ -14,6 +14,14 @@
 
 package com.google.api.services.samples.youtube.cmdline.data;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
@@ -24,9 +32,6 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTube.Thumbnails.Set;
 import com.google.api.services.youtube.model.ThumbnailSetResponse;
 import com.google.common.collect.Lists;
-
-import java.io.*;
-import java.util.List;
 
 /**
  * This sample uses MediaHttpUploader to upload an image and then calls the

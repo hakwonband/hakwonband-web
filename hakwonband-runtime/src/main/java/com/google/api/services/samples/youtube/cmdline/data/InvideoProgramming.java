@@ -14,17 +14,23 @@
 
 package com.google.api.services.samples.youtube.cmdline.data;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.samples.youtube.cmdline.Auth;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.*;
+import com.google.api.services.youtube.model.Channel;
+import com.google.api.services.youtube.model.ChannelListResponse;
+import com.google.api.services.youtube.model.InvideoBranding;
+import com.google.api.services.youtube.model.InvideoPromotion;
+import com.google.api.services.youtube.model.InvideoTiming;
+import com.google.api.services.youtube.model.PromotedItem;
+import com.google.api.services.youtube.model.PromotedItemId;
 import com.google.common.collect.Lists;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Add a featured video to a channel.

@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import hakwonband.admin.model.GoogleAuthModel;
+import hakwonband.admin.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 구글 콜백 컨트롤러
+ *
+ * http://local.hakwon.teamoboki.com:8080/oauth/youtube.do
+ * https://admin.hakwonband.com/oauth/youtube.do
  *
  * @author bumworld
  *
@@ -33,6 +38,9 @@ public class OauthGoogleController {
 
 	@Autowired
 	private OAuth2Parameters youtubeOAuth2OldParameters;
+
+	@Autowired
+	private CommonService commonService;
 
 	/**
 	 * 권한 링크
@@ -82,7 +90,20 @@ public class OauthGoogleController {
 				Long expireTime =  accessGrant.getExpireTime();
 				String refreshToken = accessGrant.getRefreshToken();
 
-				url = "결과 보여줄 html 페이지";
+				String expireTimeStr = String.valueOf(expireTime);
+				if( expireTimeStr.length() > 10 ) {
+					expireTimeStr = expireTimeStr.substring(0,  10);
+				}
+
+
+				GoogleAuthModel googleAuthModel = new GoogleAuthModel();
+				googleAuthModel.setAccess_token(accessToken);
+				googleAuthModel.setEmail_addr("hakwonband@gmail.com");
+				googleAuthModel.setRefresh_token(refreshToken);
+				googleAuthModel.setToken_expire_time(expireTimeStr);
+				commonService.updateGoogleAuth(googleAuthModel);
+
+				url = "/oauth_result.html";
 
 				log.info("url : " + url);
 			} catch(Exception e) {
