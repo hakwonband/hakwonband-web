@@ -26,12 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.java6.auth.oauth2.FileCredentialStore;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
@@ -44,7 +39,6 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
-import com.google.common.collect.Lists;
 
 /**
  * Demo of uploading a video to a user's account using the YouTube Data API (V3)
@@ -73,39 +67,6 @@ public class UploadVideo {
 	private static String VIDEO_FILE_FORMAT = "video/*";
 
 	/**
-	 * Authorizes the installed application to access user's protected data.
-	 *
-	 * @param scopes
-	 *            list of scopes needed to run youtube upload.
-	 */
-	private static Credential authorize(List<String> scopes) throws Exception {
-
-		// Load client secrets.
-		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(UploadVideo.class.getResourceAsStream("/client_secrets.json")));
-
-		// Checks that the defaults have been replaced (Default = "Enter X
-		// here").
-		if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-				|| clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
-			System.out.println("Enter Client ID and Secret from https://code.google.com/apis/console/?api=youtube"
-					+ "into youtube-cmdline-uploadvideo-sample/src/main/resources/client_secrets.json");
-			System.exit(1);
-		}
-
-		// Set up file credential store.
-		FileCredentialStore credentialStore = new FileCredentialStore( new File(System.getProperty("user.home"), ".credentials/youtube-api-uploadvideo.json"), JSON_FACTORY);
-
-		// Set up authorization code flow.
-		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes).setCredentialStore(credentialStore).build();
-
-		// Build the local server and bind it to port 9000
-		LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
-
-		// Authorize.
-		return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
-	}
-
-	/**
 	 * Uploads user selected video in the project folder to the user's YouTube
 	 * account using OAuth2 for authentication.
 	 *
@@ -114,16 +75,11 @@ public class UploadVideo {
 	 */
 	public static void main(String[] args) {
 
-		// Scope required to upload to YouTube.
-		List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube.upload");
-
 		try {
-			// Authorization.
-			Credential credential = authorize(scopes);
+			GoogleCredential googleCredential = new GoogleCredential().setAccessToken("");
 
 			// YouTube object used to make all API requests.
-			youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-					.setApplicationName("youtube-cmdline-uploadvideo-sample").build();
+			youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, googleCredential).setApplicationName("youtube-cmdline-uploadvideo-sample").build();
 
 			// We get the user selected local video file to upload.
 			File videoFile = getVideoFromUser();

@@ -121,3 +121,9 @@ comment ='구글 인증 정보'
 ;
 insert into tb_google_auth(email_addr, access_token, refresh_token, token_expire_time, reg_date, upd_date)
 values('hakwonband@gmail.com', '', '', now(), now(), now());
+
+
+==========================================================
+2017-02-09
+==========================================================
+alter table tb_file add youtube_id varchar(30)	comment 'youtube 아이디';
