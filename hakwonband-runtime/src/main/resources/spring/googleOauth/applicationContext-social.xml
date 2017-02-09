@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="
+	   	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+">
+
+	<util:properties id="socialProps" location="classpath:property/${server.type}/hakwon-social.properties" />
+
+
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<constructor-arg value="#{socialProps['google.consumerKey']}" />
+		<constructor-arg value="#{socialProps['google.consumerSecret']}" />
+	</bean>
+
+	<bean id="youtubeOAuth2OldParameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<constructor-arg>
+			<map>
+				<entry key="access_type">
+					<list><value>offline</value></list>
+				</entry>
+				<entry key="approval_prompt">
+					<list><value>force</value></list>
+				</entry>
+			</map>
+		</constructor-arg>
+		<property name="scope" value="https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.email"/>
+		<property name="redirectUri" value="#{socialProps['google.callback']}"/>
+	</bean>
+
+</beans>

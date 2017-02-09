@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import hakwonband.admin.dao.CommonDAO;
+import hakwonband.admin.model.GoogleAuthModel;
+import hakwonband.common.exception.HKBandException;
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
 import hakwonband.util.HKBandUtil;
@@ -157,5 +159,16 @@ public class CommonService {
 	 */
 	public List<UserDevice> getUserDevice(DataMap param) {
 		return commonDAO.getUserDeviceToken(param);
+	}
+
+	/**
+	 * 구글 인증 정보 업데이트
+	 * @param googleAuthModel
+	 */
+	public void updateGoogleAuth(GoogleAuthModel googleAuthModel) {
+		int cnt = commonDAO.googleAuthUpdate(googleAuthModel);
+		if( cnt != 1 ) {
+			throw new HKBandException(googleAuthModel.toString());
+		}
 	}
 }

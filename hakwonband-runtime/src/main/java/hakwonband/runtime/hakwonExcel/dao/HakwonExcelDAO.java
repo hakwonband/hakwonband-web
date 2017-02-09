@@ -11,5 +11,4 @@ public interface HakwonExcelDAO {
 	void insertHakwonInfo(HakwonExcel hakwonExcel);
 
 	void insertHakwonAddress(HakwonExcel hakwonExcel);
-
 }

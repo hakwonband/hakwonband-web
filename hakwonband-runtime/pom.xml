@@ -14,9 +14,9 @@
 	<name>hakwonband-runtime Maven</name>
 
 	<properties>
-		<project.youtube.version>v3-rev24-1.13.2-beta</project.youtube.version>
-		<project.http.version>1.13.1-beta</project.http.version>
-		<project.oauth.version>1.13.1-beta</project.oauth.version>
+		<project.youtube.version>v3-rev181-1.22.0</project.youtube.version>
+		<project.http.version>	1.22.0</project.http.version>
+		<project.oauth.version>1.22.0</project.oauth.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -101,6 +101,12 @@
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>${project.oauth.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.springframework.social</groupId>
+		    <artifactId>spring-social-google</artifactId>
+		    <version>1.0.0.RELEASE</version>
 		</dependency>
 	</dependencies>
 

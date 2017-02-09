@@ -2,6 +2,7 @@ package hakwonband.admin.dao;
 
 import java.util.List;
 
+import hakwonband.admin.model.GoogleAuthModel;
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
 
@@ -104,4 +105,10 @@ public interface CommonDAO {
 	 * @return
 	 */
 	public int loginUserDeviceTokenUpdate(DataMap param);
+
+	/**
+	 * 구글 인증 정보 업데이트
+	 * @param googleAuthModel
+	 */
+	public int googleAuthUpdate(GoogleAuthModel googleAuthModel);
 }
