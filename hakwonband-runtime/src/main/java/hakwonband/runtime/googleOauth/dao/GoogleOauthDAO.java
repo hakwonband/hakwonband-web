@@ -9,4 +9,10 @@ public interface GoogleOauthDAO {
 	 * @param googleAuthModel
 	 */
 	public int googleAuthUpdate(GoogleAuthModel googleAuthModel);
+
+	/**
+	 * 구글 인증 정보
+	 * @return
+	 */
+	public GoogleAuthModel getGoogleAuth();
 }

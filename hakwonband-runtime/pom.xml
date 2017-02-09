@@ -102,6 +102,12 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>${project.oauth.version}</version>
 		</dependency>
+
+		<dependency>
+		    <groupId>org.springframework.social</groupId>
+		    <artifactId>spring-social-google</artifactId>
+		    <version>1.0.0.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 </project>
