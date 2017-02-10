@@ -55,8 +55,6 @@ public class YoutubeMain extends HakwonRuntime {
 		}
 		System.setProperty("runtime.service.name", "youtube");
 
-		System.out.println(UUID.randomUUID().toString());
-
-//		new YoutubeMain();
+		new YoutubeMain();
     }
 }
