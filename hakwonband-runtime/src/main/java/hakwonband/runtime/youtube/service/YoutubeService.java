@@ -44,6 +44,7 @@ public class YoutubeService {
 	 * @return
 	 */
 	public List<TargetFileInfo> targetInit(String runtime_id) {
+		log.info("runtime_id : " + runtime_id);
 
 		/**
 		 * 대상 조회
@@ -67,10 +68,11 @@ public class YoutubeService {
 	 */
 	public void executeUpload(TargetFileInfo targetFileInfo) {
 
+		String youtube_id = "";
 		try {
 
 			String accessToken = youtubeDAO.accessToken();
-			log.info("accessToken[{}]", accessToken);
+			log.info("accessToken[{}] fileNo[{}] fileName[{}]", accessToken, targetFileInfo.getFile_no(), targetFileInfo.getFile_name());
 
 			GoogleCredential googleCredential = new GoogleCredential().setAccessToken(accessToken);
 
@@ -131,6 +133,8 @@ public class YoutubeService {
 			uploader.setProgressListener(progressListener);
 			Video returnedVideo = videoInsert.execute();
 
+			youtube_id = returnedVideo.getId();
+
 			log.debug("\n================== Returned Video ==================\n");
 			log.debug("  - Id: " + returnedVideo.getId());
 			log.debug("  - Title: " + returnedVideo.getSnippet().getTitle());
@@ -149,6 +153,8 @@ public class YoutubeService {
 			youtubeDAO.targetRemove(targetFileInfo.getFile_no());
 		} catch(Exception e) {
 			log.error(targetFileInfo.toString(), e);
+		} finally {
+			log.info("youtube_id[{}]", youtube_id);
 		}
 	}
 }

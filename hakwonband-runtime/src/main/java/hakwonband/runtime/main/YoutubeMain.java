@@ -34,9 +34,12 @@ public class YoutubeMain extends HakwonRuntime {
 		 * 업로드
 		 */
 		if( targetList != null && targetList.isEmpty() == false ) {
+			System.out.println("targetList : " + targetList.size());
 			for(TargetFileInfo targetFileInfo : targetList) {
 				youtubeService.executeUpload(targetFileInfo);
 			}
+		} else {
+			System.out.println("targetList is null");
 		}
 	}
 
