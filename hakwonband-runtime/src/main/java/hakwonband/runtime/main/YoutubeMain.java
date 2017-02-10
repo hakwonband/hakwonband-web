@@ -10,12 +10,14 @@ import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.youtube.model.TargetFileInfo;
 import hakwonband.runtime.youtube.service.YoutubeService;
 import hakwonband.util.HKBandUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * youtube 업로드
  * @author bumworld
  *
  */
+@Slf4j
 public class YoutubeMain extends HakwonRuntime {
 
 	public YoutubeMain() {
@@ -28,19 +30,19 @@ public class YoutubeMain extends HakwonRuntime {
 		 * 대상 리스트 조회
 		 */
 		String runtime_id = UUID.randomUUID().toString();
-		List<TargetFileInfo> targetList = youtubeService.targetInit(runtime_id);
+		//List<TargetFileInfo> targetList = youtubeService.targetInit(runtime_id);
+		log.info("runtime_id : " + runtime_id);
 
 		/**
 		 * 업로드
 		 */
-		if( targetList != null && targetList.isEmpty() == false ) {
-			System.out.println("targetList : " + targetList.size());
-			for(TargetFileInfo targetFileInfo : targetList) {
-				youtubeService.executeUpload(targetFileInfo);
-			}
-		} else {
-			System.out.println("targetList is null");
-		}
+//		if( targetList != null && targetList.isEmpty() == false ) {
+//			for(TargetFileInfo targetFileInfo : targetList) {
+//				youtubeService.executeUpload(targetFileInfo);
+//			}
+//		} else {
+//			System.out.println("targetList is null");
+//		}
 	}
 
     /**
