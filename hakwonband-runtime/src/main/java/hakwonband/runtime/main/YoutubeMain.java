@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.StopWatch;
 
 import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.youtube.model.TargetFileInfo;
@@ -26,6 +27,9 @@ public class YoutubeMain extends HakwonRuntime {
 		ApplicationContext context = getApplicationContext();
 		YoutubeService youtubeService = context.getBean("youtubeService", YoutubeService.class);
 
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
 		/**
 		 * 대상 리스트 조회
 		 */
@@ -46,6 +50,9 @@ public class YoutubeMain extends HakwonRuntime {
 		} else {
 			log.info("targetList is null");
 		}
+
+		stopWatch.stop();
+		log.info("total time {}", stopWatch.getTotalTimeSeconds());
 	}
 
     /**
