@@ -1,8 +1,13 @@
 package hakwonband.runtime.main;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
 
 import hakwonband.runtime.core.HakwonRuntime;
+import hakwonband.runtime.youtube.model.TargetFileInfo;
 import hakwonband.runtime.youtube.service.YoutubeService;
 import hakwonband.util.HKBandUtil;
 
@@ -16,10 +21,23 @@ public class YoutubeMain extends HakwonRuntime {
 	public YoutubeMain() {
 		super();
 
+		ApplicationContext context = getApplicationContext();
+		YoutubeService youtubeService = context.getBean("youtubeService", YoutubeService.class);
+
 		/**
-		 * 인증 토큰 리프레시
+		 * 대상 리스트 조회
 		 */
-		run(YoutubeService.class, "executeUpload");
+		String runtime_id = UUID.randomUUID().toString();
+		List<TargetFileInfo> targetList = youtubeService.targetInit(runtime_id);
+
+		/**
+		 * 업로드
+		 */
+		if( targetList != null && targetList.isEmpty() == false ) {
+			for(TargetFileInfo targetFileInfo : targetList) {
+				youtubeService.executeUpload(targetFileInfo);
+			}
+		}
 	}
 
     /**
@@ -36,6 +54,9 @@ public class YoutubeMain extends HakwonRuntime {
 			System.setProperty("server.type", "local");
 		}
 		System.setProperty("runtime.service.name", "youtube");
-		new YoutubeMain();
+
+		System.out.println(UUID.randomUUID().toString());
+
+//		new YoutubeMain();
     }
 }

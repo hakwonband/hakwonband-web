@@ -76,7 +76,7 @@ public class UploadVideo {
 	public static void main(String[] args) {
 
 		try {
-			GoogleCredential googleCredential = new GoogleCredential().setAccessToken("");
+			GoogleCredential googleCredential = new GoogleCredential().setAccessToken("ya29.GlzuA8KgQrOLHm0j0qFXmRod5-GoyX8wdpVt20CstwGV2bJBY85L8XmpYnyxzAkocA7cIl9rCIOpEt2ho8E-twQAsLq-tADDzqX_NrJdkXf8sdDao-2gKPLOROxgCw");
 
 			// YouTube object used to make all API requests.
 			youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, googleCredential).setApplicationName("youtube-cmdline-uploadvideo-sample").build();
@@ -208,7 +208,8 @@ public class UploadVideo {
 	 */
 	private static File[] getLocalVideoFiles() throws IOException {
 
-		File currentDirectory = new File("./resources");
+//		File currentDirectory = new File("./resources");
+		File currentDirectory = new File("D:/develop/workspace/project/hakwonband-web/hakwonband-runtime/src/main/resources");
 		System.out.println("Video files from " + currentDirectory.getAbsolutePath() + ":");
 
 		// Filters out video files. This list of video extensions is not

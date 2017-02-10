@@ -127,3 +127,29 @@ values('hakwonband@gmail.com', '', '', now(), now(), now());
 2017-02-09
 ==========================================================
 alter table tb_file add youtube_id varchar(30)	comment 'youtube 아이디';
+alter table tb_file add youtube_reg_date datetime	comment 'youtube 등록시간';
+
+create table tb_youtube_target (
+	runtime_id		varchar(50)				not null				comment '실행 id'
+	, file_no		integer					not null				comment '파일 번호'
+	, reg_date		datetime 				not null				comment '등록 일자'
+	, primary key (file_no)
+	, unique key(runtime_id, file_no)
+)
+engine = innodb
+character set utf8mb4
+comment ='youtube 업로드 타켓 테이블'
+;
+
+insert into tb_youtube_target(runtime_id, file_no)
+select '', file_no
+from tb_file
+WHERE
+	file_ext_type like 'video%'
+	and file_use_yn = 'Y'
+	and file_del_yn = 'N'
+	and file_no not in (
+		select file_no from tb_youtube_target
+	)
+order by file_no desc
+limit 10
