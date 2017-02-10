@@ -143,7 +143,6 @@ public class YoutubeService {
 
 			youtube_id = returnedVideo.getId();
 
-			log.debug("\n================== Returned Video ==================\n");
 			log.debug("  - Id: " + returnedVideo.getId());
 			log.debug("  - Title: " + returnedVideo.getSnippet().getTitle());
 			log.debug("  - Tags: " + returnedVideo.getSnippet().getTags());

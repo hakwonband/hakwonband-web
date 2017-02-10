@@ -43,6 +43,8 @@ public class YoutubeMain extends HakwonRuntime {
 			log.info("target size : {}", targetList.size());
 			for(int i=0; i<targetList.size(); i++) {
 				TargetFileInfo targetFileInfo = targetList.get(i);
+
+				log.debug("\n================== Video Start ==================\n");
 				log.info("target [{}] [{}]", i, targetFileInfo);
 
 				youtubeService.executeUpload(targetFileInfo);
