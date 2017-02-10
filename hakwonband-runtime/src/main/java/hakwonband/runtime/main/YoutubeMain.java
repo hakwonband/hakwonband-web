@@ -30,19 +30,22 @@ public class YoutubeMain extends HakwonRuntime {
 		 * 대상 리스트 조회
 		 */
 		String runtime_id = UUID.randomUUID().toString();
-		//List<TargetFileInfo> targetList = youtubeService.targetInit(runtime_id);
-		log.info("runtime_id : " + runtime_id);
+		List<TargetFileInfo> targetList = youtubeService.targetInit(runtime_id);
 
 		/**
 		 * 업로드
 		 */
-//		if( targetList != null && targetList.isEmpty() == false ) {
-//			for(TargetFileInfo targetFileInfo : targetList) {
-//				youtubeService.executeUpload(targetFileInfo);
-//			}
-//		} else {
-//			System.out.println("targetList is null");
-//		}
+		if( targetList != null && targetList.isEmpty() == false ) {
+			log.info("target size : {}", targetList.size());
+			for(int i=0; i<targetList.size(); i++) {
+				TargetFileInfo targetFileInfo = targetList.get(i);
+				log.info("target [{}] [{}]", i, targetFileInfo);
+
+				youtubeService.executeUpload(targetFileInfo);
+			}
+		} else {
+			log.info("targetList is null");
+		}
 	}
 
     /**
