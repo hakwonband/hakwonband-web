@@ -76,7 +76,7 @@ public class UploadVideo {
 	public static void main(String[] args) {
 
 		try {
-			GoogleCredential googleCredential = new GoogleCredential().setAccessToken("ya29.GlzuA8KgQrOLHm0j0qFXmRod5-GoyX8wdpVt20CstwGV2bJBY85L8XmpYnyxzAkocA7cIl9rCIOpEt2ho8E-twQAsLq-tADDzqX_NrJdkXf8sdDao-2gKPLOROxgCw");
+			GoogleCredential googleCredential = new GoogleCredential().setAccessToken("ya29.GlzvAw-TW71sqOCAkgj8QI7GBymtOJSh2l8Nx89Kyo3zx32l8ekKmtukYwS8L0vLZdp2TOXw8P8qzsaOXxX3qB_ge_l1_-KnY2LBNhBwv6FhB62DVbF-fnXt7Nio2g");
 
 			// YouTube object used to make all API requests.
 			youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, googleCredential).setApplicationName("youtube-cmdline-uploadvideo-sample").build();
@@ -176,6 +176,7 @@ public class UploadVideo {
 
 			// Print out returned results.
 			System.out.println("\n================== Returned Video ==================\n");
+			System.out.println(returnedVideo.toPrettyString());
 			System.out.println("  - Id: " + returnedVideo.getId());
 			System.out.println("  - Title: " + returnedVideo.getSnippet().getTitle());
 			System.out.println("  - Tags: " + returnedVideo.getSnippet().getTags());
@@ -208,8 +209,7 @@ public class UploadVideo {
 	 */
 	private static File[] getLocalVideoFiles() throws IOException {
 
-//		File currentDirectory = new File("./resources");
-		File currentDirectory = new File("D:/develop/workspace/project/hakwonband-web/hakwonband-runtime/src/main/resources");
+		File currentDirectory = new File("D:/develop/workspace/project/hakwonband-web/hakwonband-runtime/src/main/resources/sample");
 		System.out.println("Video files from " + currentDirectory.getAbsolutePath() + ":");
 
 		// Filters out video files. This list of video extensions is not
