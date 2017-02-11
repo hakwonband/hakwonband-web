@@ -46,7 +46,7 @@
 			file_ext_type in ('video/quicktime', 'video/mp4')
 			and file_use_yn = 'Y'
 			and file_del_yn = 'N'
-			and file_size > 10461725
+			and file_size > 10000000
 			and youtube_id is null
 			and file_no not in (
 				select file_no from tb_youtube_target
