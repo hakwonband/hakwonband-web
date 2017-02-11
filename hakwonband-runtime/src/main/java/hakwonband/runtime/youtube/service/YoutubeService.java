@@ -94,7 +94,7 @@ public class YoutubeService {
 
 			VideoSnippet snippet = new VideoSnippet();
 			snippet.setTitle("학원밴드 : " + fileName);
-			snippet.setDescription("학원밴드\n"+fileName);
+			snippet.setDescription("학원밴드\n"+fileName+"\n"+targetFileInfo.getFile_no());
 
 			List<String> tags = new ArrayList<String>();
 			tags.add("hakwonband");
