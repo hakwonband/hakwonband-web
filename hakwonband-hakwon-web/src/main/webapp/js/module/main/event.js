@@ -60,11 +60,10 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 					}
 
 					colData.student_url = student_url;
-					console.log('colData', colData);
 					$('#mainNgView div[data-view=data-view]').html($.tmpl(hakwonTmpl.event.viewData, colData));
 
 					setTimeout(function(){
-						comm.videoTagReplace();
+						comm.videoTagReplace('content_view_div', colData.fileList);
 						comm.contentImageReset();
 					}, 50);
 				} catch(ex) {

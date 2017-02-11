@@ -438,16 +438,15 @@ hakwonMainApp.controller('noticeDetailController', function($scope, $location, $
 						$scope.noticeDetail			= colData.noticeDetail;
 						$scope.replyList			= colData.replyList;
 						$scope.fileList				= colData.fileList;
-
-						setTimeout(function(){
-							comm.contentImageReset();
-						}, 50);
 					} else {
 						commProto.logger({noticeDetailError:data});
 					}
 
 					/*	video html replace	*/
-					$scope.$$postDigest(comm.videoTagReplace);
+					setTimeout(function(){
+						comm.contentImageReset();
+						comm.videoTagReplace('content_view_div', colData.fileList);
+					}, 50);
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}

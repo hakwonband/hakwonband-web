@@ -97,6 +97,9 @@
 			, a.image_yn
 			, a.thumb_file_path
 			, date_format(a.reg_date, '%Y-%m-%d') as reg_date
+			, case when a.youtube_id = 'disable' then null
+				when a.youtube_id is not null then a.youtube_id
+				else null end as youtube_id
 		from
 			tb_file a
 		where
@@ -127,6 +130,9 @@
 			, a.image_yn as imageYn
 			, a.thumb_file_path as thumbFilePath
 			, date_format(a.reg_date, '%Y-%m-%d') as regDate
+			, case when a.youtube_id = 'disable' then null
+				when a.youtube_id is not null then a.youtube_id
+				else null end as youtube_id
 		from
 			tb_file a
 		where

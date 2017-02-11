@@ -765,16 +765,29 @@ var HakwonCommon = function() {
 	 * 비디오 태그 변경
 	 * @usage comm.videoTagReplace();
 	 */
-	this.videoTagReplace = function() {
+	this.videoTagReplace = function(type, fileList) {
+
+		if( fileList && fileList.length > 0 ) {
+			$('#'+type).find('video').each(function(index) {
+				for(var i=0; i<fileList.length; i++) {
+					var fileObj = fileList[i];
+					var filePath = fileObj.file_path?fileObj.file_path:fileObj.filePath;
+
+					if( $('source', this).attr('src').indexOf(filePath) > 0 ) {
+						$(this).after('<p><a href="http://www.youtube.com/watch?v='+fileObj.youtube_id+'" target="_blank"><img src="http://img.youtube.com/vi/'+fileObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+fileObj.youtube_id+'" /></a></p>');
+						$(this).remove();
+					}
+				}
+			});
+		}
+
 		if( window.PLATFORM ) {
-			if( comm.getAppVersion() >= 118 ) {
-				$('video').click(function() {
-					var videoSrc = $(this).find('source').attr('src');
-					window.PLATFORM.videoPlayerCall(videoSrc);
-				});
-				$('video').removeAttr("controls");
-				$('video').attr('poster', '/images/video_preview.jpg');
-			}
+			$('video').click(function() {
+				var videoSrc = $(this).find('source').attr('src');
+				window.PLATFORM.videoPlayerCall(videoSrc);
+			});
+			$('video').removeAttr("controls");
+			$('video').attr('poster', '/images/video_preview.jpg');
 		}
 	};
 
