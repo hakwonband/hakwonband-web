@@ -54,12 +54,6 @@ public class FileService {
 			/*	학원 로고 업데이트	*/
 			int resultUpdate = fileDAO.updateHakwonLogo(param);
 			logger.info("resultUpdate : " + resultUpdate);
-			/**
-			 * 학원 등록시 로고가 없는 경우가 있어 오류처리 안한다.
-			 */
-//			if (resultUpdate != 1) {
-//				throw new HKBandException("UserDAO.updateHakwonLogo error resultUpdate["+resultUpdate+"]");
-//			}
 		} else if( param.equals("file_parent_type", CommonConstant.File.TYPE_CLASS_LOGO) ) {
 			/*	반 로고 업데이트	*/
 			int resultUpdate = fileDAO.updateHakwonClassLogo(param);

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tika.Tika;
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,9 @@ import hakwonband.common.BaseAction;
 import hakwonband.common.constant.CommonConstant;
 import hakwonband.common.exception.HKBandException;
 import hakwonband.hakwon.common.constant.HakwonConstant;
+import hakwonband.hakwon.model.YoutubeTargetFileInfo;
 import hakwonband.hakwon.service.FileService;
+import hakwonband.hakwon.service.YoutubeService;
 import hakwonband.util.CommonConfig;
 import hakwonband.util.DataMap;
 import hakwonband.util.multi.ImageResizeUtil;
@@ -40,6 +43,9 @@ public class FileUploadController extends BaseAction {
 
 	@Autowired
 	private FileService fileService;
+
+	@Autowired
+	private YoutubeService youtubeService;
 
 	/**
 	 * 업로드 디렉토리 경로
@@ -67,11 +73,13 @@ public class FileUploadController extends BaseAction {
 			String uploadType	= multipartRequest.getParameter("uploadType");
 			String hakwonNo		= multipartRequest.getParameter("hakwonNo");
 			String classNo		= multipartRequest.getParameter("classNo");
+			String youtube		= multipartRequest.getParameter("youtube");		//	true / false
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			String toDay = sdf.format(new Date());
 			if( CommonConstant.ServerType.local.equals(CommonConfig.getServerType()) ) {
-				String localPath = request.getServletContext().getRealPath("");
+//				String localPath = request.getServletContext().getRealPath("");
+				String localPath = "D:/develop/workspace/project/hakwonband-web/hakwonband-hakwon-web/src/main/webapp";
 				uploadDirPath = localPath+"/attached";
 			}
 
@@ -90,6 +98,7 @@ public class FileUploadController extends BaseAction {
 
 			fileInfo.put("hakwon_no",			hakwonNo);
 			fileInfo.put("class_no",			classNo);
+			fileInfo.put("youtube",				youtube);
 
 			if(map != null) {
 				@SuppressWarnings("rawtypes")
@@ -192,14 +201,31 @@ public class FileUploadController extends BaseAction {
 			} else {
 				throw new HKBandException();
 			}
+
+			String youtube_id = null;
+			if( "true".equals(youtube) ) {
+				/*	youtube 업로드	*/
+				YoutubeTargetFileInfo targetFileInfo = new YoutubeTargetFileInfo();
+				targetFileInfo.setFile_name(fileInfo.getString("file_name"));
+				targetFileInfo.setFile_path(fileInfo.getString("file_path"));
+				targetFileInfo.setFile_path_prefix(fileInfo.getString("file_path_prefix"));
+
+				youtube_id = youtubeService.executeUpload(targetFileInfo);
+
+				if( StringUtils.isNotBlank(youtube_id) ) {
+					fileInfo.put("youtube_id",	youtube_id);
+				}
+			}
+
 			long fileNo = fileService.insertFile(fileInfo);
 
-			colData.put("fileNo",	fileNo);
-			colData.put("filePath",	fileInfo.getString("file_path"));
+			colData.put("fileNo",			fileNo);
+			colData.put("filePath",			fileInfo.getString("file_path"));
 			colData.put("thumbFilePath",	fileInfo.getString("thumb_file_path"));
-			colData.put("fileName",	fileInfo.getString("file_name"));
-			colData.put("imageYn",	fileInfo.getString("image_yn"));
-			colData.put("mimeType",	fileInfo.getString("mime_type"));
+			colData.put("fileName",			fileInfo.getString("file_name"));
+			colData.put("imageYn",			fileInfo.getString("image_yn"));
+			colData.put("mimeType",			fileInfo.getString("mime_type"));
+			colData.put("youtubeId",		youtube_id);
 		} catch(Exception e) {
 			logger.error("", e);
 			colData.put("error",	"fail");
