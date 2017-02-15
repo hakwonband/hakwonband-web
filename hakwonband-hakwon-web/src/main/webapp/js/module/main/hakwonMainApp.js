@@ -736,8 +736,7 @@ var HakwonCommon = function() {
 			}
 		}
 
-		var userTmpTestAlba = userAuth.userId;
-		if( "bumwonjang" == userTmpTestAlba || "icheoneduk" == userTmpTestAlba || location.href.indexOf("teamoboki") > 0) {
+		if( comm.isBetaMember() ) {
 			$("li.test_li").css("display","");
 		}
 

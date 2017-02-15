@@ -211,9 +211,10 @@ public class FileUploadController extends BaseAction {
 				targetFileInfo.setFile_path_prefix(fileInfo.getString("file_path_prefix"));
 
 				youtube_id = youtubeService.executeUpload(targetFileInfo);
+				fileInfo.put("youtube_id",	youtube_id);
 
-				if( StringUtils.isNotBlank(youtube_id) ) {
-					fileInfo.put("youtube_id",	youtube_id);
+				if( StringUtils.isBlank(youtube_id) ) {
+					throw new HKBandException("youtube 업로드 실패");
 				}
 			}
 

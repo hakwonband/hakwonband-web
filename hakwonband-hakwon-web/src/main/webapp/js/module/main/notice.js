@@ -722,6 +722,12 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 			tinymce.activeEditor.insertContent(videoHtml);
 			tinymce.activeEditor.focus();
 		});
+		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=youtube]', function() {
+			var youtubeID = $(this).attr('data-youtube-id');
+			var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
+			tinymce.activeEditor.insertContent(youtubeHtml);
+			tinymce.activeEditor.focus();
+		});
 
 		/*	오디오 삽입	*/
 		$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
@@ -857,6 +863,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 								tempObj.file_path	= fileInfo.filePath;
 								tempObj.image_yn	= fileInfo.imageYn;
 								tempObj.mime_type	= fileInfo.mimeType;
+								tempObj.youtube_id	= fileInfo.youtubeId;
 
 								$scope.fileList.push(tempObj);
 

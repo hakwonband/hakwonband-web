@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
@@ -46,6 +45,7 @@ public class YoutubeService {
 	public String executeUpload(YoutubeTargetFileInfo targetFileInfo) {
 
 		String youtube_id = "";
+		File videoFile = null;
 		try {
 			String accessToken = youtubeDAO.accessToken();
 			log.info("accessToken[{}]", accessToken);
@@ -78,7 +78,7 @@ public class YoutubeService {
 
 			String filePath = targetFileInfo.getFile_path_prefix() + targetFileInfo.getFile_path();
 
-			File videoFile = new File(filePath);
+			videoFile = new File(filePath);
 
 			InputStreamContent mediaContent = new InputStreamContent(VIDEO_FILE_FORMAT, new BufferedInputStream(new FileInputStream(videoFile)));
 			mediaContent.setLength(videoFile.length());
@@ -123,6 +123,10 @@ public class YoutubeService {
 			log.debug("  - Video Count: " + returnedVideo.getStatistics().getViewCount());
 		} catch(Exception e) {
 			log.error(targetFileInfo.toString(), e);
+		} finally {
+			if( videoFile != null ) {
+				videoFile.delete();
+			}
 		}
 
 		return youtube_id;
