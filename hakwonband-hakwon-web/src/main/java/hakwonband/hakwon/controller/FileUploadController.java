@@ -111,6 +111,10 @@ public class FileUploadController extends BaseAction {
 						String mimeType = (new Tika()).detect(mpf.getInputStream());
 						fileInfo.put("file_ext_type",	mimeType);
 
+						if( "true".equals(youtube) && mimeType.indexOf("video") != 0 ) {
+							throw new HKBandException();
+						}
+
 						/**
 						 * 파일 확장자 분리
 						 */
