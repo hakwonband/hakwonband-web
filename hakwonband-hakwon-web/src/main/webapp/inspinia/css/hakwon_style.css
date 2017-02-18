@@ -413,7 +413,10 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .mo_row_time input{float:left; width:42%; margin-right:5px;}
 .mo_right_file_btn input{right:2px; top:5px; left:inherit;}
 .youtube_input_file{left:114px; width:123px;}
-.mo_youtube_input_file{}
+.mo_file_box{position:relative;}
+.mo_file_box .mo_input_file{left:0;}
+.mo_file_box .mo_youtube_input_file{width:123px; left:99px;}
+
 
 @media (max-width: 768px) {
 	.file-box{width:86px;}

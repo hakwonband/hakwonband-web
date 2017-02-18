@@ -44,15 +44,15 @@
 			</div>
 		</div>
 		<div class="row" style="padding:10px;">
-			<div class="col-xs-7" style="padding-top:10px;">
-				<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개 첨부</span>
+			<div style="padding:10px 0;">
+				<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개 파일 첨부</span>
 			</div>
-			<div class="col-xs-5" style="text-align:right;">
+			<div class="mo_file_box">
 				<span class="btn btn-primary">파일 업로드</span>
-				<input type="file" class="input_file" data-act="file_upload" multiple>
+				<input type="file" class="input_file mo_input_file" data-act="file_upload" multiple>
 
-				<span class="btn btn-primary">youtube 업로드</span>
-				<input type="file" class="input_file mo_youtube_input_file" data-act="youtube_upload" multiple>
+				<span class="btn btn-primary" ng-show="CommUtil.isBetaMember()">youtube 업로드</span>
+				<input type="file" ng-show="CommUtil.isBetaMember()" class="input_file mo_youtube_input_file" data-act="youtube_upload" multiple>
 			</div>
 		</div>
 		<div class="form-group">
@@ -60,7 +60,10 @@
 				<div class="attachment" ng-if="fileList.length > 0">
 					<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
 						<div class="file">
-							<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video'">
+							<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
+								<i class="fa fa-file"></i>
+							</div>
+							<div class="icon" data-file-type="youtube" data-youtube-id="{{ item.youtube_id }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && item.youtube_id">
 								<i class="fa fa-file"></i>
 							</div>
 							<div class="icon" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
