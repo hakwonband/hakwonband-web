@@ -255,6 +255,19 @@ var HakwonCommon = function() {
 		});
 	}
 
+	/**
+	 * 베타 멤버 체크
+	 */
+	this.isBetaMember = function() {
+		if( location.href.indexOf("teamoboki") > 0 ) {
+			return true;
+		} else if(userAuth && ("bumwonjang" == userAuth.userId || "icheoneduk" == userAuth.userId) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	this.onload();
 };
 var comm = new HakwonCommon();

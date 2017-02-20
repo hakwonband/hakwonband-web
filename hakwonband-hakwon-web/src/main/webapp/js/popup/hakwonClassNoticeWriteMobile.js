@@ -6,7 +6,7 @@ hakwonMainApp.service('classService', function(CommUtil) {
 	/**
 	 * 첨부파일 업로드 옵션 생성
 	 */
-	classService.getFileUploadOptions = function($scope, type) {
+	classService.getFileUploadOptions = function($scope, type, youtube_type) {
 		var uploadTypeObj = {
 			uploadType	: type
 			, hakwonNo	: $scope.hakwonNo
@@ -21,6 +21,9 @@ hakwonMainApp.service('classService', function(CommUtil) {
 		// 파일 업로드 객체 생성
 		var fileUploadOptions = new UploadOptions();
 		fileUploadOptions.customExtraFields = uploadTypeObj;
+		if( youtube_type == 'youtube' ) {
+			fileUploadOptions.customExtraFields.youtube = 'true';
+		}
 		fileUploadOptions.onFinish = function(event, total) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert(msg);
@@ -69,6 +72,7 @@ hakwonMainApp.service('classService', function(CommUtil) {
 						tempObj.file_path	= fileInfo.filePath;
 						tempObj.image_yn	= fileInfo.imageYn;
 						tempObj.mime_type	= fileInfo.mimeType;
+						tempObj.youtube_id	= fileInfo.youtubeId;
 
 						$scope.fileList.push(tempObj);
 
@@ -83,6 +87,9 @@ hakwonMainApp.service('classService', function(CommUtil) {
 								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 							}
 							tinymce.activeEditor.insertContent(strImage);
+						} else if( tempObj.youtube_id ) {
+							var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+							tinymce.activeEditor.insertContent(youtubeHtml);
 						}
 
 					}
@@ -317,8 +324,54 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 
 				return false;
 			});
+
+			angular.element("input[data-act=youtube_upload]").click(function() {
+				delete window.uploadCallBack;
+				window.uploadCallBack = function(uploadJsonStr) {
+					try {
+						var resultObj = JSON.parse(uploadJsonStr);
+						if( resultObj.error ) {
+							alert('파일 업로드를 실패 했습니다.');
+						} else {
+							var fileInfo = resultObj.colData;
+							var tempObj = {};
+							tempObj.file_no		= fileInfo.fileNo;
+							tempObj.file_name	= fileInfo.fileName;
+							tempObj.file_path	= fileInfo.filePath;
+							tempObj.image_yn	= fileInfo.imageYn;
+							tempObj.mime_type	= fileInfo.mimeType;
+							tempObj.youtube_id	= fileInfo.youtubeId;
+
+							$scope.fileList.push(tempObj);
+
+							if( tempObj.youtube_id ) {
+								var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+								tinymce.activeEditor.insertContent(youtubeHtml);
+							}
+							$scope.$digest();
+						}
+					} catch(e) {
+						alert('파일 업로드를 실패 했습니다.');
+					}
+				};
+				var param = {
+					fileType : 'all'
+					, multipleYn : 'Y'
+					, callBack : 'uploadCallBack'
+					, upload : {
+						url : window.location.protocol+'//'+window.location.host+uploadUrl
+						, param : {uploadType:CommonConstant.File.TYPE_NOTICE, youtube:'true'}
+						, cookie : document.cookie
+					}
+				};
+				window.PLATFORM.fileChooser(JSON.stringify(param));
+
+				return false;
+			});
 		} else {
 			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE));
+
+			$scope.fileUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE, 'youtube'));
 		}
 	});
 
