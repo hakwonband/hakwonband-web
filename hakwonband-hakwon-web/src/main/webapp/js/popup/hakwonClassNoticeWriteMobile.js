@@ -214,6 +214,8 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	if( isNull($routeParams.hakwon_no) || isNull($routeParams.class_no) ) {
 		if( window.PLATFORM ) {
 			window.history.back(-2);
+		} else if( getBrowser() == 'iosApp' ) {
+			window.history.back();
 		} else {
 			window.close();
 		}
@@ -674,6 +676,8 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 			if( window.PLATFORM ) {
 				window.history.back(-2);
 				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
+			} else if( getBrowser() == 'iosApp' ) {
+				window.history.back();
 			} else {
 				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 				window.close();
@@ -683,6 +687,8 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 			if( window.PLATFORM ) {
 				window.history.back(-2);
 				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
+			} else if( getBrowser() == 'iosApp' ) {
+				window.history.back();
 			} else {
 				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 				window.close();
