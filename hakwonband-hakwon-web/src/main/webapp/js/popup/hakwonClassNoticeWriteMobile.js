@@ -401,10 +401,18 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 				});
 
 				ed.addButton('hakwonupload', {
-					text: 'upload',
+					text: 'file',
 					icon: false,
 					onclick: function () {
 						angular.element("input[data-act=file_upload]").trigger('click');
+					}
+				});
+
+				ed.addButton('hakwonyoutube', {
+					text: 'youtube',
+					icon: false,
+					onclick: function () {
+						angular.element("input[data-act=youtube_upload]").trigger('click');
 					}
 				});
 			};
@@ -469,10 +477,17 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 						});
 
 						ed.addButton('hakwonupload', {
-							text: 'upload',
+							text: 'file',
 							icon: false,
 							onclick: function () {
 								angular.element("input[data-act=file_upload]").trigger('click');
+							}
+						});
+						ed.addButton('hakwonyoutube', {
+							text: 'youtube',
+							icon: false,
+							onclick: function () {
+								angular.element("input[data-act=youtube_upload]").trigger('click');
 							}
 						});
 					};

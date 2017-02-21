@@ -122,7 +122,7 @@ var HakwonCommon = function() {
 			});
 		};
 		tinymceConstInitOptios.statusbar = false;
-		tinymceConstInitOptios.toolbar1 += ' hakwonupload';
+		tinymceConstInitOptios.toolbar1 += ' hakwonupload hakwonyoutube';
 		return tinymceConstInitOptios;
 	};
 

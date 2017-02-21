@@ -22,14 +22,6 @@
 		<input type="time" name="reservationTime" ng-model="noticeDetail.reservation_date_2" class="form-control" placeholder="예약발송시간">
 		<button type="button" class="btn btn-primary" ng-click="reservationCancel()">X</button>
 	</div>
-	<input type="text" class="form-control m-b-xs" placeholder="제목 - 20자까지" data-view="title" ng-model="noticeDetail.title">
-	<div><textarea cols="140" rows="10" class="form-control" data-lib="editor">{{noticeDetail.content}}</textarea></div>
-	<div class="m-t m-b-xs">
-		<div class="input-group">
-			<input type="text" ng-model="youtubeID" ng-model="youtubeID" class="form-control" placeholder="youtube 동영상 첨부">
-			<span class="input-group-btn"> <button type="button" ng-click="youtubeInsert()" class="btn btn-primary">삽입</button> </span>
-		</div>
-	</div>
 	<div class="form-group mo_row_check_list">
 		<div class="col-xs-4">
 			<label for="check_01">댓글 <input id="check_01" type="checkbox" name="reply_yn" ng-model="reply_yn" /></label>
@@ -41,6 +33,16 @@
 			<label for="check_03">파일노출 <input id="check_03" name="file_view" ng-model="file_view" type="checkbox" /></label>
 		</div>
 	</div>
+	<input type="text" class="form-control m-b-xs" placeholder="제목 - 20자까지" data-view="title" ng-model="noticeDetail.title">
+	<div><textarea cols="140" rows="10" class="form-control" data-lib="editor">{{noticeDetail.content}}</textarea></div>
+<!--
+	<div class="m-t m-b-xs">
+		<div class="input-group">
+			<input type="text" ng-model="youtubeID" ng-model="youtubeID" class="form-control" placeholder="youtube 동영상 첨부">
+			<span class="input-group-btn"> <button type="button" ng-click="youtubeInsert()" class="btn btn-primary">삽입</button> </span>
+		</div>
+	</div>
+-->
 	<div class="row" style="padding:10px;">
 <!--
 		<div class="col-xs-7" style="padding-top:10px;">
