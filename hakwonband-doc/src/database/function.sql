@@ -1,13 +1,13 @@
-DELIMITER $$
 drop function if exists calc_age;
-create function calc_age(in_dob datetime) returns int(11) CHARACTER SET UTF8
+create function calc_age(in_dob date) returns int no sql
 begin
-	declare l_age integer;
+	declare l_age int;
 	set l_age=date_format(now(),'%Y')-date_format(in_dob,'%Y')+1;
 	if l_age>100 then set l_age = 0; end if;
-	return(l_age);
+    return(l_age);
 end;
-$$
+
+select calc_age('1980-09-29');
 
 
 --	코드 이름
