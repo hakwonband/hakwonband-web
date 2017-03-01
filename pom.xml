@@ -23,7 +23,7 @@
 	<repositories>
 		<repository>
 			<id>hakwonBand</id>
-			<url>http://nexus.bumworld.net/repository/hakwonBand</url>
+			<url>http://nexus.bumworld.net/repository/hakwonBand/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
