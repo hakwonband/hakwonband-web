@@ -23,7 +23,7 @@
 	<repositories>
 		<repository>
 			<id>hakwonBand</id>
-			<url>http://nexus.bumworld.net:8081/repository/hakwonBand/</url>
+			<url>http://127.0.0.1:8081/repository/hakwonBand/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
