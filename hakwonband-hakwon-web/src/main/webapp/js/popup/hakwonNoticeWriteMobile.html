@@ -1,7 +1,15 @@
 <div class="ibox-title new_mo_title">
-	<h1>공지사항 등록</h1>
+	<h1>공지사항</h1>
 	<button type="button" class="btn btn-primary title_btn_submit" ng-if="checkAuthType()" ng-click="editConfirm()">등록</button>
 	<button type="button" class="btn title_btn_cancel" ng-click="editCancel()">X</button>
+
+	<div class="mo_top_file_btn" style="text-align:right;">
+		<span class="btn btn-success">파일</span>
+		<input type="file" class="input_file file_btn" data-act="file_upload" multiple>
+
+		<span class="btn btn-success">youtube</span>
+		<input type="file" class="input_file youtube_btn" data-act="youtube_upload" multiple>
+	</div>
 </div>
 <div class="ibox-content new_mo_content">
 	<div class="mo_row_select m-b-xs">
@@ -52,7 +60,7 @@
 			<span class="btn btn-primary">파일 업로드</span>
 			<input type="file" class="input_file" data-act="file_upload" multiple>
 		</div>
--->
+
 		<div style="padding:10px 0;">
 			<span><i class="fa fa-paperclip"></i> {{fileList.length}} 개 파일 첨부</span>
 		</div>
@@ -63,31 +71,35 @@
 			<span class="btn btn-primary" ng-show="CommUtil.isBetaMember()">youtube 업로드</span>
 			<input type="file" ng-show="CommUtil.isBetaMember()" class="input_file mo_youtube_input_file" data-act="youtube_upload" multiple>
 		</div>
+-->
 	</div>
 	<div class="form-group">
 		<div class="col-sm-11">
-			<div class="attachment" ng-if="fileList.length > 0">
+			<div class="attachment mo_file_box" ng-if="fileList.length > 0">
 				<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
 					<div class="file">
-						<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
-							<i class="fa fa-file"></i>
+						<div class="image no_image" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
+							{{item.file_name}}
 						</div>
-						<div class="icon" data-file-type="youtube" data-youtube-id="{{ item.youtube_id }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && item.youtube_id">
-							<i class="fa fa-file"></i>
+<!--
+						<div class="image no_image" data-file-type="youtube" data-youtube-id="{{ item.youtube_id }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && item.youtube_id">
+							{{item.file_name}}
 						</div>
-						<div class="icon" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
-							<i class="fa fa-file"></i>
+-->
+						<div class="image no_image" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
+							{{item.file_name}}
 						</div>
-						<div class="icon" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'file'">
-							<i class="fa fa-file"></i>
+						<div class="image no_image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'file'">
+							{{item.file_name}}
 						</div>
 						<div class="image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'img'">
 							<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
 						</div>
-
+<!--
 						<div class="file-name">
 							<p>{{item.file_name}}</p>
 						</div>
+-->
 						<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
 					</div>
 				</div>
