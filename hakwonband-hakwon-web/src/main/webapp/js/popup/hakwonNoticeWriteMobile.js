@@ -71,7 +71,11 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 						tinymce.activeEditor.insertContent(youtubeHtml);
 					}
 
-
+					setTimeout(function(){
+						var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+						$contents.scrollTop($contents.height());
+						tinymce.activeEditor.focus();
+					}, 500);
 					$scope.$digest();
 				}
 			}
@@ -429,7 +433,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 		}
 		tinymce.activeEditor.insertContent(strImage);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	};
 
 	/*	비디오 삽입	*/
@@ -437,14 +445,22 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		var fileUrl = $(this).attr('data-file-url');
 		var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 		tinymce.activeEditor.insertContent(videoHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=youtube]', function() {
 		var youtubeID = $(this).attr('data-youtube-id');
 		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
 		tinymce.activeEditor.insertContent(youtubeHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 
 	/*	오디오 삽입	*/
@@ -452,7 +468,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		var fileUrl = $(this).attr('data-file-url');
 		var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
 		tinymce.activeEditor.insertContent(audioHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 
 	/*	첨부 파일 삭제 처리	*/
@@ -496,8 +516,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 
 		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
 		tinymce.activeEditor.insertContent(youtubeHtml);
-		tinymce.activeEditor.focus();
-		//tinymce.activeEditor.execCommand('mceInsertContent', false, youtubeHtml);
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	}
 
 	/*	취소	*/
@@ -545,6 +568,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 								}
 								tinymce.activeEditor.insertContent(strImage);
+								setTimeout(function(){
+									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+									$contents.scrollTop($contents.height());
+									tinymce.activeEditor.focus();
+								}, 500);
 							}
 
 							$scope.$digest();
@@ -590,6 +618,11 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 							if( tempObj.youtube_id ) {
 								var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
 								tinymce.activeEditor.insertContent(youtubeHtml);
+								setTimeout(function(){
+									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+									$contents.scrollTop($contents.height());
+									tinymce.activeEditor.focus();
+								}, 500);
 							}
 							$scope.$digest();
 						}
