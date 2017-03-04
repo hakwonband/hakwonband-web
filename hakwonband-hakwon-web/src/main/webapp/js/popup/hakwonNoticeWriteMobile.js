@@ -581,7 +581,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 						alert('파일 업로드를 실패 했습니다.');
 					}
 				};
-				var param = {
+				var fileParam = {
 					fileType : 'all'
 					, multipleYn : 'Y'
 					, callBack : 'uploadCallBack'
@@ -591,7 +591,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 						, cookie : document.cookie
 					}
 				};
-				window.PLATFORM.fileChooser(JSON.stringify(param));
+				window.PLATFORM.fileChooser(JSON.stringify(fileParam));
 
 				return false;
 			});
@@ -630,7 +630,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 						alert('파일 업로드를 실패 했습니다.');
 					}
 				};
-				var param = {
+				var youtubeParam = {
 					fileType : 'all'
 					, multipleYn : 'Y'
 					, callBack : 'uploadCallBack'
@@ -640,14 +640,14 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 						, cookie : document.cookie
 					}
 				};
-				window.PLATFORM.fileChooser(JSON.stringify(param));
+				window.PLATFORM.fileChooser(JSON.stringify(youtubeParam));
 
 				return false;
 			});
 		} else {
 			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(noticeService.getFileUploadOptions($scope));
 
-			$scope.fileUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
+			$scope.youtubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
 		}
 	});
 });

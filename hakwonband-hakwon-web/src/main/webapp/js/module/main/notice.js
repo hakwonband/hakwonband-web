@@ -15,6 +15,8 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_NOTICE};
 		if( type == 'youtube' ) {
 			fileUploadOptions.customExtraFields.youtube = 'true';
+		} else {
+			fileUploadOptions.customExtraFields.youtube = 'false';
 		}
 		fileUploadOptions.onFinish = function(event, total) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
@@ -886,7 +888,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 							alert('파일 업로드를 실패 했습니다.');
 						}
 					};
-					var param = {
+					var fileParam = {
 						fileType : 'all'
 						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
@@ -896,7 +898,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 							, cookie : document.cookie
 						}
 					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
+					window.PLATFORM.fileChooser(JSON.stringify(fileParam));
 
 					return false;
 				});
@@ -930,7 +932,7 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 							alert('파일 업로드를 실패 했습니다.');
 						}
 					};
-					var param = {
+					var youtubeParam = {
 						fileType : 'all'
 						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
@@ -940,14 +942,14 @@ hakwonMainApp.controller('noticeEditController', function($scope, $location, $wi
 							, cookie : document.cookie
 						}
 					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
+					window.PLATFORM.fileChooser(JSON.stringify(youtubeParam));
 
 					return false;
 				});
 			} else {
 				$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(noticeService.getFileUploadOptions($scope));
 
-				$scope.fileUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
+				$scope.yotubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
 			}
 
 			$("html, body").scrollTop($('input[data-view=title]').offset().top-100);

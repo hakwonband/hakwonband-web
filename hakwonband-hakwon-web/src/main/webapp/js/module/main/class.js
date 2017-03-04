@@ -38,6 +38,8 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 		fileUploadOptions.customExtraFields = uploadTypeObj;
 		if( youtube_type == 'youtube' ) {
 			fileUploadOptions.customExtraFields.youtube = 'true';
+		} else {
+			fileUploadOptions.customExtraFields.youtube = 'false';
 		}
 
 		fileUploadOptions.onFinish = function(event, total) {
@@ -967,7 +969,7 @@ hakwonMainApp.controller('classInfoDetailController', function($scope, $window, 
 					return false;
 				});
 			} else {
-				$scope.fileUploadObj = $("input[data-act=class_logo_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_CLASS_LOGO));
+				$scope.logoUploadObj = $("input[data-act=class_logo_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_CLASS_LOGO));
 			}
 
 			if( commProto.isResponsiveCheck() ) {
@@ -1499,7 +1501,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 							alert('파일 업로드를 실패 했습니다.');
 						}
 					};
-					var param = {
+					var fileParam = {
 						fileType : 'all'
 						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
@@ -1513,7 +1515,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 							, cookie : document.cookie
 						}
 					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
+					window.PLATFORM.fileChooser(JSON.stringify(fileParam));
 
 					return false;
 				});
@@ -1548,7 +1550,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 							alert('파일 업로드를 실패 했습니다.');
 						}
 					};
-					var param = {
+					var youtubeParam = {
 						fileType : 'all'
 						, multipleYn : 'Y'
 						, callBack : 'uploadCallBack'
@@ -1563,14 +1565,14 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 							, cookie : document.cookie
 						}
 					};
-					window.PLATFORM.fileChooser(JSON.stringify(param));
+					window.PLATFORM.fileChooser(JSON.stringify(youtubeParam));
 
 					return false;
 				});
 			} else {
 				$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE));
 
-				$scope.fileUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE, 'youtube'));
+				$scope.yotubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE, 'youtube'));
 			}
 		});
 
