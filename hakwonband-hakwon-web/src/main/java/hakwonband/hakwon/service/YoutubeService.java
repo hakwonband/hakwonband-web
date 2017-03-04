@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -84,10 +85,9 @@ public class YoutubeService {
 			mediaContent.setLength(videoFile.length());
 
 			YouTube.Videos.Insert videoInsert = youtube.videos().insert("snippet,statistics,status", videoObjectDefiningMetadata, mediaContent);
-
 			// Set the upload type and add event listener.
 			MediaHttpUploader uploader = videoInsert.getMediaHttpUploader();
-			uploader.setDirectUploadEnabled(false);
+			uploader.setDirectUploadEnabled(true);
 
 			MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
 				public void progressChanged(MediaHttpUploader uploader) throws IOException {
