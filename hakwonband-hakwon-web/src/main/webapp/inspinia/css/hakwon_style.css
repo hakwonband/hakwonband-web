@@ -418,6 +418,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .mo_top_file_btn .youtube_btn{left:40px; width:60px;}
 .mo_file_box .image{height:80px;}
 .mo_file_box .no_image{font-size:11px; color:inherit; word-break:break-all; padding:30px 5px 5px 5px;}
+.youtube_input_file{left:114px; width:123px;}
 
 @media (max-width: 768px) {
 	.file-box{width:86px;}
