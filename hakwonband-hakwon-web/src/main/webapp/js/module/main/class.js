@@ -1537,7 +1537,7 @@ hakwonMainApp.controller('classNoticeEditController', function($scope, $location
 								tempObj.mime_type	= fileInfo.mimeType;
 								tempObj.youtube_id	= fileInfo.youtubeId;
 
-								$scope.fileList.push(tempObj);
+								//$scope.fileList.push(tempObj);
 
 								if( tempObj.youtube_id ) {
 									var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
