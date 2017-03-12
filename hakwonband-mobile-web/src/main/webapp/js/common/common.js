@@ -826,52 +826,52 @@ var HakwonCommon = function() {
 
 					if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
 						/*	디바이스 정보가 있고.	*/
-						setTimeout(function(){
-							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
-						}, 500);
+						window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
 					}
 
-					userAuth.userName 	= colData.authUserInfo.user_name;
-					userAuth.userEmail 	= colData.authUserInfo.user_email;
-					userAuth.userType 	= colData.authUserInfo.user_type;
-					userAuth.userId 	= colData.authUserInfo.user_id;
-					userAuth.userNo 	= colData.authUserInfo.user_no;
-					userAuth.userGender = colData.authUserInfo.user_gender;
-					userAuth.userAge 	= colData.authUserInfo.user_age;
-					userAuth.userPhotoPath 	= colData.authUserInfo.user_photo_path;
-					userAuth.tel1No 	= colData.authUserInfo.tel1_no;
-					userAuth.userBirthday 	= colData.authUserInfo.user_birthday;
-					userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
-					userAuth.start_time	= colData.authUserInfo.start_time;
-					userAuth.end_time	= colData.authUserInfo.end_time;
+					setTimeout(function(){
+						userAuth.userName 	= colData.authUserInfo.user_name;
+						userAuth.userEmail 	= colData.authUserInfo.user_email;
+						userAuth.userType 	= colData.authUserInfo.user_type;
+						userAuth.userId 	= colData.authUserInfo.user_id;
+						userAuth.userNo 	= colData.authUserInfo.user_no;
+						userAuth.userGender = colData.authUserInfo.user_gender;
+						userAuth.userAge 	= colData.authUserInfo.user_age;
+						userAuth.userPhotoPath 	= colData.authUserInfo.user_photo_path;
+						userAuth.tel1No 	= colData.authUserInfo.tel1_no;
+						userAuth.userBirthday 	= colData.authUserInfo.user_birthday;
+						userAuth.attendanceCode	= colData.authUserInfo.attendance_code;
+						userAuth.start_time	= colData.authUserInfo.start_time;
+						userAuth.end_time	= colData.authUserInfo.end_time;
 
-					userAuth.familyList 	= colData.familyList;
-					userAuth.schoolInfo 	= colData.schoolInfo;
+						userAuth.familyList 	= colData.familyList;
+						userAuth.schoolInfo 	= colData.schoolInfo;
 
-					if( window.PLATFORM ) {
-						if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
-							userAuth.deviceAuth = {
-								device_type : colData.authUserInfo.device_type
-								, device_token : colData.authUserInfo.device_token
-							};
-						} else {
-							var newKey = window.PLATFORM.getGcmKey();
-							setPushNotiKey(newKey, CommonConstant.DeviceType.android, '', function(data) {
-								if( data.flag == 'success' ) {
-									userAuth.deviceAuth = {
-										device_type : colData.authUserInfo.device_type
-										, device_token : colData.authUserInfo.device_token
-									};
-								}
-							});
+						if( window.PLATFORM ) {
+							if( colData.authUserInfo.device_type && colData.authUserInfo.device_token ) {
+								userAuth.deviceAuth = {
+									device_type : colData.authUserInfo.device_type
+									, device_token : colData.authUserInfo.device_token
+								};
+							} else {
+								var newKey = window.PLATFORM.getGcmKey();
+								setPushNotiKey(newKey, CommonConstant.DeviceType.android, '', function(data) {
+									if( data.flag == 'success' ) {
+										userAuth.deviceAuth = {
+											device_type : colData.authUserInfo.device_type
+											, device_token : colData.authUserInfo.device_token
+										};
+									}
+								});
+							}
 						}
-					}
 
-					if( userAuth.userType == '005' || userAuth.userType == '006' ) {
-						self.userHakwonList();
-					} else {
-						self.moveSite();
-					}
+						if( userAuth.userType == '005' || userAuth.userType == '006' ) {
+							self.userHakwonList();
+						} else {
+							self.moveSite();
+						}
+					}, 500);
 				} else {
 					userAuth = {};
 				}
