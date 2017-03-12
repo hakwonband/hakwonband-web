@@ -826,13 +826,9 @@ var HakwonCommon = function() {
 
 					if( colData.deviceInfo && !colData.deviceInfo.device_token ) {
 						/*	디바이스 정보가 있고.	*/
-						$.get('hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001'), function( data ) {
-							console.info('device token request complete!!!');
-						});
-
-//						setTimeout(function(){
-//							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
-//						}, 500);
+						setTimeout(function(){
+							window.location = 'hakwonband://auth/login/'+$.cookie('hakwonband.cookie.001');
+						}, 500);
 					}
 
 					userAuth.userName 	= colData.authUserInfo.user_name;
