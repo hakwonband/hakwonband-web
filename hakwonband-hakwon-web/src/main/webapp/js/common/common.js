@@ -125,6 +125,8 @@ var PageUrl = {
 
 		, adminQuestionList : '#/adminQuestion/list'
 		, adminQuestionView : '#/adminQuestion/view'
+
+		, allSearch : '#/allSearch'
 	}
 	, setting : {
 		noticeCategory : '#/setting/noticeCategory'

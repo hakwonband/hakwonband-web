@@ -39,4 +39,9 @@ public class AllSearchResultModel {
 	 * 검색 데이타
 	 */
 	private String search_data;
+
+	/**
+	 * 작성자
+	 */
+	private String reg_user_name;
 }

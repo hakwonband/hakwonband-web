@@ -108,6 +108,7 @@ var merge		= require('merge-stream'),
 			, './js/module/main/teacher.js'
 			, './js/module/main/setting.js'
 			, './js/module/main/adminQuestion.js'
+			, './js/module/main/allSearch.js'
 			, './js/module/main/attendance.js'
 			, './js/module/main/receipt.js'
 			, './js/module/main/counsel.js'
