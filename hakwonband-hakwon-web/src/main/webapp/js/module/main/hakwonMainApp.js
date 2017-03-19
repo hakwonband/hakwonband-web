@@ -485,7 +485,7 @@ var HakwonCommon = function() {
 				moveLeftLocation = PageUrl.common.classList+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'allSearch' ) {
 				/*	전체 검색	*/
-				moveLeftLocation = PageUrl.common.allSearch+'?hakwon_no='+hakwonInfo.hakwon_no;
+				moveLeftLocation = PageUrl.common.allSearch+'?hakwon_no='+hakwonInfo.hakwon_no+'&page_no=1';
 			} else if( dataAct == 'noticeList' ) {
 				/*	공지 리스트	*/
 				moveLeftLocation = PageUrl.common.noticeList+'?hakwon_no='+hakwonInfo.hakwon_no;

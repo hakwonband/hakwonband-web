@@ -26,6 +26,11 @@ public class AllSearchResultModel {
 	private long search_no;
 
 	/**
+	 * 학원 번호
+	 */
+	private long hakwon_no;
+
+	/**
 	 * 제목
 	 */
 	private String title;

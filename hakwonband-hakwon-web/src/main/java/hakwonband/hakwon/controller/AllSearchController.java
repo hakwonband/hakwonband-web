@@ -54,7 +54,7 @@ public class AllSearchController extends BaseAction {
 		} else {
 			pageNo = Integer.parseInt(pageNoStr);
 		}
-		int page_scale = 50;
+		int page_scale = 10;
 
 		AllSearchModel allSearchModel = new AllSearchModel();
 		allSearchModel.setUser_no(authUserInfo.getLong("user_no"));
