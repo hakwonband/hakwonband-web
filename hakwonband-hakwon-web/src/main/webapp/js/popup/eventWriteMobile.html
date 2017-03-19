@@ -1,0 +1,52 @@
+	<div class="ibox-title new_mo_title">
+		<h1>이벤트</h1>
+		<button type="button" class="btn btn-primary title_btn_submit" ng-click="editConfirm()">등록</button>
+		<button type="button" class="btn title_btn_cancel" ng-click="editCancel()">X</button>
+		<div class="mo_top_file_btn" style="text-align:right;">
+			<span class="btn btn-success">파일</span>
+			<input type="file" class="input_file file_btn" data-act="file_upload" multiple>
+			<span class="btn btn-success">youtube</span>
+			<input type="file" class="input_file youtube_btn" data-act="youtube_upload" multiple>
+		</div>
+	</div>
+	<div class="ibox-content new_mo_content">
+		<input type="text" class="form-control m-b-xs" placeholder="제목 :20자까지" ng-model="eventDetail.title">
+		<select class="form-control m-b-xs">
+			<option>추천인 받기</option>
+			<option>Y</option>
+			<option>N</option>
+		</select>
+		<input type="text" class="form-control" placeholder="추가정보받기">
+		<div class="event_date_picker">
+			<div class="input-daterange input-group" id="datepicker">
+				<input type="date" ng-model="eventDetail.start_date" class="input-sm form-control" placeholder="시작날짜">
+				<span class="input-group-addon">to</span>
+				<input type="date" ng-model="eventDetail.end_date" class="input-sm form-control" placeholder="마감날짜">
+			</div>
+		</div>
+		<div><textarea cols="140" rows="10" class="form-control"></textarea></div>
+		<div class="form-group">
+			<div class="col-sm-11">
+				<div class="attachment mo_file_box" ng-if="fileList.length > 0">
+					<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
+						<div class="file">
+							<div class="image no_image" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
+								{{item.file_name}}
+							</div>
+							<div class="image no_image" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
+								{{item.file_name}}
+							</div>
+							<div class="image no_image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'file'">
+								{{item.file_name}}
+							</div>
+							<div class="image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'img'">
+								<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
+							</div>
+							<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>

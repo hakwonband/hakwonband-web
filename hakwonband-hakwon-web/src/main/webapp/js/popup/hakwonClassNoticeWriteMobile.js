@@ -108,59 +108,6 @@ hakwonMainApp.service('classService', function(CommUtil) {
 
 
 	/**
-	 * 반 공지사항 상세조회
-	 * @param $scope
-	 */
-	classService.classNoticeDetail = function($scope) {
-		if (isNull($scope.noticeNo)) {
-			alert('학원 번호가 올바르지 않습니다.');
-			return ;
-		}
-		CommUtil.ajax({url:contextPath+"/hakwon/noticeDetail.do", param:{notice_no: $scope.noticeNo}, successFun:function(data) {
-			try {
-				if( data.error ) {
-					alert('공지 조회를 실패 했습니다.');
-					return ;
-				}
-				var colData = data.colData;
-				if( colData ) {
-					$scope.noticeDetail			= colData.noticeDetail;
-					$scope.replyList			= colData.replyList;
-					$scope.fileList				= colData.fileList;
-					$scope.classNoticeReaderList= colData.classNoticeReaderList;
-
-					$scope.all_student_count = 0;
-					$scope.read_student_count = 0;
-					$scope.all_parent_count = 0;
-					$scope.read_parent_count = 0;
-					for(var i=0; i<colData.classNoticeReaderList.length; i++) {
-						if( colData.classNoticeReaderList[i].user_type == '006' ) {
-							$scope.all_student_count++;
-							if( colData.classNoticeReaderList[i].read_date ) {
-								$scope.read_student_count++;
-							}
-
-						} else if( colData.classNoticeReaderList[i].user_type == '005' ) {
-							$scope.all_parent_count++;
-							if( colData.classNoticeReaderList[i].read_date ) {
-								$scope.read_parent_count++;
-							}
-						}
-					}
-
-					setTimeout(function(){
-						comm.contentImageReset();
-					}, 50);
-				} else {
-					commProto.logger({hakwonDetailError:data});
-				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
-	};
-
-	/**
 	 * 공지사항 작성시, 카테고리 리스트 조회
 	 * @param $scope
 	 */
@@ -218,13 +165,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	$scope.isMobile = isMobile.any();
 
 	if( isNull($routeParams.hakwon_no) || isNull($routeParams.class_no) ) {
-		if( window.PLATFORM ) {
-			window.history.back(-2);
-		} else if( getBrowser() == 'iosApp' ) {
-			window.history.back();
-		} else {
-			window.close();
-		}
+		window.history.back();
 		return ;
 	}
 	$scope.hakwonNo = $routeParams.hakwon_no;
@@ -709,27 +650,11 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	/*	공지사항 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
 		if ($scope.isNewNotice) {
-			if( window.PLATFORM ) {
-				window.history.back(-2);
-				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
-			} else if( getBrowser() == 'iosApp' ) {
-				window.history.back();
-			} else {
-				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
-				window.close();
-			}
-			return false;
+//			$window.location.href = '/main.do#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 		} else {
-			if( window.PLATFORM ) {
-				window.history.back(-2);
-				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
-			} else if( getBrowser() == 'iosApp' ) {
-				window.history.back();
-			} else {
-				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
-				window.close();
-			}
-			return false;
+//			$window.location.href = '/main.do#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 		}
+		window.history.back();
+		return false;
 	};
 });

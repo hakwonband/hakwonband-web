@@ -1,18 +1,18 @@
 /**
  * 학원 공지사항 서비스
  */
-hakwonMainApp.service('noticeService', function(CommUtil) {
-	console.log('hakwonMainApp noticeService call');
+hakwonMainApp.service('eventService', function(CommUtil) {
+	console.log('hakwonMainApp eventService call');
 
-	var noticeService = {};
+	var eventService = {};
 
 	/**
 	 * 첨부파일 업로드 옵션 생성
 	 */
-	noticeService.getFileUploadOptions = function($scope, type) {
+	eventService.getFileUploadOptions = function($scope, type) {
 		// 파일 업로드 객체 생성
 		var fileUploadOptions = new UploadOptions();
-		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_NOTICE};
+		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_EVENT};
 		if( type == 'youtube' ) {
 			fileUploadOptions.customExtraFields.youtube = 'true';
 		}
@@ -89,13 +89,12 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 	 * 공지사항 상세정보 조회
 	 * @param $scope
 	 */
-	noticeService.noticeDetail = function($scope, isMobile) {
-		if ($scope.isNewNotice) {
+	eventService.eventDetail = function($scope, isMobile) {
+		if ($scope.isNewEvent) {
 			/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
 			var editOptions = comm.getEditorOptions();
 			editOptions.setup = function(ed) {
 				ed.on("init", function() {
-					console.log('init call~~~');
 					tinymce.activeEditor.setContent(' ');
 
 				}).on('KeyDown', function(e) {
@@ -138,140 +137,90 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 			$scope.switchery_mobile_push_yn = new Switchery($scope.mobile_push_yn, { color: '#1AB394' });
 			$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 			return ;
-		} else if (!$scope.isNewNotice && isNull($scope.noticeNo)) {
-			alert('공지사항 정보가 올바르지 않습니다.');
+		} else if (!$scope.isNewEvent && isNull($scope.eventNo)) {
+			alert('이벤트 정보가 올바르지 않습니다.');
 			return ;
 		}
-		CommUtil.ajax({url:contextPath+"/hakwon/noticeDetail.do", param:{notice_no:$scope.noticeNo}, successFun:function(data) {
-			try {
-				var colData = data.colData;
-				if( colData.result == CommonConstant.Flag.success ) {
-					if( colData.noticeDetail.reservation_date_2 ) {
-						colData.noticeDetail.reservation_date_2 = new Date(colData.noticeDetail.reservation_date);
+
+		var param = {
+			hakwon_no : $scope.hakwonNo
+			, event_no : $scope.eventNo
+		};
+
+		CommUtil.ajax({url:contextPath+"/hakwon/event/view.do", param:param, successFun:function(data) {
+			var colData = data.colData;
+			if( colData.result == CommonConstant.Flag.success ) {
+				if( colData.noticeDetail.reservation_date_2 ) {
+					colData.noticeDetail.reservation_date_2 = new Date(colData.noticeDetail.reservation_date);
+				}
+
+				if( colData.eventInfo.recommend_yn == 'Y' ) {
+					if( !colData.recommendList ) {
+						colData.recommendList = [];
 					}
+				}
 
-					$scope.noticeDetail			= colData.noticeDetail;
-					$scope.replyList			= colData.replyList;
-					$scope.fileList				= colData.fileList;
+				$scope.fileList				= colData.fileList;
 
-					$scope.noticeTargetUser = $scope.noticeDetail.target_user;
+				/*	에디터 초기화 완료 후 value 셋팅	*/
+				var editOptions = comm.getEditorOptions();
+				editOptions.setup = function(ed) {
+					ed.on("init", function(ed) {
+						if (!_.isUndefined(colData.noticeDetail.content) && colData.noticeDetail.content) {
+							tinymce.activeEditor.setContent(colData.noticeDetail.content);
+						} else {
+							tinymce.activeEditor.setContent(' ');
+						}
+					}).on('KeyDown', function(e) {
+						var thisEditor = this;
+						var keyCode = undefined;
+						if (e.keyCode) keyCode = e.keyCode;
+						else if (e.which) keyCode = e.which;
 
-					/*	에디터 초기화 완료 후 value 셋팅	*/
-					var editOptions = comm.getEditorOptions();
-					editOptions.setup = function(ed) {
-						ed.on("init", function(ed) {
-							if (!_.isUndefined(colData.noticeDetail.content) && colData.noticeDetail.content) {
-								tinymce.activeEditor.setContent(colData.noticeDetail.content);
+						if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
+							if (e.shiftKey) {
+								thisEditor.execCommand('Outdent');
 							} else {
-								tinymce.activeEditor.setContent(' ');
-							}
-						}).on('KeyDown', function(e) {
-							var thisEditor = this;
-							var keyCode = undefined;
-							if (e.keyCode) keyCode = e.keyCode;
-							else if (e.which) keyCode = e.which;
-
-							if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
-								if (e.shiftKey) {
-									thisEditor.execCommand('Outdent');
-								} else {
-									thisEditor.execCommand('Indent');
-								}
-
-								return tinymce.dom.Event.cancel(e);
+								thisEditor.execCommand('Indent');
 							}
 
-						});
-
-						ed.addButton('hakwonupload', {
-							text: 'file',
-							icon: false,
-							onclick: function () {
-								angular.element("input[data-act=file_upload]").trigger('click');
-							}
-						});
-
-						ed.addButton('hakwonyoutube', {
-							text: 'youtube',
-							icon: false,
-							onclick: function () {
-								angular.element("input[data-act=youtube_upload]").trigger('click');
-							}
-						});
-					};
-					tinymce.init(editOptions);
-
-					/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-					if( isMobile == true ) {
-						if ($scope.noticeDetail.reply_yn == 'Y') {
-							$scope.reply_yn = true;
-						} else {
-							$scope.reply_yn = false;
+							return tinymce.dom.Event.cancel(e);
 						}
-						if ($scope.noticeDetail.is_file_view == '1') {
-							$scope.file_view = true;
-						} else {
-							$scope.file_view = false;
+
+					});
+
+					ed.addButton('hakwonupload', {
+						text: 'file',
+						icon: false,
+						onclick: function () {
+							angular.element("input[data-act=file_upload]").trigger('click');
 						}
-					} else {
-						if( $scope.reply_yn ) {
-							if ($scope.noticeDetail.reply_yn == 'N') {
-								$scope.reply_yn.checked = false;
-							}
-							$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+					});
+
+					ed.addButton('hakwonyoutube', {
+						text: 'youtube',
+						icon: false,
+						onclick: function () {
+							angular.element("input[data-act=youtube_upload]").trigger('click');
 						}
-						if( $scope.file_view ) {
-							if ($scope.noticeDetail.is_file_view == '0') {
-								$scope.file_view.checked = false;
-							}
-							$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
-						}
-					}
-				} else {
-					commProto.logger({noticeDetailError:data});
-				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
+					});
+				};
+				tinymce.init(editOptions);
+			} else {
+				commProto.logger({eventDetailError:data});
 			}
 		}});
 	};
 
-	/**
-	 * 공지사항 작성시, 카테고리 리스트 조회
-	 * @param $scope
-	 */
-	noticeService.noticeCateList = function($scope) {
-		if (isNull($scope.hakwonNo)) {
-			alert('학원 정보가 올바르지 않습니다.');
-			return ;
-		}
-		CommUtil.ajax({url:contextPath+"/hakwon/noticeCateList.do", param:{hakwon_no: $scope.hakwonNo}, successFun:function(data) {
-			try {
-				if( data.error ) {
-					alert('공지사항 카테고리 정보 조회를 실패 했습니다.');
-					return ;
-				}
-				var colData = data.colData;
-				if( colData.result == CommonConstant.Flag.success ) {
-					$scope.noticeCateList = colData.noticeCateList;
-				} else {
-					commProto.logger({noticeCateListError:data});
-				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
-	};
-
-	return noticeService;
+	return eventService;
 });
 
 
 /**
- * 학원 공지 쓰기
+ * 이벤트 쓰기
  */
-hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $location, $routeParams, $filter, $window, CommUtil, noticeService) {
-	console.log('hakwonNoticeWriteController call~~~');
+hakwonMainApp.controller('eventWriteController', function($scope, $location, $routeParams, $filter, $window, CommUtil, eventService) {
+	console.log('eventWriteController call~~~');
 
 	$scope.CommUtil = CommUtil;
 
@@ -281,35 +230,20 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 	/*	초기화	*/
 	{
 		/*	데이터 초기화	*/
-		$scope.isNewNotice			= false;
+		$scope.isNewEvent			= false;
 		$scope.hakwonNo 			= '';
-		$scope.noticeNo 			= '';
-		$scope.noticeDetail			= {};
+		$scope.eventNo 				= '';
+		$scope.eventDetail			= {
+			start_date : null,
+			end_date : null
+		};
 		$scope.replyList			= [];
 		$scope.fileList				= [];
 
-		/*	공지사항 작성시, 카테고리 리스트	*/
-		$scope.noticeCateList 		= [];
-		$scope.noticeCateItem 		= '';
-
-		$scope.reply_yn = true;
-		$scope.file_view = true;
 		$scope.mobile_push_yn = true;
-
-		/*	대상	*/
-		$scope.noticeTargetUser 		= '';
 
 		/* 권한 체크 기능	*/
 		$scope.checkAuthType = comm.checkAuthType;
-
-		/*	댓글 입력 정보	*/
-		$scope.replyInfo = {
-			reg_user_no			: '',
-			content_type		: '001',
-			content_parent_no 	: '',
-			reply_content		: '',
-			title				: ''
-		};
 
 		if( isNull($routeParams.hakwon_no) ) {
 			window.history.back();
@@ -319,26 +253,15 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 
 		/*	공지사항 번호가 존재하면, 공지사항 수정. or 공지사항 등록 처리		*/
 		if (!isNull($routeParams.notice_no)) {
-			$scope.noticeNo = $routeParams.notice_no;
+			$scope.eventNo = $routeParams.notice_no;
 		} else {
-			$scope.isNewNotice = true;
+			$scope.isNewEvent = true;
 		}
 	}
 
 	/*	공지사항 상세정보 조회	*/
-	$scope.getNoticeDetail = function() {
-		noticeService.noticeDetail($scope, true);
-	};
-
-	/*	공지사항 카테고리 리스트 조회	*/
-	$scope.getNoticeCateList = function() {
-		noticeService.noticeCateList($scope);
-	};
-
-	/*	공지사항 카테고리 변경시 현재 제목 변경	*/
-	$scope.changeNoticeCate = function() {
-		var beforeTitle = !isNull($scope.noticeDetail.title) ? $scope.noticeDetail.title : '';
-		$scope.noticeDetail.title = '[' + $scope.noticeCateItem.cate_name + '] ' + beforeTitle;
+	$scope.getEventDetail = function() {
+		eventService.eventDetail($scope, true);
 	};
 
 	/*	공지사항 수정 및 등록 처리		*/
@@ -355,7 +278,7 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 			alert('학원 정보가 올바르지 않습니다.');
 			return ;
 		}
-		if( isNull($scope.noticeDetail.title) ) {
+		if( isNull($scope.eventDetail.title) ) {
 			alert('제목을 입력해 주세요.');
 			return ;
 		}
@@ -367,38 +290,29 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 			}
 		}
 
-		if ($scope.isNewNotice) {
-			apiUrl = '/hakwon/master/registHakwonNotice.do';
+		if ($scope.isNewEvent) {
+			apiUrl = '/hakwon/master/registEvent.do';
 		} else {
-			apiUrl = '/hakwon/master/editNotice.do'
+			apiUrl = '/hakwon/master/editEvent.do'
 		}
 
 		var editContent = tinymce.activeEditor.getContent();
 		editContent = editContent.replace(/><\/p>/g, ">&nbsp;</p>");
 
 		params.hakwon_no 		= $scope.hakwonNo;
-		params.notice_no 		= $scope.noticeNo;
-		params.title 			= $scope.noticeDetail.title;
+		params.event_no 		= $scope.eventNo;
+		params.title 			= $scope.eventDetail.title;
 		params.content 			= editContent;
 		params.file_no_list 	= fileNoList.toString();
 		params.preview_content 	= params.content.substr(0, 50) + '...';
-		params.reply_yn			= $scope.reply_yn ? 'Y' : 'N' ;
-		if ($scope.isNewNotice) {
-			params.mobile_push_yn	= $scope.mobile_push_yn ? 'Y' : 'N' ;
-		}
-		params.is_file_view		= $scope.file_view ? '1' : '0' ;
-		params.target_user		= $scope.noticeTargetUser;
-
-		params.reservationDate = reservationDate;
-		params.reservationTime = reservationTime;
 
 		CommUtil.ajax({url:contextPath+apiUrl, param:params, successFun:function(data) {
 			var colData = data.colData;
 			if( colData.result == CommonConstant.Flag.success ) {
-				alert('공지사항이 저장되었습니다.');
+				alert('이벤트가 저장되었습니다.');
 				$scope.editCancel();
 			} else {
-				commProto.logger({noticeDetailError:data});
+				commProto.logger({eventDetailError:data});
 			}
 		}});
 	};
@@ -480,11 +394,6 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 
 	/*	공지사항 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
-//		if ($scope.isNewNotice) {
-//			$window.location.href = '/main.do#/notice/list?hakwon_no=' + $scope.hakwonNo;
-//		} else {
-//			$window.location.href = '/main.do#/notice/detail?hakwon_no=' + $scope.hakwonNo + '&notice_no=' + $scope.noticeNo;
-//		}
 		window.history.back();
 		return false;
 	};
@@ -503,19 +412,10 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 		}, 500);
 	}
 
-	/*	취소	*/
-	$scope.reservationCancel = function() {
-		$('input[name=reservationDate]').val('');
-		$('input[name=reservationTime]').val('');
-	}
-
 	/*	파일 객체 초기화 및 데이터 호출		*/
 	$scope.$$postDigest(function(){
 		/*	학원 공지사항 상세정보조회	*/
-		$scope.getNoticeDetail();
-
-		/*	공지사항 카테고리 조회	*/
-		$scope.getNoticeCateList();
+		$scope.getEventDetail();
 
 		/*	파일 업로드 객체 생성		*/
 		if( window.PLATFORM ) {
@@ -625,9 +525,9 @@ hakwonMainApp.controller('hakwonNoticeWriteController', function($scope, $locati
 				return false;
 			});
 		} else {
-			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(noticeService.getFileUploadOptions($scope));
+			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(eventService.getFileUploadOptions($scope));
 
-			$scope.youtubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
+			$scope.youtubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(eventService.getFileUploadOptions($scope, 'youtube'));
 		}
 	});
 });
