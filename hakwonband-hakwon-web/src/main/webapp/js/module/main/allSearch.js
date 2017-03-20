@@ -117,7 +117,7 @@ hakwonMainApp.controller('allSearchListController', function($scope, $location, 
 		} else if( item.search_type == '003' ) {
 			$window.location.href = PageUrl.common.noticeDetail+'?hakwon_no=' + item.hakwon_no+'&notice_no='+item.search_no;
 		} else if( item.search_type == '004' ) {
-			$window.location.href = PageUrl.common.classNoticeDetail+'?hakwon_no=' + item.hakwon_no+'&notice_no='+item.search_no+'&class_no'+item.search_data+'&page=1';
+			$window.location.href = PageUrl.common.classNoticeDetail+'?hakwon_no=' + item.hakwon_no+'&notice_no='+item.search_no+'&class_no='+item.search_data+'&page=1';
 		} else if( item.search_type == '005' ) {
 			$window.location.href = PageUrl.common.eventView+'?hakwon_no=' + item.hakwon_no+'&event_no='+item.search_no;
 		}
