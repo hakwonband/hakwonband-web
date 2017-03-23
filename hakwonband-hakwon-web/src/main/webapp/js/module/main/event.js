@@ -434,7 +434,7 @@ hakwonMainApp.service('eventService', function($http, CommUtil) {
 });
 
 /*	이벤트 리스트	*/
-hakwonMainApp.controller('eventListController', function($scope, $location, $routeParams, eventService, CommUtil){
+hakwonMainApp.controller('eventListController', function($scope, $window, $location, $routeParams, eventService, CommUtil){
 	console.log('hakwonMainApp eventListController call');
 
 	/*	페이지 초기화 호출	*/
@@ -478,7 +478,7 @@ hakwonMainApp.controller('eventListController', function($scope, $location, $rou
 });
 
 /*	이벤트 작성	*/
-hakwonMainApp.controller('eventWriteController', function($scope, $location, $routeParams, eventService, CommUtil){
+hakwonMainApp.controller('eventWriteController', function($scope, $window, $location, $routeParams, eventService, CommUtil){
 	console.log('hakwonMainApp eventWriteController call');
 
 	/*	페이지 초기화 호출	*/
@@ -620,7 +620,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 });
 
 /*	이벤트 수정	*/
-hakwonMainApp.controller('eventEditController', function($scope, $location, $routeParams, eventService){
+hakwonMainApp.controller('eventEditController', function($scope, $window, $location, $routeParams, eventService){
 	console.log('hakwonMainApp eventEditController call');
 
 	/*	페이지 초기화 호출	*/
@@ -681,7 +681,7 @@ hakwonMainApp.controller('eventEditController', function($scope, $location, $rou
 });
 
 /*	이벤트 뷰	*/
-hakwonMainApp.controller('eventViewController', function($scope, $location, $routeParams, eventService){
+hakwonMainApp.controller('eventViewController', function($scope, $window, $location, $routeParams, eventService){
 	console.log('hakwonMainApp eventViewController call');
 
 	/*	페이지 초기화 호출	*/
