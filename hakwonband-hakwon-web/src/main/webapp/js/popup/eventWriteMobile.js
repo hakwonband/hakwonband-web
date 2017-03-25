@@ -392,9 +392,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 	$scope.$$postDigest(function(){
 		/*	학원 이벤트 상세정보조회	*/
 
-		if( $scope.eventNo && $scope.eventNo > 0 ) {
-			eventService.eventDetail($scope, true);
-		}
+		eventService.eventDetail($scope, true);
 
 		/*	파일 업로드 객체 생성		*/
 		if( window.PLATFORM ) {
