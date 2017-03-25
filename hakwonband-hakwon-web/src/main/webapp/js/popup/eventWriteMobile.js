@@ -1,5 +1,5 @@
 /**
- * 학원 공지사항 서비스
+ * 학원 이벤트 서비스
  */
 hakwonMainApp.service('eventService', function(CommUtil) {
 	console.log('hakwonMainApp eventService call');
@@ -86,7 +86,7 @@ hakwonMainApp.service('eventService', function(CommUtil) {
 	};
 
 	/**
-	 * 공지사항 상세정보 조회
+	 * 이벤트 상세정보 조회
 	 * @param $scope
 	 */
 	eventService.eventDetail = function($scope, isMobile) {
@@ -131,11 +131,6 @@ hakwonMainApp.service('eventService', function(CommUtil) {
 				});
 			};
 			tinymce.init(editOptions);
-
-			/*	신규 작성시 스위치 초기화	*/
-			$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
-			$scope.switchery_mobile_push_yn = new Switchery($scope.mobile_push_yn, { color: '#1AB394' });
-			$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 			return ;
 		} else if (!$scope.isNewEvent && isNull($scope.eventNo)) {
 			alert('이벤트 정보가 올바르지 않습니다.');
@@ -149,25 +144,20 @@ hakwonMainApp.service('eventService', function(CommUtil) {
 
 		CommUtil.ajax({url:contextPath+"/hakwon/event/view.do", param:param, successFun:function(data) {
 			var colData = data.colData;
-			if( colData.result == CommonConstant.Flag.success ) {
-				if( colData.noticeDetail.reservation_date_2 ) {
-					colData.noticeDetail.reservation_date_2 = new Date(colData.noticeDetail.reservation_date);
-				}
 
-				if( colData.eventInfo.recommend_yn == 'Y' ) {
-					if( !colData.recommendList ) {
-						colData.recommendList = [];
-					}
-				}
+			if( colData.eventInfo ) {
+				colData.eventInfo.begin_date = new Date(colData.eventInfo.begin_date);
+				colData.eventInfo.end_date = new Date(colData.eventInfo.end_date);
+				$scope.eventDetail = colData.eventInfo;
 
-				$scope.fileList				= colData.fileList;
+				$scope.fileList		= colData.fileList;
 
 				/*	에디터 초기화 완료 후 value 셋팅	*/
 				var editOptions = comm.getEditorOptions();
 				editOptions.setup = function(ed) {
 					ed.on("init", function(ed) {
-						if (!_.isUndefined(colData.noticeDetail.content) && colData.noticeDetail.content) {
-							tinymce.activeEditor.setContent(colData.noticeDetail.content);
+						if (!_.isUndefined(colData.eventInfo.event_content) && colData.eventInfo.event_content) {
+							tinymce.activeEditor.setContent(colData.eventInfo.event_content);
 						} else {
 							tinymce.activeEditor.setContent(' ');
 						}
@@ -207,7 +197,7 @@ hakwonMainApp.service('eventService', function(CommUtil) {
 				};
 				tinymce.init(editOptions);
 			} else {
-				commProto.logger({eventDetailError:data});
+				alert('이벤트 정보 조회를 실패 했습니다.');
 			}
 		}});
 	};
@@ -234,16 +224,11 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 		$scope.hakwonNo 			= '';
 		$scope.eventNo 				= '';
 		$scope.eventDetail			= {
-			start_date : null,
-			end_date : null
+			begin_date : new Date(),
+			end_date : new Date(),
+			recommend_yn : ''
 		};
-		$scope.replyList			= [];
 		$scope.fileList				= [];
-
-		$scope.mobile_push_yn = true;
-
-		/* 권한 체크 기능	*/
-		$scope.checkAuthType = comm.checkAuthType;
 
 		if( isNull($routeParams.hakwon_no) ) {
 			window.history.back();
@@ -251,43 +236,28 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 		}
 		$scope.hakwonNo = $routeParams.hakwon_no;
 
-		/*	공지사항 번호가 존재하면, 공지사항 수정. or 공지사항 등록 처리		*/
-		if (!isNull($routeParams.notice_no)) {
-			$scope.eventNo = $routeParams.notice_no;
+		/*	이벤트 번호가 존재하면, 이벤트 수정. or 이벤트 등록 처리		*/
+		if (!isNull($routeParams.event_no)) {
+			$scope.eventNo = $routeParams.event_no;
 		} else {
 			$scope.isNewEvent = true;
 		}
 	}
 
-	/*	공지사항 상세정보 조회	*/
-	$scope.getEventDetail = function() {
-		eventService.eventDetail($scope, true);
-	};
-
-	/*	공지사항 수정 및 등록 처리		*/
+	/*	이벤트 수정 및 등록 처리		*/
 	$scope.editConfirm = function() {
 		var apiUrl		= '',
 			fileNoList	= _.pluck($scope.fileList, 'file_no'),
 			params		= {};
 
 
-		var reservationDate	= $('input[name=reservationDate]').val();
-		var reservationTime	= $('input[name=reservationTime]').val();
-
 		if (isNull($scope.hakwonNo)) {
 			alert('학원 정보가 올바르지 않습니다.');
 			return ;
 		}
-		if( isNull($scope.eventDetail.title) ) {
+		if( isNull($scope.eventDetail.event_title) ) {
 			alert('제목을 입력해 주세요.');
 			return ;
-		}
-
-		if( !isNull(reservationDate) || !isNull(reservationTime) ) {
-			if( isNull(reservationDate) || isNull(reservationTime) ) {
-				alert('예약 날짜와 시간이 정확하지 않습니다.');
-				return ;
-			}
 		}
 
 		if ($scope.isNewEvent) {
@@ -301,17 +271,23 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 
 		params.hakwon_no 		= $scope.hakwonNo;
 		params.event_no 		= $scope.eventNo;
-		params.title 			= $scope.eventDetail.title;
-		params.content 			= editContent;
+		params.event_title		= $scope.eventDetail.event_title;
+		params.recommend_yn		= $scope.eventDetail.recommend_yn;
+		params.add_info_title	= $scope.eventDetail.add_info_title;
+		params.begin_date		= $scope.eventDetail.begin_date.yyyymmdd();
+		params.end_date			= $scope.eventDetail.end_date.yyyymmdd();
+		params.event_content	= editContent;
+
+
 		params.file_no_list 	= fileNoList.toString();
-		params.preview_content 	= params.content.substr(0, 50) + '...';
 
 		CommUtil.ajax({url:contextPath+apiUrl, param:params, successFun:function(data) {
 			var colData = data.colData;
-			if( colData.result == CommonConstant.Flag.success ) {
+			if( colData && colData.flag == CommonConstant.Flag.success ) {
 				alert('이벤트가 저장되었습니다.');
 				$scope.editCancel();
 			} else {
+				alert('이벤트 저장을 실패 했습니다.');
 				commProto.logger({eventDetailError:data});
 			}
 		}});
@@ -392,7 +368,7 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 		});
 	};
 
-	/*	공지사항 등록 - 수정 취소	*/
+	/*	이벤트 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
 		window.history.back();
 		return false;
@@ -414,8 +390,11 @@ hakwonMainApp.controller('eventWriteController', function($scope, $location, $ro
 
 	/*	파일 객체 초기화 및 데이터 호출		*/
 	$scope.$$postDigest(function(){
-		/*	학원 공지사항 상세정보조회	*/
-		$scope.getEventDetail();
+		/*	학원 이벤트 상세정보조회	*/
+
+		if( $scope.eventNo && $scope.eventNo > 0 ) {
+			eventService.eventDetail($scope, true);
+		}
 
 		/*	파일 업로드 객체 생성		*/
 		if( window.PLATFORM ) {

@@ -456,14 +456,11 @@ hakwonMainApp.controller('eventListController', function($scope, $window, $locat
 	$scope.isMobile = isMobile.any();
 
 	$scope.write = function() {
-		/*
 		if( isMobile.any() ) {
-			window.location = '/assets/js/popup/popupIndex.html#/eventWrite?hakwon_no=' + hakwon_no;
+			$window.location = '/assets/js/popup/popupIndex.html#/eventWrite?hakwon_no=' + hakwon_no;
 		} else {
 			$window.location.href = PageUrl.event.write+'?hakwon_no='+hakwonInfo.hakwon_no;
 		}
-		*/
-		$window.location.href = PageUrl.event.write+'?hakwon_no='+hakwonInfo.hakwon_no;
 	};
 
 	$("#wrapper").show();
@@ -716,14 +713,11 @@ hakwonMainApp.controller('eventViewController', function($scope, $window, $locat
 
 	/*	수정 하기	*/
 	$('#mainNgView').on(clickEvent, 'button[data-act=eventEdit]', function() {
-		/*
 		if( isMobile.any() ) {
-			window.location = '/assets/js/popup/popupIndex.html#/eventWrite?hakwon_no=' + hakwon_no+'&event_no='+eventNo;
+			$window.location = '/assets/js/popup/popupIndex.html#/eventWrite?hakwon_no=' + hakwon_no+'&event_no='+eventNo;
 		} else {
 			$window.location.href = PageUrl.event.edit+'?hakwon_no='+hakwonInfo.hakwon_no+'&event_no='+eventNo;
 		}
-		*/
-		$window.location.href = PageUrl.event.edit+'?hakwon_no='+hakwonInfo.hakwon_no+'&event_no='+eventNo;
 	});
 
 	/*	목록으로	*/
