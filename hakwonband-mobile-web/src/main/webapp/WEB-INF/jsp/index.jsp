@@ -106,6 +106,15 @@
 </header>
 <!--//header area-->
 
+<nav class="mn_s">
+	<ul>
+		<li><a href="#/userMain" class="mn_s_01">홈</a></li>
+		<li><a href="#/receiveMessageList" class="mn_s_02">메세지</a></li>
+		<!--<li><a href="#n" class="mn_s_03">공지</a></li>-->
+		<li><a href="#/hakwon/eventJoin" class="mn_s_04">이벤트</a></li>
+	</ul>
+</nav>
+
 <!--contents area-->
 <div id="wrap_cont" ng-view>
 	<div style="auto;">
