@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.runtime.youtube.dao.YoutubeDAO">
+
+	<update id="youtubeIDUpdate">
+	<![CDATA[
+		/* YoutubeDAO.youtubeIDUpdate */
+		update tb_file set
+			youtube_id = #{youtube_id}
+			, youtube_reg_date = now()
+		where
+			file_no = #{file_no}
+	]]>
+	</update>
+
+	<!-- 대상 삭제 -->
+	<delete id="targetRemove">
+	<![CDATA[
+		/* YoutubeDAO.targetRemove */
+		delete from tb_youtube_target
+		where
+			file_no = #{file_no}
+	]]>
+	</delete>
+
+	<!-- 인증 토큰 조회 -->
+	<select id="accessToken" resultType="string">
+	<![CDATA[
+		/* YoutubeDAO.accessToken */
+		select access_token from tb_google_auth
+	]]>
+	</select>
+
+	<!-- 대상 리스트 -->
+	<select id="targetList" resultType="hakwonband.runtime.youtube.model.TargetFileInfo">
+	<![CDATA[
+		/* YoutubeDAO.targetList */
+		select
+			file_no
+			, file_path_prefix
+			, file_path
+			, file_name
+		from tb_file
+		where
+			file_ext_type in ('video/quicktime', 'video/mp4')
+			and file_use_yn = 'Y'
+			and file_del_yn = 'N'
+			and file_size > 10000000
+			and youtube_id is null
+			and file_no not in (
+				select file_no from tb_youtube_target
+			)
+		order by file_no desc
+		limit 10
+	]]>
+	</select>
+
+	<!-- 대상 등록 -->
+	<insert id="targetInsert">
+	<![CDATA[
+		/* YoutubeDAO.targetInsert */
+		insert into tb_youtube_target (
+			runtime_id, file_no, reg_date
+		) values (
+			#{runtime_id}, #{file_no}, now()
+		)
+	]]>
+	</insert>
+
+
+</mapper>

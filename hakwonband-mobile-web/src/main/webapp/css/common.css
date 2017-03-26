@@ -141,6 +141,17 @@ footer {height:27px; padding:0px; font-size:10px; text-align:center; color:#b1b1
 #mypage_academy ul.mn_list li a.mn_04 {background-position:0px -140px}
 #mypage_academy ul.mn_list li a.mn_05 {background-position:0px -190px}
 
+
+.mn_s ul{display:table; width:100%; background:#c9e17c; margin-bottom:20px;}
+.mn_s ul li{display:table-cell; width:25%; text-align:center;}
+.mn_s ul li a{display:block; height:38px; position:relative; overflow:hidden; text-indent:-9999999px;}
+.mn_s ul li a:BEFORE{display:block; content:''; position:absolute; top:50%; left:50%; margin:-14px 0 0 -15px; width:30px; height:28px; background:url('../images/bg_icon_04.png') no-repeat 0px 0; background-size:30px;}
+.mn_s ul li .mn_s_01:BEFORE{}
+.mn_s ul li .mn_s_02:BEFORE{background-position:0 -57px;}
+.mn_s ul li .mn_s_03:BEFORE{background-position:0 -120px;}
+.mn_s ul li .mn_s_04:BEFORE{background-position:0 -179px;}
+
+
 /* 동영상 팝업 */
 #ucc {display:none; position:relative; width:274px;  margin:0 auto}
 #ucc button.btn_close {position:absolute; right:0; top:-30px; width:28px; height:24px; font-size:0; text-indent:-10000px; background:url('../images/icon_bg.png') no-repeat -150px -22px; background-size:500px}

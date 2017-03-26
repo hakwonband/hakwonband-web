@@ -2,6 +2,8 @@ package hakwonband.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import hakwonband.admin.model.GoogleAuthModel;
 import hakwonband.push.UserDevice;
 import hakwonband.util.DataMap;
@@ -111,4 +113,11 @@ public interface CommonDAO {
 	 * @param googleAuthModel
 	 */
 	public int googleAuthUpdate(GoogleAuthModel googleAuthModel);
+
+	/**
+	 * 파일의 youtube 사용안함 처리
+	 * @param file_no
+	 * @return
+	 */
+	public int youtubeDisable(@Param("file_no")String file_no);
 }

@@ -26,7 +26,7 @@
 	</div>
 
 	<div ng-if="hakwonObj.introduction" class="ibox float-e-margins">
-		<div class="ibox-content view_cont" ng-bind-html="hakwonObj.introduction | rawHtml"></div>
+		<div class="ibox-content view_cont" id="hakwon_introduction" ng-bind-html="hakwonObj.introduction | rawHtml"></div>
 		<div class="ibox-content text-right">
 			<a href="" class="btn btn-primary" ng-if="checkAuthType()" ng-click="goEditIntro()" onclick="return false;">학원소개 수정</a>
 		</div>

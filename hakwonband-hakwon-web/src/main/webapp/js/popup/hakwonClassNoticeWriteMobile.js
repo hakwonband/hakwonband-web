@@ -6,7 +6,7 @@ hakwonMainApp.service('classService', function(CommUtil) {
 	/**
 	 * 첨부파일 업로드 옵션 생성
 	 */
-	classService.getFileUploadOptions = function($scope, type) {
+	classService.getFileUploadOptions = function($scope, type, youtube_type) {
 		var uploadTypeObj = {
 			uploadType	: type
 			, hakwonNo	: $scope.hakwonNo
@@ -21,6 +21,9 @@ hakwonMainApp.service('classService', function(CommUtil) {
 		// 파일 업로드 객체 생성
 		var fileUploadOptions = new UploadOptions();
 		fileUploadOptions.customExtraFields = uploadTypeObj;
+		if( youtube_type == 'youtube' ) {
+			fileUploadOptions.customExtraFields.youtube = 'true';
+		}
 		fileUploadOptions.onFinish = function(event, total) {
 			if (this.errorFileArray.length + this.errorCount > 0) {
 				alert(msg);
@@ -69,10 +72,11 @@ hakwonMainApp.service('classService', function(CommUtil) {
 						tempObj.file_path	= fileInfo.filePath;
 						tempObj.image_yn	= fileInfo.imageYn;
 						tempObj.mime_type	= fileInfo.mimeType;
-
-						$scope.fileList.push(tempObj);
+						tempObj.youtube_id	= fileInfo.youtubeId;
 
 						if( type != CommonConstant.File.TYPE_CLASS_LOGO && fileInfo.imageYn == 'Y' ) {
+							$scope.fileList.push(tempObj);
+
 							var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
 							var fileNo = fileInfo.fileNo;
 
@@ -83,9 +87,18 @@ hakwonMainApp.service('classService', function(CommUtil) {
 								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 							}
 							tinymce.activeEditor.insertContent(strImage);
+						} else if( tempObj.youtube_id ) {
+							var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+							tinymce.activeEditor.insertContent(youtubeHtml);
+						} else {
+							$scope.fileList.push(tempObj);
 						}
-
 					}
+					setTimeout(function(){
+						var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+						$contents.scrollTop($contents.height());
+						tinymce.activeEditor.focus();
+					}, 500);
 					$scope.$digest();
 				}
 			}
@@ -93,59 +106,6 @@ hakwonMainApp.service('classService', function(CommUtil) {
 		return fileUploadOptions;
 	};
 
-
-	/**
-	 * 반 공지사항 상세조회
-	 * @param $scope
-	 */
-	classService.classNoticeDetail = function($scope) {
-		if (isNull($scope.noticeNo)) {
-			alert('학원 번호가 올바르지 않습니다.');
-			return ;
-		}
-		CommUtil.ajax({url:contextPath+"/hakwon/noticeDetail.do", param:{notice_no: $scope.noticeNo}, successFun:function(data) {
-			try {
-				if( data.error ) {
-					alert('공지 조회를 실패 했습니다.');
-					return ;
-				}
-				var colData = data.colData;
-				if( colData ) {
-					$scope.noticeDetail			= colData.noticeDetail;
-					$scope.replyList			= colData.replyList;
-					$scope.fileList				= colData.fileList;
-					$scope.classNoticeReaderList= colData.classNoticeReaderList;
-
-					$scope.all_student_count = 0;
-					$scope.read_student_count = 0;
-					$scope.all_parent_count = 0;
-					$scope.read_parent_count = 0;
-					for(var i=0; i<colData.classNoticeReaderList.length; i++) {
-						if( colData.classNoticeReaderList[i].user_type == '006' ) {
-							$scope.all_student_count++;
-							if( colData.classNoticeReaderList[i].read_date ) {
-								$scope.read_student_count++;
-							}
-
-						} else if( colData.classNoticeReaderList[i].user_type == '005' ) {
-							$scope.all_parent_count++;
-							if( colData.classNoticeReaderList[i].read_date ) {
-								$scope.read_parent_count++;
-							}
-						}
-					}
-
-					setTimeout(function(){
-						comm.contentImageReset();
-					}, 50);
-				} else {
-					commProto.logger({hakwonDetailError:data});
-				}
-			} catch(ex) {
-				commProto.errorDump({errorObj:ex});
-			}
-		}});
-	};
 
 	/**
 	 * 공지사항 작성시, 카테고리 리스트 조회
@@ -205,11 +165,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	$scope.isMobile = isMobile.any();
 
 	if( isNull($routeParams.hakwon_no) || isNull($routeParams.class_no) ) {
-		if( window.PLATFORM ) {
-			window.history.back(-2);
-		} else {
-			window.close();
-		}
+		window.history.back();
 		return ;
 	}
 	$scope.hakwonNo = $routeParams.hakwon_no;
@@ -228,7 +184,11 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 
 		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
 		tinymce.activeEditor.insertContent(youtubeHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 
 	/*	파일 객체 초기화 및 데이터 호출		*/
@@ -291,6 +251,11 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 								}
 								tinymce.activeEditor.insertContent(strImage);
+								setTimeout(function(){
+									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+									$contents.scrollTop($contents.height());
+									tinymce.activeEditor.focus();
+								}, 500);
 							}
 
 							$scope.$digest();
@@ -299,7 +264,7 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 						alert('파일 업로드를 실패 했습니다.');
 					}
 				};
-				var param = {
+				var fileParam = {
 					fileType : 'all'
 					, multipleYn : 'Y'
 					, callBack : 'uploadCallBack'
@@ -313,12 +278,63 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 						, cookie : document.cookie
 					}
 				};
-				window.PLATFORM.fileChooser(JSON.stringify(param));
+				window.PLATFORM.fileChooser(JSON.stringify(fileParam));
+
+				return false;
+			});
+
+			angular.element("input[data-act=youtube_upload]").click(function() {
+				delete window.uploadCallBack;
+				window.uploadCallBack = function(uploadJsonStr) {
+					try {
+						var resultObj = JSON.parse(uploadJsonStr);
+						if( resultObj.error ) {
+							alert('파일 업로드를 실패 했습니다.');
+						} else {
+							var fileInfo = resultObj.colData;
+							var tempObj = {};
+							tempObj.file_no		= fileInfo.fileNo;
+							tempObj.file_name	= fileInfo.fileName;
+							tempObj.file_path	= fileInfo.filePath;
+							tempObj.image_yn	= fileInfo.imageYn;
+							tempObj.mime_type	= fileInfo.mimeType;
+							tempObj.youtube_id	= fileInfo.youtubeId;
+
+//							$scope.fileList.push(tempObj);
+
+							if( tempObj.youtube_id ) {
+								var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+								tinymce.activeEditor.insertContent(youtubeHtml);
+								setTimeout(function(){
+									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+									$contents.scrollTop($contents.height());
+									tinymce.activeEditor.focus();
+								}, 500);
+							}
+							$scope.$digest();
+						}
+					} catch(e) {
+						alert('파일 업로드를 실패 했습니다.');
+					}
+				};
+				var youtubeParam = {
+					fileType : 'all'
+					, multipleYn : 'Y'
+					, callBack : 'uploadCallBack'
+					, upload : {
+						url : window.location.protocol+'//'+window.location.host+uploadUrl
+						, param : {uploadType:CommonConstant.File.TYPE_NOTICE, youtube:'true'}
+						, cookie : document.cookie
+					}
+				};
+				window.PLATFORM.fileChooser(JSON.stringify(youtubeParam));
 
 				return false;
 			});
 		} else {
 			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE));
+
+			$scope.youtubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(classService.getFileUploadOptions($scope, CommonConstant.File.TYPE_NOTICE, 'youtube'));
 		}
 	});
 
@@ -348,10 +364,18 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 				});
 
 				ed.addButton('hakwonupload', {
-					text: 'upload',
+					text: 'file',
 					icon: false,
 					onclick: function () {
 						angular.element("input[data-act=file_upload]").trigger('click');
+					}
+				});
+
+				ed.addButton('hakwonyoutube', {
+					text: 'youtube',
+					icon: false,
+					onclick: function () {
+						angular.element("input[data-act=youtube_upload]").trigger('click');
 					}
 				});
 			};
@@ -416,10 +440,17 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 						});
 
 						ed.addButton('hakwonupload', {
-							text: 'upload',
+							text: 'file',
 							icon: false,
 							onclick: function () {
 								angular.element("input[data-act=file_upload]").trigger('click');
+							}
+						});
+						ed.addButton('hakwonyoutube', {
+							text: 'youtube',
+							icon: false,
+							onclick: function () {
+								angular.element("input[data-act=youtube_upload]").trigger('click');
 							}
 						});
 					};
@@ -563,7 +594,11 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 		}
 		tinymce.activeEditor.insertContent(strImage);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	};
 
 	/*	비디오 삽입	*/
@@ -571,14 +606,32 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 		var fileUrl = $(this).attr('data-file-url');
 		var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
 		tinymce.activeEditor.insertContent(videoHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
+	});
+	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=youtube]', function() {
+		var youtubeID = $(this).attr('data-youtube-id');
+		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
+		tinymce.activeEditor.insertContent(youtubeHtml);
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 	/*	오디오 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
 		var fileUrl = $(this).attr('data-file-url');
 		var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
 		tinymce.activeEditor.insertContent(audioHtml);
-		tinymce.activeEditor.focus();
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
 	});
 
 	/*	취소	*/
@@ -597,23 +650,11 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	/*	공지사항 등록 - 수정 취소	*/
 	$scope.editCancel = function() {
 		if ($scope.isNewNotice) {
-			if( window.PLATFORM ) {
-				window.history.back(-2);
-				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
-			} else {
-				window.opener.location.hash = '#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
-				window.close();
-			}
-			return false;
+//			$window.location.href = '/main.do#/class/noticeList?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo;
 		} else {
-			if( window.PLATFORM ) {
-				window.history.back(-2);
-				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
-			} else {
-				window.opener.location.hash = '#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
-				window.close();
-			}
-			return false;
+//			$window.location.href = '/main.do#/class/noticeDetail?hakwon_no=' + $scope.hakwonNo + '&class_no=' + $scope.classNo + '&notice_no=' + $scope.noticeNo;
 		}
+		window.history.back();
+		return false;
 	};
 });

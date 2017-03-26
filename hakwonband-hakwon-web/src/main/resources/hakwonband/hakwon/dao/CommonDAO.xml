@@ -440,4 +440,17 @@
 			and x.device_type in ('ios', 'android')
 	]]>
 	</select>
+
+	<select id="memberRoleCheck" resultType="int">
+	<![CDATA[
+		/* CommonDAO.memberRoleCheck */
+		select
+			case
+			when #{user_type} = '003'
+				then (select count(1) from tb_hakwon where hakwon_no = #{hakwon_no} and master_user_no = #{user_no} and hakwon_status = '001')
+			when #{user_type} = '004'
+				then (select count(1) from tb_hakwon_teacher where hakwon_no = #{hakwon_no} and user_no = #{user_no} and approved_yn = 'Y')
+			else -1 end as cnt
+	]]>
+	</select>
 </mapper>

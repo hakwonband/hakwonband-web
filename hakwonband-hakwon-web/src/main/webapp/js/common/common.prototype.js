@@ -113,7 +113,6 @@ String.prototype.isValidEmail = function() {
 };
 
 
-
 /**
  * date를 날짜 포멧으로 변환해 준다.
  * @returns {String}

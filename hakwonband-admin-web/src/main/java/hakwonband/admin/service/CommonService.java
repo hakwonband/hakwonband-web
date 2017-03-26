@@ -171,4 +171,15 @@ public class CommonService {
 			throw new HKBandException(googleAuthModel.toString());
 		}
 	}
+
+	/**
+	 * youtube 사용 안함 처리
+	 * @param file_no
+	 */
+	public void updateYoutubeDisable(String file_no) {
+		int cnt = commonDAO.youtubeDisable(file_no);
+		if( cnt != 1 ) {
+			throw new HKBandException("update fail");
+		}
+	}
 }

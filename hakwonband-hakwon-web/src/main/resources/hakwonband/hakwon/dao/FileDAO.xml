@@ -4,18 +4,22 @@
 <mapper namespace="hakwonband.hakwon.dao.FileDAO">
 
 	<insert id="insertFile" parameterType="dataMap">
-	<![CDATA[
 		/*	FileDAO.insertFile	*/
 		insert into tb_file (
 			file_parent_type, file_parent_no, file_name, save_file_name, file_size, file_ext_type
 			, file_ext, file_path_prefix, file_path, image_yn, thumb_file_path
 			, ip_address, reg_date, reg_user_no, file_use_yn, file_del_yn
+		<if test=" @hakwonband.util.StringUtil@isNotNull( youtube_id ) ">
+			, youtube_id, youtube_reg_date
+		</if>
 		) values(
 			#{file_parent_type}, #{file_parent_no}, #{file_name}, #{save_file_name}, #{file_size}, #{file_ext_type}
 			, #{file_ext}, #{file_path_prefix}, #{file_path}, #{image_yn}, #{thumb_file_path}
 			, #{ip_address}, now(), #{user_no}, #{file_use_yn}, 'N'
+		<if test=" @hakwonband.util.StringUtil@isNotNull( youtube_id ) ">
+			, #{youtube_id}, now()
+		</if>
 		)
-	]]>
 	<selectKey keyProperty="id" resultType="long">
 		select last_insert_id()
 	</selectKey>
@@ -97,6 +101,7 @@
 			, a.image_yn
 			, a.thumb_file_path
 			, date_format(a.reg_date, '%Y-%m-%d') as reg_date
+			, a.youtube_id
 		from
 			tb_file a
 		where
@@ -127,6 +132,7 @@
 			, a.image_yn as imageYn
 			, a.thumb_file_path as thumbFilePath
 			, date_format(a.reg_date, '%Y-%m-%d') as regDate
+			, a.youtube_id
 		from
 			tb_file a
 		where

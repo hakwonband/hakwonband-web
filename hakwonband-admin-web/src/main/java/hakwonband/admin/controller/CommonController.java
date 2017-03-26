@@ -364,4 +364,24 @@ public class CommonController extends BaseAction {
 
 		sendFlag(CommonConstant.Flag.success, request, response);
 	}
+
+	/**
+	 * youtube 동영상 사용안함
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/youtubeDisable")
+	public ModelAndView youtubeDisable(HttpServletRequest request, HttpServletResponse response) {
+		String file_no = request.getParameter("file_no");
+
+		try {
+			commonService.updateYoutubeDisable(file_no);
+			request.setAttribute("result", "1");
+		} catch(Exception e) {
+			logger.error("", e);
+			request.setAttribute("result", "0");
+		}
+
+		return new ModelAndView("youtubeDisable");
+	}
 }

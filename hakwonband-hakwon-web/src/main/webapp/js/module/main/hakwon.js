@@ -396,12 +396,14 @@ hakwonMainApp.controller('hakwonIntroController', function($scope, $location, $r
 					var colData = data.colData;
 					if( colData ) {
 						$scope.hakwonObj		= colData.content;
+
+						/*	video html replace	*/
+						setTimeout(function(){
+							comm.videoTagReplace('hakwon_introduction', colData.fileList);
+						}, 50);
 					} else {
 						commProto.logger({hakwonIntroDetailError:data});
 					}
-
-					/*	video html replace	*/
-					$scope.$$postDigest(comm.videoTagReplace);
 				} catch(ex) {
 					commProto.errorDump({errorObj:ex});
 				}

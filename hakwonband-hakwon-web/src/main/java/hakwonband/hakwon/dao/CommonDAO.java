@@ -172,4 +172,12 @@ public interface CommonDAO {
 	 * @return
 	 */
 	public DataMap loginDeviceInfo(DataMap param);
+
+	/**
+	 * 학원 멤버 체크
+	 * @param hakwon_no
+	 * @param user_no
+	 * @return
+	 */
+	public int memberRoleCheck(@Param("hakwon_no")long hakwon_no, @Param("user_no")long user_no, @Param("user_type")String user_type);
 }
