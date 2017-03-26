@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
@@ -44,6 +45,7 @@ public class YoutubeService {
 	 * @return
 	 */
 	public List<TargetFileInfo> targetInit(String runtime_id) {
+		log.info("runtime_id : " + runtime_id);
 
 		/**
 		 * 대상 조회
@@ -67,7 +69,10 @@ public class YoutubeService {
 	 */
 	public void executeUpload(TargetFileInfo targetFileInfo) {
 
+		StopWatch stopWatch = new StopWatch();
+		String youtube_id = "";
 		try {
+			stopWatch.start();
 
 			String accessToken = youtubeDAO.accessToken();
 			log.info("accessToken[{}]", accessToken);
@@ -82,9 +87,14 @@ public class YoutubeService {
 			status.setPrivacyStatus("unlisted");
 			videoObjectDefiningMetadata.setStatus(status);
 
+			String fileName = targetFileInfo.getFile_name();
+			if( fileName.lastIndexOf(".") > 0 ) {
+				fileName = fileName.substring(0, fileName.lastIndexOf("."));
+			}
+
 			VideoSnippet snippet = new VideoSnippet();
-			snippet.setTitle("학원밴드 : " + targetFileInfo.getFile_name());
-			snippet.setDescription("학원밴드\n"+targetFileInfo.getFile_name());
+			snippet.setTitle("학원밴드 : " + fileName);
+			snippet.setDescription("학원밴드\n"+fileName+"\n"+targetFileInfo.getFile_no());
 
 			List<String> tags = new ArrayList<String>();
 			tags.add("hakwonband");
@@ -131,7 +141,8 @@ public class YoutubeService {
 			uploader.setProgressListener(progressListener);
 			Video returnedVideo = videoInsert.execute();
 
-			log.debug("\n================== Returned Video ==================\n");
+			youtube_id = returnedVideo.getId();
+
 			log.debug("  - Id: " + returnedVideo.getId());
 			log.debug("  - Title: " + returnedVideo.getSnippet().getTitle());
 			log.debug("  - Tags: " + returnedVideo.getSnippet().getTags());
@@ -149,6 +160,21 @@ public class YoutubeService {
 			youtubeDAO.targetRemove(targetFileInfo.getFile_no());
 		} catch(Exception e) {
 			log.error(targetFileInfo.toString(), e);
+		} finally {
+			if( stopWatch.isRunning() ) {
+				stopWatch.stop();
+			}
+
+			log.info("time[{}] youtube_id[{}]", stopWatch.getTotalTimeSeconds(), youtube_id);
+		}
+	}
+
+	public static void main(String [] args) {
+		String fileName = "wfwe.1";
+		if( fileName.lastIndexOf(".") > 0 ) {
+			System.out.println(fileName.substring(0, fileName.lastIndexOf(".")));
+		} else {
+			System.out.println(fileName);
 		}
 	}
 }

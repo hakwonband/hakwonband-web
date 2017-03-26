@@ -122,7 +122,7 @@ var HakwonCommon = function() {
 			});
 		};
 		tinymceConstInitOptios.statusbar = false;
-		tinymceConstInitOptios.toolbar1 += ' hakwonupload';
+		tinymceConstInitOptios.toolbar1 += ' hakwonupload hakwonyoutube';
 		return tinymceConstInitOptios;
 	};
 
@@ -253,6 +253,19 @@ var HakwonCommon = function() {
 				$(obj).css('margin', '10px auto');
 			}
 		});
+	}
+
+	/**
+	 * 베타 멤버 체크
+	 */
+	this.isBetaMember = function() {
+		if( location.href.indexOf("teamoboki") > 0 ) {
+			return true;
+		} else if(userAuth && ("bumwonjang" == userAuth.userId || "icheoneduk" == userAuth.userId) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	this.onload();

@@ -197,6 +197,7 @@
 	<script type="text/javascript" src="/js/module/main/teacher.js"></script>
 	<script type="text/javascript" src="/js/module/main/setting.js"></script>
 	<script type="text/javascript" src="/js/module/main/adminQuestion.js"></script>
+	<script type="text/javascript" src="/js/module/main/allSearch.js"></script>
 	<script type="text/javascript" src="/js/module/main/attendance.js"></script>
 	<script type="text/javascript" src="/js/module/main/receipt.js"></script>
 	<script type="text/javascript" src="/js/module/main/counsel.js"></script>

@@ -41,6 +41,11 @@ hakwonMainApp.factory('CommUtil', function($http, $window, $log) {
 	};
 
 	/**
+	 * 베타 멤버 체크
+	 */
+	CommUtil.isBetaMember = comm.isBetaMember;
+
+	/**
 	 * 비디오 파일 체크
 	 */
 	CommUtil.isFileType = function(imageYn, mimeType) {

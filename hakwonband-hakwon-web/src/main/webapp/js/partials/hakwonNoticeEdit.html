@@ -58,7 +58,10 @@
 				<div class="attachment" ng-if="fileList.length > 0">
 					<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
 						<div class="file">
-							<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video'">
+							<div class="icon" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
+								<i class="fa fa-file"></i>
+							</div>
+							<div class="icon" data-file-type="youtube" data-youtube-id="{{ item.youtube_id }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && item.youtube_id">
 								<i class="fa fa-file"></i>
 							</div>
 							<div class="icon" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
@@ -90,6 +93,9 @@
 			<div class="col-sm-11">
 				<span class="btn btn-primary">파일 업로드</span>
 				<input type="file" class="input_file" data-act="file_upload" multiple>
+
+				<span class="btn btn-primary">youtube 업로드</span>
+				<input type="file" class="input_file youtube_input_file" data-act="youtube_upload" multiple>
 			</div>
 		</div>
 		<div class="form-group">

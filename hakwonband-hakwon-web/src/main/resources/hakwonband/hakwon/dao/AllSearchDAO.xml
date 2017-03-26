@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hakwonband.hakwon.dao.AllSearchDAO">
+
+	<!--
+		전체 검색
+		001 : 그룹 메세지, 002 : 개별 메세지, 003 : 학원 공지, 004 : 반공지, 005 : 이벤트
+	-->
+	<select id="allSearch" parameterType="hakwonband.hakwon.model.AllSearchModel" resultType="hakwonband.hakwon.model.AllSearchResultModel">
+	<![CDATA[
+		/*	AllSearchDAO.allSearch	*/
+		select
+			'001' as search_type
+			, c.message_no as search_no
+			, c.title
+			, date_format(c.send_date, '%Y.%m.%d %H:%i') as reg_date
+			, concat(c.receiver_count, '-', c.group_yn, '-', c.reservation_yn) as search_data
+			, get_user_name(c.send_user_no) as reg_user_name
+			, #{hakwon_no} as hakwon_no
+		from
+			tb_message c
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'Y'
+			and (
+				c.title like concat('%', #{search_text}, '%')
+				or c.content like concat('%', #{search_text}, '%')
+			)
+		union all
+		select
+			'002' as search_type
+			, message_receiver.receive_no as search_no
+			, c.title
+			, date_format(c.send_date, '%Y.%m.%d %H:%i') as reg_date
+			, concat(c.receiver_count, '-', c.group_yn, '-', c.reservation_yn) as search_data
+			, get_user_name(c.send_user_no) as reg_user_name
+			, #{hakwon_no} as hakwon_no
+		from
+			tb_message c
+			, tb_message_receiver message_receiver
+		where
+			c.hakwon_no = #{hakwon_no}
+			and c.send_user_no = #{user_no}
+			and c.group_yn = 'N'
+			and (
+				c.title like concat('%', #{search_text}, '%')
+				or c.content like concat('%', #{search_text}, '%')
+			)
+			and c.message_no = message_receiver.message_no
+		union all
+		select
+			'003' as search_type
+			, a.notice_no as search_no
+			, a.title
+			, date_format(a.reg_date, '%Y.%m.%d %H:%i') as reg_date
+			, concat(a.notice_type, '-', a.notice_parent_no) as search_data
+			, get_user_name(a.reg_user_no) as reg_user_name
+			, #{hakwon_no} as hakwon_no
+		from
+			tb_notice a
+		where
+			a.content_status = '001'
+			and a.notice_type = '002'
+			and a.notice_parent_no = #{hakwon_no}
+			and (
+				a.title like concat('%', #{search_text}, '%')
+				or a.content like concat('%', #{search_text}, '%')
+			)
+		union all
+		select
+			'004' as search_type
+			, a.notice_no as search_no
+			, a.title
+			, date_format(a.reg_date, '%Y.%m.%d %H:%i') as reg_date
+			, a.notice_parent_no as search_data
+			, get_user_name(a.reg_user_no) as reg_user_name
+			, #{hakwon_no} as hakwon_no
+		from
+			tb_notice a
+		where
+			a.content_status = '001'
+			and a.notice_type = '003'
+	]]>
+		<if test="user_type == '003'">
+			and a.notice_parent_no in (select class_no from tb_hakwon_class where hakwon_no = #{hakwon_no})
+		</if>
+		<if test="user_type == '004'">
+			and a.notice_parent_no in (select class_no from tb_hakwon_class_teacher where hakwon_no = #{hakwon_no} and teacher_user_no = #{user_no})
+		</if>
+			and (
+				a.title like concat('%', #{search_text}, '%')
+				or a.content like concat('%', #{search_text}, '%')
+			)
+	<![CDATA[
+		union all
+		select
+			'005' as search_type
+			, a.event_no as search_no
+			, a.event_title as title
+			, date_format(a.reg_date, '%Y.%m.%d %H:%i') as reg_date
+			, concat(date_format(a.begin_date, '%Y년%m월%d일'), '-', date_format(a.end_date, '%Y년%m월%d일')) as search_data
+			, get_user_name(a.reg_user_no) as reg_user_name
+			, #{hakwon_no} as hakwon_no
+		from
+			tb_event a
+		where
+			a.hakwon_no = #{hakwon_no}
+			and a.event_status = '001'
+			and (
+				a.event_title like concat('%', #{search_text}, '%')
+				or a.event_content like concat('%', #{search_text}, '%')
+			)
+		order by reg_date desc
+		limit
+			#{start_no}, #{page_scale}
+	]]>
+	</select>
+
+	<select id="allSearchCount" parameterType="hakwonband.hakwon.model.AllSearchModel" resultType="int">
+	<![CDATA[
+		/*	AllSearchDAO.allSearchCount	*/
+		select sum(x.cnt)
+		from (
+			select
+				count(1) as cnt
+			from
+				tb_message c
+			where
+				c.hakwon_no = #{hakwon_no}
+				and c.send_user_no = #{user_no}
+				and c.group_yn = 'Y'
+				and (
+					c.title like concat('%', #{search_text}, '%')
+					or c.content like concat('%', #{search_text}, '%')
+				)
+			union all
+			select
+				count(1) as cnt
+			from
+				tb_message c
+			where
+				c.hakwon_no = #{hakwon_no}
+				and c.send_user_no = #{user_no}
+				and c.group_yn = 'N'
+				and (
+					c.title like concat('%', #{search_text}, '%')
+					or c.content like concat('%', #{search_text}, '%')
+				)
+			union all
+			select
+				count(1) as cnt
+			from
+				tb_notice a
+			where
+				a.content_status = '001'
+				and a.notice_type = '002'
+				and a.notice_parent_no = #{hakwon_no}
+				and (
+					a.title like concat('%', #{search_text}, '%')
+					or a.content like concat('%', #{search_text}, '%')
+				)
+			union all
+			select
+				count(1) as cnt
+			from
+				tb_notice a
+			where
+				a.content_status = '001'
+				and a.notice_type = '003'
+	]]>
+		<if test="user_type == '003'">
+				and a.notice_parent_no in (select class_no from tb_hakwon_class where hakwon_no = #{hakwon_no})
+		</if>
+		<if test="user_type == '004'">
+				and a.notice_parent_no in (select class_no from tb_hakwon_class_teacher where hakwon_no = #{hakwon_no} and teacher_user_no = #{user_no})
+		</if>
+				and (
+					a.title like concat('%', #{search_text}, '%')
+					or a.content like concat('%', #{search_text}, '%')
+				)
+	<![CDATA[
+			union all
+			select
+				count(1) as cnt
+			from
+				tb_event a
+			where
+				a.hakwon_no = #{hakwon_no}
+				and a.event_status = '001'
+				and (
+					a.event_title like concat('%', #{search_text}, '%')
+					or a.event_content like concat('%', #{search_text}, '%')
+				)
+		) x
+	]]>
+	</select>
+
+
+</mapper>

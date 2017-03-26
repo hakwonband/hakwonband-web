@@ -16,6 +16,6 @@
 		username="hakwonband" password="DBwjqthr90()" driverClassName="org.mariadb.jdbc.Driver"
 		validationQuery="SELECT 1" testOnBorrow="false" testWhileIdle="true"
 		timeBetweenEvictionRunsMillis="60000" minEvictableIdleTimeMillis="1800000"
-		url="jdbc:mariadb://bumworld.net:8889/hakwonband_dev_db?interactiveClient=true&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+		url="jdbc:mariadb://bumworld.asuscomm.com:8000/hakwonband_dev_db?interactiveClient=true&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
 	/>
 </Context>

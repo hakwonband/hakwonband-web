@@ -14,7 +14,14 @@
 	<version>0.0.1-hakwon-20140920</version>
 	<packaging>war</packaging>
 	<name>hakwonband-hakwon-web Maven Webapp</name>
-
+<!--
+	<properties>
+		<project.youtube.version>v3-rev181-1.22.0</project.youtube.version>
+		<project.http.version>1.22.0</project.http.version>
+		<project.oauth.version>1.22.0</project.oauth.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+-->
 	<build>
 		<finalName>hakwon-web</finalName>
 	</build>
@@ -32,6 +39,28 @@
     		<version>3.14</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-youtube</artifactId>
+			<version>v3-rev181-1.22.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-jackson2</artifactId>
+			<version>1.22.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.22.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>org.mortbay.jetty</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 </project>

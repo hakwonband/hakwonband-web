@@ -176,6 +176,12 @@ hakwonMainApp.controller('noticeEditMobileController', function($scope, $locatio
 		tinymce.activeEditor.insertContent(videoHtml);
 		tinymce.activeEditor.focus();
 	});
+	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=youtube]', function() {
+		var youtubeID = $(this).attr('data-youtube-id');
+		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
+		tinymce.activeEditor.insertContent(youtubeHtml);
+		tinymce.activeEditor.focus();
+	});
 
 	/*	오디오 삽입	*/
 	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
@@ -285,8 +291,54 @@ hakwonMainApp.controller('noticeEditMobileController', function($scope, $locatio
 
 				return false;
 			});
+
+			angular.element("input[data-act=youtube_upload]").click(function() {
+				delete window.uploadCallBack;
+				window.uploadCallBack = function(uploadJsonStr) {
+					try {
+						var resultObj = JSON.parse(uploadJsonStr);
+						if( resultObj.error ) {
+							alert('파일 업로드를 실패 했습니다.');
+						} else {
+							var fileInfo = resultObj.colData;
+							var tempObj = {};
+							tempObj.file_no		= fileInfo.fileNo;
+							tempObj.file_name	= fileInfo.fileName;
+							tempObj.file_path	= fileInfo.filePath;
+							tempObj.image_yn	= fileInfo.imageYn;
+							tempObj.mime_type	= fileInfo.mimeType;
+							tempObj.youtube_id	= fileInfo.youtubeId;
+
+							//$scope.fileList.push(tempObj);
+
+							if( tempObj.youtube_id ) {
+								var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+								tinymce.activeEditor.insertContent(youtubeHtml);
+							}
+							$scope.$digest();
+						}
+					} catch(e) {
+						alert('파일 업로드를 실패 했습니다.');
+					}
+				};
+				var param = {
+					fileType : 'all'
+					, multipleYn : 'Y'
+					, callBack : 'uploadCallBack'
+					, upload : {
+						url : window.location.protocol+'//'+window.location.host+uploadUrl
+						, param : {uploadType:CommonConstant.File.TYPE_NOTICE, youtube:'true'}
+						, cookie : document.cookie
+					}
+				};
+				window.PLATFORM.fileChooser(JSON.stringify(param));
+
+				return false;
+			});
 		} else {
 			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(noticeService.getFileUploadOptions($scope));
+
+			$scope.fileUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(noticeService.getFileUploadOptions($scope, 'youtube'));
 		}
 
 		$("html, body").scrollTop($('input[data-view=title]').offset().top-100);

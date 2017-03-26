@@ -111,7 +111,7 @@ public class NoticeShareService {
 	 * @param param
 	 */
 	public void updateShare(DataMap param) {
-		int checkCnt = noticeShareDAO.updateShare(param);
+		int checkCnt = noticeShareDAO.updateShareDate(param);
 		if( checkCnt != 1 ) {
 			throw new HKBandException();
 		}

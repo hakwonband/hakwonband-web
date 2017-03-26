@@ -5,17 +5,20 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.StopWatch;
 
 import hakwonband.runtime.core.HakwonRuntime;
 import hakwonband.runtime.youtube.model.TargetFileInfo;
 import hakwonband.runtime.youtube.service.YoutubeService;
 import hakwonband.util.HKBandUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * youtube 업로드
  * @author bumworld
  *
  */
+@Slf4j
 public class YoutubeMain extends HakwonRuntime {
 
 	public YoutubeMain() {
@@ -23,6 +26,9 @@ public class YoutubeMain extends HakwonRuntime {
 
 		ApplicationContext context = getApplicationContext();
 		YoutubeService youtubeService = context.getBean("youtubeService", YoutubeService.class);
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
 
 		/**
 		 * 대상 리스트 조회
@@ -34,10 +40,21 @@ public class YoutubeMain extends HakwonRuntime {
 		 * 업로드
 		 */
 		if( targetList != null && targetList.isEmpty() == false ) {
-			for(TargetFileInfo targetFileInfo : targetList) {
+			log.info("target size : {}", targetList.size());
+			for(int i=0; i<targetList.size(); i++) {
+				TargetFileInfo targetFileInfo = targetList.get(i);
+
+				log.debug("\n================== Video Start ==================\n");
+				log.info("target [{}] [{}]", i, targetFileInfo);
+
 				youtubeService.executeUpload(targetFileInfo);
 			}
+		} else {
+			log.info("targetList is null");
 		}
+
+		stopWatch.stop();
+		log.info("total time {}", stopWatch.getTotalTimeSeconds());
 	}
 
     /**
@@ -55,8 +72,6 @@ public class YoutubeMain extends HakwonRuntime {
 		}
 		System.setProperty("runtime.service.name", "youtube");
 
-		System.out.println(UUID.randomUUID().toString());
-
-//		new YoutubeMain();
+		new YoutubeMain();
     }
 }

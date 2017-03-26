@@ -295,4 +295,14 @@
 	]]>
 	</update>
 
+	<!-- youtube disable -->
+	<update id="youtubeDisable">
+	<![CDATA[
+		/*	CommonDAO.youtubeDisable	*/
+		update tb_file set
+			youtube_id = 'disable'
+		where
+			file_no = #{file_no}
+	]]>
+	</update>
 </mapper>

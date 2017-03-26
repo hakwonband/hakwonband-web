@@ -158,6 +158,13 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 		})
 
 
+		/*	전체 검색	*/
+		.when('/allSearch', {
+			templateUrl: '/assets/partials/allSearch.html'
+			, controller: 'allSearchListController'
+		})
+
+
 		/*	공지사항(학원) ############################################################		*/
 		/*	학원 공지사항 리스트	*/
 		.when('/notice/list', {
@@ -476,6 +483,9 @@ var HakwonCommon = function() {
 			if (dataAct == 'classList') {
 				/*	반 리스트	*/
 				moveLeftLocation = PageUrl.common.classList+'?hakwon_no='+hakwonInfo.hakwon_no;
+			} else if( dataAct == 'allSearch' ) {
+				/*	전체 검색	*/
+				moveLeftLocation = PageUrl.common.allSearch+'?hakwon_no='+hakwonInfo.hakwon_no+'&page_no=1';
 			} else if( dataAct == 'noticeList' ) {
 				/*	공지 리스트	*/
 				moveLeftLocation = PageUrl.common.noticeList+'?hakwon_no='+hakwonInfo.hakwon_no;
@@ -736,8 +746,7 @@ var HakwonCommon = function() {
 			}
 		}
 
-		var userTmpTestAlba = userAuth.userId;
-		if( "bumwonjang" == userTmpTestAlba || "icheoneduk" == userTmpTestAlba || location.href.indexOf("teamoboki") > 0) {
+		if( comm.isBetaMember() ) {
 			$("li.test_li").css("display","");
 		}
 
