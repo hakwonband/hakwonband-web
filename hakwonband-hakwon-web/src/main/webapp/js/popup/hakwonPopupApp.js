@@ -10,6 +10,14 @@ hakwonMainApp.config(function($httpProvider, $routeProvider) {
 			templateUrl: '/assets/js/popup/hakwonNoticeWriteMobile.html'
 			, controller: 'hakwonNoticeWriteController'
 		})
+		.when('/messageWrite/master', {
+			templateUrl: '/assets/js/popup/messageWriteMasterMobile.html'
+			, controller: 'messageWriteMasterController'
+		})
+		.when('/messageWrite/teacher', {
+			templateUrl: '/assets/js/popup/messageWriteTeacherMobile.html'
+			, controller: 'messageWriteTeacherController'
+		})
 		.when('/eventWrite', {
 			templateUrl: '/assets/js/popup/eventWriteMobile.html'
 			, controller: 'eventWriteController'
