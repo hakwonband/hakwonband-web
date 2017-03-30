@@ -1082,7 +1082,7 @@ hakwonTmpl.message = {
 		'{{each(i, searchUser) searchList}}'
 		, '<li>'
 		, '	<span class="student_add_box">'
-		, '		<i>학</i>'
+		, '		<i>{{= searchUser.user_type_name}}</i>'
 		, '		<img class="img-circle" src="{{= comm.userProfileImg(searchUser.user_photo_path)}}" alt="프로필" width="35" height="35">'
 		, '		<strong class="name">{{= searchUser.user_name}}</strong> {{= searchUser.user_id}} / {{= searchUser.user_gender=="M"?"남자":"여자"}} / {{= searchUser.user_type_name}} / {{= !searchUser.user_age||searchUser.user_age==0?"생일 미입력":searchUser.user_age+"세"}}'
 		, '		<button type="button" data-val="{{= searchUser.user_name + CommonConstant.ChDiv.CH_DEL + searchUser.user_no}}" data-act="target" class="btn btn-default btn-sm">추가</button>'
