@@ -95,7 +95,7 @@ angular.module('hakwonApp').service('userMainService', function($http, $window) 
 
 /*	사용자 메인  */
 angular.module('hakwonApp').controller('userMainController', function($scope, $location, $window, $routeParams, userMainService, CommUtil){
-	console.log('userMainController call');
+	console.log('userMainController call', $location);
 	try {
 		/*  인증 정보 체크  */
 		comm.authCheckFilter();

@@ -13,6 +13,10 @@ angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', fu
 			templateUrl: '/assets/partials/userMain.html'
 			, controller: 'userMainController'
 		})
+		.when('/userMain/event', {
+			templateUrl: '/assets/partials/userMain.html'
+			, controller: 'userMainController'
+		})
 		.when('/signUp', {
 			templateUrl: '/assets/partials/signUp.html'
 			, controller: 'signUpController'
@@ -115,6 +119,8 @@ angular.module('hakwonApp').config(['$locationProvider', function($locationProvi
 	$locationProvider.hashPrefix('');
 }]);
 
+// main_header_menu
+
 /**
  * 헤더 App
  */
@@ -154,6 +160,16 @@ var HakwonHeader = function() {
 
 		$leftMenu.on('keypress', 'input[name=g_search_text]', self.searchContent);
 	};
+
+	/**
+	 * 메인 화면 이벤트 페이지로 이동
+	 */
+	this.mainEventGo = function() {
+		$('html, body').animate({
+			scrollTop: $("section[name=main_event]").offset().top
+		}, 100);
+		return false;
+	}
 
 	/**
 	 * 메뉴 닫기
@@ -333,6 +349,20 @@ var HakwonHeader = function() {
 		if( !viewType ) {
 			viewType = 'common';
 		}
+
+		if( viewType == 'common' ) {
+			$('#main_header_menu').hide();
+		} else {
+			$('#main_header_menu').show();
+
+			var currentUrlHash = window.location.hash;
+			if( currentUrlHash == '#/userMain' || currentUrlHash == '#/userMain/event' ) {
+				$('li.main_event').show();
+			} else {
+				$('li.main_event').hide();
+			}
+		}
+
 
 		/*	url 인증 체크	*/
 		comm.urlLoginCheck();
