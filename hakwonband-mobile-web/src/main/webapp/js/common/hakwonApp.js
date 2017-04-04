@@ -13,7 +13,7 @@ angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', fu
 			templateUrl: '/assets/partials/userMain.html'
 			, controller: 'userMainController'
 		})
-		.when('/userMain/event', {
+		.when('/userMain/notice', {
 			templateUrl: '/assets/partials/userMain.html'
 			, controller: 'userMainController'
 		})
@@ -166,7 +166,7 @@ var HakwonHeader = function() {
 	 */
 	this.mainEventGo = function() {
 		$('html, body').animate({
-			scrollTop: $("section[name=main_event]").offset().top
+			scrollTop: $("section[name=main_notice]").offset().top
 		}, 100);
 		return false;
 	}
@@ -354,13 +354,14 @@ var HakwonHeader = function() {
 			$('#main_header_menu').hide();
 		} else {
 			$('#main_header_menu').show();
-
+/*
 			var currentUrlHash = window.location.hash;
-			if( currentUrlHash == '#/userMain' || currentUrlHash == '#/userMain/event' ) {
-				$('li.main_event').show();
+			if( currentUrlHash == '#/userMain' || currentUrlHash == '#/userMain/notice' ) {
+				$('li.main_notice').show();
 			} else {
-				$('li.main_event').hide();
+				$('li.main_notice').hide();
 			}
+*/
 		}
 
 

@@ -247,6 +247,12 @@ angular.module('hakwonApp').controller('userMainController', function($scope, $l
 					window.location.href = MENUS.sharpUrls.memberModify;
 				}
 			}
+
+			if( window.location.hash == '#/userMain/notice' ) {
+				$('html, body').animate({
+					scrollTop: $("section[name=main_notice]").offset().top
+				}, 100);
+			}
 		});
 
 		if( window.PLATFORM && !userAuth.deviceAuth ) {
