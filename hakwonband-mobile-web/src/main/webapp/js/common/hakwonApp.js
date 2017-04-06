@@ -164,10 +164,15 @@ var HakwonHeader = function() {
 	/**
 	 * 메인 화면 이벤트 페이지로 이동
 	 */
-	this.mainEventGo = function() {
-		$('html, body').animate({
-			scrollTop: $("section[name=main_notice]").offset().top
-		}, 100);
+	this.mainNoticeGo = function() {
+		if( window.location.hash.indexOf('#/userMain') >= 0  ) {
+			$('html, body').animate({
+				scrollTop: $("section[name=main_notice]").offset().top
+			}, 100);
+		} else {
+			window.location.hash = '#/userMain/notice';
+		}
+
 		return false;
 	}
 

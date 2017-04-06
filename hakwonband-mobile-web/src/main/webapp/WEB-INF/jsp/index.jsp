@@ -110,7 +110,7 @@
 	<ul>
 		<li><a href="#/userMain" class="mn_s_01">홈</a></li>
 		<li><a href="#/receiveMessageList" class="mn_s_02">메세지</a></li>
-		<li class="main_event"><a href="#" onclick="hakwonHeader.mainEventGo(); return false;" class="mn_s_03">이벤트</a></li>
+		<li><a href="#" onclick="hakwonHeader.mainNoticeGo(); return false;" class="mn_s_03">메인공지</a></li>
 		<li><a href="#/hakwon/eventJoin" class="mn_s_04">이벤트</a></li>
 	</ul>
 </nav>

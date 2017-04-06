@@ -150,10 +150,16 @@ angular.module('hakwonApp').controller('userMainController', function($scope, $l
 				if( colData.approvedYnList ) {
 					$scope.approvedYn	= colData.approvedYnList;
 				}
+
+				if( window.location.hash == '#/userMain/notice' ) {
+					setTimeout(function() {
+						$('html, body').animate({
+							scrollTop: $("section[name=main_notice]").offset().top
+						}, 100);
+					}, 200);
+				}
 			});
 		};
-
-		$scope.userMain();
 
 		/*	학원 검색	*/
 		$scope.hakwonSearch = function() {
@@ -248,11 +254,7 @@ angular.module('hakwonApp').controller('userMainController', function($scope, $l
 				}
 			}
 
-			if( window.location.hash == '#/userMain/notice' ) {
-				$('html, body').animate({
-					scrollTop: $("section[name=main_notice]").offset().top
-				}, 100);
-			}
+			$scope.userMain();
 		});
 
 		if( window.PLATFORM && !userAuth.deviceAuth ) {
