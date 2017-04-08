@@ -7,200 +7,165 @@ hakwonMainApp.service('messageTeacherService', function(CommUtil) {
 	var messageTeacherService = {};
 
 	/**
-	 * 첨부파일 업로드 옵션 생성
+	 * 선생님 반리스트 조회
 	 */
-	messageTeacherService.getFileUploadOptions = function($scope, type) {
-		// 파일 업로드 객체 생성
-		var fileUploadOptions = new UploadOptions();
-		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_EVENT};
-		if( type == 'youtube' ) {
-			fileUploadOptions.customExtraFields.youtube = 'true';
-		}
-		fileUploadOptions.onFinish = function(event, total) {
-			if (this.errorFileArray.length + this.errorCount > 0) {
-				alert('첨부파일 업로드를 실패 했습니다.');
-			} else {
-				/********************
-				 * fileNo
-				 * filePath
-				 * thumbFilePath
-				 * fileName
-				 * imageYn
-				 ********************/
-
-				for (var i = 0; i < this.uploadFileArray.length; i++) {
-					var fileInfo = this.uploadFileArray[i];
-
-					// 임시 파일 object
-					var tempObj = {
-						file_no 			: '',
-						file_parent_type	: '',
-						file_name			: '',
-						save_file_name		: '',
-						file_size			: '',
-						file_ext_type		: '',
-						file_ext			: '',
-						file_path_prefix	: '',
-						file_path			: '',
-						image_yn			: '',
-						thumb_file_path		: '',
-						reg_date			: ''
-					};
-
-					tempObj.file_no		= fileInfo.fileNo;
-					tempObj.file_name	= fileInfo.fileName;
-					tempObj.file_path	= fileInfo.filePath;
-					tempObj.image_yn	= fileInfo.imageYn;
-					tempObj.mime_type	= fileInfo.mimeType;
-					tempObj.youtube_id	= fileInfo.youtubeId;
-
-					if( fileInfo.imageYn == 'Y' ) {
-						$scope.fileList.push(tempObj);
-
-						var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
-						var fileNo = fileInfo.fileNo;
-						if( isMobile.any() ) {
-							var editWidth = $('[data-lib=editor]').width();
-							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-						} else {
-							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-						}
-						tinymce.activeEditor.insertContent(strImage);
-					} else if( tempObj.youtube_id ) {
-						var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
-						tinymce.activeEditor.insertContent(youtubeHtml);
-					} else {
-						$scope.fileList.push(tempObj);
-					}
-
-					setTimeout(function(){
-						var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-						$contents.scrollTop($contents.height());
-						tinymce.activeEditor.focus();
-					}, 500);
-					$scope.$digest();
-				}
+	messageTeacherService.teacherClassList = function(callBackFun) {
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/teacher/classList.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: {hakwon_no:hakwonInfo.hakwon_no}
+			, callback	: function(data) {
+				callBackFun(data);
 			}
-		};
-		return fileUploadOptions;
+		});
 	};
 
 	/**
-	 * 이벤트 상세정보 조회
-	 * @param $scope
+	 * 메세지 대상 검색
 	 */
-	messageTeacherService.eventDetail = function($scope, isMobile) {
-		if ($scope.isNewEvent) {
-			/*	신규 작성시 에디터 초기화 완료 후 공백 셋팅	*/
-			var editOptions = comm.getEditorOptions();
-			editOptions.setup = function(ed) {
-				ed.on("init", function() {
-					tinymce.activeEditor.setContent(' ');
-
-				}).on('KeyDown', function(e) {
-					var thisEditor = this;
-					var keyCode = undefined;
-					if (e.keyCode) keyCode = e.keyCode;
-					else if (e.which) keyCode = e.which;
-
-					if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
-						if (e.shiftKey) {
-							thisEditor.execCommand('Outdent');
-						} else {
-							thisEditor.execCommand('Indent');
-						}
-
-						return tinymce.dom.Event.cancel(e);
-					}
-				});
-
-				ed.addButton('hakwonupload', {
-					text: 'file',
-					icon: false,
-					onclick: function () {
-						angular.element("input[data-act=file_upload]").trigger('click');
-					}
-				});
-
-				ed.addButton('hakwonyoutube', {
-					text: 'youtube',
-					icon: false,
-					onclick: function () {
-						angular.element("input[data-act=youtube_upload]").trigger('click');
-					}
-				});
-			};
-			tinymce.init(editOptions);
+	messageTeacherService.teacherMessageTargetSearch = function(searchText, callBackFun) {
+		if( isNull(searchText) ) {
+			alert('검색어를 입력해 주세요.');
+			$('input[name=searchText]').focus();
 			return ;
-		} else if (!$scope.isNewEvent && isNull($scope.eventNo)) {
-			alert('이벤트 정보가 올바르지 않습니다.');
-			return ;
+		}
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/message/teacherSearchStudent.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: {hakwon_no:hakwonInfo.hakwon_no, searchText:searchText}
+			, callback	: function(data) {
+				callBackFun(data);
+			}
+		});
+	};
+
+	/**
+	 * 선생님 메세지 전송
+	 */
+	messageTeacherService.teacherMsgSend = function() {
+		$('button[data-act=messageSend]').attr('disabled', true);
+
+		var reservationDate	= $('input[name=reservationDate]').val();
+		var reservationTime	= $('input[name=reservationTime]').val();
+
+		//var messageContent = $('textarea[name=messageContent]').val();
+		var messageContent = tinymce.activeEditor.getContent();
+//		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
+		var classTarget = $('select[name=classTarget]').val();
+		var targetType = $('select[name=targetType]').val();
+
+		if( classTarget != 'search' ) {
+			var dataCount = $('select[name=classTarget] > option:selected').attr('data-count');
+			if( dataCount == 0 ) {
+				alert('반에 학생들이 없습니다.');
+				$('button[data-act=messageSend]').attr('disabled', false);
+				return ;
+			}
+		}
+
+		var targetUserList = [];
+		$('ul.chosen_select > li').each(function() {
+			var dataUserNo = $(this).attr('data-user-no');
+			targetUserList.push(dataUserNo);
+		});
+
+		if( classTarget == 'search' ) {
+			if( targetUserList.length == 0 ) {
+				alert('발송 대상자를 검색해 주세요.');
+				$('button[data-act=messageSend]').attr('disabled', false);
+				return ;
+			}
+		}
+
+		var fileListArray = [];
+		$('div.file-box').each(function() {
+			var dataFileNo = $(this).attr('data-file-no');
+			fileListArray.push(dataFileNo);
+		});
+
+		if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+			if( isNull(reservationDate) || isNull(reservationTime) ) {
+				alert('예약 날짜와 시간이 정확하지 않습니다.');
+				return ;
+			}
 		}
 
 		var param = {
-			hakwon_no : $scope.hakwonNo
-			, event_no : $scope.eventNo
+			hakwon_no : hakwonInfo.hakwon_no
+			, fileListStr : fileListArray.toString()
+			, messageContent : messageContent
+			, classTarget : classTarget
+			, targetType : targetType
+			, targetUserList : targetUserList
+			, reservationDate : reservationDate
+			, reservationTime : reservationTime
 		};
 
-		CommUtil.ajax({url:contextPath+"/hakwon/event/view.do", param:param, successFun:function(data) {
-			var colData = data.colData;
-
-			if( colData.eventInfo ) {
-				colData.eventInfo.begin_date = new Date(colData.eventInfo.begin_date);
-				colData.eventInfo.end_date = new Date(colData.eventInfo.end_date);
-				$scope.eventDetail = colData.eventInfo;
-
-				$scope.fileList		= colData.fileList;
-
-				/*	에디터 초기화 완료 후 value 셋팅	*/
-				var editOptions = comm.getEditorOptions();
-				editOptions.setup = function(ed) {
-					ed.on("init", function(ed) {
-						if (!_.isUndefined(colData.eventInfo.event_content) && colData.eventInfo.event_content) {
-							tinymce.activeEditor.setContent(colData.eventInfo.event_content);
-						} else {
-							tinymce.activeEditor.setContent(' ');
-						}
-					}).on('KeyDown', function(e) {
-						var thisEditor = this;
-						var keyCode = undefined;
-						if (e.keyCode) keyCode = e.keyCode;
-						else if (e.which) keyCode = e.which;
-
-						if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
-							if (e.shiftKey) {
-								thisEditor.execCommand('Outdent');
-							} else {
-								thisEditor.execCommand('Indent');
-							}
-
-							return tinymce.dom.Event.cancel(e);
-						}
-
-					});
-
-					ed.addButton('hakwonupload', {
-						text: 'file',
-						icon: false,
-						onclick: function () {
-							angular.element("input[data-act=file_upload]").trigger('click');
-						}
-					});
-
-					ed.addButton('hakwonyoutube', {
-						text: 'youtube',
-						icon: false,
-						onclick: function () {
-							angular.element("input[data-act=youtube_upload]").trigger('click');
-						}
-					});
-				};
-				tinymce.init(editOptions);
-			} else {
-				alert('이벤트 정보 조회를 실패 했습니다.');
+		$.ajax({
+			url: contextPath+"/hakwon/message/teacherSend.do",
+			type: "post",
+			data: $.param(param, true),
+			headers : hakwonInfo.getHeader(),
+			complete : function(){ $('button[data-act=messageSend]').attr('disabled', false); },
+			dataType: "json",
+			success: function(data) {
+				try {
+					if( data.error ) {
+						alert('메세지 전송을 실패 했습니다.');
+						return ;
+					}
+					alert('메세지 전송을 성공 했습니다.');
+					window.location.href = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&'+new Date().toString();
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
 			}
-		}});
+		});
 	};
+
+	/**
+	 * 사용자 대상 조회
+	 */
+	messageTeacherService.targetUserSearch = function(userNoArray) {
+		var param = {
+			hakwon_no : hakwonInfo.hakwon_no
+			, targetUserNoArray : userNoArray
+		};
+
+		$.ajax({
+			url: contextPath+"/hakwon/message/targetUserSearch.do",
+			type: "post",
+			data: $.param(param, true),
+			headers : hakwonInfo.getHeader(),
+			dataType: "json",
+			success: function(data) {
+				try {
+					if( data.error ) {
+						alert('사용자 대상 검색을 실패 했습니다.');
+						return ;
+					}
+					if( data.colData.dataList && data.colData.dataList.length > 0 ) {
+						for(var i=0; i<data.colData.dataList.length; i++) {
+							var tempUserInfo = data.colData.dataList[i];
+
+							$('#mainNgView ul.chosen_select').append($.tmpl(hakwonTmpl.message.choiceTarget, {target:tempUserInfo}));
+						}
+					} else {
+						alert('검색된 사용자가 없습니다.');
+					}
+				} catch(ex) {
+					commProto.errorDump({errorObj:ex});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				alert('통신을 실패 했습니다.');
+			}
+		});
+	};
+
 
 	return messageTeacherService;
 });
@@ -217,202 +182,208 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 	/*	is Mobile	*/
 	$scope.isMobile = isMobile.any();
 
-	/*	초기화	*/
-	{
-		/*	데이터 초기화	*/
-		$scope.isNewEvent			= false;
-		$scope.hakwonNo 			= '';
-		$scope.eventNo 				= '';
-		$scope.eventDetail			= {
-			begin_date : new Date(),
-			end_date : new Date(),
-			recommend_yn : ''
-		};
-		$scope.fileList				= [];
+	/*	학원번호	*/
+	var hakwon_no = $routeParams.hakwon_no;
+	hakwonInfo.hakwon_no = hakwon_no;
 
-		if( isNull($routeParams.hakwon_no) ) {
-			window.history.back();
-			return ;
-		}
-		$scope.hakwonNo = $routeParams.hakwon_no;
+	/*	메세지 반 대상	*/
+	var msg_class_no = $routeParams.msg_class_no;
 
-		/*	이벤트 번호가 존재하면, 이벤트 수정. or 이벤트 등록 처리		*/
-		if (!isNull($routeParams.event_no)) {
-			$scope.eventNo = $routeParams.event_no;
-		} else {
-			$scope.isNewEvent = true;
-		}
+	/*	메세지 개별 대상	*/
+	var msg_user_no_array = $routeParams.msg_user_no_array;
+
+	/*	검색 대상	*/
+	$scope.search_user_list = [];
+	$scope.choiceSearchTarget = [];
+
+	/**
+	 * 타겟 타입
+	 * class, userGroup, search
+	 */
+	var targetType = $routeParams.targetType;
+	if( !targetType ) {
+		targetType = 'student_all';
 	}
+	$scope.targetType = targetType;
 
-	/*	이벤트 수정 및 등록 처리		*/
-	$scope.editConfirm = function() {
-		var apiUrl		= '',
-			fileNoList	= _.pluck($scope.fileList, 'file_no'),
-			params		= {};
+	$scope.classTarget = 'search';
 
-
-		if (isNull($scope.hakwonNo)) {
-			alert('학원 정보가 올바르지 않습니다.');
-			return ;
-		}
-		if( isNull($scope.eventDetail.event_title) ) {
-			alert('제목을 입력해 주세요.');
-			return ;
-		}
-
-		if ($scope.isNewEvent) {
-			apiUrl = '/hakwon/master/registEvent.do';
-		} else {
-			apiUrl = '/hakwon/master/editEvent.do'
-		}
-
-		var editContent = tinymce.activeEditor.getContent();
-		editContent = editContent.replace(/><\/p>/g, ">&nbsp;</p>");
-
-		params.hakwon_no 		= $scope.hakwonNo;
-		params.event_no 		= $scope.eventNo;
-		params.event_title		= $scope.eventDetail.event_title;
-		params.recommend_yn		= $scope.eventDetail.recommend_yn;
-		params.add_info_title	= $scope.eventDetail.add_info_title;
-		params.begin_date		= $scope.eventDetail.begin_date.yyyymmdd();
-		params.end_date			= $scope.eventDetail.end_date.yyyymmdd();
-		params.event_content	= editContent;
-
-
-		params.file_no_list 	= fileNoList.toString();
-
-		CommUtil.ajax({url:contextPath+apiUrl, param:params, successFun:function(data) {
-			var colData = data.colData;
-			if( colData && colData.flag == CommonConstant.Flag.success ) {
-				alert('이벤트가 저장되었습니다.');
-				$scope.editCancel();
-			} else {
-				alert('이벤트 저장을 실패 했습니다.');
-				commProto.logger({eventDetailError:data});
+	/**
+	 * 메세지 대상 검색
+	 */
+	$scope.searchText = "";
+	$scope.messageTargetSearch = function() {
+		messageTeacherService.teacherMessageTargetSearch($scope.searchText, function(data) {
+			if( data.error ) {
+				alert('사용자 검색을 실패 했습니다.');
+				return ;
 			}
-		}});
-	};
 
-	/*	첨부파일 이미지 경로 처리	*/
-	$scope.getAttachFileFullPath = function(filePath, fileType) {
-		if( !fileType ) fileType = 'attachment';
-		return CommUtil.createFileFullPath(filePath, fileType);
-	};
+			$scope.search_user_list = [];
+			var dataList = data.colData.dataList;
+			if( dataList && dataList.length > 0 ) {
 
-	/*	첨부파일 10개 제한 처리	*/
-	$scope.checkMaxFileCnt = function(e) {
-		if ($scope.fileList.length >= 10) {
-			alert('첨부파일은 10개까지만 등록이 가능합니다.');
-			e.preventDefault();
-			return false;
-		}
-	};
+				comm.initRelationList(dataList);
 
-	/*	이미지 클릭시 에디터에 이미지 첨부	*/
-	$scope.insertImageToEditor = function(filePath, fileNo) {
-		var fullFilePath = $scope.getAttachFileFullPath(filePath);
-
-		if( isMobile.any() ) {
-			var editWidth = $('[data-lib=editor]').width();
-			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-		} else {
-			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-		}
-		tinymce.activeEditor.insertContent(strImage);
-		setTimeout(function(){
-			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-			$contents.scrollTop($contents.height());
-			tinymce.activeEditor.focus();
-		}, 500);
-	};
-
-	/*	비디오 삽입	*/
-	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=video]', function() {
-		var fileUrl = $(this).attr('data-file-url');
-		var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fileUrl);
-		tinymce.activeEditor.insertContent(videoHtml);
-		setTimeout(function(){
-			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-			$contents.scrollTop($contents.height());
-			tinymce.activeEditor.focus();
-		}, 500);
-	});
-
-	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=youtube]', function() {
-		var youtubeID = $(this).attr('data-youtube-id');
-		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
-		tinymce.activeEditor.insertContent(youtubeHtml);
-		setTimeout(function(){
-			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-			$contents.scrollTop($contents.height());
-			tinymce.activeEditor.focus();
-		}, 500);
-	});
-
-	/*	오디오 삽입	*/
-	$('#mainNgView').on(clickEvent, 'div.file-box > div.file > div[data-file-type=audio]', function() {
-		var fileUrl = $(this).attr('data-file-url');
-		var audioHtml = '<p><audio src="'+fileUrl+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
-		tinymce.activeEditor.insertContent(audioHtml);
-		setTimeout(function(){
-			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-			$contents.scrollTop($contents.height());
-			tinymce.activeEditor.focus();
-		}, 500);
-	});
-
-	/*	첨부 파일 삭제 처리	*/
-	$scope.removeAttachFile = function(fileNo) {
-		$scope.fileList = _.filter($scope.fileList, function(item) {
-			return item.file_no != fileNo;
+				for(var i=0; i<dataList.length; i++) {
+					$scope.search_user_list.push(dataList[i]);
+				}
+				$scope.search_result = '';
+			} else {
+				$scope.search_result = 'empty';
+			}
 		});
-	};
-
-	/*	이벤트 등록 - 수정 취소	*/
-	$scope.editCancel = function() {
-		window.history.back();
-		return false;
-	};
-
-	/*	youtube 삽입	*/
-	$scope.youtubeID = '';
-	$scope.youtubeInsert = function() {
-		var youtubeID = $scope.youtubeID;
-
-		var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+youtubeID+'"><img src="http://img.youtube.com/vi/'+youtubeID+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+youtubeID+'" /></a></p><p>&nbsp;</p>';
-		tinymce.activeEditor.insertContent(youtubeHtml);
-		setTimeout(function(){
-			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-			$contents.scrollTop($contents.height());
-			tinymce.activeEditor.focus();
-		}, 500);
 	}
 
-	/*	파일 객체 초기화 및 데이터 호출		*/
+	/*	검색 대상 선택	*/
+	$scope.searchTargetSelect = function(targetUser) {
+
+		var chech_idx = _.find($scope.choiceSearchTarget, function(item) {
+		    return item.user_no == targetUser.user_no;
+		});
+		if( chech_idx ) {
+			alert('이미 추가된 사용자 입니다.');
+		} else {
+			$scope.choiceSearchTarget.push(targetUser);
+		}
+	}
+
+	$scope.removeTargetSelect = function(targetUser) {
+		$scope.choiceSearchTarget = _.reject($scope.choiceSearchTarget, function(item){ return item.user_no == targetUser.user_no; });
+	}
+
+	/**
+	 * 메세지 발송
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=messageSend]', messageTeacherService.teacherMsgSend);
+
+	/**
+	 * 파일 클릭
+	 */
+	$('#mainNgView').on(clickEvent, 'div.file-box', function(e) {
+		if( e.target.className.indexOf('btn_file_del') >= 0 ) return ;
+
+		var fileType	= $(this).attr('data-file-type');
+		var fullFilePath= $(this).attr('data-file-url');
+		var fileNo		= $(this).attr('data-file-no');
+		if( fileType == 'img' ) {
+			if( isMobile.any() ) {
+				var editWidth = $('[data-lib=editor]').width();
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
+			} else {
+				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
+			}
+			tinymce.activeEditor.insertContent(strImage);
+		} else if( fileType == 'audio' ) {
+			var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
+			tinymce.activeEditor.insertContent(audioHtml);
+		} else if( fileType == 'video' ) {
+			var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
+			tinymce.activeEditor.insertContent(videoHtml);
+		}
+		tinymce.activeEditor.focus();
+	});
+
+	/**
+	 * 취소
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
+		commProto.hrefMove(PageUrl.main+'?hakwon_no='+hakwon_no);
+		return false;
+	});
+
+	/**
+	 * 파일 삭제
+	 */
+	$('#mainNgView').on(clickEvent, 'button.btn_file_del', function(e) {
+		$(this).parents('div.file-box').remove();
+		e.preventDefault();
+	});
+
+	/**
+	 * 대상 선택
+	 */
+	$('#mainNgView').on(clickEvent, 'button[data-act=target]', function() {
+		var dataVal = $(this).attr('data-val');
+		var dataValArray = dataVal.split(CommonConstant.ChDiv.CH_DEL);
+		var target = {
+			user_no : dataValArray[1]
+			, user_name : dataValArray[0]
+		};
+		if( $('#mainNgView ul.chosen_select > li[data-user-no='+dataValArray[1]+']').length > 0 ) {
+			alert('이미 추가된 사용자 입니다.');
+		} else {
+			$('#mainNgView ul.chosen_select').append($.tmpl(hakwonTmpl.message.choiceTarget, {target:target}));
+		}
+	});
+
+
+	$("#wrapper").show();
+	/*	초기화	*/
+
 	$scope.$$postDigest(function(){
-		/*	학원 이벤트 상세정보조회	*/
+		console.log('messageTeacherSendController $$postDigest');
 
-		messageTeacherService.eventDetail($scope, true);
+		/*	반 리스트 셋팅	*/
+		messageTeacherService.teacherClassList(function(data) {
 
-		/*	파일 업로드 객체 생성		*/
-		if( window.PLATFORM ) {
-			angular.element("input[data-act=file_upload]").click(function() {
-				delete window.uploadCallBack;
-				window.uploadCallBack = function(uploadJsonStr) {
-					try {
-						var resultObj = JSON.parse(uploadJsonStr);
-						if( resultObj.error ) {
+			$scope.classList = data.colData.dataList;
+
+			if( window.PLATFORM ) {
+				angular.element("input[data-act=file_upload]").click(function() {
+					delete window.uploadCallBack;
+					window.uploadCallBack = function(uploadJsonStr) {
+						try {
+							var resultObj = JSON.parse(uploadJsonStr);
+							if( resultObj.error ) {
+								alert('파일 업로드를 실패 했습니다.');
+							} else {
+								var fileInfo = resultObj.colData;
+								fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
+								$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
+
+								if( fileInfo.imageYn == 'Y' ) {
+									var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+									var fileNo = fileInfo.fileNo;
+
+									if( isMobile.any() ) {
+										var editWidth = $('[data-lib=editor]').width();
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+									} else {
+										var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+									}
+									tinymce.activeEditor.insertContent(strImage);
+								}
+							}
+						} catch(e) {
 							alert('파일 업로드를 실패 했습니다.');
-						} else {
-							var fileInfo = resultObj.colData;
-							var tempObj = {};
-							tempObj.file_no		= fileInfo.fileNo;
-							tempObj.file_name	= fileInfo.fileName;
-							tempObj.file_path	= fileInfo.filePath;
-							tempObj.image_yn	= fileInfo.imageYn;
-							tempObj.mime_type	= fileInfo.mimeType;
+						}
+					};
+					var param = {
+						fileType : 'all'
+						, multipleYn : 'Y'
+						, callBack : 'uploadCallBack'
+						, upload : {
+							url : window.location.protocol+'//'+window.location.host+uploadUrl
+							, param : {uploadType:CommonConstant.File.TYPE_MESSAGE}
+							, cookie : document.cookie
+						}
+					};
+					window.PLATFORM.fileChooser(JSON.stringify(param));
 
-							$scope.fileList.push(tempObj);
+					return false;
+				});
+			} else {
+				var messageUploadOptions = new UploadOptions();
+				messageUploadOptions.customExtraFields = {'uploadType' : CommonConstant.File.TYPE_MESSAGE};
+				messageUploadOptions.onFinish = function(event, total) {
+					if (this.errorFileArray.length + this.errorCount > 0) {
+						alert('메세지 파일 업로드를 실패 했습니다.');
+					} else {
+						for (var i = 0; i < this.uploadFileArray.length; i++) {
+							var fileInfo = this.uploadFileArray[i];
+							fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
+							$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}))
 
 							if( fileInfo.imageYn == 'Y' ) {
 								var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
@@ -420,91 +391,52 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 
 								if( isMobile.any() ) {
 									var editWidth = $('[data-lib=editor]').width();
-									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p>';
 								} else {
-									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p>';
 								}
 								tinymce.activeEditor.insertContent(strImage);
-								setTimeout(function(){
-									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-									$contents.scrollTop($contents.height());
-									tinymce.activeEditor.focus();
-								}, 500);
 							}
-
-							$scope.$digest();
 						}
-					} catch(e) {
-						alert('파일 업로드를 실패 했습니다.');
 					}
 				};
-				var fileParam = {
-					fileType : 'all'
-					, multipleYn : 'Y'
-					, callBack : 'uploadCallBack'
-					, upload : {
-						url : window.location.protocol+'//'+window.location.host+uploadUrl
-						, param : {uploadType:CommonConstant.File.TYPE_NOTICE}
-						, cookie : document.cookie
-					}
-				};
-				window.PLATFORM.fileChooser(JSON.stringify(fileParam));
 
-				return false;
-			});
+				$("input[data-act=file_upload]").html5_upload(messageUploadOptions);
+			}
 
-			angular.element("input[data-act=youtube_upload]").click(function() {
-				delete window.uploadCallBack;
-				window.uploadCallBack = function(uploadJsonStr) {
-					try {
-						var resultObj = JSON.parse(uploadJsonStr);
-						if( resultObj.error ) {
-							alert('파일 업로드를 실패 했습니다.');
+			$('div[data-target-form=Y]').hide();
+			$('div[data-target-type='+targetType+']').show();
+
+			if( msg_class_no ) {
+				/*	선택된 반이 있으면 정회원 학생 선택	*/
+				$('#mainNgView select[name=classTarget]').val(msg_class_no).trigger('change');
+			} else if( msg_user_no_array ) {
+				/*	사용자 번호가 있으면 사용자 선택	*/
+				$('#mainNgView select[name=classTarget]').val('search').trigger('change');
+				messageTeacherService.targetUserSearch(msg_user_no_array);
+			}
+
+			/*	에디터 초기화 완료 후 value 셋팅	*/
+			var editOptions = comm.getEditorOptions();
+			editOptions.setup = function(ed) {
+				ed.on('init', function(e) {
+				}).on('KeyDown', function(e) {
+					var thisEditor = this;
+					var keyCode = undefined;
+					if (e.keyCode) keyCode = e.keyCode;
+					else if (e.which) keyCode = e.which;
+
+					if(keyCode == 9 && !e.altKey && !e.ctrlKey) {
+						if (e.shiftKey) {
+							thisEditor.execCommand('Outdent');
 						} else {
-							var fileInfo = resultObj.colData;
-							var tempObj = {};
-							tempObj.file_no		= fileInfo.fileNo;
-							tempObj.file_name	= fileInfo.fileName;
-							tempObj.file_path	= fileInfo.filePath;
-							tempObj.image_yn	= fileInfo.imageYn;
-							tempObj.mime_type	= fileInfo.mimeType;
-							tempObj.youtube_id	= fileInfo.youtubeId;
-
-							//$scope.fileList.push(tempObj);
-
-							if( tempObj.youtube_id ) {
-								var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
-								tinymce.activeEditor.insertContent(youtubeHtml);
-								setTimeout(function(){
-									var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-									$contents.scrollTop($contents.height());
-									tinymce.activeEditor.focus();
-								}, 500);
-							}
-							$scope.$digest();
+							thisEditor.execCommand('Indent');
 						}
-					} catch(e) {
-						alert('파일 업로드를 실패 했습니다.');
+						return tinymce.dom.Event.cancel(e);
 					}
-				};
-				var youtubeParam = {
-					fileType : 'all'
-					, multipleYn : 'Y'
-					, callBack : 'uploadCallBack'
-					, upload : {
-						url : window.location.protocol+'//'+window.location.host+uploadUrl
-						, param : {uploadType:CommonConstant.File.TYPE_NOTICE, youtube:'true'}
-						, cookie : document.cookie
-					}
-				};
-				window.PLATFORM.fileChooser(JSON.stringify(youtubeParam));
-
-				return false;
-			});
-		} else {
-			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(messageTeacherService.getFileUploadOptions($scope));
-
-			$scope.youtubeUploadObj = angular.element("input[data-act=youtube_upload]").html5_upload(messageTeacherService.getFileUploadOptions($scope, 'youtube'));
-		}
+				});
+			};
+			tinymce.init(editOptions);
+		});
 	});
 });
