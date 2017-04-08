@@ -209,7 +209,7 @@ hakwonMainApp.service('messageTeacherService', function(CommUtil) {
 /**
  * 이벤트 쓰기
  */
-hakwonMainApp.controller('messageWriteTeacherController', function($scope, $location, $routeParams, $filter, $window, CommUtil, messageTeacherService) {
+hakwonMainApp.controller('messageWriteTeacherController', function($scope, $location, $routeParams, $filter, $window, $timeout, CommUtil, messageTeacherService) {
 	console.log('messageWriteTeacherController call~~~');
 
 	$scope.CommUtil = CommUtil;

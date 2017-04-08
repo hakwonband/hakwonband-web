@@ -1,7 +1,7 @@
 	<div class="ibox-title new_mo_title">
 		<h1>메세지</h1>
-		<button type="button" class="btn btn-primary title_btn_submit" ng-click="editConfirm()">등록</button>
-		<button type="button" class="btn title_btn_cancel" ng-click="editCancel()">X</button>
+		<button type="button" class="btn btn-primary title_btn_submit" ng-click="messageSend()">등록</button>
+		<button type="button" class="btn title_btn_cancel" ng-click="cancelFun()">X</button>
 		<div class="mo_top_file_btn" style="text-align:right;">
 			<span class="btn btn-success">파일</span>
 			<input type="file" class="input_file file_btn" data-act="file_upload" multiple>
@@ -20,49 +20,58 @@
 			<input type="time" ng-model="reservationTime" class="form-control" placeholder="예약발송시간">
 			<button type="button" class="btn btn-primary" ng-click="reservationCancel()">X</button>
 		</div>
-		<div class="m-b-xs">
-			<input type="checkbox" id="a_class"><label for="a_class">A반</label>
+		<div class="m-b-xs" ng-show="targetType == 'class'">
+			<label for="class_{{item.class_no}}" ng-repeat="item in classList">
+				<input type="checkbox" id="class_{{item.class_no}}" value="{{item.class_no}}" name="targetClass">
+				{{item.class_title}}(학생수:{{item.student_count}})
+			</label>
 		</div>
 		<div class="m-b-xs" ng-show="targetType == 'class'">
-			<input type="checkbox" id="target_teacher"><label for="target_teacher">선생님</label>
-			<input type="checkbox" id="target_parent"><label for="target_parent">학부모</label>
-			<input type="checkbox" id="target_student"><label for="target_student">정회원 학생</label>
+			<input type="checkbox" id="target_teacher" value="teacher" name="targetUserType"><label for="target_teacher">선생님</label>
+			<input type="checkbox" id="target_parent" value="parent" name="targetUserType"><label for="target_parent">학부모</label>
+			<input type="checkbox" id="target_student" value="student" name="targetUserType"><label for="target_student">정회원 학생</label>
 		</div>
 
 		<div class="m-b-xs" ng-show="targetType == 'userGroup'">
-			<input type="checkbox" id="target_group_teacher"><label for="target_group_teacher">선생님</label>
-			<input type="checkbox" id="target_group_parent"><label for="target_group_parent">정회원 학생의 학부모</label>
-			<input type="checkbox" id="target_group_student"><label for="target_group_student">정회원 학생</label>
-			<input type="checkbox" id="target_group_non_parent"><label for="target_group_non_parent">비회원 학생의 학부모</label>
-			<input type="checkbox" id="target_group_non_student"><label for="target_group_non_student">비회원 학생</label>
+			<input type="checkbox" id="target_group_teacher" value="teacher" name="targetUserType"><label for="target_group_teacher">선생님</label>
+			<input type="checkbox" id="target_group_parent" value="parent" name="targetUserType"><label for="target_group_parent">정회원 학생의 학부모</label>
+			<input type="checkbox" id="target_group_student" value="student" name="targetUserType"><label for="target_group_student">정회원 학생</label>
+			<input type="checkbox" id="target_group_non_parent" value="nonParent" name="targetUserType"><label for="target_group_non_parent">비회원 학생의 학부모</label>
+			<input type="checkbox" id="target_group_non_student" value="nonStudent" name="targetUserType"><label for="target_group_non_student">비회원 학생</label>
 		</div>
 
 		<div class="input-group m-b-xs" ng-show="targetType == 'search'">
 			<input type="text" class="form-control" ng-model="searchText" placeholder="이름으로 검색"> <span class="input-group-btn"> <button type="button" class="btn btn-primary" ng-click="masterMessageTargetSearch()">검색하기</button></span>
 		</div>
 		<!-- 검색하기 버튼 클릭시 결과 나타남. 클릭 전에는 나타나지 않음 -->
-		<ul class="search_name_list">
-			<li>
+		<ul class="search_name_list" ng-show="targetType == 'search'">
+			<li ng-if="search_result == 'empty'">검색대상이 없습니다.</li>
+
+			<li ng-repeat="searchUser in search_user_list">
 				<span class="student_add_box">
-					<img class="img-circle" src="../assets/img/profile.jpg" alt="홍길동님의 프로필" width="35">
-					<strong class="name">홍길동</strong> vitaminblue
-					<button type="button" class="btn btn-default btn-sm">추가</button>
+					<i>{{ searchUser.user_type_name}}</i>
+					<img class="img-circle" ng-src="{{comm.userProfileImg(searchUser.user_photo_path)}}" alt="{{ searchUser.user_name}} 프로필" width="35">
+					<strong class="name">{{ searchUser.user_name}}</strong> {{ searchUser.user_id}}
+					<button type="button" data-val="{{ searchUser.user_name + CommonConstant.ChDiv.CH_DEL + searchUser.user_no}}" class="btn btn-default btn-sm" ng-click="searchTargetSelect(searchUser)">추가</button>
 				</span>
 
-				<span class="parents_add_box">
-					<i>부</i>
-					<img class="img-circle" src="../assets/img/profile.jpg" alt="홍길동님의 프로필" width="30">
-					<strong class="name">홍길동</strong> vitaminblue
-					<button type="button" class="btn btn-default btn-xs">추가</button>
+				<span class="parents_add_box" ng-repeat="parentUser in searchUser.relationList">
+					<i>{{ parentUser.user_gender=="M"?"부":"모"}}</i>
+					<img class="img-circle" ng-src="{{comm.userProfileImg(parentUser.user_photo_path)}}" alt="프로필" width="30">
+					<strong class="name">{{ parentUser.user_name}}</strong> {{ parentUser.user_id}}
+					<button type="button" class="btn btn-default btn-xs" data-val="{{ parentUser.user_name + CommonConstant.ChDiv.CH_DEL + parentUser.user_no}}" ng-click="searchTargetSelect(parentUser)">추가</button>
 				</span>
 
 			</li>
 		</ul>
+
 		<!-- 상단 셀렉트 박스에서 이름 검새 후 메세지 보내기 선택하면 나오는 영역 끝 -->
 		<ul class="chosen_select">
-			<li>홍길동 <button type="button" class="btn_x" title="삭제">x</button></li>
+			<li data-user-no="{{target.user_no}}" ng-repeat="target in choiceSearchTarget">
+				{{target.user_name?target.user_name:target.user_id}} <button type="button" class="btn_x" ng-click="removeTargetSelect(target)" title="삭제">x</button>
+			</li>
 		</ul>
-		<div><textarea cols="140" rows="10" class="form-control" data-lib="editor">{{eventDetail.event_content}}</textarea></div>
+		<div><textarea cols="140" rows="10" class="form-control" name="messageContent" data-lib="editor"></textarea></div>
 		<div class="form-group">
 			<div class="col-sm-11">
 				<div class="attachment mo_file_box" ng-if="fileList.length > 0">

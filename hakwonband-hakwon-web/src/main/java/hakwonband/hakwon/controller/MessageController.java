@@ -260,6 +260,8 @@ public class MessageController extends BaseAction {
 		param.put("messageContent",	messageContent);
 		param.put("fileListStr",	fileListStr);
 
+		System.out.println("param : " + param);
+
 
 		DevicePushData devicePushData = messageSendService.executeMasterMessageSend(param);
 
