@@ -52,9 +52,9 @@ hakwonMainApp.factory('CommUtil', function($http, $window, $log) {
 		if( imageYn == 'Y' ) {
 			return 'img';
 		} else {
-			if( mimeType.indexOf("video") == 0 ) {
+			if( mimeType && mimeType.indexOf("video") == 0 ) {
 				return 'video';
-			} else if( mimeType.indexOf("audio") == 0 ) {
+			} else if( mimeType && mimeType.indexOf("audio") == 0 ) {
 				return 'audio';
 			} else {
 				return 'file';
