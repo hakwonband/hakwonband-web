@@ -42,37 +42,37 @@ hakwonMainApp.service('messageTeacherService', function(CommUtil) {
 	/**
 	 * 선생님 메세지 전송
 	 */
-	messageTeacherService.teacherMsgSend = function() {
-		$('button[data-act=messageSend]').attr('disabled', true);
-
+	messageTeacherService.teacherMsgSend = function($scope, callBack) {
 		var reservationDate	= $('input[name=reservationDate]').val();
 		var reservationTime	= $('input[name=reservationTime]').val();
 
-		//var messageContent = $('textarea[name=messageContent]').val();
 		var messageContent = tinymce.activeEditor.getContent();
-//		messageContent = messageContent.replace(/><\/p>/g, ">&nbsp;</p>");
-		var classTarget = $('select[name=classTarget]').val();
-		var targetType = $('select[name=targetType]').val();
+		var classTarget = $scope.classTarget;
+		var targetType = $scope.targetType;
 
 		if( classTarget != 'search' ) {
 			var dataCount = $('select[name=classTarget] > option:selected').attr('data-count');
 			if( dataCount == 0 ) {
 				alert('반에 학생들이 없습니다.');
-				$('button[data-act=messageSend]').attr('disabled', false);
 				return ;
 			}
 		}
 
 		var targetUserList = [];
-		$('ul.chosen_select > li').each(function() {
-			var dataUserNo = $(this).attr('data-user-no');
-			targetUserList.push(dataUserNo);
-		});
-
 		if( classTarget == 'search' ) {
+			for(var i=0; i<$scope.choiceSearchTarget.length; i++) {
+				targetUserList.push($scope.choiceSearchTarget[i].user_no);
+			}
+
 			if( targetUserList.length == 0 ) {
 				alert('발송 대상자를 검색해 주세요.');
-				$('button[data-act=messageSend]').attr('disabled', false);
+				return ;
+			}
+		}
+
+		if( !isNull(reservationDate) || !isNull(reservationTime) ) {
+			if( isNull(reservationDate) || isNull(reservationTime) ) {
+				alert('예약 날짜와 시간이 정확하지 않습니다.');
 				return ;
 			}
 		}
@@ -101,28 +101,11 @@ hakwonMainApp.service('messageTeacherService', function(CommUtil) {
 			, reservationTime : reservationTime
 		};
 
-		$.ajax({
-			url: contextPath+"/hakwon/message/teacherSend.do",
-			type: "post",
-			data: $.param(param, true),
-			headers : hakwonInfo.getHeader(),
-			complete : function(){ $('button[data-act=messageSend]').attr('disabled', false); },
-			dataType: "json",
-			success: function(data) {
-				try {
-					if( data.error ) {
-						alert('메세지 전송을 실패 했습니다.');
-						return ;
-					}
-					alert('메세지 전송을 성공 했습니다.');
-					window.location.href = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no+'&'+new Date().toString();
-				} catch(ex) {
-					commProto.errorDump({errorObj:ex});
-				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				alert('통신을 실패 했습니다.');
-			}
+		CommUtil.colHttp({
+			url			: contextPath+"/hakwon/message/teacherSend.do"
+			, header	: hakwonInfo.getHeader()
+			, param		: param
+			, callback	: callBack
 		});
 	};
 
@@ -255,7 +238,26 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 	/**
 	 * 메세지 발송
 	 */
-	$('#mainNgView').on(clickEvent, 'button[data-act=messageSend]', messageTeacherService.teacherMsgSend);
+	$scope.messageSend = function() {
+		messageTeacherService.teacherMsgSend($scope, function(data) {
+			if( data.colData && data.colData.flag == 'success' ) {
+				alert('메세지 전송을 성공 했습니다.');
+				window.history.back();
+				return false;
+			} else {
+				alert('메세지 전송을 실패 했습니다.');
+				return ;
+			}
+		});
+	};
+
+	/**
+	 * 취소
+	 */
+	$scope.cancelFun = function() {
+		window.history.back();
+		return false;
+	}
 
 	/**
 	 * 파일 클릭
@@ -285,38 +287,12 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 	});
 
 	/**
-	 * 취소
-	 */
-	$('#mainNgView').on(clickEvent, 'button[data-act=cancel]', function() {
-		commProto.hrefMove(PageUrl.main+'?hakwon_no='+hakwon_no);
-		return false;
-	});
-
-	/**
 	 * 파일 삭제
 	 */
 	$('#mainNgView').on(clickEvent, 'button.btn_file_del', function(e) {
 		$(this).parents('div.file-box').remove();
 		e.preventDefault();
 	});
-
-	/**
-	 * 대상 선택
-	 */
-	$('#mainNgView').on(clickEvent, 'button[data-act=target]', function() {
-		var dataVal = $(this).attr('data-val');
-		var dataValArray = dataVal.split(CommonConstant.ChDiv.CH_DEL);
-		var target = {
-			user_no : dataValArray[1]
-			, user_name : dataValArray[0]
-		};
-		if( $('#mainNgView ul.chosen_select > li[data-user-no='+dataValArray[1]+']').length > 0 ) {
-			alert('이미 추가된 사용자 입니다.');
-		} else {
-			$('#mainNgView ul.chosen_select').append($.tmpl(hakwonTmpl.message.choiceTarget, {target:target}));
-		}
-	});
-
 
 	$("#wrapper").show();
 	/*	초기화	*/

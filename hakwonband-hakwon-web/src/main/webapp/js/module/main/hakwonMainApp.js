@@ -534,7 +534,7 @@ var HakwonCommon = function() {
 				moveLeftLocation = PageUrl.message.sendQuestion+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherSendMessage' ) {
 				/*	선생님 메세지 보내기	*/
-				if( isMobile.any() == false ) {
+				if( isMobile.any() ) {
 					window.location = '/assets/js/popup/popupIndex.html#/messageWrite/teacher?hakwon_no=' + hakwonInfo.hakwon_no;
 					return false;
 				} else {
@@ -542,7 +542,7 @@ var HakwonCommon = function() {
 				}
 			} else if( dataAct == 'masterSendMessage' ) {
 				/*	원장님 메세지 보내기	*/
-				if( isMobile.any() == false ) {
+				if( isMobile.any() ) {
 					window.location = '/assets/js/popup/popupIndex.html#/messageWrite/master?hakwon_no=' + hakwonInfo.hakwon_no;
 					return false;
 				} else {

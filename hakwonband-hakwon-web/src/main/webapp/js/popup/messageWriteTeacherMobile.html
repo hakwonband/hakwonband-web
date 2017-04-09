@@ -5,21 +5,19 @@
 		<div class="mo_top_file_btn" style="text-align:right;">
 			<span class="btn btn-success">파일</span>
 			<input type="file" class="input_file file_btn" data-act="file_upload" multiple>
-			<span class="btn btn-success">youtube</span>
-			<input type="file" class="input_file youtube_btn" data-act="youtube_upload" multiple>
 		</div>
 	</div>
 
 	<div class="ibox-content new_mo_content">
-		<select class="form-control m-b-xs" ng-model="classTarget">
+		<select class="form-control m-b-xs" name="classTarget" ng-model="classTarget">
 			<option value="search">검색</option>
-			<option value="{{item.class_no}}" ng-repeat="item in classList">
+			<option value="{{item.class_no}}" data-count="{{ item.student_count}}" ng-repeat="item in classList">
 				{{item.class_title}}(학생수:{{ item.student_count}})
 			</option>
 		</select>
 		<div class="mo_row_time m-b-xs">
-			<input type="date" ng-model="reservationDate" class="form-control" placeholder="예약발송일">
-			<input type="time" ng-model="reservationTime" class="form-control" placeholder="예약발송시간">
+			<input type="date" ng-model="reservationDate" name="reservationDate" class="form-control" placeholder="예약발송일">
+			<input type="time" ng-model="reservationTime" name="reservationTime" class="form-control" placeholder="예약발송시간">
 			<button type="button" class="btn btn-primary" ng-click="reservationCancel()">X</button>
 		</div>
 		<select class="form-control m-b" ng-model="targetType" ng-show="classTarget != 'search'">

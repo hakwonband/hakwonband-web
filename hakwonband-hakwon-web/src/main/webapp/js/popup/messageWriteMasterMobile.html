@@ -16,8 +16,8 @@
 			<option value="search">검색</option>
 		</select>
 		<div class="mo_row_time m-b-xs">
-			<input type="date" ng-model="reservationDate" class="form-control" placeholder="예약발송일">
-			<input type="time" ng-model="reservationTime" class="form-control" placeholder="예약발송시간">
+			<input type="date" ng-model="reservationDate" name="reservationDate" class="form-control" placeholder="예약발송일">
+			<input type="time" ng-model="reservationTime" name="reservationTime" class="form-control" placeholder="예약발송시간">
 			<button type="button" class="btn btn-primary" ng-click="reservationCancel()">X</button>
 		</div>
 		<div class="m-b-xs" ng-show="targetType == 'class'">
