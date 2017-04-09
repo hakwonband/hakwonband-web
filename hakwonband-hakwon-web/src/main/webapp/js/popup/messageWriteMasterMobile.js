@@ -12,7 +12,7 @@ hakwonMainApp.service('messageMasterService', function(CommUtil) {
 	messageMasterService.getFileUploadOptions = function($scope, type) {
 		// 파일 업로드 객체 생성
 		var fileUploadOptions = new UploadOptions();
-		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_EVENT};
+		fileUploadOptions.customExtraFields = {uploadType:CommonConstant.File.TYPE_MESSAGE};
 		if( type == 'youtube' ) {
 			fileUploadOptions.customExtraFields.youtube = 'true';
 		}
@@ -235,6 +235,8 @@ hakwonMainApp.controller('messageWriteMasterController', function($scope, $locat
 	$scope.search_user_list = [];
 	$scope.choiceSearchTarget = [];
 
+	$scope.fileList = [];
+
 	if( msg_class_no ) {
 		/*	선택된 반이 있으면 정회원 학생 선택	*/
 		$scope.targetType = 'class';
@@ -392,31 +394,34 @@ hakwonMainApp.controller('messageWriteMasterController', function($scope, $locat
 			angular.element("input[data-act=file_upload]").click(function() {
 				delete window.uploadCallBack;
 				window.uploadCallBack = function(uploadJsonStr) {
-					try {
-						var resultObj = JSON.parse(uploadJsonStr);
-						if( resultObj.error ) {
-							alert('파일 업로드를 실패 했습니다.');
+					var fileInfo = resultObj.colData;
+					var tempObj = {};
+					tempObj.file_no		= fileInfo.fileNo;
+					tempObj.file_name	= fileInfo.fileName;
+					tempObj.file_path	= fileInfo.filePath;
+					tempObj.image_yn	= fileInfo.imageYn;
+					tempObj.mime_type	= fileInfo.mimeType;
+
+					$scope.fileList.push(tempObj);
+
+					if( fileInfo.imageYn == 'Y' ) {
+						var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+						var fileNo = fileInfo.fileNo;
+
+						if( isMobile.any() ) {
+							var editWidth = $('[data-lib=editor]').width();
+							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 						} else {
-							var fileInfo = resultObj.colData;
-							fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
-							$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
-
-							if( fileInfo.imageYn == 'Y' ) {
-								var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
-								var fileNo = fileInfo.fileNo;
-
-								if( isMobile.any() ) {
-									var editWidth = $('[data-lib=editor]').width();
-									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-								} else {
-									var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-								}
-								tinymce.activeEditor.insertContent(strImage);
-							}
+							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 						}
-					} catch(e) {
-						alert('파일 업로드를 실패 했습니다.');
+						tinymce.activeEditor.insertContent(strImage);
+						setTimeout(function(){
+							var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+							$contents.scrollTop($contents.height());
+							tinymce.activeEditor.focus();
+						}, 500);
 					}
+					$scope.$digest();
 				};
 				var param = {
 					fileType : 'all'
@@ -433,35 +438,7 @@ hakwonMainApp.controller('messageWriteMasterController', function($scope, $locat
 				return false;
 			});
 		} else {
-			var messageUploadOptions = new UploadOptions();
-			messageUploadOptions.customExtraFields = {'uploadType' : CommonConstant.File.TYPE_MESSAGE};
-			messageUploadOptions.onFinish = function(event, total) {
-				if (this.errorFileArray.length + this.errorCount > 0) {
-					alert('메세지 파일 업로드를 실패 했습니다.');
-				} else {
-					for (var i = 0; i < this.uploadFileArray.length; i++) {
-						var fileInfo = this.uploadFileArray[i];
-
-						fileInfo.extType = CommUtil.isFileType(fileInfo.imageYn, fileInfo.mimeType);
-						$('#mainNgView div.attachment').append($.tmpl(hakwonTmpl.message.attchFile, {fileInfo:fileInfo}));
-
-						if( fileInfo.imageYn == 'Y' ) {
-							var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
-							var fileNo = fileInfo.fileNo;
-
-							if( isMobile.any() ) {
-								var editWidth = $('[data-lib=editor]').width();
-								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-							} else {
-								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-							}
-							tinymce.activeEditor.insertContent(strImage);
-						}
-					}
-				}
-			};
-
-			$("input[data-act=file_upload]").html5_upload(messageUploadOptions);
+			$scope.fileUploadObj = angular.element("input[data-act=file_upload]").html5_upload(messageMasterService.getFileUploadOptions($scope));
 		}
 
 
