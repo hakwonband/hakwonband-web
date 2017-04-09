@@ -552,7 +552,7 @@ var HakwonCommon = function() {
 				} else {
 					moveLeftLocation = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 				}
-				/*
+				*/
 				moveLeftLocation = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherHakwonRegist' ) {
 				/*	원장님 메세지 보내기	*/
