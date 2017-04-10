@@ -13,6 +13,10 @@ angular.module('hakwonApp', ['ngRoute', 'ngTouch']).config(['$routeProvider', fu
 			templateUrl: '/assets/partials/userMain.html'
 			, controller: 'userMainController'
 		})
+		.when('/userMain/notice', {
+			templateUrl: '/assets/partials/userMain.html'
+			, controller: 'userMainController'
+		})
 		.when('/signUp', {
 			templateUrl: '/assets/partials/signUp.html'
 			, controller: 'signUpController'
@@ -115,6 +119,8 @@ angular.module('hakwonApp').config(['$locationProvider', function($locationProvi
 	$locationProvider.hashPrefix('');
 }]);
 
+// main_header_menu
+
 /**
  * 헤더 App
  */
@@ -154,6 +160,21 @@ var HakwonHeader = function() {
 
 		$leftMenu.on('keypress', 'input[name=g_search_text]', self.searchContent);
 	};
+
+	/**
+	 * 메인 화면 이벤트 페이지로 이동
+	 */
+	this.mainNoticeGo = function() {
+		if( window.location.hash.indexOf('#/userMain') >= 0  ) {
+			$('html, body').animate({
+				scrollTop: $("section[name=main_notice]").offset().top
+			}, 100);
+		} else {
+			window.location.hash = '#/userMain/notice';
+		}
+
+		return false;
+	}
 
 	/**
 	 * 메뉴 닫기
@@ -333,6 +354,21 @@ var HakwonHeader = function() {
 		if( !viewType ) {
 			viewType = 'common';
 		}
+
+		if( viewType == 'common' ) {
+			$('#main_header_menu').hide();
+		} else {
+			$('#main_header_menu').show();
+/*
+			var currentUrlHash = window.location.hash;
+			if( currentUrlHash == '#/userMain' || currentUrlHash == '#/userMain/notice' ) {
+				$('li.main_notice').show();
+			} else {
+				$('li.main_notice').hide();
+			}
+*/
+		}
+
 
 		/*	url 인증 체크	*/
 		comm.urlLoginCheck();

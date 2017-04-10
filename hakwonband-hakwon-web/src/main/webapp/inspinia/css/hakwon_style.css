@@ -404,7 +404,7 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .new_mo_title{min-height:40px; position:fixed; top:0; left:0; right:0; background:#efefef; z-index:99; border:0; border-bottom:1px solid #e7eaec;}
 .new_mo_title h1{text-align:left; padding-left:40px; float:none; font-size:16px !important; margin-bottom:0;}
 .new_mo_title .title_btn_cancel{position:absolute; top:2px; left:2px;}
-.new_mo_title .title_btn_submit{position:absolute; top:2px; right:2px;}
+.new_mo_title .title_btn_submit{position:absolute; top:2px; right:2px; z-index:2;}
 .new_mo_content{margin-top:40px; z-index:1; border:0; padding:5px 2px 0 2px !important; overflow:hidden;}
 .mo_row_select{overflow:hidden; float:none; box-sizing:border-box;}
 .mo_row_select select{float:left;}
@@ -414,8 +414,8 @@ fieldset[disabled] .select_join_type .ui-button.active {
 .mo_right_file_btn input{right:2px; top:5px; left:inherit;}
 .mo_top_file_btn{position:absolute; top:3px; right:60px;}
 .mo_top_file_btn span{padding:6px; font-size:12px;}
-.mo_top_file_btn .file_btn{left:0; width:37px;}
-.mo_top_file_btn .youtube_btn{left:40px; width:60px;}
+.mo_top_file_btn .file_btn{left:0; width:37px; height:33px; z-index:1;}
+.mo_top_file_btn .youtube_btn{left:40px; width:60px; height:33px; z-index:1;}
 .mo_file_box .image{height:80px;}
 .mo_file_box .no_image{font-size:11px; color:inherit; word-break:break-all; padding:30px 5px 5px 5px;}
 .youtube_input_file{left:114px; width:123px;}

@@ -21,6 +21,7 @@
 			, get_file_path(d.photo_file_no) as user_photo_path
 			, calc_age(d.user_birthday) as user_age
 			, (select group_concat(get_user_info(y.user_no) SEPARATOR 0x12) from tb_student_parent x, tb_user_info y where x.student_user_no = b.user_no and x.parent_user_no = y.user_no) as parent_list
+			, get_code_name('001', c.user_type) as user_type_name
 		from
 			tb_hakwon_class_teacher x
 			, tb_hakwon_class_student a

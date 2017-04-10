@@ -230,6 +230,87 @@ var HakwonCommon = function() {
 	};
 
 	/**
+	 * 사용자 이미지 처리
+	 */
+	this.userProfileImg = function(imgSrc) {
+		if( isNull(imgSrc) ) {
+			return DefaultInfo.photoUrl;
+		} else {
+			if( '/assets/img/p3.jpg' == imgSrc ) {
+				return imgSrc;
+			} else {
+				return HakwonConstant.FileServer.ATTATCH_DOMAIN+imgSrc+"_thumb";
+			}
+		}
+	}
+
+	/**
+	 * 학부모의 학생 or 학생의 학부모 리스트 split 처리
+	 * @param mainList
+	 * @returns {*}
+	 */
+	this.initRelationList = function(mainList) {
+		return _.each(mainList, function(item) {
+			var relationStr 	= '';	// 학생 or 학부모 데이터 문자열 값
+			var relationList	= [];	// object Array로 변환한 결과 값
+
+			if (!isNull(item.parent_list)) {
+				relationStr = item.parent_list;
+			} else if (!isNull(item.child_list)) {
+				relationStr = item.child_list;
+			}
+
+			if (!isNull(relationStr)) {
+				var subList  = relationStr.split(CommonConstant.ChDiv.CH_GRP);
+				_.each(subList, function(subItem) {
+					var tempObj = subItem.split(CommonConstant.ChDiv.CH_DEL);
+					var relationObj = {};
+					relationObj.user_name		= !isNull(tempObj[0]) ? tempObj[0] : '';
+					relationObj.user_id			= !isNull(tempObj[1]) ? tempObj[1] : '';
+					relationObj.user_gender		= !isNull(tempObj[2]) ? tempObj[2] : '';
+					relationObj.user_no			= !isNull(tempObj[3]) ? tempObj[3] : '';
+					relationObj.user_age		= !isNull(tempObj[4]) ? tempObj[4] : '';
+					relationObj.user_photo_path	= !isNull(tempObj[5]) ? tempObj[5] : '';
+					relationObj.user_type		= !isNull(tempObj[6]) ? tempObj[6] : '';
+					relationObj.school_name		= !isNull(tempObj[7]) ? tempObj[7] : '';
+					relationObj.school_level	= !isNull(tempObj[8]) ? tempObj[8] : '';
+
+					relationList.push(relationObj);
+				});
+			}
+			return item.relationList = relationList;
+		});
+	};
+
+	/**
+	 * 사용자 정보 파싱 처리
+	 * @param userInfoStr
+	 * @returns {*}
+	 * @usage comm.userInfoParse();
+	 */
+	this.userInfoParse = function(userInfoStr) {
+		var userInfo = {};
+
+		if( userInfoStr ) {
+			var userInfoArray = userInfoStr.split(CommonConstant.ChDiv.CH_DEL);
+			userInfo.user_name		= !isNull(userInfoArray[0]) ? userInfoArray[0] : '';
+			userInfo.user_id		= !isNull(userInfoArray[1]) ? userInfoArray[1] : '';
+			userInfo.user_gender	= !isNull(userInfoArray[2]) ? userInfoArray[2] : '';
+			userInfo.user_no		= !isNull(userInfoArray[3]) ? userInfoArray[3] : '';
+			userInfo.user_age		= !isNull(userInfoArray[4]) ? userInfoArray[4] : '';
+			userInfo.user_photo_path= !isNull(userInfoArray[5]) ? userInfoArray[5] : '';
+			userInfo.user_type		= !isNull(userInfoArray[6]) ? userInfoArray[6] : '';
+			userInfo.school_name	= !isNull(userInfoArray[7]) ? userInfoArray[7] : '';
+			userInfo.school_level	= !isNull(userInfoArray[8]) ? userInfoArray[8] : '';
+			userInfo.user_type_name	= !isNull(userInfoArray[9]) ? userInfoArray[9] : '';
+		}
+
+		return userInfo;
+	};
+
+
+
+	/**
 	 * 비디오 태그 변경
 	 * @usage comm.videoTagReplace();
 	 */

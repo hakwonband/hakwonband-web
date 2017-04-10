@@ -28,21 +28,21 @@
 		<div class="form-group">
 			<div class="col-sm-11">
 				<div class="attachment mo_file_box" ng-if="fileList.length > 0">
-					<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.fileNo}}">
+					<div class="file-box" ng-repeat="item in fileList" data-file-no="{{item.file_no}}">
 						<div class="file">
-							<div class="image no_image" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.filePath) }}" ng-if="CommUtil.isFileType(item.imageYn, item.mimeType) == 'video' && !item.youtubeId">
-								{{item.fileName}}
+							<div class="image no_image" data-file-type="video" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'video' && !item.youtube_id">
+								{{item.file_name}}
 							</div>
-							<div class="image no_image" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.filePath) }}" ng-if="CommUtil.isFileType(item.imageYn, item.mimeType) == 'audio'">
-								{{item.fileName}}
+							<div class="image no_image" data-file-type="audio" data-file-url="{{ getAttachFileFullPath(item.file_path) }}" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'audio'">
+								{{item.file_name}}
 							</div>
-							<div class="image no_image" ng-if="CommUtil.isFileType(item.imageYn, item.mimeType) == 'file'">
-								{{item.fileName}}
+							<div class="image no_image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'file'">
+								{{item.file_name}}
 							</div>
-							<div class="image" ng-if="CommUtil.isFileType(item.imageYn, item.mimeType) == 'img'">
-								<img alt="image" class="img-responsive" data-img-no="{{item.fileNo}}" ng-src="{{ getAttachFileFullPath(item.filePath) }}" ng-click="insertImageToEditor(item.filePath, item.fileNo)">
+							<div class="image" ng-if="CommUtil.isFileType(item.image_yn, item.mime_type) == 'img'">
+								<img alt="image" class="img-responsive" data-img-no="{{item.file_no}}" ng-src="{{ getAttachFileFullPath(item.file_path) }}" ng-click="insertImageToEditor(item.file_path, item.file_no)">
 							</div>
-							<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.fileNo)">X</button>
+							<button type="button" class="btn btn-circle btn_file_del" title="삭제" ng-click="removeAttachFile(item.file_no)">X</button>
 						</div>
 					</div>
 					<div class="clearfix"></div>
