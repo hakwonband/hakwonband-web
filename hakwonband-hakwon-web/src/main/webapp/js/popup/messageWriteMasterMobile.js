@@ -394,34 +394,39 @@ hakwonMainApp.controller('messageWriteMasterController', function($scope, $locat
 			angular.element("input[data-act=file_upload]").click(function() {
 				delete window.uploadCallBack;
 				window.uploadCallBack = function(uploadJsonStr) {
-					var fileInfo = resultObj.colData;
-					var tempObj = {};
-					tempObj.file_no		= fileInfo.fileNo;
-					tempObj.file_name	= fileInfo.fileName;
-					tempObj.file_path	= fileInfo.filePath;
-					tempObj.image_yn	= fileInfo.imageYn;
-					tempObj.mime_type	= fileInfo.mimeType;
+					var resultObj = JSON.parse(uploadJsonStr);
+					if( resultObj.error ) {
+						alert('파일 업로드를 실패 했습니다.');
+					} else {
+						var fileInfo = resultObj.colData;
+						var tempObj = {};
+						tempObj.file_no		= fileInfo.fileNo;
+						tempObj.file_name	= fileInfo.fileName;
+						tempObj.file_path	= fileInfo.filePath;
+						tempObj.image_yn	= fileInfo.imageYn;
+						tempObj.mime_type	= fileInfo.mimeType;
 
-					$scope.fileList.push(tempObj);
+						$scope.fileList.push(tempObj);
 
-					if( fileInfo.imageYn == 'Y' ) {
-						var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
-						var fileNo = fileInfo.fileNo;
+						if( fileInfo.imageYn == 'Y' ) {
+							var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
+							var fileNo = fileInfo.fileNo;
 
-						if( isMobile.any() ) {
-							var editWidth = $('[data-lib=editor]').width();
-							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
-						} else {
-							var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+							if( isMobile.any() ) {
+								var editWidth = $('[data-lib=editor]').width();
+								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+							} else {
+								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+							}
+							tinymce.activeEditor.insertContent(strImage);
+							setTimeout(function(){
+								var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+								$contents.scrollTop($contents.height());
+								tinymce.activeEditor.focus();
+							}, 500);
 						}
-						tinymce.activeEditor.insertContent(strImage);
-						setTimeout(function(){
-							var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
-							$contents.scrollTop($contents.height());
-							tinymce.activeEditor.focus();
-						}, 500);
+						$scope.$digest();
 					}
-					$scope.$digest();
 				};
 				var param = {
 					fileType : 'all'

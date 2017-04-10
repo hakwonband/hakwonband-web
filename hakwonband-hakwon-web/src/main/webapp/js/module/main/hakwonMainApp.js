@@ -534,26 +534,20 @@ var HakwonCommon = function() {
 				moveLeftLocation = PageUrl.message.sendQuestion+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherSendMessage' ) {
 				/*	선생님 메세지 보내기	*/
-				/*
 				if( isMobile.any() ) {
 					window.location = '/assets/js/popup/popupIndex.html#/messageWrite/teacher?hakwon_no=' + hakwonInfo.hakwon_no;
 					return false;
 				} else {
 					moveLeftLocation = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 				}
-				*/
-				moveLeftLocation = PageUrl.message.teacherSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'masterSendMessage' ) {
 				/*	원장님 메세지 보내기	*/
-				/*
 				if( isMobile.any() ) {
 					window.location = '/assets/js/popup/popupIndex.html#/messageWrite/master?hakwon_no=' + hakwonInfo.hakwon_no;
 					return false;
 				} else {
 					moveLeftLocation = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 				}
-				*/
-				moveLeftLocation = PageUrl.message.masterSend+'?hakwon_no='+hakwonInfo.hakwon_no;
 			} else if( dataAct == 'teacherHakwonRegist' ) {
 				/*	원장님 메세지 보내기	*/
 				moveLeftLocation = PageUrl.teacher.hakwonRegist+'?hakwon_no='+hakwonInfo.hakwon_no;
