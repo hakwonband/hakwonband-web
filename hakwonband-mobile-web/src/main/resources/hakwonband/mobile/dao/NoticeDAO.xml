@@ -44,7 +44,7 @@
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
 			reg_date desc
-		limit 3
+		limit 9
 	]]>
 	</select>
 
@@ -93,7 +93,7 @@
 			and (a.reservation_yn = 'N' or a.reservation_send_date is not null)
 		order by
 			reg_date desc
-		limit 3
+		limit 9
 	]]>
 	</select>
 

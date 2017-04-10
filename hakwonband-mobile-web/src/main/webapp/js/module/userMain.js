@@ -95,7 +95,7 @@ angular.module('hakwonApp').service('userMainService', function($http, $window) 
 
 /*	사용자 메인  */
 angular.module('hakwonApp').controller('userMainController', function($scope, $location, $window, $routeParams, userMainService, CommUtil){
-	console.log('userMainController call');
+	console.log('userMainController call', $location);
 	try {
 		/*  인증 정보 체크  */
 		comm.authCheckFilter();
@@ -150,10 +150,16 @@ angular.module('hakwonApp').controller('userMainController', function($scope, $l
 				if( colData.approvedYnList ) {
 					$scope.approvedYn	= colData.approvedYnList;
 				}
+
+				if( window.location.hash == '#/userMain/notice' ) {
+					setTimeout(function() {
+						$('html, body').animate({
+							scrollTop: $("section[name=main_notice]").offset().top
+						}, 100);
+					}, 200);
+				}
 			});
 		};
-
-		$scope.userMain();
 
 		/*	학원 검색	*/
 		$scope.hakwonSearch = function() {
@@ -247,6 +253,8 @@ angular.module('hakwonApp').controller('userMainController', function($scope, $l
 					window.location.href = MENUS.sharpUrls.memberModify;
 				}
 			}
+
+			$scope.userMain();
 		});
 
 		if( window.PLATFORM && !userAuth.deviceAuth ) {

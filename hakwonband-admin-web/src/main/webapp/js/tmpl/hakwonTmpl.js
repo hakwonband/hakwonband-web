@@ -1117,7 +1117,7 @@ hakwonTmpl.hakwon = {
 		, '				<tr>'
 		, '					<td><span><input type="checkbox" class="i-checks" name="input"></span></td>'
 		, '					<td>'
-		, '						<a href="{{= PageUrl.teacher.view+"?teacherUserNo="+loopData.user_no}}"><img class="img-circle" src="{{= hakwonCommon.createFilePullPath(loopData.user_photo_path, "photo", true)}}" alt="ㅇㅇㅇ반 프로필" width="30" height="30"> 홍길동</a>'
+		, '						<a href="{{= PageUrl.teacher.view+"?teacherUserNo="+loopData.user_no}}"><img class="img-circle" src="{{= hakwonCommon.createFilePullPath(loopData.user_photo_path, "photo", true)}}" alt="" width="30" height="30"> {{= loopData.user_name}}</a>'
 		, '					</td>'
 		, '					<td><span>{{= loopData.user_id}}</span></td>'
 		, '					<td><span>{{= loopData.user_gender=="M"?"남자":"여자"}}</span></td>'
