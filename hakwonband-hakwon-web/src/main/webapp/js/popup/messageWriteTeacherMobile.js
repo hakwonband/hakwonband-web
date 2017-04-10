@@ -339,32 +339,23 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 		return false;
 	}
 
-	/**
-	 * 파일 클릭
-	 */
-	$('#mainNgView').on(clickEvent, 'div.file-box', function(e) {
-		if( e.target.className.indexOf('btn_file_del') >= 0 ) return ;
+	/*	이미지 클릭시 에디터에 이미지 첨부	*/
+	$scope.insertImageToEditor = function(filePath, fileNo) {
+		var fullFilePath = $scope.getAttachFileFullPath(filePath);
 
-		var fileType	= $(this).attr('data-file-type');
-		var fullFilePath= $(this).attr('data-file-url');
-		var fileNo		= $(this).attr('data-file-no');
-		if( fileType == 'img' ) {
-			if( isMobile.any() ) {
-				var editWidth = $('[data-lib=editor]').width();
-				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
-			} else {
-				var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" target="_blank" class="img-responsive"></a></p><p>&nbsp;</p>';
-			}
-			tinymce.activeEditor.insertContent(strImage);
-		} else if( fileType == 'audio' ) {
-			var audioHtml = '<p><audio src="'+fullFilePath+'" preload="false" controls="true"></audio></p><p>&nbsp;</p>';
-			tinymce.activeEditor.insertContent(audioHtml);
-		} else if( fileType == 'video' ) {
-			var videoHtml = hakwonTmpl.common.videoHtml.replace('{{=videoUrl}}', fullFilePath);
-			tinymce.activeEditor.insertContent(videoHtml);
+		if( isMobile.any() ) {
+			var editWidth = $('[data-lib=editor]').width();
+			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" width="'+editWidth+'" height="auto" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
+		} else {
+			var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 		}
-		tinymce.activeEditor.focus();
-	});
+		tinymce.activeEditor.insertContent(strImage);
+		setTimeout(function(){
+			var $contents = $('#'+tinymce.activeEditor.iframeElement.id).contents();
+			$contents.scrollTop($contents.height());
+			tinymce.activeEditor.focus();
+		}, 500);
+	};
 
 	/**
 	 * 파일 삭제
@@ -373,6 +364,19 @@ hakwonMainApp.controller('messageWriteTeacherController', function($scope, $loca
 		$(this).parents('div.file-box').remove();
 		e.preventDefault();
 	});
+
+	/*	첨부파일 이미지 경로 처리	*/
+	$scope.getAttachFileFullPath = function(filePath, fileType) {
+		if( !fileType ) fileType = 'attachment';
+		return CommUtil.createFileFullPath(filePath, fileType);
+	};
+
+	/*	첨부 파일 삭제 처리	*/
+	$scope.removeAttachFile = function(fileNo) {
+		$scope.fileList = _.filter($scope.fileList, function(item) {
+			return item.file_no != fileNo;
+		});
+	};
 
 	$("#wrapper").show();
 	/*	초기화	*/
