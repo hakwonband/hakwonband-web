@@ -768,6 +768,9 @@ var HakwonCommon = function() {
 	 * @usage comm.videoTagReplace();
 	 */
 	this.videoTagReplace = function(type, fileList) {
+/*
+	- 일반 동영상 파일도 youtube로 변경해서 주석 처리
+		2017-04-16
 
 		if( fileList && fileList.length > 0 ) {
 			$('#'+type).find('video').each(function(index) {
@@ -782,7 +785,7 @@ var HakwonCommon = function() {
 				}
 			});
 		}
-
+*/
 		if( window.PLATFORM ) {
 			$('video').click(function() {
 				var videoSrc = $(this).find('source').attr('src');

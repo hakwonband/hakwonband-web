@@ -76,7 +76,6 @@ hakwonMainApp.service('noticeService', function(CommUtil) {
 						$scope.fileList.push(tempObj);
 					}
 
-
 					$scope.$digest();
 				}
 			}
