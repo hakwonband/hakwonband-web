@@ -178,6 +178,10 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 		$scope.isNewNotice = true;
 	}
 
+	$scope.reply_yn = true;
+	$scope.file_view = true;
+	$scope.mobile_push_yn = true;
+
 	/*	youtube 삽입	*/
 	$('#mainNgView').on(clickEvent, 'button[data-act=youtubeInsert]', function() {
 		var youtubeID = $('#mainNgView').find('input[name=youtubeID]').val();
@@ -194,11 +198,6 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 	/*	파일 객체 초기화 및 데이터 호출		*/
 	$scope.$$postDigest(function() {
 		console.log('noticeEditController $$postDigest');
-
-		/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-		$scope.reply_yn = document.querySelector('input[name=reply_yn]');
-		$scope.mobile_push_yn = document.querySelector('input[name=mobile_push_yn]');
-		$scope.file_view = document.querySelector('input[name=file_view]');
 
 		/*	반 공지사항 상세정보조회	*/
 		$scope.getClassNoticeDetail();
@@ -381,9 +380,6 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 			};
 			tinymce.init(editOptions);
 
-			$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
-			$scope.switchery_mobile_push_yn = new Switchery($scope.mobile_push_yn, { color: '#1AB394' });
-			$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
 			return;
 		}
 		if (!$scope.isNewNotice && isNull($scope.noticeNo)) {
@@ -456,18 +452,15 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 					};
 					tinymce.init(editOptions);
 
-					/*	댓글 가능여부 switchery.js를 $scope로 바인딩 및 초기화	*/
-					if( $scope.reply_yn ) {
-						if ($scope.noticeDetail.reply_yn == 'N') {
-							$scope.reply_yn.checked = false;
-						}
-						$scope.switchery_reply = new Switchery($scope.reply_yn, { color: '#1AB394' });
+					if ($scope.noticeDetail.reply_yn == 'Y') {
+						$scope.reply_yn = true;
+					} else {
+						$scope.reply_yn = false;
 					}
-					if( $scope.file_view ) {
-						if ($scope.noticeDetail.is_file_view == '0') {
-							$scope.file_view.checked = false;
-						}
-						$scope.switchery_file = new Switchery($scope.file_view, { color: '#1AB394' });
+					if ($scope.noticeDetail.is_file_view == '1') {
+						$scope.file_view = true;
+					} else {
+						$scope.file_view = false;
 					}
 				} else {
 					commProto.logger({noticeDetailError:data});
@@ -537,13 +530,13 @@ hakwonMainApp.controller('hakwonClassNoticeWriteController', function($scope, $l
 		params.content 			= editContent;
 		params.file_no_list 	= fileNoList.toString();
 		params.preview_content 	= params.content.substr(0, 50) + '...';
-		params.reply_yn			= $scope.reply_yn.checked ? 'Y' : 'N' ;
+		params.reply_yn			= $scope.reply_yn ? 'Y' : 'N' ;
 
 		if ($scope.isNewNotice) {
-			params.mobile_push_yn	= $scope.mobile_push_yn.checked ? 'Y' : 'N' ;
+			params.mobile_push_yn	= $scope.mobile_push_yn ? 'Y' : 'N' ;
 		}
 
-		params.is_file_view		= $scope.file_view.checked ? '1' : '0' ;
+		params.is_file_view		= $scope.file_view ? '1' : '0' ;
 		params.target_user		= $scope.noticeTargetUser;
 
 		params.reservationDate = reservationDate;

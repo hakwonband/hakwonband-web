@@ -23,7 +23,14 @@
 	<repositories>
 		<repository>
 			<id>hakwonBand</id>
+<!--
+			jenkins 배포시
 			<url>http://127.0.0.1:8081/repository/hakwonBand/</url>
+			
+			로컬 테스트시
+			<url>http://nexus.bumworld.net/repository/hakwonBand/</url>
+-->
+			<url>http://nexus.bumworld.net/repository/hakwonBand/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>

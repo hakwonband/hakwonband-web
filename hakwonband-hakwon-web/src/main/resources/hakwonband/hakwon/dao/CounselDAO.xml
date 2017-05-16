@@ -123,7 +123,9 @@
 			and a.counseller_no = #{userNo}
 		</if>
 		and a.use_yn = 'Y'
-		order by a.counsel_date desc
+		order by
+			a.counsel_date desc
+			, a.reg_date desc
 		limit
 			${startNo}, ${pageScale}
 	</select>

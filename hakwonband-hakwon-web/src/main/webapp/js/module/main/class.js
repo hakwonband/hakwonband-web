@@ -91,9 +91,11 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 						tempObj.image_yn	= fileInfo.imageYn;
 						tempObj.mime_type	= fileInfo.mimeType;
 
-						$scope.fileList.push(tempObj);
+						if( CommonConstant.File.TYPE_CLASS_LOGO == type ) {
+							/*	로고는 아무것도 안한다.	*/
+						} else if( fileInfo.imageYn == 'Y' ) {
+							$scope.fileList.push(tempObj);
 
-						if( type != CommonConstant.File.TYPE_CLASS_LOGO && fileInfo.imageYn == 'Y' ) {
 							var fullFilePath = HakwonConstant.FileServer.ATTATCH_DOMAIN+fileInfo.filePath;
 							var fileNo = fileInfo.fileNo;
 
@@ -104,8 +106,13 @@ hakwonMainApp.service('classService', function(classFactory, CommUtil) {
 								var strImage = '<p><a href="'+ fullFilePath + '" target="_blank"><img src="'+ fullFilePath + '" data-img-no="'+fileNo+'" class="img-responsive"></a></p><p>&nbsp;</p>';
 							}
 							tinymce.activeEditor.insertContent(strImage);
-						}
 
+						} else if( tempObj.youtube_id ) {
+							var youtubeHtml = '<p><a href="http://www.youtube.com/watch?v='+tempObj.youtube_id+'"><img src="http://img.youtube.com/vi/'+tempObj.youtube_id+'/0.jpg" class="img-responsive" alt="" data-video="youtube" data-id="'+tempObj.youtube_id+'" /></a></p><p>&nbsp;</p>';
+							tinymce.activeEditor.insertContent(youtubeHtml);
+						} else {
+							$scope.fileList.push(tempObj);
+						}
 					}
 					$scope.$digest();
 				}
