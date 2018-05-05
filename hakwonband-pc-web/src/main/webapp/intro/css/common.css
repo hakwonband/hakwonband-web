@@ -104,6 +104,9 @@ header nav li.active a, header nav li a:hover{color:#007b9b;}
 .service_request_box .service_start_01{background:url("../images/btn_start_01.png") left top no-repeat; margin-left:-373px;}
 .service_request_box .service_start_02{background:url("../images/btn_start_02.png") left top no-repeat; margin-left:15px;}
 
+.service_footer_box{text-align:center; background:url("../images/bg_05.gif"); padding:10px 0; border-top:10px solid #00b7ee; height:150px; position:relative;}
+.service_footer_box h1{width:257px; height:0; padding-top:83px; overflow:hidden; line-height:2em; background:url("../images/title_04.png") left top no-repeat; margin:0 auto 70px auto;}
+
 .contact_box{background:url("../images/bg_06.png"); padding:100px 0; border-top:10px solid #81511c; height:800px; position:relative;}
 .contact_box:before{display:block; content:''; background:url("../images/bg_07.png"); width:780px; height:780px; position:absolute; bottom:0; left:50%; margin-left:-381px; z-index:1;}
 .contact_box h1{width:527px; height:0; padding-top:86px; overflow:hidden; line-height:2em; background:url("../images/title_05.png") left top no-repeat; margin:0 auto 70px auto;}
